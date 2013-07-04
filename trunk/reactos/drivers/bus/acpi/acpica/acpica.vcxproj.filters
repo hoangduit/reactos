@@ -40,6 +40,12 @@
     <Filter Include="tables">
       <UniqueIdentifier>{3c449f4f-55a3-449d-bce9-bfa6d4fc091e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{0293700e-a6bb-4e58-a6cc-053d33b33c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\platform">
+      <UniqueIdentifier>{dd9e0647-16bd-4c4f-afb2-2efb2e4a7673}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dispatcher\dsargs.c">
@@ -408,16 +414,10 @@
     <ClCompile Include="utilities\utxferror.c">
       <Filter>utilities</Filter>
     </ClCompile>
-    <ClCompile Include="tables\tbconvrt.c">
-      <Filter>tables</Filter>
-    </ClCompile>
     <ClCompile Include="tables\tbfadt.c">
       <Filter>tables</Filter>
     </ClCompile>
     <ClCompile Include="tables\tbfind.c">
-      <Filter>tables</Filter>
-    </ClCompile>
-    <ClCompile Include="tables\tbget.c">
       <Filter>tables</Filter>
     </ClCompile>
     <ClCompile Include="tables\tbinstal.c">
@@ -432,5 +432,151 @@
     <ClCompile Include="tables\tbxfroot.c">
       <Filter>tables</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\acapps.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\accommon.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acconfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acdebug.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acdisasm.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acdispat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acevents.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acexcep.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acglobal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\achware.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acinterp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\aclocal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acmacros.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acnames.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acnamesp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acobject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acopcode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acoutput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acparser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acpi.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acpiosxf.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acpixf.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acpredef.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acresrc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acrestyp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acstruct.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actables.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actbl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actbl1.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actbl2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actbl71.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\actypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\acutils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\amlcode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\amlresrc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\accygwin.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acdos16.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acefi.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acenv.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acfreebsd.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acgcc.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acintel.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\aclinux.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acmsvc.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acnetbsd.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acos2.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acwin.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\acwin64.h">
+      <Filter>include\platform</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

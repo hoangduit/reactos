@@ -46,6 +46,7 @@ copy "$(SolutionDir)\drivers\usb\usbd\$(OutDir)\USBD.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbccgp\$(OutDir)\USBCCGP.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbehci\$(OutDir)\USBEHCI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbhub\$(OutDir)\USBHUB.SYS" .
+copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -86,6 +87,7 @@ copy "$(SolutionDir)\drivers\usb\usbd\$(OutDir)\USBD.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbccgp\$(OutDir)\USBCCGP.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbehci\$(OutDir)\USBEHCI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbhub\$(OutDir)\USBHUB.SYS" .
+copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
