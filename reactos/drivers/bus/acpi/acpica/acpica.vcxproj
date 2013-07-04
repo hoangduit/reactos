@@ -56,25 +56,42 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;ACPI_USE_LOCAL_CACHE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>include;include\platform;..\..\..\..\include\ddk;..\..\..\..\include\crt;..\..\..\..\include\psdk;..\..\..\..\include\crt\msc;..\..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;include\platform;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;ACPI_USE_LOCAL_CACHE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;include\platform;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dispatcher\dsargs.c" />
@@ -177,10 +194,8 @@
     <ClCompile Include="resources\rsmisc.c" />
     <ClCompile Include="resources\rsutils.c" />
     <ClCompile Include="resources\rsxface.c" />
-    <ClCompile Include="tables\tbconvrt.c" />
     <ClCompile Include="tables\tbfadt.c" />
     <ClCompile Include="tables\tbfind.c" />
-    <ClCompile Include="tables\tbget.c" />
     <ClCompile Include="tables\tbinstal.c" />
     <ClCompile Include="tables\tbutils.c" />
     <ClCompile Include="tables\tbxface.c" />
@@ -207,6 +222,61 @@
     <ClCompile Include="utilities\uttrack.c" />
     <ClCompile Include="utilities\utxface.c" />
     <ClCompile Include="utilities\utxferror.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\include\reactos\mc\mc.vcxproj">
+      <Project>{8b41e8f9-abeb-4510-90d6-e56065b0d3ad}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\acapps.h" />
+    <ClInclude Include="include\accommon.h" />
+    <ClInclude Include="include\acconfig.h" />
+    <ClInclude Include="include\acdebug.h" />
+    <ClInclude Include="include\acdisasm.h" />
+    <ClInclude Include="include\acdispat.h" />
+    <ClInclude Include="include\acevents.h" />
+    <ClInclude Include="include\acexcep.h" />
+    <ClInclude Include="include\acglobal.h" />
+    <ClInclude Include="include\achware.h" />
+    <ClInclude Include="include\acinterp.h" />
+    <ClInclude Include="include\aclocal.h" />
+    <ClInclude Include="include\acmacros.h" />
+    <ClInclude Include="include\acnames.h" />
+    <ClInclude Include="include\acnamesp.h" />
+    <ClInclude Include="include\acobject.h" />
+    <ClInclude Include="include\acopcode.h" />
+    <ClInclude Include="include\acoutput.h" />
+    <ClInclude Include="include\acparser.h" />
+    <ClInclude Include="include\acpi.h" />
+    <ClInclude Include="include\acpiosxf.h" />
+    <ClInclude Include="include\acpixf.h" />
+    <ClInclude Include="include\acpredef.h" />
+    <ClInclude Include="include\acresrc.h" />
+    <ClInclude Include="include\acrestyp.h" />
+    <ClInclude Include="include\acstruct.h" />
+    <ClInclude Include="include\actables.h" />
+    <ClInclude Include="include\actbl.h" />
+    <ClInclude Include="include\actbl1.h" />
+    <ClInclude Include="include\actbl2.h" />
+    <ClInclude Include="include\actbl71.h" />
+    <ClInclude Include="include\actypes.h" />
+    <ClInclude Include="include\acutils.h" />
+    <ClInclude Include="include\amlcode.h" />
+    <ClInclude Include="include\amlresrc.h" />
+    <ClInclude Include="include\platform\accygwin.h" />
+    <ClInclude Include="include\platform\acdos16.h" />
+    <ClInclude Include="include\platform\acefi.h" />
+    <ClInclude Include="include\platform\acenv.h" />
+    <ClInclude Include="include\platform\acfreebsd.h" />
+    <ClInclude Include="include\platform\acgcc.h" />
+    <ClInclude Include="include\platform\acintel.h" />
+    <ClInclude Include="include\platform\aclinux.h" />
+    <ClInclude Include="include\platform\acmsvc.h" />
+    <ClInclude Include="include\platform\acnetbsd.h" />
+    <ClInclude Include="include\platform\acos2.h" />
+    <ClInclude Include="include\platform\acwin.h" />
+    <ClInclude Include="include\platform\acwin64.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

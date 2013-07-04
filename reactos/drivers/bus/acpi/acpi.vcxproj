@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2B600902-5B27-4636-BC04-2DF86EE2E15B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>acpi</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+    <TargetExt>.sys</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+    <TargetExt>.sys</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;inline=__inline;__STDC__=1;LANGUAGE_EN_US;CMAKE_INTDIR="Debug";acpi_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;..\..\..\include\psdk;..\..\..\include\ddk;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\crt;..\..\..\include\crt\msc;..\..\..\include\reactos;..\..\..\include\reactos\libs;..\..\..\include;..\..\..\include\ndk;..\..\..\drivers\bus\acpi\include;..\..\..\drivers\bus\acpi\acpica\include</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <CompileAs>CompileAsC</CompileAs>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Native</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <Driver>Driver</Driver>
+      <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
+      <FixedBaseAddress>
+      </FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;..\..\..\include\psdk;..\..\..\include\ddk;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\crt;..\..\..\include\crt\msc;..\..\..\include\reactos;..\..\..\include\reactos\libs;..\..\..\include;..\..\..\include\ndk;..\..\..\drivers\bus\acpi\include;..\..\..\drivers\bus\acpi\acpica\include</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Native</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <Driver>Driver</Driver>
+      <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
+      <FixedBaseAddress>
+      </FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="acpienum.c" />
+    <ClCompile Include="busmgr\bus.c" />
+    <ClCompile Include="busmgr\button.c" />
+    <ClCompile Include="busmgr\power.c" />
+    <ClCompile Include="busmgr\system.c" />
+    <ClCompile Include="busmgr\utils.c" />
+    <ClCompile Include="buspdo.c" />
+    <ClCompile Include="eval.c" />
+    <ClCompile Include="interface.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="osl.c" />
+    <ClCompile Include="pnp.c" />
+    <ClCompile Include="power.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="acpi.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\include;..\..\..\include\psdk</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\include;..\..\..\include\psdk</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\import\HAL\HAL.vcxproj">
+      <Project>{19d0d0aa-c065-4101-9f74-e45a87d35ba7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\ntoskrnl\ntoskrnl.vcxproj">
+      <Project>{315ae91a-d723-485c-abd0-1378a1ead8e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\wdmguid\wdmguid.vcxproj">
+      <Project>{7f93cfab-c6b4-497d-b31e-63dc93a99d6c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="acpica\acpica.vcxproj">
+      <Project>{7abe6839-e69a-49bb-9eba-c394d28e836d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\acpisys.h" />
+    <ClInclude Include="include\acpi_bus.h" />
+    <ClInclude Include="include\acpi_drivers.h" />
+    <ClInclude Include="include\glue.h" />
+    <ClInclude Include="include\list.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
