@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -57,6 +57,7 @@
       <AdditionalIncludeDirectories>.\;..\..\..\include\ddk;..\..\..\include\psdk;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\reactos\;..\..\..\include\ndk</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -81,6 +82,7 @@
       <AdditionalIncludeDirectories>.\;..\..\..\include\ddk;..\..\..\include\psdk;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\reactos\;..\..\..\include\ndk</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>

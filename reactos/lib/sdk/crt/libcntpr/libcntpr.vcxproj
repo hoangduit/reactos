@@ -845,6 +845,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -867,6 +868,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
