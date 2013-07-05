@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -63,6 +63,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -90,6 +91,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>

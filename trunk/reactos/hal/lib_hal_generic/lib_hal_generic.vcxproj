@@ -101,6 +101,7 @@ ml /nologo /Cp /Fo"$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"<
       <AdditionalIncludeDirectories>..\.\halx86\include;..\..\include\psdk;..\..\include\ddk;..\..\include\reactos\mc\build\x86_32\Debug\ReactOS;..\..\include\crt;..\..\include\crt\msc;..\..\include\reactos;..\..\include;..\..\include\ndk;..\..\ntoskrnl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,6 +120,7 @@ ml /nologo /Cp /Fo"$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"<
       <AdditionalIncludeDirectories>..\.\halx86\include;..\..\include\psdk;..\..\include\ddk;..\..\include\reactos\mc\build\x86_32\Debug\ReactOS;..\..\include\crt;..\..\include\crt\msc;..\..\include\reactos;..\..\include;..\..\include\ndk;..\..\ntoskrnl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
