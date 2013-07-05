@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -62,16 +62,14 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <CompileAs>CompileAsC</CompileAs>
       <ExceptionHandling>false</ExceptionHandling>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <SubSystem>Native</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalOptions>
       </AdditionalOptions>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <Driver>Driver</Driver>
       <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
       <BaseAddress>0x00010000</BaseAddress>
       <FixedBaseAddress>
@@ -83,6 +81,8 @@
       <AdditionalDependencies>
       </AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <Driver>Driver</Driver>
+      <SubSystem>Native</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,6 +99,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <ExceptionHandling>false</ExceptionHandling>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>

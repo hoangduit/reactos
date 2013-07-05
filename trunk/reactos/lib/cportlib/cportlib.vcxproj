@@ -60,6 +60,7 @@
       <AdditionalIncludeDirectories>..\..\include\reactos\libs;..\..\include\psdk;..\..\include\crt;..\..\include\reactos;..\..\include\crt\msc;..\..\include\ddk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,6 +83,7 @@
       <AdditionalIncludeDirectories>..\..\include\reactos\libs;..\..\include\psdk;..\..\include\crt;..\..\include\reactos;..\..\include\crt\msc;..\..\include\ddk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

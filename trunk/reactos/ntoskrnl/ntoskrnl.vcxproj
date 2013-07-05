@@ -1084,12 +1084,14 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>build\x86_64\$(Configuration)\</OutDir>
@@ -1121,6 +1123,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -1178,6 +1181,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_WINKD_=1</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
