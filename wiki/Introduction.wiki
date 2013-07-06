@@ -1,4 +1,4 @@
-#summary Introduction for New Contribtors.
+#summary Introduction for New Contributors.
 
 = Introduction =
 
