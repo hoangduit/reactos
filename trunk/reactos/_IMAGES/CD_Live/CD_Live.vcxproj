@@ -47,6 +47,7 @@ copy "$(SolutionDir)\drivers\usb\usbccgp\$(OutDir)\USBCCGP.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbehci\$(OutDir)\USBEHCI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbhub\$(OutDir)\USBHUB.SYS" .
 copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
+copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -88,6 +89,7 @@ copy "$(SolutionDir)\drivers\usb\usbccgp\$(OutDir)\USBCCGP.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbehci\$(OutDir)\USBEHCI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbhub\$(OutDir)\USBHUB.SYS" .
 copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
+copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -128,6 +130,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\usb\usbhub\usbhub.vcxproj">
       <Project>{53db47d8-29a6-49e9-a741-967a5546376e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\usb\usbohci\usbohci.vcxproj">
+      <Project>{5d973b61-5dc7-41d5-a351-884c70b87b83}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\usb\usbuhci\usbuhci.vcxproj">
       <Project>{1bf87245-cd63-4e76-a594-1790bd61c498}</Project>
