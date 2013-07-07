@@ -113,6 +113,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     <ProjectReference Include="..\..\drivers\base\kdcom\kdcom.vcxproj">
       <Project>{c6e75fa9-bcbb-46ec-91ff-0f05064d3039}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\drivers\bus\acpi\acpi.vcxproj">
+      <Project>{2b600902-5b27-4636-bc04-2df86ee2e15b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\drivers\bus\pci\pci.vcxproj">
       <Project>{aecd4ad4-8930-4c1d-a083-ccb981d4205c}</Project>
     </ProjectReference>
