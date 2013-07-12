@@ -823,6 +823,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ide", "ide", "{0D7246BA-BAF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "uniata", "drivers\storage\ide\uniata\uniata.vcxproj", "{308ABB14-8F08-48EB-92BE-D29201DEF07D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "port", "port", "{1DB1E7F3-5BE1-43F0-A2B6-39CA575E1032}"
+	ProjectSection(SolutionItems) = preProject
+		drivers\storage\port\CMakeLists.txt = drivers\storage\port\CMakeLists.txt
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "buslogic", "drivers\storage\port\buslogic\buslogic.vcxproj", "{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -1682,6 +1689,14 @@ Global
 		{308ABB14-8F08-48EB-92BE-D29201DEF07D}.Release|x86_32.ActiveCfg = Release|Win32
 		{308ABB14-8F08-48EB-92BE-D29201DEF07D}.Release|x86_32.Build.0 = Release|Win32
 		{308ABB14-8F08-48EB-92BE-D29201DEF07D}.Release|x86_64.ActiveCfg = Release|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Debug|ARM.ActiveCfg = Debug|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Debug|x86_32.Build.0 = Debug|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Release|ARM.ActiveCfg = Release|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Release|x86_32.ActiveCfg = Release|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Release|x86_32.Build.0 = Release|Win32
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA}.Release|x86_64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1847,6 +1862,8 @@ Global
 		{5D973B61-5DC7-41D5-A351-884C70B87B83} = {25513668-2AB3-408C-8534-15EF0242718D}
 		{6FAE532A-368E-49DB-8DCF-101EF226DF96} = {9A6B3424-D8C5-4868-B5DE-6321205CC7F7}
 		{0D7246BA-BAFB-4C0F-9DD4-0D447E8A33FA} = {9A6B3424-D8C5-4868-B5DE-6321205CC7F7}
+		{1DB1E7F3-5BE1-43F0-A2B6-39CA575E1032} = {9A6B3424-D8C5-4868-B5DE-6321205CC7F7}
 		{308ABB14-8F08-48EB-92BE-D29201DEF07D} = {0D7246BA-BAFB-4C0F-9DD4-0D447E8A33FA}
+		{C9A38A23-BD78-4727-9A6C-E7FD7A9C7BAA} = {1DB1E7F3-5BE1-43F0-A2B6-39CA575E1032}
 	EndGlobalSection
 EndGlobal
