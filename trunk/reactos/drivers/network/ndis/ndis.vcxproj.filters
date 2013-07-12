@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ndis">
+      <UniqueIdentifier>{0bf92860-4856-4618-9373-ef90be5bfd68}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ndis\30stubs.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\40stubs.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\50stubs.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\buffer.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\cl.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\cm.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\co.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\config.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\control.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\efilter.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\hardware.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\io.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\main.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\memory.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\miniport.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\misc.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\protocol.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\string.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+    <ClCompile Include="ndis\time.c">
+      <Filter>ndis</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ndis.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ndis.spec" />
+  </ItemGroup>
+</Project>
