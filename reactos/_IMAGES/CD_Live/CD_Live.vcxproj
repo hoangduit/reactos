@@ -50,6 +50,7 @@ copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 copy "$(SolutionDir)\drivers\storage\ide\uniata\$(OutDir)\UNIATA.SYS" .
 copy "$(SolutionDir)\drivers\storage\scsiport\$(OutDir)\SCSIPORT.SYS" .
+copy "$(SolutionDir)\drivers\storage\port\buglogic\$(OutDir)\BUSLOGIC.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -94,6 +95,7 @@ copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 copy "$(SolutionDir)\drivers\storage\ide\uniata\$(OutDir)\UNIATA.SYS" .
 copy "$(SolutionDir)\drivers\storage\scsiport\$(OutDir)\SCSIPORT.SYS" .
+copy "$(SolutionDir)\drivers\storage\port\buglogic\$(OutDir)\BUSLOGIC.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -128,6 +130,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\storage\ide\uniata\uniata.vcxproj">
       <Project>{308abb14-8f08-48eb-92be-d29201def07d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\storage\port\buslogic\buslogic.vcxproj">
+      <Project>{c9a38a23-bd78-4727-9a6c-e7fd7a9c7baa}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\usb\usbccgp\usbccgp.vcxproj">
       <Project>{5c8b332e-b51e-4dfa-a6ee-1338c1075160}</Project>
