@@ -147,6 +147,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     <ProjectReference Include="..\..\drivers\filesystems\cdfs\cdfs.vcxproj">
       <Project>{1f0d3cae-da53-40bd-b7ea-77a521c4bbc2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\drivers\filesystems\mup\mup.vcxproj">
+      <Project>{7a30357b-01d5-4076-b6b1-699b6ea7a6c7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\drivers\network\ndis\ndis.vcxproj">
       <Project>{f8c25d34-2d3d-4c58-b47d-7a8998ab3c0f}</Project>
     </ProjectReference>
@@ -155,6 +158,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\storage\class\disk\disk.vcxproj">
       <Project>{999d1a6f-89b7-4956-b346-7ff7c4c975fc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\storage\class\ramdisk\ramdisk.vcxproj">
+      <Project>{7c842e64-a7b4-4dbe-be4b-084d82fb0d48}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\storage\ide\uniata\uniata.vcxproj">
       <Project>{308abb14-8f08-48eb-92be-d29201def07d}</Project>
