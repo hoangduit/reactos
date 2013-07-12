@@ -60,6 +60,7 @@ copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
+copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -113,6 +114,7 @@ copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
+copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -128,6 +130,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\boot\freeldr\freeldr\freeldr.vcxproj">
       <Project>{b0c75a46-c23f-4ac0-af06-8b5c9a7b1f20}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\bootvid\bootvid.vcxproj">
       <Project>{39162ac2-e17b-4301-b1cb-19ebcd13b22b}</Project>
