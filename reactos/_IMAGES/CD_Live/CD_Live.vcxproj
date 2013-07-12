@@ -56,6 +56,7 @@ copy "$(SolutionDir)\drivers\storage\class\class2\$(OutDir)\CLASS2.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\cdrom\$(OutDir)\CDROM.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\disk\$(OutDir)\DISK.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
+copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -106,6 +107,7 @@ copy "$(SolutionDir)\drivers\storage\class\class2\$(OutDir)\CLASS2.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\cdrom\$(OutDir)\CDROM.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\disk\$(OutDir)\DISK.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
+copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -128,6 +130,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\kdcom\kdcom.vcxproj">
       <Project>{c6e75fa9-bcbb-46ec-91ff-0f05064d3039}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\base\nmidebug\nmidebug.vcxproj">
+      <Project>{1fa3d6c0-aeb7-4893-87e1-ea6f971a08d3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\bus\acpi\acpi.vcxproj">
       <Project>{2b600902-5b27-4636-bc04-2df86ee2e15b}</Project>
