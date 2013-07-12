@@ -55,6 +55,7 @@ copy "$(SolutionDir)\drivers\usb\usbstor\$(OutDir)\USBSTOR.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\class2\$(OutDir)\CLASS2.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\cdrom\$(OutDir)\CDROM.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\disk\$(OutDir)\DISK.SYS" .
+copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -104,6 +105,7 @@ copy "$(SolutionDir)\drivers\usb\usbstor\$(OutDir)\USBSTOR.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\class2\$(OutDir)\CLASS2.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\cdrom\$(OutDir)\CDROM.SYS" .
 copy "$(SolutionDir)\drivers\storage\class\disk\$(OutDir)\DISK.SYS" .
+copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
