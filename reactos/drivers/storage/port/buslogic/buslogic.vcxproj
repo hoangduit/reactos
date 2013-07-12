@@ -122,9 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="BusLogic958.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\include;..\..\..\..\include\psdk</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\include;..\..\..\..\include\psdk;..\..\..\..\include\crt;..\..\..\..\include\crt\msc</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\include;..\..\..\..\include\psdk</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\include;..\..\..\..\include\psdk;..\..\..\..\include\crt;..\..\..\..\include\crt\msc</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
     </ResourceCompile>
   </ItemGroup>
