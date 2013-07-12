@@ -50,7 +50,7 @@ copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 copy "$(SolutionDir)\drivers\storage\ide\uniata\$(OutDir)\UNIATA.SYS" .
 copy "$(SolutionDir)\drivers\storage\scsiport\$(OutDir)\SCSIPORT.SYS" .
-copy "$(SolutionDir)\drivers\storage\port\buglogic\$(OutDir)\BUSLOGIC.SYS" .
+copy "$(SolutionDir)\drivers\storage\port\buslogic\$(OutDir)\BUSLOGIC.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -95,7 +95,7 @@ copy "$(SolutionDir)\drivers\bus\acpi\$(OutDir)\ACPI.SYS" .
 copy "$(SolutionDir)\drivers\usb\usbohci\$(OutDir)\USBOHCI.SYS" .
 copy "$(SolutionDir)\drivers\storage\ide\uniata\$(OutDir)\UNIATA.SYS" .
 copy "$(SolutionDir)\drivers\storage\scsiport\$(OutDir)\SCSIPORT.SYS" .
-copy "$(SolutionDir)\drivers\storage\port\buglogic\$(OutDir)\BUSLOGIC.SYS" .
+copy "$(SolutionDir)\drivers\storage\port\buslogic\$(OutDir)\BUSLOGIC.SYS" .
 cd ..
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
