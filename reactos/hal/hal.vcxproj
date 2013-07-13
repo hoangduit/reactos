@@ -182,9 +182,9 @@
     <None Include="CMakeLists.txt" />
     <CustomBuild Include="hal.spec">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe -a=i386 --kill-at -n=$(TargetFileName) --ms -d=$(OutDir)%(FileName).def %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe -a=i386 --kill-at -n=$(TargetFileName) --ms -d=$(OutDir)%(FileName).def %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
     </CustomBuild>
     <None Include="halx86\CMakeLists.txt" />
