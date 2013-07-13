@@ -84,7 +84,7 @@
       <AdditionalOptions>/ignore:4254 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy  /B $(OutDir)\i386.bin + $(TargetPath) $(OutDir)\$(TargetName).sys</Command>
+      <Command>copy  /B "$(OutDir)\i386.bin" + "$(TargetPath)" "$(OutDir)\$(TargetName).sys"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Join i386.bin to $(TargetPath)</Message>
@@ -128,7 +128,7 @@
       <AdditionalOptions>/ignore:4254 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy  /B $(OutDir)\i386.bin + $(TargetPath) $(OutDir)\$(TargetName).sys</Command>
+      <Command>copy  /B "$(OutDir)\i386.bin" + "$(TargetPath)" "$(OutDir)\$(TargetName).sys"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Join i386.bin to $(TargetPath)</Message>
