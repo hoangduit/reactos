@@ -1,13 +1,25 @@
 #summary One-sentence summary of this page.
+<wiki:toc max_depth="5" />
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Overview =
+= Install Development Tools =
+== Install Visual Studio ==
+=== Install Visual Studio 2010 ===
+=== Install Visual Studio 2012 ===
+== Install SVN Client ==
+=== Install TortoiseSVN ===
+== Install Virtual Machine Manager ==
+== Install VirtualBox ===
+== Install VMWare ==
+== Install QEMU ==
+== Install WinRAR ==
+== Install Dependency Walker ==
+== Install WinFlashTool ==
+= Consult JIRA =
+= Pull Source Code From Repository =
+= Load ReactOS.sln =
+= Create Visual Studio Projects =
+= Develop =
+= Save ReactOS.sln =
+= Push Source Code To Respository =
+= Update JIRA =
