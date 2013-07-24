@@ -1,6 +1,8 @@
 #summary Developer Guide For ReactOS Contributors Using Visual Studio.
 <wiki:toc max_depth="5" />
 
+= This is a test to see if the collision problem is fixed for JC. =
+
 = Overview =
 Starting from scratch (having only Windows installed), building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  That's what this guide is for.  This guide will also assume a certain level of technical ability on your part, as this is a guide to compiling an operating system.
 
