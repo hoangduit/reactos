@@ -90,6 +90,9 @@ Open up Visual Studio, and load a new project.  Navigate to the folder you put t
 
 If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".  Once that's done, hit F7 to build the Debug x86_32 version of ReactOS.sln (solution).  Expect this step to take a while to complete.
 
+Screenshot
+
+[VS Setup - en.png]
 
 = Create Visual Studio Projects =
 = Develop =
