@@ -76,9 +76,11 @@ URL: http://jira.reactos.org/
 As long as your SVN client supports command line access, you're fine.  Open up command prompt and navigate to where you'd like to put the source code.
 
 If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.
+
 {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
 
 If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's http.
+
 {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
 
 The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.
