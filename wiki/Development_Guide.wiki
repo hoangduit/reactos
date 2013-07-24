@@ -30,6 +30,8 @@ Download link: http://tortoisesvn.net/downloads.html
 
 Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
 
+When installing TortoiseSVN, make sure to install everything including the command line utilities.
+
 == Install a Virtual Machine ==
 A Virtual Machine will let you test the compiled operating system without risking data loss on your actual PC.  There are several great options to choose from.
 
