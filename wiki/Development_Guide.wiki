@@ -20,7 +20,7 @@ For VS 2010, the recommended version is Visual Studio 2010 Express All-in-One IS
 
 === Install Visual Studio 2012 ===
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
-For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  It is recommended to run Windows Update after installation to ensure all related components are up to date.
+For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  I have no idea why that isn't included in the initial download.  It is recommended to run Windows Update after installation to ensure all related components are up to date.
 
 
 == Install SVN Client ==
@@ -42,7 +42,8 @@ Linux only at this time.
 
 
 === Install VirtualBox ===
-Download link: https://www.virtualbox.org/
+Download link: https://www.virtualbox.org/wiki/Downloads
+For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.
 
 
 === Install VMWare ===
