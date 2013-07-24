@@ -92,7 +92,7 @@ If you want to perform a test of compiling ReactOS, there's a couple changes you
 
 Screenshot
 
-[VS Setup - en.png]
+https://reactos.googlecode.com/svn/wiki/VS%20Setup%20-%20en.png
 
 = Create Visual Studio Projects =
 = Develop =
