@@ -12,10 +12,12 @@ We support MS Visual Studio 2010 and 2012.  Other versions have not been tested 
 
 === Install Visual Studio 2010 ===
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
+
 We do not recommend getting Visual Studio 2010, but you can use it if you already have it.
 
 === Install Visual Studio 2012 ===
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
+
 For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want (need?) to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as it's about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
 
 == Install SVN Client ==
@@ -23,6 +25,7 @@ An SVN (Apache Subversion) client will allow you to access the source of ReactOS
 
 === Install TortoiseSVN ===
 Download link: http://tortoisesvn.net/downloads.html
+
 Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
 
 == Install a Virtual Machine ==
@@ -30,31 +33,40 @@ A Virtual Machine will let you test the compiled operating system without riskin
 
 === Install Virtual Machine Manager ===
 Download link: http://virt-manager.org/
+
 Linux only at this time.
 
 === Install VirtualBox ===
 Download link: https://www.virtualbox.org/wiki/Downloads
+
 For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.
 
 === Install VMWare ===
 Download Link: ???
 
+
 === Install QEMU ===
 Download Link: http://wiki.qemu.org/Download
 
+
 == Install WinRAR ==
 WinRAR?  What's this for?  Why not the FOSS alternative, 7-Zip?
+
 Download Link: http://www.rarlab.com/
+
 Download Link: http://www.7-zip.org/
 
 == Install Dependency Walker ==
 Download link: http://www.dependencywalker.com/
 
+
 == Install WinFlashTool ==
 Download link: http://winflashtool.sysprogs.com/
 
+
 = Consult JIRA =
 URL: http://jira.reactos.org/
+
 
 = Pull Source Code From Repository =
 = Load ReactOS.sln =
