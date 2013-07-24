@@ -5,7 +5,7 @@
 Starting from scratch (having only Windows installed), building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  That's what this guide is for.  This guide will also assume a certain level of technical ability on your part, as this is a guide to compiling an operating system.  Also, please note that ReactOS built with MS Visual Studio is guaranteed to crash.  This is still a work in progress.
 
 = Install Development Tools =
-The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory pe se, but HIGHLY recommended), and a couple other utilities.
+The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
 == Install Visual Studio ==
 We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.  All versions of Visual Studio Express require a free registration within 30 days of installation.  Registration is simple, and by default the "spam me" option is turned off.
