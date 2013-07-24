@@ -86,6 +86,8 @@ If you're not a member, or you'd like to download anonymously, you can get a rea
 The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.
 
 = Load ReactOS.sln =
+Open up Visual Studio, and load a new project.  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
+
 = Create Visual Studio Projects =
 = Develop =
 = Save ReactOS.sln =
