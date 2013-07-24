@@ -8,7 +8,7 @@ Starting from scratch (having only Windows installed), building ReactOS on Visua
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
 == Install Visual Studio ==
-We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.  All versions of Visual Studio Express require a free registration within 30 days of installation.  Registration is simple, and by default the "spam me" option is turned off.
+We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.  All versions of Visual Studio Express require a free registration within 30 days of installation.
 
 === Install Visual Studio 2010 ===
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
