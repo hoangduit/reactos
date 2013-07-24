@@ -94,6 +94,8 @@ Screenshot
 
 https://reactos.googlecode.com/svn/wiki/VS%20Setup%20-%20en.png
 
+When it's done compiling, you'll find the .ISO at {{{reactos\reactos\_IMAGES\CD_Live\build\x86_32\Debug\ReactOS_CD_Live.ISO}}}
+
 = Create Visual Studio Projects =
 = Develop =
 = Save ReactOS.sln =
