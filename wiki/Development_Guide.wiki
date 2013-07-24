@@ -2,20 +2,44 @@
 <wiki:toc max_depth="5" />
 
 = Overview =
+Starting from scratch (having only Windows installed), building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  That's what this guide is for.  Let's get started!
+
 = Install Development Tools =
+The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory pe se, but HIGHLY recommended), and a couple other utilities.
+
 == Install Visual Studio ==
+We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.
+
 === Install Visual Studio 2010 ===
+For VS 2010, the recommended version is Visual Studio 2010 Express All-in-One ISO or Visual C++ 2010 Express.
+
 === Install Visual Studio 2012 ===
+For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want to install Visual Studio Express 2012 for Windows 8 instead.
+
 == Install SVN Client ==
+An SVN (Apache Subversion) client will allow you to access the source of ReactOS.  If you have commit access, then you can commit your changes back to the ReactOS SVN database.  We recommend TortoiseSVN, and this guide will assume that's the client you've chosen.  You can use another SVN client, but you'll need to configure it yourself.
+
 === Install TortoiseSVN ===
-== Install Virtual Machine Manager ==
-== Install VirtualBox ==
-== Install VMWare ==
-== Install QEMU ==
+http://tortoisesvn.net/downloads.html
+
+== Install a Virtual Machine ==
+=== Install Virtual Machine Manager ===
+=== Install VirtualBox ===
+=== Install VMWare ===
+=== Install QEMU ===
+
 == Install WinRAR ==
+WinRAR?  What's this for?  Why not the FOSS alternative, 7-Zip?
+
 == Install Dependency Walker ==
+http://www.dependencywalker.com/
+
 == Install WinFlashTool ==
+http://winflashtool.sysprogs.com/
+
 = Consult JIRA =
+http://jira.reactos.org/
+
 = Pull Source Code From Repository =
 = Load ReactOS.sln =
 = Create Visual Studio Projects =
