@@ -54,7 +54,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\crt;..\crt\msc;..</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -75,7 +77,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\crt;..\crt\msc;..</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -95,10 +99,7 @@
     <None Include="trapamd64.inc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="genincdata.c">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\psdk;..\ndk;..\ddk;..\reactos\mc\$(OutDir)\ReactOS;..\reactos;..\</AdditionalIncludeDirectories>
-    </ClCompile>
+    <ClCompile Include="genincdata.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ks386.template.h">
