@@ -16,7 +16,7 @@ We do not recommend getting Visual Studio 2010, but you can use it if you alread
 
 === Install Visual Studio 2012 ===
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
-For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want (need?) to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download.  You may want to run Windows Update after installation to ensure all related components are up to date.
+For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want (need?) to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as it's about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
 
 == Install SVN Client ==
 An SVN (Apache Subversion) client will allow you to access the source of ReactOS.  If you have commit access, then you can commit your changes back to the ReactOS SVN database.  We recommend TortoiseSVN, and this guide will assume that's the client you've chosen.  You can use another SVN client, but you'll need to configure it yourself.
