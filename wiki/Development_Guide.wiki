@@ -2,25 +2,28 @@
 <wiki:toc max_depth="5" />
 
 = Overview =
-Starting from scratch (having only Windows installed), building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  That's what this guide is for.  Let's get started!
+Starting from scratch (having only Windows installed), building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  That's what this guide is for.  This guide will also assume a certain level of technical ability on your part, as this is a guide to compiling an operating system.
 
 = Install Development Tools =
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory pe se, but HIGHLY recommended), and a couple other utilities.
 
 == Install Visual Studio ==
-We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.
+We support MS Visual Studio 2010 and 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2010 and 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Note that all Express versions are free, and all 2010/2012 versions require the Microsoft .NET 4.5 framework.  All versions of Visual Studio Express require free registration within 30 days.  Registration is simple, and by default the "spam me" option is turned off.
 
 === Install Visual Studio 2010 ===
-For VS 2010, the recommended version is Visual Studio 2010 Express All-in-One ISO or Visual C++ 2010 Express.
+Download link: http://www.microsoft.com/visualstudio/eng/downloads
+For VS 2010, the recommended version is Visual Studio 2010 Express All-in-One ISO or Visual C++ 2010 Express.  It is recommended to run Windows Update after installation to ensure all related components are up to date.
 
 === Install Visual Studio 2012 ===
-For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.
+Download link: http://www.microsoft.com/visualstudio/eng/downloads
+For VS 2012, the recommended version is Visual Studio Express 2012 for Windows Desktop.  Windows 8 users may want to install Visual Studio Express 2012 for Windows 8 instead.  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  It is recommended to run Windows Update after installation to ensure all related components are up to date.
 
 == Install SVN Client ==
 An SVN (Apache Subversion) client will allow you to access the source of ReactOS.  If you have commit access, then you can commit your changes back to the ReactOS SVN database.  We recommend TortoiseSVN, and this guide will assume that's the client you've chosen.  You can use another SVN client, but you'll need to configure it yourself.
 
 === Install TortoiseSVN ===
-http://tortoisesvn.net/downloads.html
+Download link: http://tortoisesvn.net/downloads.html
+Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
 
 == Install a Virtual Machine ==
 === Install Virtual Machine Manager ===
@@ -32,13 +35,13 @@ http://tortoisesvn.net/downloads.html
 WinRAR?  What's this for?  Why not the FOSS alternative, 7-Zip?
 
 == Install Dependency Walker ==
-http://www.dependencywalker.com/
+Download link: http://www.dependencywalker.com/
 
 == Install WinFlashTool ==
-http://winflashtool.sysprogs.com/
+Download link: http://winflashtool.sysprogs.com/
 
 = Consult JIRA =
-http://jira.reactos.org/
+Download link: http://jira.reactos.org/
 
 = Pull Source Code From Repository =
 = Load ReactOS.sln =
