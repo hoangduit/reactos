@@ -2,3 +2,6 @@
 
 = Update Collision =
 Will an Update Collision happen when I try to submit this page?  Let's find out!
+----
+== EDIT ==
+No collision!  Awesomeness.  If this text appears, then I can edit too!
