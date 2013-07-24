@@ -1,4 +1,4 @@
-#summary Just a test page to see if we're totally locked out.
+#summary Dummy page; please delete me!
 
 = Update Collision =
 Will an Update Collision happen when I try to submit this page?  Let's find out!
