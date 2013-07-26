@@ -41,12 +41,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -79,6 +81,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_NTOSKRNL_;_NTSYSTEM_;inline=;__REACTOS__;TARGET_i386;NASSERT;__NO_CTYPE_INLINES;CMLIB_HOST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\include\psdk;..\..\include\ddk;..\..\include\host;..\..\include\reactos\mc\build\x86_32\Debug\ReactOS;..\..\include\crt;..\..\include\crt\msc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,6 +99,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_NTOSKRNL_;_NTSYSTEM_;__REACTOS__;TARGET_i386;NASSERT;__NO_CTYPE_INLINES;CMLIB_HOST;inline=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\include\psdk;..\..\include\ddk;..\..\include\host;..\..\include\reactos\mc\build\x86_32\Debug\ReactOS;..\..\include\crt;..\..\include\crt\msc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
