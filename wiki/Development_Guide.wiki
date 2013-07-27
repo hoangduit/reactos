@@ -30,7 +30,7 @@ Make sure to download the right architecture (x86 or x64) for your system.  Wind
 
 When installing TortoiseSVN, make sure to install everything including the command line utilities.
 
-Information on using TortoiseSVN can be found [TortoiseSVN here].
+See the [TortoiseSVN TortoiseSVN Guide].
 
 <br>
 == 3. Install a Virtual Machine ==
