@@ -63,10 +63,16 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+<<<<<<< .mine
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include;$(SolutionDir)\include\reactos\subsys;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+=======
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAs>Default</CompileAs>
+>>>>>>> .r77
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,6 +99,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include;$(SolutionDir)\include\reactos\subsys;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
