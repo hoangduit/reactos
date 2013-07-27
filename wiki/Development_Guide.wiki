@@ -4,9 +4,9 @@
 = Overview =
 This guide will assume you have an out-of-the-box installation of Windows or ReactOS.  Starting from scratch, building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  This guide will assume a certain level of technical ability on your part, as this is a guide to compiling an operating system.
 
+<br>
 Also, please note that building ReactOS with Visual Studio is still a work in process.  ReactOS built with Visual Studio cannot yet successfully boot.
 
-<br>
 = Install Development Tools =
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
