@@ -1,8 +1,12 @@
 #summary Brief user's guide for TortoiseSVN
 
-See the Developer's Guide for installation of TortoiseSVN.
+See the [Development_Guide Development Guide] for installation of TortoiseSVN.
 
-= SVN Commit =
+= SVN Commits =
+If you have made changes to the ReactOS source and you want to send those changes upstream to the online ReactOS database, then you want to make a _commit_.  Note that commits made here only affect this database; you are not directly submitting commits to the official www.ReactOS.org/ ReactOS trunk.
+
+To submit a commit, it is best to not have Visual Studio running.  Navigate Windows Explorer to your ReactOS source folder.  It will look something like this:
+
 
 = SVN Update =
 == Resolving Conflicts ==
