@@ -40,7 +40,7 @@ A Virtual Machine will let you test the compiled operating system without riskin
 === Install !VirtualBox ===
 Download link: https://www.virtualbox.org/wiki/Downloads
 
-For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  There is a setup guide for it located here.
+For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  See the [VirtualBox VirtualBox Setup Guide].
 
 <br>
 === Install Virtual Machine Manager ===
