@@ -43,7 +43,7 @@ Download link: http://virt-manager.org/
 Linux only at this time.
 
 <br>
-=== Install VirtualBox ===
+=== Install !VirtualBox ===
 Download link: https://www.virtualbox.org/wiki/Downloads
 
 For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.
@@ -69,7 +69,7 @@ Download Link: http://www.7-zip.org/
 Download link: http://www.dependencywalker.com/
 
 <br>
-== 6. Install WinFlashTool ==
+== 6. Install !WinFlashTool ==
 Download link: http://winflashtool.sysprogs.com/
 
 <br>
