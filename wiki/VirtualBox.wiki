@@ -1,6 +1,6 @@
 #summary VirtualBox setup guide
 
-_See the [Development_Guide Development Guide] for installation instructions._
+_See the [Development_Guide] for installation instructions._
 
 = Setting up VirtualBox =
 This guide is for setting up VirtualBox to use with the .ISO file compiled using Visual Studio 2012.  To start, open VirtualBox.  Click on the blue New icon at the top.
