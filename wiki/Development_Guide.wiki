@@ -86,7 +86,7 @@ If you're a member and you'd like commit access, use the following command (repl
 If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
 {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
 
-The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.
+The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
 = Load ReactOS.sln =
 Open up Visual Studio, and load a new project.  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
