@@ -11,7 +11,7 @@ Also, please note that building ReactOS with Visual Studio is still a work in pr
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
 <br>
-== Install Visual Studio 2012 ==
+== 1. Install Visual Studio 2012 ==
 Download link: http://www.microsoft.com/visualstudio/eng/downloads
 
 We support only MS Visual Studio 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Windows 8 users may want *(need?)* to install Visual Studio Express 2012 for Windows 8 instead.  Note that the Express version is free, and all 2012 versions require the Microsoft .NET 4.5 framework.  Visual Studio Express requires a free registration within 30 days of installation.
@@ -19,7 +19,7 @@ We support only MS Visual Studio 2012.  Other versions have not been tested and 
 There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as the update is about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
 
 <br>
-== Install SVN Client ==
+== 2. Install SVN Client ==
 An SVN (Apache Subversion) client will allow you to access the source of ReactOS.  If you have commit access, then you can commit your changes back to the ReactOS SVN database.  We recommend TortoiseSVN, and this guide will assume that's the client you've chosen.  You can use another SVN client, but you'll need to configure it yourself.
 
 <br>
@@ -33,7 +33,7 @@ When installing TortoiseSVN, make sure to install everything including the comma
 Information on using TortoiseSVN can be found [TortoiseSVN here].
 
 <br>
-== Install a Virtual Machine ==
+== 3. Install a Virtual Machine ==
 A Virtual Machine will let you test the compiled operating system without risking data loss on your actual PC.  There are several great options to choose from.
 
 <br>
@@ -57,7 +57,7 @@ Download Link: ???
 Download Link: http://wiki.qemu.org/Download
 
 <br>
-== Install WinRAR ==
+== 4. Install WinRAR ==
 WinRAR?  What's this for?  Why not the FOSS alternative, 7-Zip?
 
 Download Link: http://www.rarlab.com/
@@ -65,11 +65,11 @@ Download Link: http://www.rarlab.com/
 Download Link: http://www.7-zip.org/
 
 <br>
-== Install Dependency Walker ==
+== 5. Install Dependency Walker ==
 Download link: http://www.dependencywalker.com/
 
 <br>
-== Install WinFlashTool ==
+== 6. Install WinFlashTool ==
 Download link: http://winflashtool.sysprogs.com/
 
 <br>
