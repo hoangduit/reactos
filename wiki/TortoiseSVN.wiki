@@ -19,7 +19,7 @@ When finished, your ReactOS source folder will have a green icon over it, like t
 https://reactos.googlecode.com/svn/SVN%20Sync%206%20-%20en.png
 
 = SVN Update =
-This is the opposite making a commit.  If your source is outdated, or if you want to discard all changes you have made to your copy of the source, then you want to perform an SVN Update.  Navigate to your ReactOS source and right-click it.  Select "SVN Update" as in this screenshot:<br>
+This is the opposite making a commit.  If your source is outdated, or if you want to discard all changes you have made to your copy of the source, then you want to perform an SVN Update.  *Do not redownload the entire source.*  That is a waste of time and bandwidth. Navigate to your ReactOS source and right-click it.  Select "SVN Update" as in this screenshot:<br>
 https://reactos.googlecode.com/svn/SVN%20Sync%202%20-%20en.png
 
 Your copy of the source will begin to sync with the online version.  This window will notify you of the progress:<br>
