@@ -79,7 +79,7 @@ If you're a member and you'd like commit access, use the following command (repl
 
 {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
 
-If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's http.
+If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.
 
 {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
 
