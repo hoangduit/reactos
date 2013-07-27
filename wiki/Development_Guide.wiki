@@ -37,16 +37,16 @@ Information on using TortoiseSVN can be found [TortoiseSVN here].
 A Virtual Machine will let you test the compiled operating system without risking data loss on your actual PC.  There are several great options to choose from.
 
 <br>
+=== Install !VirtualBox ===
+Download link: https://www.virtualbox.org/wiki/Downloads
+
+For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  There is a setup guide for it located here.
+
+<br>
 === Install Virtual Machine Manager ===
 Download link: http://virt-manager.org/
 
 Linux only at this time.
-
-<br>
-=== Install !VirtualBox ===
-Download link: https://www.virtualbox.org/wiki/Downloads
-
-For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.
 
 <br>
 === Install VMWare ===
