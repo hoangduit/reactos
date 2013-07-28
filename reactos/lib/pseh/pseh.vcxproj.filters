@@ -34,12 +34,6 @@
     <None Include="i386\pseh3_i386.S">
       <Filter>i386</Filter>
     </None>
-    <None Include="i386\seh.s">
-      <Filter>i386</Filter>
-    </None>
-    <None Include="i386\seh_prolog.s">
-      <Filter>i386</Filter>
-    </None>
     <None Include="amd64\framebased.S">
       <Filter>amd64</Filter>
     </None>
@@ -71,5 +65,13 @@
     <ClInclude Include="i386\pseh3_asmdef.h">
       <Filter>i386</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="i386\seh.s">
+      <Filter>i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="i386\seh_prolog.s">
+      <Filter>i386</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
