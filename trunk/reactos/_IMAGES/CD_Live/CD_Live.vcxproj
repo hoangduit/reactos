@@ -61,6 +61,7 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
+copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -115,6 +116,7 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
+copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
