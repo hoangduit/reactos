@@ -1,6 +1,6 @@
 #summary Table of Contents used on other pages.
   * [Setup_Guide Setup Guide]
-    * [Setup_Guide#Overview Overview]
+    * - [Setup_Guide#Overview Overview]
     * [Setup_Guide#Install_Development_Tools Development Tools]
     * [Setup_Guide#Consult_ReactOS_JIRA Consult ReacOS JIRA]
     * [Setup_Guide#Pull_Source_Code_From_Repository Pull Source Code From Repository]
