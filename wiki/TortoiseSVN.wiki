@@ -33,6 +33,7 @@ https://reactos.googlecode.com/svn/wiki/SVN%20Sync%204%20-%20en.png
 
 To resolve the conflict, you must decide to use the online copy ("theirs") , or your own copy ("mine").  You can also compare the two, and even open your copy to make changes as needed.  These are your available options:<br>
 https://reactos.googlecode.com/svn/wiki/SVN%20Sync%205%20-%20en.png
+
 In this example, I chose to discard my copy and use "theirs".
 
 When finished dealing with conflicts, you will again have the green icon over your ReactOS source folder.
