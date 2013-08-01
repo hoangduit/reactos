@@ -1,4 +1,5 @@
 #summary VirtualBox setup guide
+#sidebar TableOfContents
 
 _See the [Development_Guide Development Guide] for installation instructions._
 
