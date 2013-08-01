@@ -1,7 +1,7 @@
 #summary VirtualBox setup guide
 #sidebar TableOfContents
 
-_See the [Setup_Guide Setup Guide] for installation instructions._
+_See the [Setup_Guide Setup Guide] for full setup instructions._
 
 <wiki:toc max_depth="5" />
 = Setting up !VirtualBox =
