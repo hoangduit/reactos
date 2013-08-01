@@ -27,13 +27,13 @@ The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (no
 
 <br>
   === 2.1 Install TortoiseSVN ===
-  Download link: http://tortoisesvn.net/downloads.html
+    Download link: http://tortoisesvn.net/downloads.html
 
-  Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
+    Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
 
-  TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
+    TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
 
-  See the [TortoiseSVN TortoiseSVN Guide].
+    See the [TortoiseSVN TortoiseSVN Guide].
 
 <br>
   == 3. Install a Virtual Machine ==
@@ -41,22 +41,22 @@ The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (no
 
 <br>
   === 3.1 Install !VirtualBox ===
-  Download link: https://www.virtualbox.org/wiki/Downloads
+    Download link: https://www.virtualbox.org/wiki/Downloads
 
-  For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Development_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
+    For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Development_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
 
 <br>
   == 4. Install Archiver/Data Compression utility ==
 
   === 4.1 Free ===
 
-  Link: http://www.7-zip.org/
+    Link: http://www.7-zip.org/
 
   === 4.2 Commercial ===
 
-  Link: http://www.rarlab.com/
+    Link: http://www.rarlab.com/
 
-  Link: http://www.winzip.com/
+    Link: http://www.winzip.com/
 
 <br>
   == 5. Install Dependency Walker ==
