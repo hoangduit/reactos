@@ -91,19 +91,19 @@ You can get the source code via command line or with the TortoiseSVN Browser.
   A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
   == 2. Source Code via TortoiseSVN Browser ==
-Open the TortoiseSVN Browser.  It's likely located at Start -> TortoiseSVN -> TortoiseSVN Repository Browser.  Navigate to {{{https://reactos.googlecode.com/svn}}}.  In the left-hand pane, right click on the URL and select Checkout.
+  Open the TortoiseSVN Browser.  It's likely located at Start -> TortoiseSVN -> TortoiseSVN Repository Browser.  Navigate to {{{https://reactos.googlecode.com/svn}}}.  In the left-hand pane, right click on the URL and select Checkout.
 
-https://reactos.googlecode.com/svn/wiki/SVN%20Browser%201%20-%20en.png
+  https://reactos.googlecode.com/svn/wiki/SVN%20Browser%201%20-%20en.png
 
-Set "Checkout directory" to the folder you'd like to put the Repository Source in.  Make sure that Checkout Depth is set to Fully Recursive.  Click on OK.
+  Set "Checkout directory" to the folder you'd like to put the Repository Source in.  Make sure that Checkout Depth is set to Fully Recursive.  Click on OK.
 
-https://reactos.googlecode.com/svn/wiki/SVN%20Browser%202%20-%20en.png
+  https://reactos.googlecode.com/svn/wiki/SVN%20Browser%202%20-%20en.png
 
-The Checkout process will begin.  This will take a while, so be patient.
+  The Checkout process will begin.  This will take a while, so be patient.
 
-https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
+  https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
 
-Once it's finished, you're ready to fire up Visual Studio!
+  Once it's finished, you're ready to fire up Visual Studio!
 
 = Load ReactOS.sln =
 Open up Visual Studio, and load a new project (*.sln* files are called called solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
