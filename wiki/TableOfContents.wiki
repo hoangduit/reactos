@@ -1,5 +1,6 @@
 #summary Table of Contents used on other pages.
 
   * [Setup_Guide Setup Guide]
+    * [Setup_Guide#Overview Overview]
   * [VirtualBox]
   * [TortoiseSVN]
