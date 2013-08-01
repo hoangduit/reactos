@@ -97,7 +97,7 @@ If you're not a member, or you'd like to download anonymously, you can get a rea
 The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
 = Load ReactOS.sln =
-Open up Visual Studio, and load a new project.  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
+Open up Visual Studio, and load a new project (*.sln* files are called called a solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
 
 If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".  Once that's done, hit F7 to build the Debug x86_32 version of ReactOS.sln (solution).  Expect this step to take a while to complete.
 
@@ -112,3 +112,4 @@ When it's done compiling, you'll find the *`ReactOS_CD_Live.ISO`* at:<br>
 = Save ReactOS.sln =
 = Push Source Code To Respository =
 = Update JIRA =
+= Known Errors =
