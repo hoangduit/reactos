@@ -111,7 +111,7 @@ Open up Visual Studio, and load a new project (*.sln* files are called called so
 If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".
 
 Screenshot<br>
-https://reactos.googlecode.com/svn/wiki/VS%20Setup%20-%20en.png
+https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 
 == Building the ReactOS Source ==
 Once you've got your Active Solution configured, all you have to do is hit F7 to build the Debug x86_32 version of ReactOS.sln (solution).  Expect this step to take a while to complete.  When it's done compiling, you'll find the *`ReactOS_CD_Live.ISO`* at:<br>
