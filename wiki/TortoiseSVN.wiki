@@ -13,7 +13,9 @@ Note the red icon on the folder.  This indicates that you have made changes to y
 https://reactos.googlecode.com/svn/wiki/SVN%20Sync%202%20-%20en.png
 
 ...
+
 *SECTION INCOMPLETE?*
+
 ...
 
 When finished, your ReactOS source folder will have a green icon over it, like this:<br>
