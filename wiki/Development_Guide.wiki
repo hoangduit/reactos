@@ -120,7 +120,7 @@ https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
 Once it's finished, you're ready to fire up Visual Studio!
 
 = Load ReactOS.sln =
-Open up Visual Studio, and load a new project (*.sln* files are called called a solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
+Open up Visual Studio, and load a new project (*.sln* files are called called solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
 
 If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".
 
