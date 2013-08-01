@@ -117,6 +117,8 @@ The Checkout process will begin.  This will take a while, so be patient.
 
 https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
 
+Once it's finished, you're ready to fire up Visual Studio!
+
 = Load ReactOS.sln =
 Open up Visual Studio, and load a new project (*.sln* files are called called a solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
 
