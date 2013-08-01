@@ -81,7 +81,10 @@ Download link: http://www.dependencywalker.com/
 Download link: http://winflashtool.sysprogs.com/
 
 <br>
-= Consult JIRA =
+= Consult ReactOS JIRA =
+
+JIRA is a bug tracking, issue tracking and project management software.
+
 URL: http://jira.reactos.org/
 
 <br>
