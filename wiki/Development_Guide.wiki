@@ -42,7 +42,7 @@ A Virtual Machine (VM) will let you test the compiled operating system without m
 === Install !VirtualBox ===
 Download link: https://www.virtualbox.org/wiki/Downloads
 
-For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've created your ISO, you'll load that into the virtual machine and boot it.
+For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Development_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
 
 <br>
 === Install Virtual Machine Manager ===
