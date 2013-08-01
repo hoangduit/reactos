@@ -11,74 +11,59 @@ Also, please note that building ReactOS with Visual Studio is still a work in pr
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
 <br>
-== 1. Install Visual Studio 2012 ==
-Download link: http://www.microsoft.com/visualstudio/eng/downloads
+  == 1. Install Visual Studio 2012 ==
+  Download link: http://www.microsoft.com/visualstudio/eng/downloads
 
-We support only MS Visual Studio 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Windows 8 users may want *(need?)* to install Visual Studio Express 2012 for Windows 8 instead.  Note that the Express version is free, and all 2012 versions require the Microsoft .NET 4.5 framework.  Visual Studio Express requires a free registration within 30 days of installation.
+  We support only MS Visual Studio 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Windows 8 users may want *(need?)* to install Visual Studio Express 2012 for Windows 8 instead.  Note that the Express version is free, and all 2012 versions require the Microsoft .NET 4.5 framework.  Visual Studio Express requires a free registration within 30 days of installation.
 
-There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as the update is about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
-
-<br>
-== 2. Install SVN Client ==
-An SVN (Apache Subversion) client will allow you to access the source of ReactOS.
-
-An SVN, client (named after the command name _svn_) is a versioning and revision control system that allows developers to control the changes made to the source code. If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend and use TortoiseSVN, and this guide will assume it's the client you've installed. You can use another SVN client, but you'll need to configure it yourself.
+  There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as the update is about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
 
 <br>
-=== Install TortoiseSVN ===
-Download link: http://tortoisesvn.net/downloads.html
+  == 2. Install SVN Client ==
+  An SVN (Apache Subversion) client will allow you to access the source of ReactOS.
 
-Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
-
-TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
-
-See the [TortoiseSVN TortoiseSVN Guide].
+  An SVN, client (named after the command name _svn_) is a versioning and revision control system that allows developers to control the changes made to the source code. If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend and use TortoiseSVN, and this guide will assume it's the client you've installed. You can use another SVN client, but you'll need to configure it yourself.
 
 <br>
-== 3. Install a Virtual Machine ==
-A Virtual Machine (VM) will let you test the compiled operating system without modifying or risking data loss on your actual PC.  There are several great options to choose from.
+  === 2.1 Install TortoiseSVN ===
+  Download link: http://tortoisesvn.net/downloads.html
+
+  Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
+
+  TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
+
+  See the [TortoiseSVN TortoiseSVN Guide].
 
 <br>
-=== Install !VirtualBox ===
-Download link: https://www.virtualbox.org/wiki/Downloads
-
-For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Development_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
+  == 3. Install a Virtual Machine ==
+  A Virtual Machine (VM) will let you test the compiled operating system without modifying or risking data loss on your actual PC.  There are several great options to choose from.  We recommend !VirtualBox.
 
 <br>
-=== Install Virtual Machine Manager ===
-Download link: http://virt-manager.org/
+  === 3.1 Install !VirtualBox ===
+  Download link: https://www.virtualbox.org/wiki/Downloads
 
-Linux only at this time.
-
-<br>
-=== Install VMWare ===
-Download Link: ???
+  For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Development_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
 
 <br>
-=== Install QEMU ===
-Link: http://wiki.qemu.org/Download
+  == 4. Install Archiver/Data Compression utility ==
+
+  === 4.1 Free ===
+
+  Link: http://www.7-zip.org/
+
+  === 4.2 Commercial ===
+
+  Link: http://www.rarlab.com/
+
+  Link: http://www.winzip.com/
 
 <br>
-== 4. Install Archiver/Data Compression utility ==
-
-*Free*
-
-Link: http://www.7-zip.org/
-
-*Commercial*
-
-Link: http://www.rarlab.com/
-
-Link: http://www.winzip.com/
-
+  == 5. Install Dependency Walker ==
+  Download link: http://www.dependencywalker.com/
 
 <br>
-== 5. Install Dependency Walker ==
-Download link: http://www.dependencywalker.com/
-
-<br>
-== 6. Install !WinFlashTool ==
-Download link: http://winflashtool.sysprogs.com/
+  == 6. Install !WinFlashTool ==
+  Download link: http://winflashtool.sysprogs.com/
 
 <br>
 = Consult ReactOS JIRA =
@@ -91,20 +76,20 @@ URL: http://jira.reactos.org/
 = Pull Source Code From Repository =
 You can get the source code via command line or with the TortoiseSVN Browser.
 
-== Source Code via Command Line ==
-_(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
+  == 1. Source Code via Command Line ==
+  _(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
 
-Open up a Command Prompt and navigate to where you'd like to put the source code.
+  Open up a Command Prompt and navigate to where you'd like to put the source code.
 
-If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
+  If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
 {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
 
-If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
-{{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
+  If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
+  {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
 
-A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
+  A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
-== Source Code via TortoiseSVN Browser ==
+  == 2. Source Code via TortoiseSVN Browser ==
 Open the TortoiseSVN Browser.  It's likely located at Start -> TortoiseSVN -> TortoiseSVN Repository Browser.  Navigate to {{{https://reactos.googlecode.com/svn}}}.  In the left-hand pane, right click on the URL and select Checkout.
 
 https://reactos.googlecode.com/svn/wiki/SVN%20Browser%201%20-%20en.png
