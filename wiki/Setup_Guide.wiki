@@ -83,7 +83,7 @@ You can get the source code via command line or with the TortoiseSVN Browser.
   Open up a Command Prompt and navigate to where you'd like to put the source code.
 
   If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
-{{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
+  {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
 
   If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
   {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
