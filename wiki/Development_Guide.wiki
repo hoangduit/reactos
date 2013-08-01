@@ -30,7 +30,7 @@ Download link: http://tortoisesvn.net/downloads.html
 
 Make sure to download the right architecture (x86 or x64) for your system.  Windows XP users may need to update MSI installer (TortoiseSVN has a link).  Also note that TortoiseSVN comes with only language.  Additional language packs are available for download as well.
 
-When installing TortoiseSVN, make sure to install everything including the command line utilities.
+TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
 
 See the [TortoiseSVN TortoiseSVN Guide].
 
@@ -89,7 +89,12 @@ URL: http://jira.reactos.org/
 
 <br>
 = Pull Source Code From Repository =
-As long as your SVN client supports command line access, you're fine.  Open up command prompt and navigate to where you'd like to put the source code.
+You can get the source code via command line or with the TortoiseSVN Browser.
+
+== Source Code via Command Line ==
+_(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
+
+Open up a Command Prompt and navigate to where you'd like to put the source code.
 
 If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
 {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
@@ -97,7 +102,20 @@ If you're a member and you'd like commit access, use the following command (repl
 If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
 {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
 
-The most recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
+A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
+
+== Source Code via TortoiseSVN Browser ==
+Open the TortoiseSVN Browser.  It's likely located at Start -> TortoiseSVN -> TortoiseSVN Repository Browser.  Navigate to {{{https://reactos.googlecode.com/svn}}}.  In the left-hand pane, right click on the URL and select Checkout.
+
+https://reactos.googlecode.com/svn/wiki/SVN%20Browser%201%20-%20en.png
+
+Set "Checkout directory" to the folder you'd like to put the Repository Source in.  Make sure that Checkout Depth is set to Fully Recursive.  Click on OK.
+
+https://reactos.googlecode.com/svn/wiki/SVN%20Browser%202%20-%20en.png
+
+The Checkout process will begin.  This will take a while, so be patient.
+
+https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
 
 = Load ReactOS.sln =
 Open up Visual Studio, and load a new project (*.sln* files are called called a solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
