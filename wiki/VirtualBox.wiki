@@ -7,7 +7,7 @@ _See the [Development_Guide Development Guide] for installation instructions._
 This guide is for setting up !VirtualBox to use with the .ISO file compiled using Visual Studio 2012.  To start, open !VirtualBox.  Click on the blue New icon at the top and name your new virtual machine.  It can be whatever you want - I chose "VS2012 Build".<br>
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%201%20-%20en.png
 
-What good is a virtual machine with no storage?  Choose "create a virtual hard drive now" and click Create.<br>
+After that, select the amount of RAM you want your virtual machine to have.  ReactOS doesn't need much at all, so 256MB or 512MB should be more than enough.  What good is a virtual machine with no storage?  Choose "create a virtual hard drive now" and click Create.<br>
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%202%20-%20en.png
 
 A virtual hard disk is simply a file on your hard drive that will act like a hard disk for your virtual machine.  There are several virtual hard disk formats to choose from (VDI, VMDK, VHD, HDD, QED, and QCOW).  It's okay if you don't know what they are - it really doesn't matter.  If you have Windows 7, you may want to try the .VHD format because Windows 7 can mount it as a hard drive and let you interact with it directly (useful for copying files to & from the virtual machine).
