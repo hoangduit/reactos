@@ -20,7 +20,9 @@ There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http:
 
 <br>
 == 2. Install SVN Client ==
-An SVN (Apache Subversion) client will allow you to access the source of ReactOS.  If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend TortoiseSVN, and this guide will assume that's the client you've chosen.  You can use another SVN client, but you'll need to configure it yourself.
+An SVN (Apache Subversion) client will allow you to access the source of ReactOS.
+
+An SVN, client (named after the command name _svn_) is a versioning and revision control system that allows developers to control the changes made to the source code. If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend and use TortoiseSVN, and this guide will assume it's the client you've installed. You can use another SVN client, but you'll need to configure it yourself.
 
 <br>
 === Install TortoiseSVN ===
