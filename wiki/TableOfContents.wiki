@@ -17,3 +17,6 @@
     * - [VirtualBox#Testing_your_Virtual_Machine Testing your Virtual Machine]
     * - [VirtualBox#Debug_Logs Debug Logs]
   * [TortoiseSVN]
+    * - [TortoiseSVN#SVN_Commits SVN Commits]
+    * - [TortoiseSVN#SVN_Update SVN Update]
+    * - [TortoiseSVN#Resolving_Conflicts Resolving Conflicts]
