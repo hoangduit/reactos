@@ -12,4 +12,8 @@
     * - [Setup_Guide#Update_JIRA Update JIRA]
     * - [Setup_Guide#Known_Errors Known Errors]
   * [VirtualBox]
+    * - [VirtualBox#Setting_up_VirtualBox Setting up VirtualBox]
+    * - [VirtualBox#Adding_the_ReactOS_ISO Adding the ReactOS ISO]
+    * - [VirtualBox#Testing_your_Virtual_Machine Testing your Virtual Machine]
+    * - [VirtualBox#Debug_Logs Debug Logs]
   * [TortoiseSVN]
