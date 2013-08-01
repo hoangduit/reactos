@@ -1,4 +1,5 @@
 #summary Brief user's guide for TortoiseSVN
+#sidebar TableOfContents
 
 _See the [Development_Guide#Install_TortoiseSVN Development Guide] for the installation & setup of TortoiseSVN._
 
