@@ -1,7 +1,7 @@
 #summary VirtualBox setup guide
 #sidebar TableOfContents
 
-_See the [Development_Guide Development Guide] for installation instructions._
+_See the [Setup_Guide Setup Guide] for installation instructions._
 
 <wiki:toc max_depth="5" />
 = Setting up !VirtualBox =
@@ -19,7 +19,7 @@ https://reactos.googlecode.com/svn/wiki/VBox%20Setup%203%20-%20en.png
 Next, name your virtual hard drive.  It doesn't matter what you call it.  The one in this example is called "VS2012 Build".  Now choose a size for the hard disk.  If you chose a Fixed Size drive, you'll likely want a smaller drive (1GB is plenty).  If you chose Dynamically Allocated, then the default size is fine since it won't be taking up that much space anyway.  Press Create.
 
 = Adding the ReactOS ISO =
-If you haven't yet created the ReactOS ISO, go back to wherever you left off in the [Development_Guide Development Guide] and finish the process.  Once you've got your ISO, open up !VirtualBox again.
+If you haven't yet created the ReactOS ISO, go back to wherever you left off in the [Setup_Guide Setup Guide] and finish the process.  Once you've got your ISO, open up !VirtualBox again.
 
 Now click the yellow gear button at the top, Settings.  Go to Storage and then choose "Empty" (your virtual machine's CD drive).  Click the disc icon on the far right to access the drop-down menu, and select "Choose a virtual CD/DVD disk file..."  Choose the .ISO file you built with VS2012.  This puts the ReactOS Boot Disc into the virtual machine.  Press OK.<br>
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%204%20-%20en.png
