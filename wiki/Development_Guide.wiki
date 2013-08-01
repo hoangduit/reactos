@@ -36,7 +36,7 @@ See the [TortoiseSVN TortoiseSVN Guide].
 
 <br>
 == 3. Install a Virtual Machine ==
-A Virtual Machine will let you test the compiled operating system without risking data loss on your actual PC.  There are several great options to choose from.
+A Virtual Machine (VM) will let you test the compiled operating system without modifying or risking data loss on your actual PC.  There are several great options to choose from.
 
 <br>
 === Install !VirtualBox ===
@@ -56,15 +56,21 @@ Download Link: ???
 
 <br>
 === Install QEMU ===
-Download Link: http://wiki.qemu.org/Download
+Link: http://wiki.qemu.org/Download
 
 <br>
-== 4. Install WinRAR ==
-WinRAR?  What's this for?  Why not the FOSS alternative, 7-Zip?
+== 4. Install Archiver/Data Compression utility ==
 
-Download Link: http://www.rarlab.com/
+*Free*
 
-Download Link: http://www.7-zip.org/
+Link: http://www.7-zip.org/
+
+*Commercial*
+
+Link: http://www.rarlab.com/
+
+Link: http://www.winzip.com/
+
 
 <br>
 == 5. Install Dependency Walker ==
