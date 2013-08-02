@@ -1,7 +1,0 @@
-#summary Brief user's guide for TortoiseSVN
-#sidebar TableOfContents
-
-_See the [Setup_Guide#Install_TortoiseSVN Setup Guide] for the installation & setup of TortoiseSVN._
-
-<wiki:toc max_depth="5" />
-
