@@ -34,7 +34,7 @@ The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (no
 
   TortoiseSVN does not install command line utilities by default, but this option can be selected during install.  Having the command line utilities installed is optional.
 
-  = SVN Commits =
+  ==== SVN Commits ====
 If you have made changes to the ReactOS source and you want to send those changes upstream to the ReactOS SVN repository, then you want to make a _commit_.  Note that commits made here only affect this database; you are not directly submitting commits to the official ReactOS trunk located at http://www.ReactOS.org/.
 
 To submit a commit, it is best to not have Visual Studio running.  Navigate Windows Explorer to your ReactOS source folder.  It will look something like this:<br>
@@ -52,7 +52,7 @@ https://reactos.googlecode.com/svn/wiki/SVN%20Sync%202%20-%20en.png
 When finished, your ReactOS source folder will have a green icon over it, like this:<br>
 https://reactos.googlecode.com/svn/wiki/SVN%20Sync%206%20-%20en.png
 
-= SVN Update =
+==== SVN Update ====
 This is the opposite making a commit.  If your source is outdated, or if you want to discard all changes you have made to your copy of the source, then you want to perform an SVN Update.  *Do not redownload the entire source.*  That is a waste of time and bandwidth. Navigate to your ReactOS source and right-click it.  Select "SVN Update" as in this screenshot:<br>
 https://reactos.googlecode.com/svn/wiki/SVN%20Sync%202%20-%20en.png
 
@@ -61,7 +61,7 @@ https://reactos.googlecode.com/svn/wiki/SVN%20Sync%203%20-%20en.png
 
 When finished, your ReactOS source will again have the green "no changes have been made" icon over it.
 
-= Resolving Conflicts =
+==== Resolving Conflicts ====
 Sometimes you will try to update or commit a file that has been changed online and changed by you.  This results in a conflict, which looks like this:<br>
 https://reactos.googlecode.com/svn/wiki/SVN%20Sync%204%20-%20en.png
 
@@ -83,7 +83,7 @@ When finished dealing with conflicts, you will again have the green icon over yo
 
   For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Setup_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
 
-= Setting up !VirtualBox =
+==== Setting up !VirtualBox ====
 This guide is for setting up !VirtualBox to use with the .ISO file compiled using Visual Studio 2012.  To start, open !VirtualBox.  Click on the blue New icon at the top and name your new virtual machine.  It can be whatever you want - I chose "VS2012 Build".<br>
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%201%20-%20en.png
 
@@ -97,16 +97,16 @@ https://reactos.googlecode.com/svn/wiki/VBox%20Setup%203%20-%20en.png
 
 Next, name your virtual hard drive.  It doesn't matter what you call it.  The one in this example is called "VS2012 Build".  Now choose a size for the hard disk.  If you chose a Fixed Size drive, you'll likely want a smaller drive (1GB is plenty).  If you chose Dynamically Allocated, then the default size is fine since it won't be taking up that much space anyway.  Press Create.
 
-= Adding the ReactOS ISO =
+==== Adding the ReactOS ISO ====
 If you haven't yet created the ReactOS ISO, go back to wherever you left off in the [Setup_Guide Setup Guide] and finish the process.  Once you've got your ISO, open up !VirtualBox again.
 
 Now click the yellow gear button at the top, Settings.  Go to Storage and then choose "Empty" (your virtual machine's CD drive).  Click the disc icon on the far right to access the drop-down menu, and select "Choose a virtual CD/DVD disk file..."  Choose the .ISO file you built with VS2012.  This puts the ReactOS Boot Disc into the virtual machine.  Press OK.<br>
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%204%20-%20en.png
 
-= Testing your Virtual Machine =
+==== Testing your Virtual Machine ====
 You're all done with setup!  Select your virtual machine from the list, and click on the green arrow icon, Start.  Your virtual machine will begin to boot.
 
-= Debug Logs =
+==== Debug Logs ====
 When things don't work according to plan, it's time to debug your code.  *Blah, blah, blah finish this later - PuTTY config for debug logs*
 
 
