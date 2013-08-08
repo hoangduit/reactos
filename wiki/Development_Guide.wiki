@@ -160,10 +160,6 @@ If you want to perform a test of compiling ReactOS, there's a couple changes you
 
 https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 
-== Building the ReactOS Source ==
-Once you've got your Active Solution configured, all you have to do is hit F7 to build the Debug x86_32 version of ReactOS.sln (solution).  Expect this step to take a while to complete.  When it's done compiling, you'll find the *`ReactOS_CD_Live.ISO`* at:<br>
-*`reactos\reactos\_IMAGES\CD_Live\build\x86_32\Debug\ReactOS_CD_Live.ISO`*
-
 = Create Visual Studio Projects =
 == Create Basic Project ==
 == Edit Basic Project ==
@@ -196,6 +192,9 @@ Once you've got your Active Solution configured, all you have to do is hit F7 to
 === Build A Single Project ===
 === Build A Group Of Projects ===
 === Build A ReactOS Image ===
+== Building the ReactOS Source ==
+Once you've got your Active Solution configured, all you have to do is hit F7 to build the Debug x86_32 version of ReactOS.sln (solution).  Expect this step to take a while to complete.  When it's done compiling, you'll find the *`ReactOS_CD_Live.ISO`* at:<br>
+*`reactos\reactos\_IMAGES\CD_Live\build\x86_32\Debug\ReactOS_CD_Live.ISO`*
 === Build Everything ===
 === Clean ===
 === Rebuild ===
