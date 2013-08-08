@@ -2,7 +2,7 @@
   * [Development_Guide Development Guide]
     * - [Development_Guide#Overview Overview]
     * - [Development_Guide#Install_Development_Tools Install Development Tools]
-    * - [Development_Guide#Consult_ReactOS_JIRA Consult ReactOS JIRA]
+    * - [Development_Guide#Consult_JIRA Consult JIRA]
     * - [Development_Guide#Pull_Source_Code_From_Repository Pull Source Code From Repository]
     * - [Development_Guide#Load_ReactOS.sln Load ReactOS.sln]
     * - [Development_Guide#Create_Visual_Studio_Projects Create Visual Studio Projects]
