@@ -100,7 +100,7 @@ When things don't work according to plan, it's time to debug your code.  *Blah, 
   Download link: http://winflashtool.sysprogs.com/
 
 <br>
-= Consult ReactOS JIRA =
+= Consult JIRA =
 
 JIRA is a bug tracking, issue tracking and project management software.
 
