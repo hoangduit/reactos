@@ -165,7 +165,46 @@ Once you've got your Active Solution configured, all you have to do is hit F7 to
 *`reactos\reactos\_IMAGES\CD_Live\build\x86_32\Debug\ReactOS_CD_Live.ISO`*
 
 = Create Visual Studio Projects =
+== Create Basic Project ==
+== Edit Basic Project ==
+== Create Project For A Command-Line Tool ==
+== Create Project For Message Codes ==
+== Create Project For ks386.inc ==
+== Create Project For Boot Sector Image ==
+== Create Project For Free Loader ==
+== Create Project For An Import Library ==
+== Create Project For NTOSKRNL.EXE ==
+== Create Project For HAL.DLL ==
+== Create Project For KDCOM.DLL ==
+== Create Project For BootVid.DLL ==
+== Create Project For Registry Hives ==
+== Create Project For A Kernel-Mode Driver ==
+== Create Project For A User-Mode DLL ==
+== Create Project For A User-Mode EXE ==
+== Create Project To Generate CD ==
+== Create Project To Generate SD Card ==
 = Develop =
+== Edit ==
+=== Edit C/C++ Code ===
+=== Edit Language Files ===
+=== Edit Project Properties ===
+== Build ==
+=== Build According to Debug or Release ===
+=== Build According to CPU ===
+=== Build A Single File ===
+=== Build A Group Of Files ===
+=== Build A Single Project ===
+=== Build A Group Of Projects ===
+=== Build A ReactOS Image ===
+=== Build Everything ===
+=== Clean ===
+=== Rebuild ===
+== Deploy ==
+=== Deploy CD ===
+=== Deploy SD Card ===
+== Debug ==
+=== Debug User-Mode Executable ===
+=== Debug Kernel-Mode Executable ===
 = Save ReactOS.sln =
 = Push Source Code To Respository =
   == SVN Commits ==
