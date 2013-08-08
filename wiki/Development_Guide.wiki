@@ -1,4 +1,4 @@
-#summary The Official setup guide for ReactOS contributors using Visual Studio.
+#summary Development guide for ReactOS contributors using Visual Studio.
 #sidebar TableOfContents
 <wiki:toc max_depth="5" />
 
