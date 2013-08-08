@@ -9,7 +9,7 @@
     * - [Development_Guide#Develop Develop]
     * - [Development_Guide#Save_ReactOS.sln Save ReactOS.sln]
     * - [Development_Guide#Push_Source_Code_To_Respository Push Source Code To Repository]
-    * - [Development_Guide#Update_JIRA Update ReactOS JIRA]
+    * - [Development_Guide#Update_JIRA Update JIRA]
     * - [Development_Guide#Known_Errors Known Errors]
   * [RaspberryPi ReactoOS on Raspberry Pi]
   * [BeagleBone ReactoOS on BeagleBone]
