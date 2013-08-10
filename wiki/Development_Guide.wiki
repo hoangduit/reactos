@@ -87,6 +87,11 @@ You're all done with setup!  Select your virtual machine from the list, and clic
   == 6. Install !WinFlashTool ==
   Download link: http://winflashtool.sysprogs.com/
 
+== Install Remote Debuggers ==
+=== Install Microsoft Visual Studio 2012 Remote Debugger ===
+=== Install Remote Tools for Visual Studio 2012 Update 1 ===
+=== Install VisualDDK ===
+
 <br>
 = Consult JIRA =
 
