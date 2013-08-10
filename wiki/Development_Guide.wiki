@@ -168,7 +168,6 @@ https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 == Edit ==
 === Edit C/C++ Code ===
 === Edit Language Files ===
-=== Edit Project Properties ===
 == Build ==
 === Build According to Debug or Release ===
 === Build According to CPU ===
