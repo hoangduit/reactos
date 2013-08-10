@@ -243,9 +243,33 @@ ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
     <None Include="math\i386\floor_asm.s" />
     <None Include="math\i386\fmodf_asm.s" />
     <None Include="math\i386\fmod_asm.s" />
-    <None Include="math\i386\ftol2_asm.s" />
+	<CustomBuild Include="math\i386\ftol2_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
+
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
+
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+	</CustomBuild>
     <None Include="math\i386\ftol_asm.s" />
-    <None Include="math\i386\log10_asm.s" />
+	<CustomBuild Include="math\i386\log10_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
+
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
+
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+	</CustomBuild>
     <None Include="math\i386\log_asm.s" />
     <None Include="math\i386\pow_asm.s" />
     <None Include="math\i386\sin_asm.s" />
@@ -791,7 +815,10 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="string\mbstowcs_s.c" />
     <ClCompile Include="string\scanf.c" />
     <ClCompile Include="string\strcat.c" />
-    <ClCompile Include="string\strchr.c" />
+    <ClCompile Include="string\strchr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strcmp.c" />
     <ClCompile Include="string\strcoll.c" />
     <ClCompile Include="string\strcpy.c" />
@@ -906,14 +933,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="time\wutime.c" />
     <ClCompile Include="time\wutime32.c" />
     <ClCompile Include="time\wutime64.c" />
-    <ClCompile Include="wine\heap.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="wine\undname.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="wine\heap.c" />
+    <ClCompile Include="wine\undname.c" />
     <ClCompile Include="wstring\wcscoll.c" />
     <ClCompile Include="wstring\wcscspn.c" />
     <ClCompile Include="wstring\wcsicmp.c" />
@@ -985,6 +1006,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\crt;..\..\..\include\psdk;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;.\include;..\..\..\include\reactos\libs;.\include\internal\mingw-w64</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -1006,6 +1029,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\crt;..\..\..\include\psdk;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;.\include;..\..\..\include\reactos\libs;.\include\internal\mingw-w64</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
