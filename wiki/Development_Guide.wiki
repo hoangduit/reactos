@@ -42,6 +42,8 @@ The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (no
   == 3. Install a Virtual Machine ==
   A Virtual Machine (VM) will let you test the compiled operating system without modifying or risking data loss on your actual PC.  There are several great options to choose from.  We recommend !VirtualBox.
 
+No matter which virtual machine software you decide to use, there is one concept to keep in mind when configuring a virtual machine. A virtual machine really is that - a generally-configurable machine, and not simply a full computer that happens to have a blank hard disk. In other words, a virtual machine is a motherboard that must be populated with other hardware components that you select. This subtle difference in perception, computer-with-blank-hard disk versus mother-board-that-can-be-populated-hardware-components, will assist you in configuring your virtual machine. For example, just as with a real computer, a virtual machine allows you to add virtual mass-storage hardware controllers, such as IDE or SATA interfaces, to which you might attach virtual hard disks or CD-ROM drives, after which might you leave a CD "inserted" into the virtual CD-ROM drive.
+
 <br>
   === 3.1 Install !VirtualBox ===
   Download link: https://www.virtualbox.org/wiki/Downloads
