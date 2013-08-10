@@ -138,18 +138,9 @@ When finished, your ReactOS source will again have the green "no changes have be
 
   Once it's finished, you're ready to fire up Visual Studio!
 
-= Load ReactOS.sln =
-Open up Visual Studio, and load a new project (*.sln* files are called called solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
+== Special Files That Are Pulled ==
 
-If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".
-
-https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
-
-= Create Visual Studio Projects =
-
-== Manually-Created Source Files ==
-
-Ideally, we would be able to abstain from perturbing the official ReactOS file hierarchy to achieve an OS build, augmenting the hierarchy with one *`.sln`* file and many *`.vcxproj`* files. Unfortunately, total abstention is not possible because at least two *`.h`* files are generated at compile-time by *`cmake`*, and as stated previously, one of the primary reasons for creating our break-away project was to eliminate any dependency on *`cmake`*. To solve this dilemma, we simply copy, manually, *`cmake`*-generated header files to the locations where the *`.c`* files expect them to be. These files are as follows:
+Ideally, we would be able to abstain from perturbing the official ReactOS file hierarchy to achieve an OS build, augmenting the hierarchy with one *`.sln`* file and many *`.vcxproj`* files. Unfortunately, total abstention is not possible because at least two *`.h`* files are generated at compile-time by *`cmake`*, and as stated previously, one of the primary reasons for creating our break-away project was to eliminate any dependency on *`cmake`*. To solve this dilemma, we simply copy, manually, *`cmake`*-generated header files to the locations where the *`.c`* files expect them to be, in our version of the ReactOS repository here at Google Code. Then, when the repository is pulled using SVN, these files will be included in the download. These files are as follows:
 
 === buildno.h ===
 
@@ -288,6 +279,16 @@ As can be seen by the following actual *`version.h`* that we use, it simply cont
 
 /* EOF */
 }}}
+
+= Load ReactOS.sln =
+Open up Visual Studio, and load a new project (*.sln* files are called called solution files).  Navigate to the folder you put the source code in.  Navigate further to reactos\reactos\reactos.sln and open it.  This is an operating system, remember, so expect this to take a couple minutes.  Once it's done, you're ready to make some changes!
+
+If you want to perform a test of compiling ReactOS, there's a couple changes you need to make.  Go to Build -> Configuration Manager.  Make sure that Active solution configuration is set to "Debug" and the Active solution platform to "x86_32".
+
+https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
+
+= Create Visual Studio Projects =
+
 
 == Create Basic Project ==
 == Edit Basic Project ==
