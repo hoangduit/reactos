@@ -62,12 +62,6 @@ https://reactos.googlecode.com/svn/wiki/VBox%20Setup%203%20-%20en.png
 
 Next, name your virtual hard drive.  It doesn't matter what you call it.  The one in this example is called "VS2012 Build".  Now choose a size for the hard disk.  If you chose a Fixed Size drive, you'll likely want a smaller drive (1GB is plenty).  If you chose Dynamically Allocated, then the default size is fine since it won't be taking up that much space anyway.  Press Create.
 
-==== Adding the ReactOS ISO ====
-If you haven't yet created the ReactOS ISO, go back to wherever you left off in the [Setup_Guide Setup Guide] and finish the process.  Once you've got your ISO, open up !VirtualBox again.
-
-Now click the yellow gear button at the top, Settings.  Go to Storage and then choose "Empty" (your virtual machine's CD drive).  Click the disc icon on the far right to access the drop-down menu, and select "Choose a virtual CD/DVD disk file..."  Choose the .ISO file you built with VS2012.  This puts the ReactOS Boot Disc into the virtual machine.  Press OK.<br>
-https://reactos.googlecode.com/svn/wiki/VBox%20Setup%204%20-%20en.png
-
 ==== Testing your Virtual Machine ====
 You're all done with setup!  Select your virtual machine from the list, and click on the green arrow icon, Start.  Your virtual machine will begin to boot.
 
@@ -200,6 +194,10 @@ Once you've got your Active Solution configured, all you have to do is hit F7 to
 === Rebuild ===
 == Deploy ==
 === Deploy CD ===
+If you haven't yet created the ReactOS ISO, go back to wherever you left off in the [Setup_Guide Setup Guide] and finish the process.  Once you've got your ISO, open up !VirtualBox again.
+
+Now click the yellow gear button at the top, Settings.  Go to Storage and then choose "Empty" (your virtual machine's CD drive).  Click the disc icon on the far right to access the drop-down menu, and select "Choose a virtual CD/DVD disk file..."  Choose the .ISO file you built with VS2012.  This puts the ReactOS Boot Disc into the virtual machine.  Press OK.<br>
+https://reactos.googlecode.com/svn/wiki/VBox%20Setup%204%20-%20en.png
 === Deploy SD Card ===
 == Debug ==
 === Debug User-Mode Executable ===
