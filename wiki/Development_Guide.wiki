@@ -65,14 +65,6 @@ Next, name your virtual hard drive.  It doesn't matter what you call it.  The on
 ==== Testing your Virtual Machine ====
 You're all done with setup!  Select your virtual machine from the list, and click on the green arrow icon, Start.  Your virtual machine will begin to boot.
 
-==== Debug Logs ====
-When things don't work according to plan, it's time to debug your code.  *Blah, blah, blah finish this later - PuTTY config for debug logs*
-
-
-  Currently, ReactOS built with Visual Studio doesn't yet boot.  This is a screenshot of the BSOD that occurs once it's booted as far as it can:<br>
-  https://reactos.googlecode.com/svn/wiki/Good%20BSOD.png
-
-<br>
   == 4. Install Archiver/Data Compression utility ==
 
   === 4.1 Free ===
@@ -200,6 +192,10 @@ Now click the yellow gear button at the top, Settings.  Go to Storage and then c
 https://reactos.googlecode.com/svn/wiki/VBox%20Setup%204%20-%20en.png
 === Deploy SD Card ===
 == Debug ==
+When things don't work according to plan, it's time to debug your code.  *Blah, blah, blah finish this later - PuTTY config for debug logs*
+
+Currently, ReactOS built with Visual Studio doesn't yet boot.  This is a screenshot of the BSOD that occurs once it's booted as far as it can:<br>
+  https://reactos.googlecode.com/svn/wiki/Good%20BSOD.png
 === Debug User-Mode Executable ===
 === Debug Kernel-Mode Executable ===
 = Save ReactOS.sln =
