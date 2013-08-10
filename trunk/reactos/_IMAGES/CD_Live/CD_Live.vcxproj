@@ -61,6 +61,7 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -116,6 +117,7 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -135,6 +137,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\msvcrt\msvcrt.vcxproj">
+      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\bootvid\bootvid.vcxproj">
       <Project>{39162ac2-e17b-4301-b1cb-19ebcd13b22b}</Project>
