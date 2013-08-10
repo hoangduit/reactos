@@ -11,22 +11,20 @@ Also, please note that building ReactOS with Visual Studio is still a work in pr
 = Install Development Tools =
 The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (not mandatory _per se_, but HIGHLY recommended), and a couple other utilities.
 
-<br>
-  == 1. Install Visual Studio 2012 ==
+== Install Visual Studio 2012 ==
   Download link: http://www.microsoft.com/visualstudio/eng/downloads
 
   We support only MS Visual Studio 2012.  Other versions have not been tested and are not expected to work.  MS Visual Studio 2012 can be found at http://www.microsoft.com/visualstudio/eng/downloads.  Windows 8 users may want *(need?)* to install Visual Studio Express 2012 for Windows 8 instead.  Note that the Express version is free, and all 2012 versions require the Microsoft .NET 4.5 framework.  Visual Studio Express requires a free registration within 30 days of installation.
 
   There is a flaw in VS2012 related to .NET 4.5, and the fix can be found at http://www.microsoft.com/en-us/download/details.aspx?id=36020.  On first run, let VS2012 update itself with Update 3.  It's a shame that isn't included in the initial download as the update is about 2GB when installed.  Get comfortable or go do something else while this is happening.  You may want to run Windows Update after installation to ensure all related components are up to date.
 
-<br>
-  == 2. Install SVN Client ==
-  An SVN (Apache Subversion) client will allow you to access the source of ReactOS.
+== Install SVN Client ==
 
-  An SVN, client (named after the command name _svn_) is a versioning and revision control system that allows developers to control the changes made to the source code. If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend and use TortoiseSVN, and this guide will assume it's the client you've installed. You can use another SVN client, but you'll need to configure it yourself.
+An SVN (Apache Subversion) client will allow you to access the source of ReactOS.
 
-<br>
-  === 2.1 Install TortoiseSVN ===
+An SVN, client (named after the command name _svn_) is a versioning and revision control system that allows developers to control the changes made to the source code. If you have commit access, then you can commit your changes back to the ReactOS SVN repository.  We recommend and use TortoiseSVN, and this guide will assume it's the client you've installed. You can use another SVN client, but you'll need to configure it yourself.
+
+=== Install TortoiseSVN ===
 
   Download link: http://tortoisesvn.net/downloads.html
   
@@ -38,15 +36,15 @@ The tools you'll need are MS Visual Studio, an SVN Client, a Virtual Machine (no
 
 *SECTION INCOMPLETE?*
 
-<br>
-  == 3. Install a Virtual Machine ==
+== Install a Virtual Machine ==
+
   A Virtual Machine (VM) will let you test the compiled operating system without modifying or risking data loss on your actual PC.  There are several great options to choose from.  We recommend !VirtualBox.
 
 No matter which virtual machine software you decide to use, there is one concept to keep in mind when configuring a virtual machine. A virtual machine really is that - a generally-configurable machine, and not simply a full computer that happens to have a blank hard disk. In other words, a virtual machine is a motherboard that must be populated with other hardware components that you select. This subtle difference in perception, computer-with-blank-hard disk versus mother-board-that-can-be-populated-hardware-components, will assist you in configuring your virtual machine. For example, just as with a real computer, a virtual machine allows you to add virtual mass-storage hardware controllers, such as IDE or SATA interfaces, to which you might attach virtual hard disks or CD-ROM drives, after which might you leave a CD "inserted" into the virtual CD-ROM drive.
 
-<br>
-  === 3.1 Install !VirtualBox ===
-  Download link: https://www.virtualbox.org/wiki/Downloads
+=== Install !VirtualBox ===
+
+Download link: https://www.virtualbox.org/wiki/Downloads
 
   For Windows, Linux, OS X, and Solaris.  A full-featured and easy-to-use virtual machine.  This is the recommended virtual machine to use.  The [VirtualBox VirtualBox Setup Guide] has much more detailed setup information, but ultimately you'll be creating a virtual machine on your computer with 256 MB or 512 MB of RAM and a decent hard disk.  After you've [Setup_Guide#Building_the_ReactOS_Source created your ISO], you'll load that into the virtual machine and boot it.
 
@@ -67,24 +65,22 @@ Next, name your virtual hard drive.  It doesn't matter what you call it.  The on
 ==== Testing your Virtual Machine ====
 You're all done with setup!  Select your virtual machine from the list, and click on the green arrow icon, Start.  Your virtual machine will begin to boot.
 
-  == 4. Install Archiver/Data Compression utility ==
+== Install Archiver/Data Compression utility ==
 
-  === 4.1 Free ===
+=== Free ===
 
-  Link: http://www.7-zip.org/
+Link: http://www.7-zip.org/
 
-  === 4.2 Commercial ===
+=== Commercial ===
 
-  Link: http://www.rarlab.com/
+Link: http://www.rarlab.com/
 
-  Link: http://www.winzip.com/
+Link: http://www.winzip.com/
 
-<br>
-  == 5. Install Dependency Walker ==
+== Install Dependency Walker ==
   Download link: http://www.dependencywalker.com/
 
-<br>
-  == 6. Install !WinFlashTool ==
+== Install !WinFlashTool ==
   Download link: http://winflashtool.sysprogs.com/
 
 == Install Remote Debuggers ==
@@ -92,33 +88,16 @@ You're all done with setup!  Select your virtual machine from the list, and clic
 === Install Remote Tools for Visual Studio 2012 Update 1 ===
 === Install VisualDDK ===
 
-<br>
 = Consult JIRA =
 
 JIRA is a bug tracking, issue tracking and project management software.
 
 URL: http://jira.reactos.org/
 
-<br>
 = Pull Source Code From Repository =
 You can get the source code via command line or with the TortoiseSVN Browser.
 
-...
-
-When finished, your ReactOS source folder will have a green icon over it, like this:<br>
-https://reactos.googlecode.com/svn/wiki/SVN%20Sync%206%20-%20en.png
-
-== SVN Update ==
-This is the opposite making a commit.  If your source is outdated, or if you want to discard all changes you have made to your copy of the source, then you want to perform an SVN Update.  *Do not redownload the entire source.*  That is a waste of time and bandwidth. Navigate to your ReactOS source and right-click it.  Select "SVN Update" as in this screenshot:<br>
-https://reactos.googlecode.com/svn/wiki/SVN%20Sync%202%20-%20en.png
-
-Your copy of the source will begin to sync with the online version.  This window will notify you of the progress:<br>
-https://reactos.googlecode.com/svn/wiki/SVN%20Sync%203%20-%20en.png
-
-When finished, your ReactOS source will again have the green "no changes have been made" icon over it.
-
-
-  == 1. Source Code via Command Line ==
+== Pull Source Code Using SVN Command Line ==
   _(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
 
   Open up a Command Prompt and navigate to where you'd like to put the source code.
@@ -131,7 +110,20 @@ When finished, your ReactOS source will again have the green "no changes have be
 
   A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
-  == 2. Source Code via TortoiseSVN Browser ==
+== Pull Source Code Using SVN GUI ==
+...
+
+When finished, your ReactOS source folder will have a green icon over it, like this:<br>
+https://reactos.googlecode.com/svn/wiki/SVN%20Sync%206%20-%20en.png
+
+This is the opposite making a commit.  If your source is outdated, or if you want to discard all changes you have made to your copy of the source, then you want to perform an SVN Update.  *Do not redownload the entire source.*  That is a waste of time and bandwidth. Navigate to your ReactOS source and right-click it.  Select "SVN Update" as in this screenshot:<br>
+https://reactos.googlecode.com/svn/wiki/SVN%20Sync%202%20-%20en.png
+
+Your copy of the source will begin to sync with the online version.  This window will notify you of the progress:<br>
+https://reactos.googlecode.com/svn/wiki/SVN%20Sync%203%20-%20en.png
+
+When finished, your ReactOS source will again have the green "no changes have been made" icon over it.
+
   Open the TortoiseSVN Browser.  It's likely located at Start -> TortoiseSVN -> TortoiseSVN Repository Browser.  Navigate to {{{https://reactos.googlecode.com/svn}}}.  In the left-hand pane, right click on the URL and select Checkout.
 
   https://reactos.googlecode.com/svn/wiki/SVN%20Browser%201%20-%20en.png
