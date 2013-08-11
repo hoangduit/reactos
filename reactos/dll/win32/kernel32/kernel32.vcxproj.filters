@@ -37,6 +37,15 @@
     <Filter Include="client\file">
       <UniqueIdentifier>{9bd0a7cc-3381-4f45-915b-43658d5d2cf5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="winnls\lang">
+      <UniqueIdentifier>{12049833-1bb2-433f-9ef1-e9843f16c940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="winnls\nls">
+      <UniqueIdentifier>{592c0927-e379-474d-87c1-53e24be251fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="winnls\string">
+      <UniqueIdentifier>{63ba6219-1d0b-474d-8bad-dadc311233fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
@@ -47,11 +56,431 @@
     <None Include="client\amd64\thread.S">
       <Filter>client\amd64</Filter>
     </None>
-    <None Include="client\i386\fiber.S">
-      <Filter>client\i386</Filter>
+    <None Include="winnls\lang\bg-BG.mc">
+      <Filter>winnls\lang</Filter>
     </None>
-    <None Include="client\i386\thread.S">
-      <Filter>client\i386</Filter>
+    <None Include="winnls\lang\de-DE.mc">
+      <Filter>winnls\lang</Filter>
+    </None>
+    <None Include="winnls\lang\pl-PL.mc">
+      <Filter>winnls\lang</Filter>
+    </None>
+    <None Include="winnls\lang\ru-RU.mc">
+      <Filter>winnls\lang</Filter>
+    </None>
+    <None Include="winnls\nls\afk.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ara.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\are.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arg.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arh.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ari.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arj.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ark.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arm.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\aro.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\arq.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ars.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\art.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\aru.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ary.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\aze.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\azl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\bel.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\bgr.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\brf.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\cat.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\chs.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\cht.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\csy.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\cym.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\dan.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\dea.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\dec.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\del.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\des.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\deu.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\div.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ell.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ena.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enc.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\eng.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\eni.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enj.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enp.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ens.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ent.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enu.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enw.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\enz.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esa.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esc.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esd.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ese.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esf.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esg.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esh.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esi.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esm.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esn.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\eso.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esp.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esr.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ess.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esu.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esv.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esy.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\esz.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\eti.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\euq.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\far.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\fin.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\fos.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\fra.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\frb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\frc.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\frl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\frm.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\frs.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\glc.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\guj.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\heb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\hin.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\hrv.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\hun.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\hye.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ind.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\isl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ita.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\its.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\jpn.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\kan.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\kat.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\kkz.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\knk.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\kor.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\kyr.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\lth.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\lvi.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\mar.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\mki.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\mon.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\msb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\msl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\nlb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\nld.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\non.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\nor.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\pan.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\plk.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ptb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ptg.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\rmc.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\rom.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\rus.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\san.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\sky.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\slv.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\sqi.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\srb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\srl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\sve.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\svf.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\swk.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\syr.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\tam.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\tel.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\tha.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\trk.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ttt.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\ukr.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\urd.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\uzb.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\uzl.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\vit.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\zhh.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\zhi.nls">
+      <Filter>winnls\nls</Filter>
+    </None>
+    <None Include="winnls\nls\zhm.nls">
+      <Filter>winnls\nls</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -70,10 +499,34 @@
     <ClInclude Include="include\kernel32.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="winnls\string\lcformat_private.h">
+      <Filter>winnls\string</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kernel32.rc">
       <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\locale_rc.rc">
+      <Filter>winnls</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\de-DE.rc">
+      <Filter>winnls\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\en-US.rc">
+      <Filter>winnls\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\es-ES.rc">
+      <Filter>winnls\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\ro-RO.rc">
+      <Filter>winnls\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\ru-RU.rc">
+      <Filter>winnls\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\uk-UA.rc">
+      <Filter>winnls\lang</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,5 +701,61 @@
     <ClCompile Include="client\file\volume.c">
       <Filter>client\file</Filter>
     </ClCompile>
+    <ClCompile Include="wine\actctx.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\comm.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\lzexpand.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\muldiv.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\profile.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\res.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="wine\timezone.c">
+      <Filter>wine</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\casemap.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\collation.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\fold.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\format_msg.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\lang.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\lcformat.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\lstring.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\nls.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+    <ClCompile Include="winnls\string\sortkey.c">
+      <Filter>winnls\string</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="client\i386\thread.S">
+      <Filter>client\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="client\i386\fiber.S">
+      <Filter>client\i386</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

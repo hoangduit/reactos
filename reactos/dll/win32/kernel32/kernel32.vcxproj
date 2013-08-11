@@ -35,10 +35,180 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="client\i386\fiber.S" />
-    <None Include="client\i386\thread.S" />
+    <CustomBuild Include="client\i386\fiber.S">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl   /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl   /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="client\i386\thread.S">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl   /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl   /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
     <None Include="CMakeLists.txt" />
     <None Include="kernel32.spec" />
+    <None Include="winnls\lang\bg-BG.mc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="winnls\lang\de-DE.mc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="winnls\lang\pl-PL.mc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="winnls\lang\ru-RU.mc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="winnls\nls\afk.nls" />
+    <None Include="winnls\nls\ara.nls" />
+    <None Include="winnls\nls\arb.nls" />
+    <None Include="winnls\nls\are.nls" />
+    <None Include="winnls\nls\arg.nls" />
+    <None Include="winnls\nls\arh.nls" />
+    <None Include="winnls\nls\ari.nls" />
+    <None Include="winnls\nls\arj.nls" />
+    <None Include="winnls\nls\ark.nls" />
+    <None Include="winnls\nls\arl.nls" />
+    <None Include="winnls\nls\arm.nls" />
+    <None Include="winnls\nls\aro.nls" />
+    <None Include="winnls\nls\arq.nls" />
+    <None Include="winnls\nls\ars.nls" />
+    <None Include="winnls\nls\art.nls" />
+    <None Include="winnls\nls\aru.nls" />
+    <None Include="winnls\nls\ary.nls" />
+    <None Include="winnls\nls\aze.nls" />
+    <None Include="winnls\nls\azl.nls" />
+    <None Include="winnls\nls\bel.nls" />
+    <None Include="winnls\nls\bgr.nls" />
+    <None Include="winnls\nls\brf.nls" />
+    <None Include="winnls\nls\cat.nls" />
+    <None Include="winnls\nls\chs.nls" />
+    <None Include="winnls\nls\cht.nls" />
+    <None Include="winnls\nls\csy.nls" />
+    <None Include="winnls\nls\cym.nls" />
+    <None Include="winnls\nls\dan.nls" />
+    <None Include="winnls\nls\dea.nls" />
+    <None Include="winnls\nls\dec.nls" />
+    <None Include="winnls\nls\del.nls" />
+    <None Include="winnls\nls\des.nls" />
+    <None Include="winnls\nls\deu.nls" />
+    <None Include="winnls\nls\div.nls" />
+    <None Include="winnls\nls\ell.nls" />
+    <None Include="winnls\nls\ena.nls" />
+    <None Include="winnls\nls\enb.nls" />
+    <None Include="winnls\nls\enc.nls" />
+    <None Include="winnls\nls\eng.nls" />
+    <None Include="winnls\nls\eni.nls" />
+    <None Include="winnls\nls\enj.nls" />
+    <None Include="winnls\nls\enl.nls" />
+    <None Include="winnls\nls\enp.nls" />
+    <None Include="winnls\nls\ens.nls" />
+    <None Include="winnls\nls\ent.nls" />
+    <None Include="winnls\nls\enu.nls" />
+    <None Include="winnls\nls\enw.nls" />
+    <None Include="winnls\nls\enz.nls" />
+    <None Include="winnls\nls\esa.nls" />
+    <None Include="winnls\nls\esb.nls" />
+    <None Include="winnls\nls\esc.nls" />
+    <None Include="winnls\nls\esd.nls" />
+    <None Include="winnls\nls\ese.nls" />
+    <None Include="winnls\nls\esf.nls" />
+    <None Include="winnls\nls\esg.nls" />
+    <None Include="winnls\nls\esh.nls" />
+    <None Include="winnls\nls\esi.nls" />
+    <None Include="winnls\nls\esl.nls" />
+    <None Include="winnls\nls\esm.nls" />
+    <None Include="winnls\nls\esn.nls" />
+    <None Include="winnls\nls\eso.nls" />
+    <None Include="winnls\nls\esp.nls" />
+    <None Include="winnls\nls\esr.nls" />
+    <None Include="winnls\nls\ess.nls" />
+    <None Include="winnls\nls\esu.nls" />
+    <None Include="winnls\nls\esv.nls" />
+    <None Include="winnls\nls\esy.nls" />
+    <None Include="winnls\nls\esz.nls" />
+    <None Include="winnls\nls\eti.nls" />
+    <None Include="winnls\nls\euq.nls" />
+    <None Include="winnls\nls\far.nls" />
+    <None Include="winnls\nls\fin.nls" />
+    <None Include="winnls\nls\fos.nls" />
+    <None Include="winnls\nls\fra.nls" />
+    <None Include="winnls\nls\frb.nls" />
+    <None Include="winnls\nls\frc.nls" />
+    <None Include="winnls\nls\frl.nls" />
+    <None Include="winnls\nls\frm.nls" />
+    <None Include="winnls\nls\frs.nls" />
+    <None Include="winnls\nls\glc.nls" />
+    <None Include="winnls\nls\guj.nls" />
+    <None Include="winnls\nls\heb.nls" />
+    <None Include="winnls\nls\hin.nls" />
+    <None Include="winnls\nls\hrv.nls" />
+    <None Include="winnls\nls\hun.nls" />
+    <None Include="winnls\nls\hye.nls" />
+    <None Include="winnls\nls\ind.nls" />
+    <None Include="winnls\nls\isl.nls" />
+    <None Include="winnls\nls\ita.nls" />
+    <None Include="winnls\nls\its.nls" />
+    <None Include="winnls\nls\jpn.nls" />
+    <None Include="winnls\nls\kan.nls" />
+    <None Include="winnls\nls\kat.nls" />
+    <None Include="winnls\nls\kkz.nls" />
+    <None Include="winnls\nls\knk.nls" />
+    <None Include="winnls\nls\kor.nls" />
+    <None Include="winnls\nls\kyr.nls" />
+    <None Include="winnls\nls\lth.nls" />
+    <None Include="winnls\nls\lvi.nls" />
+    <None Include="winnls\nls\mar.nls" />
+    <None Include="winnls\nls\mki.nls" />
+    <None Include="winnls\nls\mon.nls" />
+    <None Include="winnls\nls\msb.nls" />
+    <None Include="winnls\nls\msl.nls" />
+    <None Include="winnls\nls\nlb.nls" />
+    <None Include="winnls\nls\nld.nls" />
+    <None Include="winnls\nls\non.nls" />
+    <None Include="winnls\nls\nor.nls" />
+    <None Include="winnls\nls\pan.nls" />
+    <None Include="winnls\nls\plk.nls" />
+    <None Include="winnls\nls\ptb.nls" />
+    <None Include="winnls\nls\ptg.nls" />
+    <None Include="winnls\nls\rmc.nls" />
+    <None Include="winnls\nls\rom.nls" />
+    <None Include="winnls\nls\rus.nls" />
+    <None Include="winnls\nls\san.nls" />
+    <None Include="winnls\nls\sky.nls" />
+    <None Include="winnls\nls\slv.nls" />
+    <None Include="winnls\nls\sqi.nls" />
+    <None Include="winnls\nls\srb.nls" />
+    <None Include="winnls\nls\srl.nls" />
+    <None Include="winnls\nls\sve.nls" />
+    <None Include="winnls\nls\svf.nls" />
+    <None Include="winnls\nls\swk.nls" />
+    <None Include="winnls\nls\syr.nls" />
+    <None Include="winnls\nls\tam.nls" />
+    <None Include="winnls\nls\tel.nls" />
+    <None Include="winnls\nls\tha.nls" />
+    <None Include="winnls\nls\trk.nls" />
+    <None Include="winnls\nls\ttt.nls" />
+    <None Include="winnls\nls\ukr.nls" />
+    <None Include="winnls\nls\urd.nls" />
+    <None Include="winnls\nls\uzb.nls" />
+    <None Include="winnls\nls\uzl.nls" />
+    <None Include="winnls\nls\vit.nls" />
+    <None Include="winnls\nls\zhh.nls" />
+    <None Include="winnls\nls\zhi.nls" />
+    <None Include="winnls\nls\zhm.nls" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\baseheap.h" />
@@ -46,6 +216,7 @@
     <ClInclude Include="include\console.h" />
     <ClInclude Include="include\kernel32.h" />
     <ClInclude Include="k32.h" />
+    <ClInclude Include="winnls\string\lcformat_private.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kernel32.rc">
@@ -53,6 +224,36 @@
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\include;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\psdk;..\..\..\include\crt;..\..\..\include\crt\msc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\include;..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\..\include\psdk;..\..\..\include\crt;..\..\..\include\crt\msc</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\de-DE.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\en-US.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\es-ES.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\ro-RO.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\ru-RU.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\lang\uk-UA.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winnls\locale_rc.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +271,10 @@
     <ClCompile Include="client\dosdev.c" />
     <ClCompile Include="client\environ.c" />
     <ClCompile Include="client\except.c" />
-    <ClCompile Include="client\fiber.c" />
+    <ClCompile Include="client\fiber.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="client\file\backup.c" />
     <ClCompile Include="client\file\cnotify.c" />
     <ClCompile Include="client\file\copy.c" />
@@ -104,7 +308,10 @@
     <ClCompile Include="client\session.c" />
     <ClCompile Include="client\synch.c" />
     <ClCompile Include="client\sysinfo.c" />
-    <ClCompile Include="client\thread.c" />
+    <ClCompile Include="client\thread.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="client\time.c" />
     <ClCompile Include="client\timerqueue.c" />
     <ClCompile Include="client\toolhelp.c" />
@@ -112,7 +319,26 @@
     <ClCompile Include="client\vdm.c" />
     <ClCompile Include="client\version.c" />
     <ClCompile Include="client\virtmem.c" />
-    <ClCompile Include="client\vista.c" />
+    <ClCompile Include="client\vista.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="wine\actctx.c" />
+    <ClCompile Include="wine\comm.c" />
+    <ClCompile Include="wine\lzexpand.c" />
+    <ClCompile Include="wine\muldiv.c" />
+    <ClCompile Include="wine\profile.c" />
+    <ClCompile Include="wine\res.c" />
+    <ClCompile Include="wine\timezone.c" />
+    <ClCompile Include="winnls\string\casemap.c" />
+    <ClCompile Include="winnls\string\collation.c" />
+    <ClCompile Include="winnls\string\fold.c" />
+    <ClCompile Include="winnls\string\format_msg.c" />
+    <ClCompile Include="winnls\string\lang.c" />
+    <ClCompile Include="winnls\string\lcformat.c" />
+    <ClCompile Include="winnls\string\lstring.c" />
+    <ClCompile Include="winnls\string\nls.c" />
+    <ClCompile Include="winnls\string\sortkey.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\include\asm\asm.vcxproj">
@@ -128,6 +354,15 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\include\reactos\mc\mc.vcxproj">
       <Project>{8b41e8f9-abeb-4510-90d6-e56065b0d3ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\crt\chkstk\chkstk.vcxproj">
+      <Project>{7fe60e96-c5d5-463f-98d0-d60736f8a797}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
@@ -224,7 +459,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;inline=__inline;__STDC__=1;LANGUAGE_EN_US;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\psdk;..\..\..\include\crt;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;..\..\..\include\reactos\subsys;..\..\..\include\reactos\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -236,6 +471,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -292,6 +528,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
