@@ -288,10 +288,9 @@ If you want to perform a test of compiling ReactOS, there's a couple changes you
 https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 
 = Create Visual Studio Projects =
-
-
-== Create Basic Project ==
-== Edit Basic Project ==
+== Project Properties ==
+=== Common Properties ===
+=== Configuration Properties ===
 == Create Project For A Command-Line Tool ==
 == Create Project For Message Codes ==
 == Create Project For ks386.inc ==
