@@ -67,7 +67,6 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>D:\Software\System\reactos\google\reactos\lib\sdk\crt\build\x86_32\Debug\crt.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
@@ -129,11 +128,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\crt\crt.vcxproj">
       <Project>{0332aca7-b63d-40e8-8af1-647a19b4daee}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
