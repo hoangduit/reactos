@@ -31,12 +31,18 @@
     <Filter Include="token">
       <UniqueIdentifier>{348fb62a-e430-4589-811b-e464bfa9cd5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ARM">
+      <UniqueIdentifier>{5b4b53cb-40ea-439b-8963-6516cdf7d549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\x86_32">
+      <UniqueIdentifier>{e857aa66-b975-4f9a-8eec-01b2fc6407d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\x86_64">
+      <UniqueIdentifier>{c42b529c-a595-4ea9-97fa-5ec509ff2072}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="advapi32.spec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="advapi32.rc">
@@ -137,19 +143,31 @@
     <ClCompile Include="token\token.c">
       <Filter>token</Filter>
     </ClCompile>
-    <ClCompile Include="eventlogrpc_c.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="build\x86_32\eventlogrpc_c.c">
+      <Filter>Source Files\x86_32</Filter>
     </ClCompile>
-    <ClCompile Include="lsa_c.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="build\x86_32\lsa_c.c">
+      <Filter>Source Files\x86_32</Filter>
     </ClCompile>
-    <ClCompile Include="svcctl_c.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="build\x86_32\svcctl_c.c">
+      <Filter>Source Files\x86_32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\include\reactos\idl\eventlogrpc.idl" />
     <CustomBuild Include="..\..\..\include\reactos\idl\lsa.idl" />
     <CustomBuild Include="..\..\..\include\reactos\idl\svcctl.idl" />
+    <CustomBuild Include="advapi32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="build\x86_32\eventlogrpc_c.h">
+      <Filter>Source Files\x86_32</Filter>
+    </ClInclude>
+    <ClInclude Include="build\x86_32\lsa_c.h">
+      <Filter>Source Files\x86_32</Filter>
+    </ClInclude>
+    <ClInclude Include="build\x86_32\svcctl_c.h">
+      <Filter>Source Files\x86_32</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -60,7 +60,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_ADVAPI32_;_WIN32_WINNT=0x600;CMAKE_INTDIR="Debug";advapi32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;build\x86_32;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,7 +77,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_ADVAPI32_;_WIN32_WINNT=0x600;CMAKE_INTDIR="Debug";advapi32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;build\x86_32;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,6 +108,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="build\x86_32\eventlogrpc_c.c" />
+    <ClCompile Include="build\x86_32\lsa_c.c" />
+    <ClCompile Include="build\x86_32\svcctl_c.c" />
     <ClCompile Include="crypt\crypt.c" />
     <ClCompile Include="crypt\crypt_arc4.c" />
     <ClCompile Include="crypt\crypt_des.c" />
@@ -115,8 +118,6 @@
     <ClCompile Include="crypt\crypt_md4.c" />
     <ClCompile Include="crypt\crypt_md5.c" />
     <ClCompile Include="crypt\crypt_sha.c" />
-    <ClCompile Include="eventlogrpc_c.c" />
-    <ClCompile Include="lsa_c.c" />
     <ClCompile Include="misc\dllmain.c" />
     <ClCompile Include="misc\efs.c" />
     <ClCompile Include="misc\hwprofiles.c" />
@@ -139,40 +140,69 @@
     <ClCompile Include="service\rpc.c" />
     <ClCompile Include="service\scm.c" />
     <ClCompile Include="service\sctrl.c" />
-    <ClCompile Include="svcctl_c.c" />
     <ClCompile Include="token\privilege.c" />
     <ClCompile Include="token\token.c" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\include\reactos\idl\eventlogrpc.idl">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)\%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\..\..\include\reactos\idl\lsa.idl">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)\%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\..\..\include\reactos\idl\svcctl.idl">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -h -I . -I $(SolutionDir)\include\dxsdk -I $(SolutionDir)\include\reactos\idl -H "$(OutDir)\%(Filename)_c.h" -c -o %(Filename)_c.c "%(FullPath)"
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir build
+cd build
+mkdir x86_32
+cd x86_32
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\x86_32\%(Filename)_c.c;build\x86_32\%(Filename)_c.h</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -188,12 +218,20 @@
     <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
       <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
+      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
     </ProjectReference>
     <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
       <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="build\x86_32\eventlogrpc_c.h" />
+    <ClInclude Include="build\x86_32\lsa_c.h" />
+    <ClInclude Include="build\x86_32\svcctl_c.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
