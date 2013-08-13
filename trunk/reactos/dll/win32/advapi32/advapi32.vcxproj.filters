@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="crypt">
+      <UniqueIdentifier>{0bfd35da-bbbe-40a1-8d46-b956e2671890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{5e8a1f6b-5f6e-4493-9611-ba587232fa08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reg">
+      <UniqueIdentifier>{7a2e7c04-ce32-478c-b402-476daae42a0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sec">
+      <UniqueIdentifier>{734ad304-6b1e-4598-bc0d-7bbbd3a5dd69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="service">
+      <UniqueIdentifier>{541f18a5-3bd6-4647-8717-9127356b922d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="token">
+      <UniqueIdentifier>{348fb62a-e430-4589-811b-e464bfa9cd5f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="advapi32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="advapi32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="crypt\crypt.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_arc4.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_des.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_lmhash.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_md4.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_md5.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="crypt\crypt_sha.c">
+      <Filter>crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\dllmain.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\efs.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\hwprofiles.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\logon.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\msi.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\shutdown.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\sysfunc.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\trace.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="reg\reg.c">
+      <Filter>reg</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\ac.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\audit.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\cred.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\lsa.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\misc.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\safer.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\sec.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\sid.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="sec\trustee.c">
+      <Filter>sec</Filter>
+    </ClCompile>
+    <ClCompile Include="service\eventlog.c">
+      <Filter>service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\rpc.c">
+      <Filter>service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\scm.c">
+      <Filter>service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\sctrl.c">
+      <Filter>service</Filter>
+    </ClCompile>
+    <ClCompile Include="token\privilege.c">
+      <Filter>token</Filter>
+    </ClCompile>
+    <ClCompile Include="token\token.c">
+      <Filter>token</Filter>
+    </ClCompile>
+    <ClCompile Include="eventlogrpc_c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lsa_c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="svcctl_c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\include\reactos\idl\eventlogrpc.idl" />
+    <CustomBuild Include="..\..\..\include\reactos\idl\lsa.idl" />
+    <CustomBuild Include="..\..\..\include\reactos\idl\svcctl.idl" />
+  </ItemGroup>
+</Project>

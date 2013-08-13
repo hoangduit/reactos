@@ -61,8 +61,9 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
-copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
+copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -118,8 +119,9 @@ copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
-copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
+copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -139,6 +141,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\kernel32\kernel32.vcxproj">
       <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
