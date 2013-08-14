@@ -306,72 +306,86 @@ https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 == Create Project For A User-Mode DLL ==
 == Create Project For A User-Mode EXE ==
 
+Our example for creating a user-mode *`.EXE`* is *`calc.exe`*.<br>
+Use *`Explorer.exe`* to locate the source code for *`calc.exe`*. It is the directory at:<br>
+*`reactos\base\applications\calc`*:
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/1.png
-
-Create Project For A User-Mode EXE
-Our example for creating a user-mode .EXE is calc.exe. 
-Use Explorer.exe to locate the source code for calc.exe. It is the directory at:
-reactos\base\applications\calc
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/1.png
-Open its CMakeLists.txt file to determine what we should do to create calc.vcxproj:
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/2.png
-Looking at the CMakLists.txt file, we make the following determinations:
+Open its *`CMakeLists.txt`* file to determine what we should do to create *`calc.vcxproj`*:
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/2.png<br>
+Looking at the *`CMakLists.txt`* file, we make the following determinations:<br>
+{{{
 add_definitions(-DDISABLE_HTMLHELP_SUPPORT=1)
-…means that we will have to add a #define to the IDE settings that effectively does this for all .c/.cpp/et.c. files:
+}}}
+…means that we will have to add a *`#define`* to the IDE settings that effectively does this for all *`.c/.cpp/etc.`* files:<br>
+{{{
 #define DDISABLE_HTMLHELP_SUPPORT 1
+}}}
+{{{
 add_executable(calc
-…shows us that there are seven source files that will be compiled to generate calc.exe. They are:
+}}}
+…shows us that there are seven source files that will be compiled to generate *`calc.exe`*. They are:
+{{{
     about.c
     convert.c
     function.c
     rpn.c
     utl.c
     winmain.c
-    resource.rc)
+    resource.rc
+}}}
+{{{
 set_module_type(calc win32gui UNICODE)
-…tells us that the output of the build of the project will be a Windows 32-bit .EXE that has a GUI (unlike a console application). It will use UNICODE, so throughout the source code, TCHAR will be defined as WCHAR and not CHAR.
+}}}
+…tells us that the output of the build of the project will be a Windows 32-bit *`.EXE`* that has a GUI (unlike a console application). It will use *`UNICODE`*, so throughout the source code, *`TCHAR`* will be defined as *`WCHAR`* and not *`CHAR`*.
+{{{
 add_importlibs(calc advapi32 user32 gdi32 msvcrt kernel32)
-…tells us that calc.exe will depend upon several DLL’s to execute, and therefore must be linked with their corresponding .LIB files at build time. 
+}}}
+…tells us that *`calc.exe`* will depend upon several *`.DLL`*’s to execute, and therefore must be linked with their corresponding *`.LIB`* files at build time. 
+{{{
 if(MSVC)
     add_importlibs(calc ntdll)
 endif()
-…tells us that, if our compiler is Microsoft Visual C, then calc.exe will also depend on ntdll.dll, and therefore, must be linked with the import library that corresponds to ntdll.dll.
+}}}
+…tells us that, if our compiler is Microsoft Visual C, then *`calc.exe`* will also depend on *`ntdll.dll`*, and therefore, must be linked with the import library that corresponds to *`ntdll.dll`*.
+{{{
 add_pch(calc calc.h)
+}}}
 
-…tells us that the header file that would be used to generate a pre-compiled header (.pch) file is calc.h. Since calc.exe is a very small program in terms of number of lines of code, we forego utilization the pre-compiled header optimization.
+…tells us that the header file that would be used to generate a pre-compiled header (*`.pch`*) file is *`calc.h`*. Since *`calc.exe`* is a very small program in terms of number of lines of code, we forego utilization the pre-compiled header compilation optimization.
+{{{
 add_cd_file(TARGET calc DESTINATION reactos/system32 FOR all)
-..tells us that, after calc.exe is built, if we choose to place it on the OS CD, it should be copied to
-reactos/system32
-directory. We must remember to modify the CD_Live project accordingly, so that calc.exe is included in the CD-generation process when building CD_Live.
-Normally, we would be able to add calc.vcxproj to reactos.sln by right-clicking in Solution Explorer the node in the hierarchy that is to be the parent of calc.vcxproj. However, with Visual Studio 2012 Express, you will find that Microsoft has disallowed choosing the initial location within the hierarchy, and instead, forces the generation of calc at an arbitrary location: as a child of the root of the solution. 
-No matter. Right-click on the root of the solution hierarchy in Solution Explorer and do Add->New Project…
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/3.png
-A dialog box will give you the choice of which Visual C++ project you would like to add. Since calc.exe is a Win32 GUI executable, choosing Win32 Project might seem appropriate, but it turns out that it does not matter which of these you choose, as the project type can be easily changed later. For purpose of illustration, we choose Empty Project. 
-We choose the name calc, which causes Visual Studio to choose the name of the .vcxproj file to be calc.vcxproj.
-We very carefully choose the Location: on disk where the calc.vcxproj file should be placed by Visual Studio. Visual Studio knows that the name of the project is calc, so it creates a directory called calc somewhere, no matter what we do. We cannot stop it from creating a directory. Therefore, the Location: option should be the parent directory of the directory calc that will be created. When trying to create the calc directory, Visual Studio will see that it already exists, and proceed as if it did not. Then, calc.vcxproj will be place inside the calc directory. This is the process that we keep in mind as we overlay .vcxproj files onto the extant ReactOS source code hieararchy: Visual Studio would normally attempt to create a directory that, in general, will already exist.
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/4.png
-After creating calc, we use Explorer.exe to verify 
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/5.png
-The new project, calc, appears in Solution Explorer, and because we are using a free version of VS2012, Microsoft successfully annoys us by placing calc project as the child of the root of the solution. 
-https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/6.png
-The root of the solution is obviously not the correct location. The correct parent for calc is a Solution Explorer folder called applications. In other words, calc should be a sibling of atactl:
+}}}
+..tells us that, after *`calc.exe`* is built, if we choose to place it on the OS CD, it should be copied to:<br>
+*`reactos/system32`*<br>
+We must remember to modify the *`CD_Live`* project accordingly, so that *`calc.exe`* is included in the CD-generation process when building *`CD_Live`*.<br>
+Normally, we would be able to add *`calc.vcxproj`* to *`reactos.sln`* by right-clicking in *`Solution Explorer`* the node in the hierarchy that is to be the parent of *`calc.vcxproj`*. However, with Visual Studio 2012 Express, you will find that Microsoft has disallowed choosing the initial location within the hierarchy, and instead, forces the generation of *`calc`* at an arbitrary location: as a child of the root of the solution. 
+No matter. Right-click on the root of the solution hierarchy in *`Solution Explorer`* and do *`Add->New Project…`*
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/3.png<br>
+A dialog box will give you the choice of which type of Visual C++ project you would like to add. Since *`calc.exe`* is a Win32 GUI executable, choosing *`Win32 Project`* might seem appropriate, but it turns out that it does not matter which of these you choose, as the project type can be easily changed later. For purpose of illustration, we choose *`Empty Project`*. 
+We choose the name *`calc`*, which causes Visual Studio to choose the name of the *`.vcxproj`* file to be *`calc.vcxproj`*.
+We very carefully choose the *`Location:`* on disk where the *`calc.vcxproj`* file should be placed by Visual Studio. Visual Studio knows that the name of the project is *`calc`*, so it creates a directory called *`calc`* somewhere, no matter what we do. We cannot stop it from creating a directory. Therefore, the *`Location:`* option should be the parent directory of the directory *`calc`* that will be created. When trying to create the *`calc`* directory, Visual Studio will see that it already exists, and proceed as if it did not. Then, *`calc.vcxproj`* will be placed inside the *`calc`* directory. <br>This is the process that we keep in mind as we overlay *`.vcxproj`* files onto the extant ReactOS source code hierarchy: Visual Studio would normally attempt to create a directory that, in general, will already exist.<br>
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/4.png<br>
+After creating *`calc`*, we use *`Explorer.exe`* to verify that the *`calc`* direcotry and other Visual Studio files are as they should be:<br>
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/5.png<br>
+The new project, *`calc`*, now appears in *`Solution Explorer`*, but because we are using a free version of Visual Studio 2012, Microsoft successfully annoys us by placing *`calc`* project as the child of the root of the solution:<br>
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/6.png<br>
+The root of the solution is obviously not the correct location. The correct parent for *`calc`* is a *`Solution Explorer`* folder called *`applications`*. In other words, *`calc`* should be a sibling of *`atactl`*:
 
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/7.png
 Normally, with a paid version of Visual Studio, we would be able to:
-•	Right-click on calc
-•	Select cut
-•	Right-click on applications
-•	Select paste
-…and calc would be move to its correct location. However, cut-and-paste of projects is not supported in VS2012 Express, so we must drag-and-drop calc to applications:
+  # Right-click on *`calc`*.
+  # Select *`cut`*.
+  # Right-click on *`applications`*.
+  # Select *`paste`*.<br>
+
+…and *`calc`* would be moved to its correct location. However, cut-and-paste of projects is not supported in VS2012 Express, so we must drag-and-drop *`calc`* to *`applications`*:
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/8.png
 
-At this point, calc.vcxproj exits on disk, but calc does not reference any source files (.c/.h/etc.). We must add the files to the project. We expand-out calc to see the default solution filters for calc. There are three of them, plus the pseudo-filter External Dependencies that can neither be created nor deleted by us.
+At this point, *`calc.vcxproj`* exists on disk, but *`calc.vcxproj`* does not reference any source files *`(.c/.h/etc.)`*. We must add the files to the project. We expand-out *`calc`* to see the default solution filters for *`calc`*. There are three of them, plus the pseudo-filter *`External Dependencies`* that can neither be created nor deleted by us:<br>
+
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/9.png
 
-This is some more text.
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/10.png
-
-
 
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/11.png
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/12.png
