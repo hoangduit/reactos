@@ -305,6 +305,9 @@ https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 == Create Project For A Kernel-Mode Driver ==
 == Create Project For A User-Mode DLL ==
 == Create Project For A User-Mode EXE ==
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Create_Project_For_User_Mode_EXE/1.png
+
 == Create Project To Generate CD ==
 == Create Project To Generate SD Card ==
 = Develop =
