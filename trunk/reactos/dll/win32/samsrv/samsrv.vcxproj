@@ -68,7 +68,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <EntryPointSymbol>DllMainCRTStartup</EntryPointSymbol>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
@@ -95,7 +95,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <EntryPointSymbol>DllMainCRTStartup</EntryPointSymbol>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
