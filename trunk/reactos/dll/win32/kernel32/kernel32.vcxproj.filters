@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="kernel32.spec" />
     <None Include="client\amd64\fiber.S">
       <Filter>client\amd64</Filter>
     </None>
@@ -757,5 +756,6 @@
     <CustomBuild Include="client\i386\fiber.S">
       <Filter>client\i386</Filter>
     </CustomBuild>
+    <CustomBuild Include="kernel32.spec" />
   </ItemGroup>
 </Project>
