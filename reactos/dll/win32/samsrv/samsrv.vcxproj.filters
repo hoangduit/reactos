@@ -56,8 +56,6 @@
     <ClCompile Include="utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="build\x86_32\sam_s.c" />
-    <ClCompile Include="build\x86_32\samsrv_stubs.c" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\include\reactos\idl\sam.idl" />
