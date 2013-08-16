@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="startup">
+      <UniqueIdentifier>{a3d2f1f3-056d-4ce7-9f4c-bc1ef7e52574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{27829114-84dd-4a09-aeee-dbb436321422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="except">
+      <UniqueIdentifier>{309d2cf3-5656-4d2f-bebc-a2a89d3f53c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="except\i386">
+      <UniqueIdentifier>{6e3913de-c369-4d9b-b318-f7b988916d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{d290fc3f-f527-48de-9d71-c96b8786aab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math\i386">
+      <UniqueIdentifier>{bbcd074b-4c43-431d-9f38-675fc6f5a584}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\crt\msvcrtex.cmake" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\crt\startup\_newmode.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\atonexit.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\charmax.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\cinitexe.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\crt_handler.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\crt0_c.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\crt0_w.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\crtdll.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\crtexe.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\dll_argv.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\dllargv.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\dllentry.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\dllmain.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\gccmain.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\gs_support.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\merr.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\mingw_helpers.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\mscmain.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\natstart.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\pesect.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\pseudo-reloc.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\pseudo-reloc-list.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\reactos.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\tlsmcrt.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\tlsmthread.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\tlssup.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\tlsthrd.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\txtmode.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\wcrtexe.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\wdllargv.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\startup\wildcard.c">
+      <Filter>startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\misc\isblank.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\misc\iswblank.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\misc\ofmt_stub.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\misc\fltused.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\ci.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\cicos.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\cilog.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\cipow.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\cisin.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crt\math\i386\cisqrt.c">
+      <Filter>math\i386</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\crt\except\i386\chkstk_asm.s">
+      <Filter>except\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\crt\except\i386\chkstk_ms.s">
+      <Filter>except\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\crt\math\i386\ftol2_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\crt\math\i386\alldiv_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
