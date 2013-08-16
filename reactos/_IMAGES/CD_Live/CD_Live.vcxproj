@@ -64,6 +64,7 @@ copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
+copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -122,6 +123,7 @@ copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
+copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
