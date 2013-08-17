@@ -290,7 +290,308 @@ https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 = Create Visual Studio Projects =
 == Project Properties ==
 === Common Properties ===
-=== Configuration Properties ===
+====Framework and References====
+===Configuration Properties===
+====General====
+Output Directory
+Intermediate Directory
+Configuration Type
+Character Set
+====Debugging====
+====VC++ Directories====
+====C/C++====
+General
+Additional Include Directories
+Resolve #using References
+Debug Information Format
+
+1>advapi32_stubs.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+Common Language RunTime Support
+Suppress Startup Banner
+Warning Level
+Treat Warnings As Errors
+Multi-processor Compilation
+User Unicode For Assembler Listing
+=====Optimization=====
+Optimization
+Inline Function Expansion
+Enable Intrinsic Functions
+Favor Size Or Speed
+Omit Frame Pointers
+Enable Fiber-Safe Optimizations
+Whole Program Optimization
+Additional Include Directories
+=====Preprocessor=====
+Preprocessors Definitions
+Don’t forget to define WIN32_LEAN_AND_MEAN to speed-up edit-time parsing.
+Undefine Preprocessor Definitions
+Undefine All Preprocessor Definitions
+Ignore Standard Include Paths
+Preprocess to a File
+Preprocess Suppress Line Numbers
+Keep Comments
+
+=====Code Generation=====
+Enable String Pooling
+Enable Minimal Rebuild
+Enable C++ Exeptions
+Smaller Type Check
+Basic Runtime Checks
+Runtime Library
+Struct Member Alignment
+Buffer Security Check
+Enable Function-Level Linking
+Enable Enhanced Instruction Set
+Floating Point Model
+Enable Floating Point Exceptions
+Create Hotpatchable Image
+
+
+=====Language=====
+Disable Language Extensions
+Treat WChart_t As Built in Typye
+Force Conformance ini For Loop Scope
+Enable Run-Time Type Information
+Open MP Support
+
+=====Precompiled Headers=====
+Precompiled Header
+Precompiled Header File
+Precompiled Header Output File
+
+=====Output Files=====
+Expand Attributed Source
+Assembler Output
+ASM List Location
+Object File Name
+Program Database File Name
+Generate XML Document Files
+XML Documentation File Name
+
+=====Browse Information=====
+Enable Browse Information
+Browse Information File
+
+=====Advanced=====
+Calling Convention
+Compile As
+Disable Specific Warnings
+Forced Include File
+Force #using File
+Show Includes
+Use Full Paths
+Omit Default Library Name
+Internal Compiler Error Reporting
+Treat Specific Warnings As Errors
+
+Calling Convention
+Compile As
+Disable Specific Warnings
+Force Include File
+Force #using File
+Show Includes
+Use Full Paths
+Omit Default Library Name
+Internal Compiler Error Reporting
+Treat Specific Warnings As Errors
+Ignore Standard Include Directories
+Command Line
+====Linker====
+=====General=====
+Output File
+Show Progress
+Version
+Enable Incremental Linking
+Suppress Startup Banner
+Ignore Import Library
+Register Output
+Per-user Redirection
+Additional Library Directories
+Link Library Dependencies
+Use Library Dependency Inputs
+Link Status
+Prevent Dll Binding
+Treat Linker Warning As Errors
+Force File Output
+Create Hot Patchable Image
+Specify Section Attributes
+=====Input=====
+Additional Dependencies
+Ignore All Default Libraries
+Ignore Specific Default Libraries
+Module Definition File
+Add Module to Assembly
+Embed Managed Resource File
+Force Symbol References
+Delay Loaded Dlls
+Assembly Link Resource
+====Manifest File====
+Generate Manifest
+Manifest File
+Allow Isolation
+Enable User Account control (UAC)
+UAC Execution Level
+UAC Bypass UI Protection
+
+=====Debugging=====
+Generate Debug Info
+Generate Program Database File
+Strip Private Symbols
+Generate Map File
+Map File Name
+Map Exports
+Debuggable Assembly
+=====System=====
+SubSystem
+Minimum Required Version
+Heap Reserve Size
+Heap Commit Size
+Stack Reserve Size
+Stack Commit Size
+Enable Large Addresses
+Terminal Server
+Swap Run From CD
+Swap Run From Network
+Driver
+Optimization
+References
+Enable COMDAT Folding
+Function Order
+Profile Guided  Database
+Link Time Code Generation
+====Embedded IDL====
+MIDL Commands
+Ignore Embedded IDL
+Merged IDL Base File Name
+Type Library
+Typelib Resource ID
+====Windows Metadata====
+====Advanced====
+Entry Point
+Base Address
+Randomized Base Address
+Fixed Base Address
+Data Execution Prevention (DEP)
+Unload delay loaded DLL
+Nobind delay loaded DLL
+Import Library
+Merge Sections
+Target Machine
+Profile
+CLR Thread Attribute
+CLR Image Type
+Key File
+Key Container
+Delay Sign
+CLR Unmanaged Code Check
+Error Reporting
+SectionAlignment
+Preserve Last Error Code for PInvoke Calls
+Image Has Safe Exception Handlers
+====All Options====
+
+====Command-Line====
+Librarian
+General
+Output File
+Additional Dependencies
+Additional Library Dependencies
+Suppress Startup Banner
+Module Definition File Name
+Ignore All Default Libraries
+Export Named Functions
+Force Symbol References
+Use Unicode Response Files
+Link Library Dependencies
+Error Reporting
+Treat Lib Warning As Errors
+Target Machine
+Subsystem
+Minimum Required Version
+Remove Objects
+Verbose
+Name
+Link Time Code Generation
+
+Command Line
+All Options
+Additional Options
+Inherit from parent or project defaults
+===Manifest Tool===
+General
+Suppress Startup Banner
+Verbose Output
+Assembly Identity
+Input and Output
+Additional Manifest Files
+Input Resource Manifests
+Embed Manifest
+Output Manifest File
+Manifest Resource File
+Generate Catalog Files
+Generated Manifest From ManagedAssembly
+Suppress Dependency Element
+Generate Category Tags
+Enable DPI Awareness
+
+Isolated COM
+Type Library File
+Registrar Script File
+Component File Name
+Replacements File
+
+Advanced
+Update File Hashes
+Update File Hashes Search Path
+Command Line
+===Resources===
+====General====
+When a .rc files contains a #include, the resource compiler will sometimes complain that it cannot find the file that is being included, even though the programmer has specified the path to the included file in the IDE settings. The reason is that the programmer is in error – he did, indeed, specify a path, but for C/C++ files, not for .rc files. The .rc files in question must have their #include’s updated accordingly.
+
+
+Preprocess Definitions
+Use Undefine Preprocessor Definitions
+Culture
+Additional Include Directories
+Ignore Standard Include Paths
+Show Progress
+Suppress Startup Banner
+Resource File Name
+Null Terminate Strings
+Command Line
+===XML Document Generator===
+General
+Suppress Startup Banner
+Additional Document File
+Output Document File
+Document Library Dependencies
+
+Command Line
+===Browse Information===
+General
+Suppress Startup Banner
+Output File
+Preserve SBR Files
+Command Line
+===Build Events===
+Pre-Build Event
+Command Line
+Description
+Use In Build
+Pre-Link Event
+Command Line
+Description
+Use In Build
+Post-Build Event
+Command Line
+Description
+Use In Build
+===Custom Build Step===
+General
+===Custom Build Tool===
+===Code Analysis===
+
+
 == Create Project For A Command-Line Tool ==
 == Create Project For Message Codes ==
 == Create Project For ks386.inc ==
