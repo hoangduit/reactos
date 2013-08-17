@@ -323,6 +323,42 @@ Whole Program Optimization
 Additional Include Directories
 =====Preprocessor=====
 Preprocessors Definitions
+
+{{{
+1>------ Build started: Project: msvcrt, Configuration: Debug Win32 ------
+1>  stubs.c
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(53): error C3861: '_inp': identifier not found
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(59): error C3861: '_inpw': identifier not found
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(65): error C3861: '_inpd': identifier not found
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(73): error C3861: '_outp': identifier not found
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(80): error C3861: '_outpw': identifier not found
+1>c:\users\john\desktop\google code\reactos\reactos\dll\win32\msvcrt\stubs.c(87): error C3861: '_outpd': identifier not found
+}}}
+
+{{{
+int MSVCRT__inp(
+   unsigned short port)
+{
+    return _inp(port);
+}
+}}}
+
+conio.h shows:
+
+{{{
+#if defined(_M_IX86) || defined(_M_X64)
+int __cdecl _inp(unsigned short);
+unsigned short __cdecl _inpw(unsigned short);
+unsigned long __cdecl _inpd(unsigned short);
+#endif /* _M_IX86 || _M_X64 */
+}}}
+
+{{{
+_inp=__inbyte
+_inpw=__inword
+_inpd=__indword
+}}}
+
 Don’t forget to define WIN32_LEAN_AND_MEAN to speed-up edit-time parsing.
 Undefine Preprocessor Definitions
 Undefine All Preprocessor Definitions
