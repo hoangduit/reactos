@@ -58,6 +58,8 @@
       <PreprocessorDefinitions>_DLL;_MSVCRTEX_;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_CRTBLD;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)/lib/sdk/crt;$(SolutionDir)/include;$(SolutionDir)/include/psdk/$(OutDir);$(SolutionDir)/include/psdk;$(SolutionDir)/include/dxsdk;$(SolutionDir)/include/reactos;$(SolutionDir)/include/crt;$(SolutionDir)/include/ddk;$(SolutionDir)/include/ndk;$(SolutionDir)/include/reactos/libs;$(SolutionDir)/include/crt/msc;$(SolutionDir)/lib/sdk/crt/include;$(SolutionDir)/lib/sdk/crt/include/internal/mingw-w64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,6 +79,7 @@
       <PreprocessorDefinitions>NDEBUG;_DLL;_MSVCRTEX_;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_CRTBLD;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)/lib/sdk/crt;$(SolutionDir)/include;$(SolutionDir)/include/psdk/$(OutDir);$(SolutionDir)/include/psdk;$(SolutionDir)/include/dxsdk;$(SolutionDir)/include/reactos;$(SolutionDir)/include/crt;$(SolutionDir)/include/ddk;$(SolutionDir)/include/ndk;$(SolutionDir)/include/reactos/libs;$(SolutionDir)/include/crt/msc;$(SolutionDir)/lib/sdk/crt/include;$(SolutionDir)/lib/sdk/crt/include/internal/mingw-w64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -65,6 +65,7 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -124,6 +125,7 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
@@ -152,6 +154,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\msvcrt\msvcrt.vcxproj">
       <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\samsrv\samsrv.vcxproj">
+      <Project>{c76b64e1-5cd0-4474-9c1f-5788c2c02752}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\bootvid\bootvid.vcxproj">
       <Project>{39162ac2-e17b-4301-b1cb-19ebcd13b22b}</Project>

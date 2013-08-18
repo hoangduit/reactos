@@ -74,6 +74,8 @@
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <AdditionalDependencies />
+      <AdditionalOptions> "$(OutDir)\sam_s.obj" "$(OutDir)\samsrv_stubs.obj"</AdditionalOptions>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -101,6 +103,8 @@
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalDependencies />
+      <AdditionalOptions>"$(OutDir)\samsrv_stubs.obj" "$(OutDir)\sam_s.obj" </AdditionalOptions>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -143,13 +147,17 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_s.h" -s -o "%(Filename)_s.c" "%(FullPath)"
-cd ..\..</Command>
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_s.h" -s -Oif -o "%(Filename)_s.c" "%(FullPath)"
+cd ..\..
+echo The output file is $(OutDir)%(Filename)_s.h
+REM -m32 --win32 -h -H C:/Users/John/Desktop/reactos/output-VS10-i386/reactos/dll/win32/samsrv/sam_s.h -Oif -s -o C:/Users/John/Desktop/reactos/output-VS10-i386/reactos/dll/win32/samsrv/sam_s.c C:/Users/John/Desktop/reactos/include/reactos/idl/sam.idl</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_s.h" -s -o "%(Filename)_s.c" "%(FullPath)"
-cd ..\..</Command>
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_s.h" -s -Oif -o "%(Filename)_s.c" "%(FullPath)"
+cd ..\..
+
+REM -m32 --win32 -h -H C:/Users/John/Desktop/reactos/output-VS10-i386/reactos/dll/win32/samsrv/sam_s.h -Oif -s -o C:/Users/John/Desktop/reactos/output-VS10-i386/reactos/dll/win32/samsrv/sam_s.c C:/Users/John/Desktop/reactos/include/reactos/idl/sam.idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_s.h</Outputs>
@@ -171,6 +179,9 @@ cd ..\..</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
       <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
       <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
