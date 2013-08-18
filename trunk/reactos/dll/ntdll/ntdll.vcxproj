@@ -123,7 +123,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NTDLL_EXPORTS;__NTDLL__;_NTOSKRNL_;_WIN32_WINNT=0x502;CRTDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__NTDLL__;_NTOSKRNL_;CRTDLL;CMAKE_INTDIR="Debug";ntdll_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\include;..\..\include;..\..\include\psdk;..\..\include\crt;..\..\include\crt\msc;..\..\include\ndk;..\..\include\ddk;..\..\include\reactos;..\..\include\reactos\subsys;..\..\include\reactos\libs;..\..\win32ss\include;..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>

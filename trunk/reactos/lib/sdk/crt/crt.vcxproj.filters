@@ -170,93 +170,6 @@
     <None Include="float\amd64\logb.S">
       <Filter>float\amd64</Filter>
     </None>
-    <None Include="math\i386\alldiv_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\alldvrm_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\allmul_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\allrem_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\allshl_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\allshr_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\atan_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\atan2_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\aulldiv_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\aulldvrm_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\aullrem_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\aullshr_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\ceil_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\ceilf.S">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\cos_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\exp_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\fabs_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\floor_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\floorf.S">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\fmod_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\fmodf_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\ftol_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\ftol2_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\log_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\log10_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\pow_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\sin_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\sqrt_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
-    <None Include="math\i386\tan_asm.s">
-      <Filter>math\i386</Filter>
-    </None>
     <None Include="math\amd64\acos.S">
       <Filter>math\amd64</Filter>
     </None>
@@ -314,44 +227,8 @@
     <None Include="math\amd64\tan.S">
       <Filter>math\amd64</Filter>
     </None>
-    <None Include="misc\i386\readcr4.S">
-      <Filter>misc\i386</Filter>
-    </None>
-    <None Include="setjmp\i386\setjmp.s">
-      <Filter>setjmp\i386</Filter>
-    </None>
     <None Include="setjmp\amd64\setjmp.s">
       <Filter>setjmp\amd64</Filter>
-    </None>
-    <None Include="string\i386\strcat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strchr_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strcmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strcpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strncat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strncmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strncpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strnlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\strrchr_asm.s">
-      <Filter>string\i386</Filter>
     </None>
     <None Include="string\i386\tcscat.inc">
       <Filter>string\i386</Filter>
@@ -381,36 +258,6 @@
       <Filter>string\i386</Filter>
     </None>
     <None Include="string\i386\tcsrchr.inc">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcscat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcschr_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcscmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcscpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcslen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcsncat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcsncmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcsncpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcsnlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="string\i386\wcsrchr_asm.s">
       <Filter>string\i386</Filter>
     </None>
     <None Include="README.txt" />
@@ -1834,6 +1681,9 @@
     <ClCompile Include="wstring\wcsxfrm.c">
       <Filter>wstring</Filter>
     </ClCompile>
+    <ClCompile Include="string\_wcslwr_s.c">
+      <Filter>string</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="except\i386\prolog.s">
@@ -1868,6 +1718,155 @@
     </CustomBuild>
     <CustomBuild Include="mem\i386\memchr_asm.s">
       <Filter>mem\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ftol2_asm.s" />
+    <CustomBuild Include="math\i386\log10_asm.s" />
+    <CustomBuild Include="math\i386\alldiv_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\alldvrm_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allmul_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allrem_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allshl_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allshr_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\atan2_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\atan_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aulldiv_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aulldvrm_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aullrem_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aullshr_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ceil_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ceilf.S">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\cos_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\exp_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\floor_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\floorf.S">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fmod_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fmodf_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ftol_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\log_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\pow_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\sqrt_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\sin_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\tan_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strchr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strnlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strrchr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcscat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcschr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcscmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcscpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcslen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsnlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsrchr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fabs_asm.s">
+      <Filter>math\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="misc\i386\readcr4.S">
+      <Filter>misc\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="setjmp\i386\setjmp.s">
+      <Filter>setjmp\i386</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

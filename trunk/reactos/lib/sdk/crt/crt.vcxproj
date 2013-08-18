@@ -31,96 +31,76 @@
     </None>
     <CustomBuild Include="except\i386\chkesp.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
     <CustomBuild Include="except\i386\chkstk_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="except\i386\chkstk_ms.s">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="except\i386\cpp.s">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c %(FullPath) &gt; $(OutDir)\%(Filename).tmp
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  $(OutDir)\%(Filename).tmp
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c %(FullPath) &gt; $(OutDir)\%(Filename).tmp
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  $(OutDir)\%(Filename).tmp
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuild>
+    <CustomBuild Include="except\i386\chkstk_ms.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="except\i386\cpp.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm$(OutDir) /X /D__ASM__ /D_USE_ML /D__MINGW_IMPORT=extern /DUSE_MSVCRT_PREFIX /D_MSVCRT_LIB_ /D_MSVCRT_ /D_MT /DCRTDLL /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
+
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm$(OutDir) /X /D__ASM__ /D_USE_ML /D__MINGW_IMPORT=extern /DUSE_MSVCRT_PREFIX /D_MSVCRT_LIB_ /D_MSVCRT_ /D_MT /DCRTDLL /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
+
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </CustomBuild>
     <CustomBuild Include="except\i386\prolog.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
     <CustomBuild Include="except\i386\seh.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
     <CustomBuild Include="except\i386\seh_prolog.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
     <None Include="except\powerpc\chkstk_asm.s">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -222,60 +202,196 @@ ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  "$(OutDir)\%(Filename).tmp"
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="math\i386\alldiv_asm.s" />
-    <None Include="math\i386\alldvrm_asm.s" />
-    <None Include="math\i386\allmul_asm.s" />
-    <None Include="math\i386\allrem_asm.s" />
-    <None Include="math\i386\allshl_asm.s" />
-    <None Include="math\i386\allshr_asm.s" />
-    <None Include="math\i386\atan2_asm.s" />
-    <None Include="math\i386\atan_asm.s" />
-    <None Include="math\i386\aulldiv_asm.s" />
-    <None Include="math\i386\aulldvrm_asm.s" />
-    <None Include="math\i386\aullrem_asm.s" />
-    <None Include="math\i386\aullshr_asm.s" />
-    <None Include="math\i386\ceilf.S" />
-    <None Include="math\i386\ceil_asm.s" />
-    <None Include="math\i386\cos_asm.s" />
-    <None Include="math\i386\exp_asm.s" />
-    <None Include="math\i386\fabs_asm.s" />
-    <None Include="math\i386\floorf.S" />
-    <None Include="math\i386\floor_asm.s" />
-    <None Include="math\i386\fmodf_asm.s" />
-    <None Include="math\i386\fmod_asm.s" />
-	<CustomBuild Include="math\i386\ftol2_asm.s">
+    <CustomBuild Include="math\i386\alldiv_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-	</CustomBuild>
-    <None Include="math\i386\ftol_asm.s" />
-	<CustomBuild Include="math\i386\log10_asm.s">
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\alldvrm_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-	</CustomBuild>
-    <None Include="math\i386\log_asm.s" />
-    <None Include="math\i386\pow_asm.s" />
-    <None Include="math\i386\sin_asm.s" />
-    <None Include="math\i386\sqrt_asm.s" />
-    <None Include="math\i386\tan_asm.s" />
-    <CustomBuild Include="mem\i386\memchr_asm.s">
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allmul_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allrem_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allshl_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\allshr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\atan2_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\atan_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aulldiv_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aulldvrm_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aullrem_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\aullshr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ceilf.S">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ceil_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\cos_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\exp_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fabs_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\floorf.S">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\floor_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fmodf_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\fmod_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\ftol2_asm.s">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
 ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
@@ -288,65 +404,227 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
     </CustomBuild>
-    <CustomBuild Include="mem\i386\memcpy_asm.s">
+    <CustomBuild Include="math\i386\ftol_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c %(FullPath) &gt; $(OutDir)\%(Filename).tmp
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  $(OutDir)\%(Filename).tmp
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\log10_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
 
 </Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c %(FullPath) &gt; $(OutDir)\%(Filename).tmp
-ml /nologo /Cp /Fo $(OutDir)\%(FileName).obj /c /Ta  $(OutDir)\%(Filename).tmp
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
 
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\log_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\pow_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\sin_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\sqrt_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="math\i386\tan_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="mem\i386\memchr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="mem\i386\memcpy_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuild>
     <CustomBuild Include="mem\i386\memmove_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
     <CustomBuild Include="mem\i386\memset_asm.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\$(OutDir) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"
-
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /I..\..\..\include\asm\build\x86_32\$(Configuration) /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
     </CustomBuild>
-    <None Include="misc\i386\readcr4.S" />
+    <CustomBuild Include="misc\i386\readcr4.S">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
     <None Include="moldname-msvcrt.def" />
     <None Include="msvcrtex.cmake" />
     <None Include="oldnames-msvcrt.S" />
     <None Include="oldnames.cmake" />
     <None Include="README.txt" />
     <None Include="setjmp\amd64\setjmp.s" />
-    <None Include="setjmp\i386\setjmp.s" />
-    <None Include="string\i386\strcat_asm.s" />
-    <None Include="string\i386\strchr_asm.s" />
-    <None Include="string\i386\strcmp_asm.s" />
-    <None Include="string\i386\strcpy_asm.s" />
-    <None Include="string\i386\strlen_asm.s" />
-    <None Include="string\i386\strncat_asm.s" />
-    <None Include="string\i386\strncmp_asm.s" />
-    <None Include="string\i386\strncpy_asm.s" />
-    <None Include="string\i386\strnlen_asm.s" />
-    <None Include="string\i386\strrchr_asm.s" />
+    <CustomBuild Include="setjmp\i386\setjmp.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcat_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strchr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcmp_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strcpy_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strlen_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncat_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncmp_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strncpy_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strnlen_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\strrchr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
     <None Include="string\i386\tcscat.inc" />
     <None Include="string\i386\tcschr.inc" />
     <None Include="string\i386\tcscmp.inc" />
@@ -357,16 +635,96 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <None Include="string\i386\tcsncpy.inc" />
     <None Include="string\i386\tcsnlen.inc" />
     <None Include="string\i386\tcsrchr.inc" />
-    <None Include="string\i386\wcscat_asm.s" />
-    <None Include="string\i386\wcschr_asm.s" />
-    <None Include="string\i386\wcscmp_asm.s" />
-    <None Include="string\i386\wcscpy_asm.s" />
-    <None Include="string\i386\wcslen_asm.s" />
-    <None Include="string\i386\wcsncat_asm.s" />
-    <None Include="string\i386\wcsncmp_asm.s" />
-    <None Include="string\i386\wcsncpy_asm.s" />
-    <None Include="string\i386\wcsnlen_asm.s" />
-    <None Include="string\i386\wcsrchr_asm.s" />
+    <CustomBuild Include="string\i386\wcscat_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcschr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcscmp_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcscpy_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcslen_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncat_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncmp_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsncpy_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsnlen_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="string\i386\wcsrchr_asm.s">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo  /I..\..\..\include\asm /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(FileName).obj</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\float.h" />
@@ -433,7 +791,12 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="except\cpp.c" />
+    <ClCompile Include="except\cpp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="except\cppexcept.c" />
     <ClCompile Include="except\except.c" />
     <ClCompile Include="except\i386\unwind.c" />
@@ -466,7 +829,10 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     </ClCompile>
     <ClCompile Include="math\asin.c" />
     <ClCompile Include="math\cabs.c" />
-    <ClCompile Include="math\cos.c" />
+    <ClCompile Include="math\cos.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="math\cosf.c" />
     <ClCompile Include="math\cosh.c" />
     <ClCompile Include="math\div.c" />
@@ -474,15 +840,24 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="math\frexp.c" />
     <ClCompile Include="math\huge_val.c" />
     <ClCompile Include="math\hypot.c" />
-    <ClCompile Include="math\i386\atan2.c" />
+    <ClCompile Include="math\i386\atan2.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="math\i386\ci.c" />
     <ClCompile Include="math\i386\cicos.c" />
     <ClCompile Include="math\i386\cilog.c" />
     <ClCompile Include="math\i386\cipow.c" />
     <ClCompile Include="math\i386\cisin.c" />
     <ClCompile Include="math\i386\cisqrt.c" />
-    <ClCompile Include="math\i386\exp.c" />
-    <ClCompile Include="math\i386\fmod.c" />
+    <ClCompile Include="math\i386\exp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="math\i386\fmod.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="math\i386\fmodf.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -521,7 +896,10 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="math\sin.c" />
+    <ClCompile Include="math\sin.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="math\sinf.c" />
     <ClCompile Include="math\sinh.c" />
     <ClCompile Include="math\sqrtf.c" />
@@ -814,29 +1192,56 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     </ClCompile>
     <ClCompile Include="string\mbstowcs_s.c" />
     <ClCompile Include="string\scanf.c" />
-    <ClCompile Include="string\strcat.c" />
+    <ClCompile Include="string\strcat.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strchr.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="string\strcmp.c" />
+    <ClCompile Include="string\strcmp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strcoll.c" />
-    <ClCompile Include="string\strcpy.c" />
+    <ClCompile Include="string\strcpy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strcspn.c" />
     <ClCompile Include="string\strdup.c" />
     <ClCompile Include="string\strerror.c" />
     <ClCompile Include="string\stricmp.c" />
     <ClCompile Include="string\string.c" />
-    <ClCompile Include="string\strlen.c" />
+    <ClCompile Include="string\strlen.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strlwr.c" />
-    <ClCompile Include="string\strncat.c" />
-    <ClCompile Include="string\strncmp.c" />
+    <ClCompile Include="string\strncat.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\strncmp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strncoll.c" />
-    <ClCompile Include="string\strncpy.c" />
+    <ClCompile Include="string\strncpy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strnicmp.c" />
-    <ClCompile Include="string\strnlen.c" />
+    <ClCompile Include="string\strnlen.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strpbrk.c" />
-    <ClCompile Include="string\strrchr.c" />
+    <ClCompile Include="string\strrchr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\strrev.c" />
     <ClCompile Include="string\strset.c" />
     <ClCompile Include="string\strspn.c" />
@@ -854,16 +1259,46 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="string\strupr.c" />
     <ClCompile Include="string\strxfrm.c" />
     <ClCompile Include="string\wcs.c" />
-    <ClCompile Include="string\wcscat.c" />
-    <ClCompile Include="string\wcschr.c" />
-    <ClCompile Include="string\wcscmp.c" />
-    <ClCompile Include="string\wcscpy.c" />
-    <ClCompile Include="string\wcslen.c" />
-    <ClCompile Include="string\wcsncat.c" />
-    <ClCompile Include="string\wcsncmp.c" />
-    <ClCompile Include="string\wcsncpy.c" />
-    <ClCompile Include="string\wcsnlen.c" />
-    <ClCompile Include="string\wcsrchr.c" />
+    <ClCompile Include="string\wcscat.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcschr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcscmp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcscpy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcslen.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcsncat.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcsncmp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcsncpy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcsnlen.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="string\wcsrchr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="string\wcstod.c" />
     <ClCompile Include="string\wcstol.c" />
     <ClCompile Include="string\wcstombs_nt.c">
@@ -888,6 +1323,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="string\_mbstrnlen.c" />
     <ClCompile Include="string\_splitpath.c" />
     <ClCompile Include="string\_splitpath_s.c" />
+    <ClCompile Include="string\_wcslwr_s.c" />
     <ClCompile Include="string\_wsplitpath.c" />
     <ClCompile Include="string\_wsplitpath_s.c" />
     <ClCompile Include="sys_stat\systime.c" />
@@ -953,6 +1389,9 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ProjectReference Include="..\..\..\include\psdk\psdk.vcxproj">
       <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
     </ProjectReference>
+    <ProjectReference Include="chkstk\chkstk.vcxproj">
+      <Project>{7fe60e96-c5d5-463f-98d0-d60736f8a797}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0332ACA7-B63D-40E8-8AF1-647A19B4DAEE}</ProjectGuid>
@@ -1001,13 +1440,15 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__REACTOS__;WIN32;_DEBUG;_LIB;_X86_;USE_MSVCRT_PREFIX;_MSVCRT_;_CRTBLD;CRTDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__MINGW_IMPORT=extern;USE_MSVCRT_PREFIX;_MSVCRT_LIB_;_MSVCRT_;_MT;CRTDLL;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_CRTBLD;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\crt;..\..\..\include\psdk;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;.\include;..\..\..\include\reactos\libs;.\include\internal\mingw-w64</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -1031,6 +1472,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
