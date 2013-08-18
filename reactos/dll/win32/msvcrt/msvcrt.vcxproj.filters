@@ -31,6 +31,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="msvcrt.spec" />
+    <CustomBuild Include="msvcrt.spec" />
   </ItemGroup>
 </Project>
