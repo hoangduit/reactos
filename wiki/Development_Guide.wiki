@@ -495,14 +495,14 @@ Enable COMDAT Folding
 Function Order
 Profile Guided  Database
 Link Time Code Generation
-====Embedded IDL====
+=====Embedded IDL=====
 MIDL Commands
 Ignore Embedded IDL
 Merged IDL Base File Name
 Type Library
 Typelib Resource ID
-====Windows Metadata====
-====Advanced====
+=====Windows Metadata=====
+=====Advanced=====
 Entry Point
 Base Address
 Randomized Base Address
@@ -524,9 +524,8 @@ Error Reporting
 SectionAlignment
 Preserve Last Error Code for PInvoke Calls
 Image Has Safe Exception Handlers
-====All Options====
-
-====Command-Line====
+=====All Options=====
+=====Command-Line=====
 Librarian
 General
 Output File
@@ -553,7 +552,7 @@ Command Line
 All Options
 Additional Options
 Inherit from parent or project defaults
-===Manifest Tool===
+====Manifest Tool====
 General
 Suppress Startup Banner
 Verbose Output
@@ -580,8 +579,8 @@ Advanced
 Update File Hashes
 Update File Hashes Search Path
 Command Line
-===Resources===
-====General====
+====Resources====
+=====General=====
 When a .rc files contains a #include, the resource compiler will sometimes complain that it cannot find the file that is being included, even though the programmer has specified the path to the included file in the IDE settings. The reason is that the programmer is in error – he did, indeed, specify a path, but for C/C++ files, not for .rc files. The .rc files in question must have their #include’s updated accordingly.
 
 
@@ -595,7 +594,7 @@ Suppress Startup Banner
 Resource File Name
 Null Terminate Strings
 Command Line
-===XML Document Generator===
+====XML Document Generator====
 General
 Suppress Startup Banner
 Additional Document File
@@ -603,13 +602,13 @@ Output Document File
 Document Library Dependencies
 
 Command Line
-===Browse Information===
+====Browse Information====
 General
 Suppress Startup Banner
 Output File
 Preserve SBR Files
 Command Line
-===Build Events===
+====Build Events====
 Pre-Build Event
 Command Line
 Description
@@ -622,10 +621,10 @@ Post-Build Event
 Command Line
 Description
 Use In Build
-===Custom Build Step===
+====Custom Build Step====
 General
-===Custom Build Tool===
-===Code Analysis===
+====Custom Build Tool====
+====Code Analysis====
 
 
 == Create Project For A Command-Line Tool ==
