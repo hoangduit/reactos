@@ -1,6 +1,6 @@
 #summary Development guide for ReactOS contributors using Visual Studio.
 #sidebar TableOfContents
-<wiki:toc max_depth="5" />
+<wiki:toc max_depth="6" />
 
 = Overview =
 This guide will assume you have an out-of-the-box installation of Windows or ReactOS.  Starting from scratch, building ReactOS on Visual Studio requires some Development Tools, the ReactOS source, and some configuration.  This guide will assume a certain level of technical ability on your part, as this is a guide to compiling an operating system.
@@ -293,36 +293,36 @@ https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 ====Framework and References====
 ===Configuration Properties===
 ====General====
-Output Directory
-Intermediate Directory
-Configuration Type
-Character Set
+=====Output Directory=====
+=====Intermediate Directory=====
+=====Configuration Type=====
+=====Character Set=====
 ====Debugging====
 ====VC++ Directories====
 ====C/C++====
-General
-Additional Include Directories
-Resolve #using References
-Debug Information Format
+=====General=====
+======Additional Include Directories======
+======Resolve #using References======
+======Debug Information Format======
 
 1>advapi32_stubs.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
-Common Language RunTime Support
-Suppress Startup Banner
-Warning Level
-Treat Warnings As Errors
-Multi-processor Compilation
+======Common Language RunTime Support======
+======Consume Windows Runtime Extension======
+======Suppress Startup Banner======
+======Warning Level======
+======Treat Warnings As Errors======
+======Multi-processor Compilation======
 User Unicode For Assembler Listing
 =====Optimization=====
-Optimization
-Inline Function Expansion
-Enable Intrinsic Functions
-Favor Size Or Speed
-Omit Frame Pointers
-Enable Fiber-Safe Optimizations
-Whole Program Optimization
-Additional Include Directories
+======Optimization======
+======Inline Function Expansion======
+======Enable Intrinsic Functions======
+======Favor Size Or Speed======
+======Omit Frame Pointers======
+======Enable Fiber-Safe Optimizations======
+======Whole Program Optimization======
 =====Preprocessor=====
-Preprocessors Definitions
+======Preprocessors Definitions======
 
 {{{
 1>------ Build started: Project: msvcrt, Configuration: Debug Win32 ------
@@ -434,34 +434,34 @@ Ignore Standard Include Directories
 Command Line
 ====Linker====
 =====General=====
-Output File
-Show Progress
-Version
-Enable Incremental Linking
-Suppress Startup Banner
-Ignore Import Library
-Register Output
-Per-user Redirection
-Additional Library Directories
-Link Library Dependencies
-Use Library Dependency Inputs
-Link Status
-Prevent Dll Binding
-Treat Linker Warning As Errors
-Force File Output
-Create Hot Patchable Image
-Specify Section Attributes
+======Output File======
+======Show Progress======
+======Version======
+======Enable Incremental Linking======
+======Suppress Startup Banner======
+======Ignore Import Library======
+======Register Output======
+======Per-user Redirection======
+======Additional Library Directories======
+======Link Library Dependencies======
+======Use Library Dependency Inputs======
+======Link Status======
+======Prevent Dll Binding======
+======Treat Linker Warning As Errors======
+======Force File Output======
+======Create Hot Patchable Image======
+======Specify Section Attributes======
 =====Input=====
-Additional Dependencies
-Ignore All Default Libraries
-Ignore Specific Default Libraries
-Module Definition File
-Add Module to Assembly
-Embed Managed Resource File
-Force Symbol References
-Delay Loaded Dlls
-Assembly Link Resource
-====Manifest File====
+======Additional Dependencies======
+======Ignore All Default Libraries======
+======Ignore Specific Default Libraries======
+======Module Definition File======
+======Add Module to Assembly======
+======Embed Managed Resource File======
+======Force Symbol References======
+======Delay Loaded Dlls======
+======Assembly Link Resource======
+=====Manifest File=====
 Generate Manifest
 Manifest File
 Allow Isolation
