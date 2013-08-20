@@ -287,9 +287,24 @@ If you want to perform a test of compiling ReactOS, there's a couple changes you
 
 https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 
-= Create Visual Studio Projects =
-== Project Properties ==
-=== Common Properties ===
+=Create Visual Studio Projects=
+==CMakeLists.txt==
+===A Command-Line Tool===
+===Message Codes (bugcodes.h)===
+===ks386.inc===
+===Boot Sector Image===
+===Free Loader===
+===An Import Library===
+===NTOSKRNL.EXE===
+===HAL.DLL===
+===KDCOM.DLL===
+===Bootvid.DLL===
+===Registry Hives===
+===A Kernel-Mode Driver===
+===A User-Mode DLL===
+===A User-Mode EXE===
+==Project Properties==
+===Common Properties===
 ====Framework and References====
 ===Configuration Properties===
 ====General====
@@ -625,22 +640,6 @@ Use In Build
 General
 ====Custom Build Tool====
 ====Code Analysis====
-
-
-== Create Project For A Command-Line Tool ==
-== Create Project For Message Codes ==
-== Create Project For ks386.inc ==
-== Create Project For Boot Sector Image ==
-== Create Project For Free Loader ==
-== Create Project For An Import Library ==
-== Create Project For NTOSKRNL.EXE ==
-== Create Project For HAL.DLL ==
-== Create Project For KDCOM.DLL ==
-== Create Project For BootVid.DLL ==
-== Create Project For Registry Hives ==
-== Create Project For A Kernel-Mode Driver ==
-== Create Project For A User-Mode DLL ==
-== Create Project For A User-Mode EXE ==
 
 Our example for creating a user-mode *`.EXE`* is *`calc.exe`*.<br>
 Use *`Explorer.exe`* to locate the source code for *`calc.exe`*. It is the directory at:<br>
