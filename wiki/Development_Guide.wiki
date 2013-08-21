@@ -97,19 +97,6 @@ URL: http://jira.reactos.org/
 = Pull Source Code From Repository =
 You can get the source code via command line or with the TortoiseSVN Browser.
 
-== Pull Source Code Using SVN Command Line ==
-  _(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
-
-  Open up a Command Prompt and navigate to where you'd like to put the source code.
-
-  If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
-  {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
-
-  If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
-  {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
-
-  A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
-
 == Pull Source Code Using SVN GUI ==
 ...
 
@@ -137,6 +124,19 @@ When finished, your ReactOS source will again have the green "no changes have be
   https://reactos.googlecode.com/svn/wiki/SVN%20Browser%203%20-%20en.png
 
   Once it's finished, you're ready to fire up Visual Studio!
+
+== Pull Source Code Using SVN Command Line ==
+  _(This is written for TortoiseSVN, but will likely work for other SVN command line utilities as well.)_
+
+  Open up a Command Prompt and navigate to where you'd like to put the source code.
+
+  If you're a member and you'd like commit access, use the following command (replace <<name@email.com>> with your Google Code email account).  Note that it's *https*, not http.<br>
+  {{{svn checkout https://reactos.googlecode.com/svn/trunk/ reactos --username <<name@email.com>>}}}
+
+  If you're not a member, or you'd like to download anonymously, you can get a read-only copy with the following command.  This time it's *http*.<br>
+  {{{svn checkout http://reactos.googlecode.com/svn/trunk/ reactos-read-only}}}
+
+  A recent checkout clocked in at 661MB, so this may take a while depending on your internet connection.  You only need to do this once.  After your initial download, all changes will be Updates or Commits.  See [TortoiseSVN].
 
 == Special Files That Are Pulled ==
 
