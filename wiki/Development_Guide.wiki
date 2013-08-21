@@ -595,31 +595,29 @@ Command Line
 =====General=====
 When a .rc files contains a #include, the resource compiler will sometimes complain that it cannot find the file that is being included, even though the programmer has specified the path to the included file in the IDE settings. The reason is that the programmer is in error – he did, indeed, specify a path, but for C/C++ files, not for .rc files. The .rc files in question must have their #include’s updated accordingly.
 
-
-Preprocess Definitions
-Use Undefine Preprocessor Definitions
-Culture
-Additional Include Directories
-Ignore Standard Include Paths
-Show Progress
-Suppress Startup Banner
-Resource File Name
-Null Terminate Strings
-Command Line
+======Preprocess Definitions======
+======Use Undefine Preprocessor Definitions======
+======Culture======
+======Additional Include Directories======
+======Ignore Standard Include Paths======
+======Show Progress======
+======Suppress Startup Banner======
+======Resource File Name======
+======Null Terminate Strings======
+=====Command Line=====
 ====XML Document Generator====
-General
-Suppress Startup Banner
-Additional Document File
-Output Document File
-Document Library Dependencies
-
-Command Line
+=====General=====
+======Suppress Startup Banner======
+======Additional Document File======
+======Output Document File======
+======Document Library Dependencies======
+=====Command Line=====
 ====Browse Information====
-General
-Suppress Startup Banner
-Output File
-Preserve SBR Files
-Command Line
+=====General=====
+======Suppress Startup Banner======
+======Output File======
+======Preserve SBR Files======
+=====Command Line======
 ====Build Events====
 Pre-Build Event
 Command Line
