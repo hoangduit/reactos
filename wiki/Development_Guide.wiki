@@ -619,20 +619,20 @@ When a .rc files contains a #include, the resource compiler will sometimes compl
 ======Preserve SBR Files======
 =====Command Line======
 ====Build Events====
-Pre-Build Event
-Command Line
-Description
-Use In Build
-Pre-Link Event
-Command Line
-Description
-Use In Build
-Post-Build Event
-Command Line
-Description
-Use In Build
+=====Pre-Build Event=====
+======Command Line======
+======Description======
+======Use In Build======
+=====Pre-Link Event=====
+======Command Line======
+======Description======
+======Use In Build======
+=====Post-Build Event=====
+======Command Line======
+======Description======
+======Use In Build======
 ====Custom Build Step====
-General
+=====General=====
 ====Custom Build Tool====
 ====Code Analysis====
 
