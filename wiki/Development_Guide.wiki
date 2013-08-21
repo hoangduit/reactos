@@ -754,11 +754,11 @@ https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_P
 === Edit C/C++ Code ===
 === Edit Language Files ===
 == Build ==
-=== Build According to CPU Type ===
+=== Build According to Platform ===
 ==== Build For x86_32 ====
 ==== Build For x86_64 ====
 ==== Build For ARM ====
-=== Build According to Debug or Release ===
+=== Build According to Configuration ===
 ==== Build For Debug ====
 ==== Build For Release ====
 === Build A Single File ===
