@@ -486,7 +486,7 @@ Keep Comments
 ======Map Exports======
 ======Debuggable Assembly======
 =====System=====
-======SubSystem======
+======Sub System======
 ======Minimum Required Version======
 ======Heap Reserve Size======
 ======Heap Commit Size======
