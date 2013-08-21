@@ -565,31 +565,31 @@ All Options
 Additional Options
 Inherit from parent or project defaults
 ====Manifest Tool====
-General
-Suppress Startup Banner
-Verbose Output
-Assembly Identity
-Input and Output
-Additional Manifest Files
-Input Resource Manifests
-Embed Manifest
-Output Manifest File
-Manifest Resource File
-Generate Catalog Files
-Generated Manifest From ManagedAssembly
-Suppress Dependency Element
-Generate Category Tags
-Enable DPI Awareness
+=====General=====
+======Suppress Startup Banner======
+======Verbose Output======
+======Assembly Identity======
+=====Input and Output=====
+======Additional Manifest Files======
+======Input Resource Manifests======
+======Embed Manifest======
+======Output Manifest File======
+======Manifest Resource File======
+======Generate Catalog Files======
+======Generated Manifest From Managed Assembly======
+======Suppress Dependency Element======
+======Generate Category Tags======
+======Enable DPI Awareness======
 
-Isolated COM
-Type Library File
-Registrar Script File
-Component File Name
-Replacements File
+=====Isolated COM=====
+======Type Library File======
+======Registrar Script File======
+======Component File Name======
+======Replacements File======
 
-Advanced
-Update File Hashes
-Update File Hashes Search Path
+=====Advanced=====
+======Update File Hashes======
+======Update File Hashes Search Path======
 Command Line
 ====Resources====
 =====General=====
