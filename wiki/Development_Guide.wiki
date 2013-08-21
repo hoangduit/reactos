@@ -383,70 +383,63 @@ Preprocess Suppress Line Numbers
 Keep Comments
 
 =====Code Generation=====
-Enable String Pooling
-Enable Minimal Rebuild
-Enable C++ Exeptions
-Smaller Type Check
-Basic Runtime Checks
-Runtime Library
-Struct Member Alignment
-Buffer Security Check
-Enable Function-Level Linking
-Enable Enhanced Instruction Set
-Floating Point Model
-Enable Floating Point Exceptions
-Create Hotpatchable Image
+======Enable String Pooling======
+======Enable Minimal Rebuild======
+======Enable C++ Exceptions======
+======Smaller Type Check======
+======Basic Runtime Checks======
+======Runtime Library======
+======Struct Member Alignment======
+======Security Check======
+======Enable Function-Level Linking======
+======Enable Enhanced Instruction Set======
+======Enable Parallel Code Generation======
+======Enable Enhanded Instruction Set======
+======Floating Point Model======
+======Enable Floating Point Exceptions======
+======Create Hotpatchable Image======
 
 
 =====Language=====
-Disable Language Extensions
-Treat WChart_t As Built in Typye
-Force Conformance ini For Loop Scope
-Enable Run-Time Type Information
-Open MP Support
+======Disable Language Extensions======
+======Treat WChart_t As Built in Typye======
+======Force Conformance in For Loop Scope======
+======Enable Run-Time Type Information======
+======Open MP Support======
 
 =====Precompiled Headers=====
-Precompiled Header
-Precompiled Header File
-Precompiled Header Output File
+======Precompiled Header======
+======Precompiled Header File======
+======Precompiled Header Output File======
 
 =====Output Files=====
-Expand Attributed Source
-Assembler Output
-ASM List Location
-Object File Name
-Program Database File Name
-Generate XML Document Files
-XML Documentation File Name
+======Expand Attributed Source======
+======Assembler Output======
+======Use Unicode For Assembler Listing======
+======ASM List Location======
+======Object File Name======
+======Program Database File Name======
+======Generate XML Document Files======
+======XML Documentation File Name======
 
 =====Browse Information=====
-Enable Browse Information
-Browse Information File
+======Enable Browse Information======
+======Browse Information File======
 
 =====Advanced=====
-Calling Convention
-Compile As
-Disable Specific Warnings
-Forced Include File
-Force #using File
-Show Includes
-Use Full Paths
-Omit Default Library Name
-Internal Compiler Error Reporting
-Treat Specific Warnings As Errors
+======Calling Convention======
+======Compile As======
+======Disable Specific Warnings======
+======Forced Include File======
+======Force #using File======
+======Show Includes======
+======Use Full Paths======
+======Omit Default Library Name======
+======Internal Compiler Error Reporting======
+======Treat Specific Warnings As Errors======
 
-Calling Convention
-Compile As
-Disable Specific Warnings
-Force Include File
-Force #using File
-Show Includes
-Use Full Paths
-Omit Default Library Name
-Internal Compiler Error Reporting
-Treat Specific Warnings As Errors
-Ignore Standard Include Directories
-Command Line
+
+=====Command Line=====
 ====Linker====
 =====General=====
 ======Output File======
@@ -477,68 +470,72 @@ Command Line
 ======Delay Loaded Dlls======
 ======Assembly Link Resource======
 =====Manifest File=====
-Generate Manifest
-Manifest File
-Allow Isolation
-Enable User Account control (UAC)
-UAC Execution Level
-UAC Bypass UI Protection
+======Generate Manifest======
+======Manifest File======
+======Allow Isolation======
+======Enable User Account control (UAC)======
+======UAC Execution Level======
+======UAC Bypass UI Protection======
 
 =====Debugging=====
-Generate Debug Info
-Generate Program Database File
-Strip Private Symbols
-Generate Map File
-Map File Name
-Map Exports
-Debuggable Assembly
+======Generate Debug Info======
+======Generate Program Database File======
+======Strip Private Symbols======
+======Generate Map File======
+======Map File Name======
+======Map Exports======
+======Debuggable Assembly======
 =====System=====
-SubSystem
-Minimum Required Version
-Heap Reserve Size
-Heap Commit Size
-Stack Reserve Size
-Stack Commit Size
-Enable Large Addresses
-Terminal Server
-Swap Run From CD
-Swap Run From Network
-Driver
-Optimization
-References
-Enable COMDAT Folding
-Function Order
-Profile Guided  Database
-Link Time Code Generation
+======SubSystem======
+======Minimum Required Version======
+======Heap Reserve Size======
+======Heap Commit Size======
+======Stack Reserve Size======
+======Stack Commit Size======
+======Enable Large Addresses======
+======Terminal Server======
+======Swap Run From CD======
+======Swap Run From Network======
+======Driver======
+=====Optimization=====
+======References======
+======Enable COMDAT Folding======
+======Function Order======
+======Profile Guided  Database======
+======Link Time Code Generation======
 =====Embedded IDL=====
-MIDL Commands
-Ignore Embedded IDL
-Merged IDL Base File Name
-Type Library
-Typelib Resource ID
+======MIDL Commands======
+======Ignore Embedded IDL======
+======Merged IDL Base File Name======
+======Type Library======
+======Typelib Resource ID======
 =====Windows Metadata=====
 =====Advanced=====
-Entry Point
-Base Address
-Randomized Base Address
-Fixed Base Address
-Data Execution Prevention (DEP)
-Unload delay loaded DLL
-Nobind delay loaded DLL
-Import Library
-Merge Sections
-Target Machine
-Profile
-CLR Thread Attribute
-CLR Image Type
-Key File
-Key Container
-Delay Sign
-CLR Unmanaged Code Check
-Error Reporting
-SectionAlignment
-Preserve Last Error Code for PInvoke Calls
-Image Has Safe Exception Handlers
+======Entry Point======
+======No Entry Point======
+======Set Checksum======
+======Base Address======
+======Randomized Base Address======
+======Fixed Base Address======
+======Data Execution Prevention (DEP)======
+======Tunr Off Assembly Generation======
+======Unload delay loaded DLL======
+======Nobind delay loaded DLL======
+======Import Library======
+======Merge Sections======
+======Target Machine======
+======Profile======
+======CLR Thread Attribute======
+======CLR Image Type======
+======Key File======
+======Key Container======
+======Delay Sign======
+======CLR Unmanaged Code Check======
+======Detect One Definition Rule violations======
+======Error Reporting======
+======Section Alignment======
+======Preserve Last Error Code for PInvoke Calls======
+======Image Has Safe Exception Handlers======
 =====All Options=====
 =====Command-Line=====
 Librarian
