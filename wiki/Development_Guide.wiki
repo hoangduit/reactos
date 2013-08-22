@@ -647,32 +647,28 @@ Keep Comments
 ======Image Has Safe Exception Handlers======
 =====All Options=====
 =====Command-Line=====
-Librarian
-General
-Output File
-Additional Dependencies
-Additional Library Dependencies
-Suppress Startup Banner
-Module Definition File Name
-Ignore All Default Libraries
-Export Named Functions
-Force Symbol References
+===Librarian===
+=====General=====
+======Output File======
+======Additional Dependencies======
+======Additional Library Directories======
+======Suppress Startup Banner======
+======Module Definition File Name======
+======Ignore All Default Libraries======
+======Export Named Functions======
+======Force Symbol References======
 Use Unicode Response Files
-Link Library Dependencies
-Error Reporting
-Treat Lib Warning As Errors
-Target Machine
-Subsystem
-Minimum Required Version
-Remove Objects
-Verbose
-Name
-Link Time Code Generation
-
-Command Line
-All Options
-Additional Options
-Inherit from parent or project defaults
+======Link Library Dependencies======
+======Error Reporting======
+======Treat Lib Warning As Errors======
+======Target Machine======
+======Sub System======
+======Minimum Required Version======
+======Remove Objects======
+======Verbose======
+======Name======
+======Link Time Code Generation======
+=====Command Line=====
 ====Manifest Tool====
 =====General=====
 ======Suppress Startup Banner======
