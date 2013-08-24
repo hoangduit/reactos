@@ -603,6 +603,16 @@ https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_P
 
 https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/Run-Time-Library-No-DLL.png
 
+While creating *`msvcrt.vcxproj`*, the following linker warnings occurred:
+
+{{{
+1>     Creating library build\x86_32\Debug\msvcrt.lib and object build\x86_32\Debug\msvcrt.exp
+1>dllmain.obj : warning LNK4217: locally defined symbol __strdup imported in function _DllMain@12
+1>dllmain.obj : warning LNK4217: locally defined symbol __wcsdup imported in function _DllMain@12
+1>  msvcrt.vcxproj -> C:\Users\John\Desktop\Google Code\reactos\reactos\dll\win32\msvcrt\build\x86_32\Debug\msvcrt.dll
+}}}
+
+The source of these errors is, again, the phantom *`_DLL`* problem as just described, and the solution is the same.
 
 ======Struct Member Alignment======
 ======Security Check======
