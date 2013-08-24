@@ -656,16 +656,7 @@
     <None Include="..\math\amd64\tan.S">
       <Filter>math\amd64</Filter>
     </None>
-    <None Include="..\mem\i386\memchr_asm.s">
-      <Filter>mem\i386</Filter>
-    </None>
     <None Include="..\mem\i386\memcpy_asm.s">
-      <Filter>mem\i386</Filter>
-    </None>
-    <None Include="..\mem\i386\memmove_asm.s">
-      <Filter>mem\i386</Filter>
-    </None>
-    <None Include="..\mem\i386\memset_asm.s">
       <Filter>mem\i386</Filter>
     </None>
     <None Include="..\setjmp\amd64\setjmp.s">
@@ -673,36 +664,6 @@
     </None>
     <None Include="..\moldname-msvcrt.def">
       <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\string\i386\strcat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strchr_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strcmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strcpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strncat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strncmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strncpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strnlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\strrchr_asm.s">
-      <Filter>string\i386</Filter>
     </None>
     <None Include="..\string\i386\tcscat.inc">
       <Filter>string\i386</Filter>
@@ -732,36 +693,6 @@
       <Filter>string\i386</Filter>
     </None>
     <None Include="..\string\i386\tcsrchr.inc">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcscat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcschr_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcscmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcscpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcslen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcsncat_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcsncmp_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcsncpy_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcsnlen_asm.s">
-      <Filter>string\i386</Filter>
-    </None>
-    <None Include="..\string\i386\wcsrchr_asm.s">
       <Filter>string\i386</Filter>
     </None>
     <None Include="..\libcntpr.cmake" />
@@ -978,6 +909,75 @@
     </CustomBuild>
     <CustomBuild Include="..\misc\i386\readcr4.S">
       <Filter>misc\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\mem\i386\memchr_asm.s">
+      <Filter>mem\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\mem\i386\memmove_asm.s">
+      <Filter>mem\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\mem\i386\memset_asm.s">
+      <Filter>mem\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strcat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strchr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strcmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strcpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strncat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strncmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strncpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strnlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\strrchr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcscat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcschr_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcscmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcscpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcslen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcsncat_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcsncmp_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcsncpy_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcsnlen_asm.s">
+      <Filter>string\i386</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\string\i386\wcsrchr_asm.s">
+      <Filter>string\i386</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
