@@ -499,7 +499,7 @@ Keep Comments
 ======Basic Runtime Checks======
 ======Runtime Library======
 
-While creating *ftfd.vcxproj*, the ????, the following build errors occured:
+While creating *`ftfd.vcxproj`*, the following linker errors occurred:
 
 {{{
 >freetype.lib(ftbase.obj) : error LNK2019: unresolved external symbol __imp__strrchr referenced in function _raccess_make_file_name
@@ -509,7 +509,7 @@ While creating *ftfd.vcxproj*, the ????, the following build errors occured:
 ========== Build: 0 succeeded, 1 failed, 8 up-to-date, 0 skipped ==========
 }}}
 
-Since *`ftfd.dll`* does not dynamically link with any module that could possibly export *`memchr`*, something is obviously wrong with importation. Choosing the function *`_tt_face_find_bdf_prop`* arbitrarily for investigation, we discover that it uses a macro *`ft_memchr`* in the file :
+Since *`ftfd.dll`* does not dynamically link with any module that could possibly export *`memchr`*, something is obviously wrong with importation. Choosing the function *`_tt_face_find_bdf_prop`* arbitrarily for investigation, we discover that it uses a macro *`ft_memchr`* in the file:
 
 *`reactos\lib\3rdparty\freetype\src\sfnt\ttbdf.c`*:
 
@@ -616,6 +616,26 @@ The source of these errors is, again, the phantom *`_DLL`* problem as just descr
 
 ======Struct Member Alignment======
 ======Security Check======
+While creating *`atactl.vcxproj`*, the following linker errors occurred:
+
+{{{
+1>------ Build started: Project: atactl, Configuration: Debug Win32 ------
+1>  atactl.cpp
+1>atactl.obj : error LNK2019: unresolved external symbol ___report_rangecheckfailure referenced in function "unsigned char __cdecl ata_bblk(int,int,int)" (?ata_bblk@@YAEHHH@Z)
+1>atactl.obj : error LNK2019: unresolved external symbol @__security_check_cookie@4 referenced in function "unsigned char __cdecl ata_adapter_info(int,int)" (?ata_adapter_info@@YAEHH@Z)
+1>atactl.obj : error LNK2019: unresolved external symbol ___security_cookie referenced in function "unsigned char __cdecl ata_adapter_info(int,int)" (?ata_adapter_info@@YAEHH@Z)
+}}}
+
+The references to _security cookies_ probably has something to with the *`security check`* option. It appears that security check is currently enabled:
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/security_check_enabled.png
+
+Disabling it removes the compiler-generated references:
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/security_check_disabled.png
+
+Disabling it also resolves the *`___report_rangecheckfailure`* error.
+
 ======Enable Function-Level Linking======
 ======Enable Enhanced Instruction Set======
 ======Enable Parallel Code Generation======
