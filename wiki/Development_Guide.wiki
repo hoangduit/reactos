@@ -415,6 +415,49 @@ https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_P
 ==Project Properties==
 ===Common Properties===
 ====Framework and References====
+
+While creating *`atactl.vcxproj`*, the following linker error occurs.
+
+{{{
+1>------ Build started: Project: atactl, Configuration: Debug Win32 ------
+1>LINK : error LNK2001: unresolved external symbol _mainCRTStartup
+1>build\x86_32\Debug\atactl.exe : fatal error LNK1120: 1 unresolved externals
+========== Build: 0 succeeded, 1 failed, 20 up-to-date, 0 skipped ==========
+}}}
+
+We know that *`_mainCRTStartup`* has to do with the C run-time library. The *`CMakeLists.txt`* file that corresponds to *`atactl.vcxproj`* is as follows:
+
+{{{
+
+set_cpp()
+
+add_definitions(-DUSER_MODE)
+include_directories(${REACTOS_SOURCE_DIR}/drivers/storage/ide/uniata)
+add_executable(atactl atactl.cpp atactl.rc)
+set_module_type(atactl win32cui)
+add_importlibs(atactl advapi32 msvcrt kernel32 ntdll)
+
+if(NOT MSVC)
+    # FIXME: http://www.cmake.org/Bug/view.php?id=12998
+    #allow_warnings(atactl)
+    set_source_files_properties(atactl.cpp PROPERTIES COMPILE_FLAGS "-Wno-error")
+endif()
+
+add_cd_file(TARGET atactl DESTINATION reactos/system32 FOR all)
+}}}
+
+We check our *`References`* to make sure that we have not forgotten to link in a CRT-related library:
+
+All looks good, yet the error is still there, and the file where *`_mainCRTStartup`* is defined is not in the only possible supplicant: *`msvcrt.dll`*. 
+
+It turns out that there is a bug in the *`CMakeLists.txt`* scheme. Apparently, a dependence upon *`msvcrt.dll`* implies a dependence upon *`msvcrtex.lib`*, which we specify, to solve the problem:
+
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/References-_mainCRTStartup.png
+
+
+
+
 ===Configuration Properties===
 ====General====
 =====Output Directory=====
