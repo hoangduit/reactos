@@ -127,6 +127,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\include\psdk\psdk.vcxproj">
+      <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
     </ProjectReference>
@@ -135,9 +138,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
       <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\sdk\crt\chkstk\chkstk.vcxproj">
-      <Project>{7fe60e96-c5d5-463f-98d0-d60736f8a797}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\crt\crt.vcxproj">
       <Project>{0332aca7-b63d-40e8-8af1-647a19b4daee}</Project>
