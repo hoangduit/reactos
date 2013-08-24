@@ -498,6 +498,102 @@ Keep Comments
 ======Smaller Type Check======
 ======Basic Runtime Checks======
 ======Runtime Library======
+
+While creating *ftfd.vcxproj*, the ????, the following build errors occured:
+
+{{{
+>freetype.lib(ftbase.obj) : error LNK2019: unresolved external symbol __imp__strrchr referenced in function _raccess_make_file_name
+1>freetype.lib(sfnt.obj) : error LNK2019: unresolved external symbol __imp__memchr referenced in function _tt_face_find_bdf_prop
+1>freetype.lib(ttobjs.obj) : error LNK2019: unresolved external symbol __imp__strstr referenced in function _tt_check_trickyness_family
+1>build\x86_32\Debug\ftfd.dll : fatal error LNK1120: 4 unresolved externals
+========== Build: 0 succeeded, 1 failed, 8 up-to-date, 0 skipped ==========
+}}}
+
+Since `*ftfd*` only links with stack libraries, function importation should not have been occurring. Choosing the function *`_tt_face_find_bdf_prop`* arbitrarily for investigation, we discover that it uses a macro *`ft_memchr`* in the file :
+
+*`reactos\lib\3rdparty\freetype\src\sfnt\ttbdf.c`*:
+
+{{{
+
+          switch ( type & 0x0F )
+          {
+          case 0x00:  /* string */
+          case 0x01:  /* atoms */
+            /* check that the content is really 0-terminated */
+            if ( value < bdf->strings_size &&
+                 ft_memchr( bdf->strings + value, 0, bdf->strings_size ) )
+            {
+              aprop->type   = BDF_PROPERTY_TYPE_ATOM;
+              aprop->u.atom = (const char*)bdf->strings + value;
+              error         = SFNT_Err_Ok;
+              goto Exit;
+            }
+            break;
+}}}
+
+*`reactos\lib\3rdparty\freetype\src\sfnt\ttbdf.c`*
+
+...includes...
+
+*`reactos\lib\3rdparty\freetype\include\freetype\config\ftstdlib.h`*, which makes the following definitions:
+
+{{{
+#define ft_memchr   memchr
+#define ft_memcmp   memcmp
+#define ft_memcpy   memcpy
+#define ft_memmove  memmove
+#define ft_memset   memset
+#define ft_strcat   strcat
+#define ft_strcmp   strcmp
+#define ft_strcpy   strcpy
+#define ft_strlen   strlen
+#define ft_strncmp  strncmp
+#define ft_strncpy  strncpy
+#define ft_strrchr  strrchr
+#define ft_strstr   strstr
+}}}
+
+Intellisense tells us that *`memchr`* has the following declaration:
+
+{{{
+  _Must_inspect_result_
+  _CRTIMP
+  _CONST_RETURN
+  void*
+  __cdecl
+  memchr(
+    _In_reads_bytes_opt_(_MaxCount) const void *_Buf,
+    _In_ int _Val,
+    _In_ size_t _MaxCount);
+}}}
+
+Using Intellisense to hunt down *`_CRTIMP`* reveals its declaration as:
+
+{{{
+#ifndef _CRTIMP
+ #ifdef CRTDLL /* Defined for ntdll, crtdll, msvcrt, etc */
+  #define _CRTIMP
+ #elif defined(_DLL)
+  #define _CRTIMP __declspec(dllimport)
+ #else /* !CRTDLL && !_DLL */
+  #define _CRTIMP
+ #endif /* CRTDLL || _DLL */
+#endif /* !_CRTIMP */
+}}}
+
+And we see that *`_DLL`* is defined, even though the code is being built as a static library! This is abnormal, so we inspect the command-line for the compiler of the static library:
+
+{{{
+/X /GS- /analyze- /W3 /Zc:wchar_t /I"include" /I"." /I"C:\Users\John\Desktop\Google Code\reactos\reactos\\include\crt" /I"C:\Users\John\Desktop\Google Code\reactos\reactos\\include\psdk" /ZI /Gm /Od /Fd"build\x86_32\Debug\vc110.pdb" /fp:precise /D "__REACTOS__" /D "DBG=1" /D "_SEH_ENABLE_TRACE" /D "_WINKD_=1" /D "WINVER=0x502" /D "_WIN32_IE=0x600" /D "_WIN32_WINNT=0x502" /D "_WIN32_WINDOWS=0x502" /D "_SETUPAPI_VER=0x502" /D "_M_IX86" /D "_X86_" /D "__i386__" /D "i386" /D "USE_COMPILER_EXCEPTIONS" /D "_USE_32BIT_TIME_T" /D "WIN32" /D "_WINDOWS" /D "inline=__inline" /D "__STDC__=1" /D "LANGUAGE_EN_US" /D "__NTDRIVER__" /D "FT2_BUILD_LIBRARY" /D "CMAKE_INTDIR=\"Debug\"" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MDd /Fa"build\x86_32\Debug\" /EHsc /nologo /Fo"build\x86_32\Debug\" /Fp"build\x86_32\Debug\freetype.pch"
+}}}
+
+None of those command-line arguments indicate that *`_DLL`* is defined. This is very puzzling until we vaguely remember something about *`_DLL`* being implicitly defined depending on how we define another option: *`Runtime Library`*:
+
+
+
+
+
+
 ======Struct Member Alignment======
 ======Security Check======
 ======Enable Function-Level Linking======
