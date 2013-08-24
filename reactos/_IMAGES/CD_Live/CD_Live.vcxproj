@@ -68,8 +68,9 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
+copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
-copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL ."
+copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -131,8 +132,9 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
+copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
-copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL ."
+copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -143,6 +145,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\base\applications\atactl\atactl.vcxproj">
+      <Project>{b51b0f61-ebdb-4c05-becf-bd1904d77548}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\base\system\lsass\lsass.vcxproj">
       <Project>{bb3a4309-8882-49d1-91d4-1895f0ff959e}</Project>
     </ProjectReference>
