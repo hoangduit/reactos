@@ -509,7 +509,7 @@ While creating *ftfd.vcxproj*, the ????, the following build errors occured:
 ========== Build: 0 succeeded, 1 failed, 8 up-to-date, 0 skipped ==========
 }}}
 
-Since `*ftfd*` only links with stack libraries, function importation should not have been occurring. Choosing the function *`_tt_face_find_bdf_prop`* arbitrarily for investigation, we discover that it uses a macro *`ft_memchr`* in the file :
+Since *`ftfd.dll`* does not dynamically link with any module that could possibly export *`memchr`*, something is obviously wrong with importation. Choosing the function *`_tt_face_find_bdf_prop`* arbitrarily for investigation, we discover that it uses a macro *`ft_memchr`* in the file :
 
 *`reactos\lib\3rdparty\freetype\src\sfnt\ttbdf.c`*:
 
@@ -581,17 +581,27 @@ Using Intellisense to hunt down *`_CRTIMP`* reveals its declaration as:
 #endif /* !_CRTIMP */
 }}}
 
-And we see that *`_DLL`* is defined, even though the code is being built as a static library! This is abnormal, so we inspect the command-line for the compiler of the static library:
+And we see that *`_DLL`* is defined, even though *`freetype.lib`* is being built as a static library! This is abnormal, so we inspect the compiler command-line for *`freetype.lib`*:
 
 {{{
 /X /GS- /analyze- /W3 /Zc:wchar_t /I"include" /I"." /I"C:\Users\John\Desktop\Google Code\reactos\reactos\\include\crt" /I"C:\Users\John\Desktop\Google Code\reactos\reactos\\include\psdk" /ZI /Gm /Od /Fd"build\x86_32\Debug\vc110.pdb" /fp:precise /D "__REACTOS__" /D "DBG=1" /D "_SEH_ENABLE_TRACE" /D "_WINKD_=1" /D "WINVER=0x502" /D "_WIN32_IE=0x600" /D "_WIN32_WINNT=0x502" /D "_WIN32_WINDOWS=0x502" /D "_SETUPAPI_VER=0x502" /D "_M_IX86" /D "_X86_" /D "__i386__" /D "i386" /D "USE_COMPILER_EXCEPTIONS" /D "_USE_32BIT_TIME_T" /D "WIN32" /D "_WINDOWS" /D "inline=__inline" /D "__STDC__=1" /D "LANGUAGE_EN_US" /D "__NTDRIVER__" /D "FT2_BUILD_LIBRARY" /D "CMAKE_INTDIR=\"Debug\"" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /arch:IA32 /Gd /Oy- /MDd /Fa"build\x86_32\Debug\" /EHsc /nologo /Fo"build\x86_32\Debug\" /Fp"build\x86_32\Debug\freetype.pch"
 }}}
 
-None of those command-line arguments indicate that *`_DLL`* is defined. This is very puzzling until we vaguely remember something about *`_DLL`* being implicitly defined depending on how we define another option: *`Runtime Library`*:
+None of those command-line arguments indicate that *`_DLL`* is defined. This is very puzzling until we vaguely remember something about *`_DLL`* being implicitly defined depending on how we define another option: *`Runtime Library`* on [http://msdn.microsoft.com/en-us/library/2kzt1wy3.aspx MSDN]:
 
+*`/MD`*
+ Causes your application to use the multithread- and DLL-specific   version of the run-time library. Defines _MT and _DLL and causes the compiler to place the library name MSVCRT.lib into the .obj file.
+Applications compiled with this option are statically linked to MSVCRT.lib. This library provides a layer of code that allows the linker to resolve external references. The actual working code is contained in MSVCR100.DLL, which must be available at run time to applications linked with MSVCRT.lib.
 
+The solution is to change the compiler settings for the *`Runtime Library`* setting, even though we are not using a run-time library, to prevent *`_DLL`* from being implicitly defined:
 
+This...
 
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/Run-Time-Library-DLL.png
+
+...should be changed to this...
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/Run-Time-Library-No-DLL.png
 
 
 ======Struct Member Alignment======
