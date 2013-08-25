@@ -719,6 +719,53 @@ Disabling it also resolves the *`___report_rangecheckfailure`* error.
 ======Compile As======
 ======Disable Specific Warnings======
 ======Forced Include File======
+While creating *`imm.vcxproj`*, the following compiler errors occurred:
+
+{{{
+1>------ Build started: Project: imm32, Configuration: Debug Win32 ------
+1>  imm.c
+1>reactos\dll\win32\imm32\imm.c(58): error C2061: syntax error : identifier 'typeof'
+1>reactos\dll\win32\imm32\imm.c(59): error C2143: syntax error : missing '{' before '*'
+1>reactos\dll\win32\imm32\imm.c(60): error C2143: syntax error : missing '{' before '*'
+}}}
+
+The offending code in *`imm.c`* shows us that *`typeof`* is being called by the macro *`MAKE_FUNCPTR`*:
+
+{{{
+#define MAKE_FUNCPTR(f) typeof(f) * p##f
+typedef struct _tagImmHkl{
+    struct list entry;
+    HKL         hkl;
+    HMODULE     hIME;
+    IMEINFO     imeInfo;
+    WCHAR       imeClassName[17]; /* 16 character max */
+    ULONG       uSelected;
+    HWND        UIWnd;
+
+    /* Function Pointers */
+    MAKE_FUNCPTR(ImeInquire);
+    MAKE_FUNCPTR(ImeConfigure);
+    MAKE_FUNCPTR(ImeDestroy);
+    MAKE_FUNCPTR(ImeEscape);
+    MAKE_FUNCPTR(ImeSelect);
+}}}
+
+Intellisense tells us that *`typeof`* is not defined, and we know that *`typeof`* is certainly not a valid *`C`* keyword. Fortunately, we had the good-sense to use the *`CmakeLists.txt`* file as our guide, and remember seeing something like this in the *`CmakeLists.txt`* file:
+
+{{{
+if(MSVC)
+    # FIXME: http://www.cmake.org/Bug/view.php?id=12998
+    #add_target_compile_flags(imm32 "/FIwine/typeof.h")
+    set_source_files_properties(${SOURCE} PROPERTIES COMPILE_FLAGS "/FIwine/typeof.h")
+endif()
+}}}
+
+The *`"/FIwine/typeof.h"`* tells us that we need to force the compiler to do an inclusion of *`typeof.h`* into all `.c` files in the project, which undoubtedly contains a definition for *`typeof`*:
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/force_include.png
+
+
+
 ======Force #using File======
 ======Show Includes======
 ======Use Full Paths======
