@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{677F726D-0072-4A20-978E-B2917132677E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>win32k</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+    <TargetExt>.sys</TargetExt>
+    <IncludePath>$(WindowsSdkDir)\common\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+    <TargetExt>.sys</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;LANGPACK;_WIN32K_;CMAKE_INTDIR="Debug";win32k_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\dxsdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\subsys;$(SolutionDir)\include\reactos;$(SolutionDir)\lib\3rdparty\freetype\include</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <AdditionalOptions>"$(OutDir)dib8gen.c" "$(OutDir)dib16gen.c" "$(OutDir)dib32gen.c" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Native</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalOptions>"$(OutDir)\dib8gen.obj" "$(OutDir)\dib16gen.obj" "$(OutDir)\dib32gen.obj"</AdditionalOptions>
+      <Driver>Driver</Driver>
+      <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
+      <FixedBaseAddress>
+      </FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;LANGPACK;_WIN32K_;CMAKE_INTDIR="Debug";win32k_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\dxsdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\subsys;$(SolutionDir)\include\reactos;$(SolutionDir)\lib\3rdparty\freetype\include</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <AdditionalOptions>"$(OutDir)dib8gen.c" "$(OutDir)dib16gen.c" "$(OutDir)dib32gen.c" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Native</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalOptions>"$(OutDir)\dib8gen.obj" "$(OutDir)\dib16gen.obj" "$(OutDir)\dib32gen.obj"</AdditionalOptions>
+      <Driver>Driver</Driver>
+      <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
+      <FixedBaseAddress>
+      </FixedBaseAddress>
+      <RandomizedBaseAddress>
+      </RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\gdi\dib\i386\dib24bpp_hline.s">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\gdi\dib\i386\dib32bpp_colorfill.s">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\gdi\dib\i386\dib32bpp_hline.s">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\gdi\eng\i386\floatobj.S">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /nologo /I.\include /I"$(SolutionDir)\include\asm" /I"$(SolutionDir)\include\asm\build\x86_32\$(Configuration)" /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\win32k.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\CMakeLists.txt">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\gendib\$(OutDir)\gendib.exe"  $(OutDir)
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\gendib\$(OutDir)\gendib.exe"  $(OutDir)
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating dib8gen.c, dib16gen.c, dib32gen.c</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating dib8gen.c, dib16gen.c, dib32gen.c</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)dib8gen.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)dib8gen.c</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\win32k.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\gdi\dib\alphablend.c" />
+    <ClCompile Include="..\gdi\dib\dib.c" />
+    <ClCompile Include="..\gdi\dib\dib16bpp.c" />
+    <ClCompile Include="..\gdi\dib\dib1bpp.c" />
+    <ClCompile Include="..\gdi\dib\dib24bpp.c" />
+    <ClCompile Include="..\gdi\dib\dib32bpp.c" />
+    <ClCompile Include="..\gdi\dib\dib4bpp.c" />
+    <ClCompile Include="..\gdi\dib\dib8bpp.c" />
+    <ClCompile Include="..\gdi\dib\floodfill.c" />
+    <ClCompile Include="..\gdi\dib\stretchblt.c" />
+    <ClCompile Include="..\gdi\eng\alphablend.c" />
+    <ClCompile Include="..\gdi\eng\bitblt.c" />
+    <ClCompile Include="..\gdi\eng\clip.c" />
+    <ClCompile Include="..\gdi\eng\copybits.c" />
+    <ClCompile Include="..\gdi\eng\debug.c" />
+    <ClCompile Include="..\gdi\eng\device.c" />
+    <ClCompile Include="..\gdi\eng\driverobj.c" />
+    <ClCompile Include="..\gdi\eng\engbrush.c" />
+    <ClCompile Include="..\gdi\eng\engevent.c" />
+    <ClCompile Include="..\gdi\eng\engmisc.c" />
+    <ClCompile Include="..\gdi\eng\engwindow.c" />
+    <ClCompile Include="..\gdi\eng\error.c" />
+    <ClCompile Include="..\gdi\eng\float.c" />
+    <ClCompile Include="..\gdi\eng\gradient.c" />
+    <ClCompile Include="..\gdi\eng\ldevobj.c" />
+    <ClCompile Include="..\gdi\eng\lineto.c" />
+    <ClCompile Include="..\gdi\eng\mapping.c" />
+    <ClCompile Include="..\gdi\eng\math.c" />
+    <ClCompile Include="..\gdi\eng\mem.c" />
+    <ClCompile Include="..\gdi\eng\mouse.c" />
+    <ClCompile Include="..\gdi\eng\paint.c" />
+    <ClCompile Include="..\gdi\eng\pdevobj.c" />
+    <ClCompile Include="..\gdi\eng\perfcnt.c" />
+    <ClCompile Include="..\gdi\eng\rlecomp.c" />
+    <ClCompile Include="..\gdi\eng\semaphor.c" />
+    <ClCompile Include="..\gdi\eng\sort.c" />
+    <ClCompile Include="..\gdi\eng\stretchblt.c" />
+    <ClCompile Include="..\gdi\eng\string.c" />
+    <ClCompile Include="..\gdi\eng\stubs.c" />
+    <ClCompile Include="..\gdi\eng\surface.c" />
+    <ClCompile Include="..\gdi\eng\transblt.c" />
+    <ClCompile Include="..\gdi\eng\umpdstubs.c" />
+    <ClCompile Include="..\gdi\eng\xlateobj.c" />
+    <ClCompile Include="..\gdi\ntgdi\arc.c" />
+    <ClCompile Include="..\gdi\ntgdi\bezier.c" />
+    <ClCompile Include="..\gdi\ntgdi\bitblt.c" />
+    <ClCompile Include="..\gdi\ntgdi\bitmaps.c" />
+    <ClCompile Include="..\gdi\ntgdi\brush.c" />
+    <ClCompile Include="..\gdi\ntgdi\cliprgn.c" />
+    <ClCompile Include="..\gdi\ntgdi\coord.c" />
+    <ClCompile Include="..\gdi\ntgdi\dcattr.c" />
+    <ClCompile Include="..\gdi\ntgdi\dclife.c" />
+    <ClCompile Include="..\gdi\ntgdi\dcobjs.c" />
+    <ClCompile Include="..\gdi\ntgdi\dcstate.c" />
+    <ClCompile Include="..\gdi\ntgdi\dcutil.c" />
+    <ClCompile Include="..\gdi\ntgdi\device.c" />
+    <ClCompile Include="..\gdi\ntgdi\dibobj.c" />
+    <ClCompile Include="..\gdi\ntgdi\drawing.c" />
+    <ClCompile Include="..\gdi\ntgdi\fillshap.c" />
+    <ClCompile Include="..\gdi\ntgdi\font.c" />
+    <ClCompile Include="..\gdi\ntgdi\freetype.c" />
+    <ClCompile Include="..\gdi\ntgdi\gdibatch.c" />
+    <ClCompile Include="..\gdi\ntgdi\gdidbg.c" />
+    <ClCompile Include="..\gdi\ntgdi\gdiobj.c" />
+    <ClCompile Include="..\gdi\ntgdi\gdipool.c" />
+    <ClCompile Include="..\gdi\ntgdi\icm.c" />
+    <ClCompile Include="..\gdi\ntgdi\line.c" />
+    <ClCompile Include="..\gdi\ntgdi\metafile.c" />
+    <ClCompile Include="..\gdi\ntgdi\palette.c" />
+    <ClCompile Include="..\gdi\ntgdi\path.c" />
+    <ClCompile Include="..\gdi\ntgdi\pen.c" />
+    <ClCompile Include="..\gdi\ntgdi\polyfill.c" />
+    <ClCompile Include="..\gdi\ntgdi\print.c" />
+    <ClCompile Include="..\gdi\ntgdi\rect.c" />
+    <ClCompile Include="..\gdi\ntgdi\region.c" />
+    <ClCompile Include="..\gdi\ntgdi\stockobj.c" />
+    <ClCompile Include="..\gdi\ntgdi\text.c" />
+    <ClCompile Include="..\gdi\ntgdi\wingl.c" />
+    <ClCompile Include="..\gdi\ntgdi\xformobj.c" />
+    <ClCompile Include="..\reactx\ntddraw\d3d.c" />
+    <ClCompile Include="..\reactx\ntddraw\dd.c" />
+    <ClCompile Include="..\reactx\ntddraw\ddraw.c" />
+    <ClCompile Include="..\reactx\ntddraw\ddsurf.c" />
+    <ClCompile Include="..\reactx\ntddraw\dvp.c" />
+    <ClCompile Include="..\reactx\ntddraw\dxeng.c" />
+    <ClCompile Include="..\reactx\ntddraw\eng.c" />
+    <ClCompile Include="..\reactx\ntddraw\mocomp.c" />
+    <ClCompile Include="..\user\ntuser\accelerator.c" />
+    <ClCompile Include="..\user\ntuser\callback.c" />
+    <ClCompile Include="..\user\ntuser\callproc.c" />
+    <ClCompile Include="..\user\ntuser\caret.c" />
+    <ClCompile Include="..\user\ntuser\class.c" />
+    <ClCompile Include="..\user\ntuser\clipboard.c" />
+    <ClCompile Include="..\user\ntuser\cursoricon.c" />
+    <ClCompile Include="..\user\ntuser\defwnd.c" />
+    <ClCompile Include="..\user\ntuser\desktop.c" />
+    <ClCompile Include="..\user\ntuser\display.c" />
+    <ClCompile Include="..\user\ntuser\event.c" />
+    <ClCompile Include="..\user\ntuser\focus.c" />
+    <ClCompile Include="..\user\ntuser\guicheck.c" />
+    <ClCompile Include="..\user\ntuser\hook.c" />
+    <ClCompile Include="..\user\ntuser\hotkey.c" />
+    <ClCompile Include="..\user\ntuser\input.c" />
+    <ClCompile Include="..\user\ntuser\kbdlayout.c" />
+    <ClCompile Include="..\user\ntuser\keyboard.c" />
+    <ClCompile Include="..\user\ntuser\main.c" />
+    <ClCompile Include="..\user\ntuser\menu.c" />
+    <ClCompile Include="..\user\ntuser\message.c" />
+    <ClCompile Include="..\user\ntuser\metric.c" />
+    <ClCompile Include="..\user\ntuser\misc.c" />
+    <ClCompile Include="..\user\ntuser\misc\copy.c" />
+    <ClCompile Include="..\user\ntuser\misc\file.c" />
+    <ClCompile Include="..\user\ntuser\misc\registry.c" />
+    <ClCompile Include="..\user\ntuser\misc\rtlstr.c" />
+    <ClCompile Include="..\user\ntuser\monitor.c" />
+    <ClCompile Include="..\user\ntuser\mouse.c" />
+    <ClCompile Include="..\user\ntuser\msgqueue.c" />
+    <ClCompile Include="..\user\ntuser\ntstubs.c" />
+    <ClCompile Include="..\user\ntuser\ntuser.c" />
+    <ClCompile Include="..\user\ntuser\object.c" />
+    <ClCompile Include="..\user\ntuser\painting.c" />
+    <ClCompile Include="..\user\ntuser\prop.c" />
+    <ClCompile Include="..\user\ntuser\scrollbar.c" />
+    <ClCompile Include="..\user\ntuser\session.c" />
+    <ClCompile Include="..\user\ntuser\simplecall.c" />
+    <ClCompile Include="..\user\ntuser\sysparams.c" />
+    <ClCompile Include="..\user\ntuser\timer.c" />
+    <ClCompile Include="..\user\ntuser\useratom.c" />
+    <ClCompile Include="..\user\ntuser\usrheap.c" />
+    <ClCompile Include="..\user\ntuser\vis.c" />
+    <ClCompile Include="..\user\ntuser\windc.c" />
+    <ClCompile Include="..\user\ntuser\window.c" />
+    <ClCompile Include="..\user\ntuser\winpos.c" />
+    <ClCompile Include="..\user\ntuser\winsta.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\lib\import\HAL\HAL.vcxproj">
+      <Project>{19d0d0aa-c065-4101-9f74-e45a87d35ba7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lib\import\ntoskrnl\ntoskrnl.vcxproj">
+      <Project>{315ae91a-d723-485c-abd0-1378a1ead8e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lib\sdk\crt\libcntpr\libcntpr.vcxproj">
+      <Project>{271006d5-01b2-4f33-8699-9909a41e0707}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lib\sdk\dxguid\dxguid.vcxproj">
+      <Project>{7feb118d-0eae-4c52-94a8-e6e6e2048a78}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\drivers\font\ftfd\ftfd.vcxproj">
+      <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
