@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}</ProjectGuid>
+    <RootNamespace>diblib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BitBlt.c" />
+    <ClCompile Include="BitBlt_DSTINVERT.c" />
+    <ClCompile Include="BitBlt_MERGECOPY.c" />
+    <ClCompile Include="BitBlt_MERGEPAINT.c" />
+    <ClCompile Include="BitBlt_NOTPATCOPY.c" />
+    <ClCompile Include="BitBlt_NOTSRCCOPY.c" />
+    <ClCompile Include="BitBlt_NOTSRCERASE.c" />
+    <ClCompile Include="BitBlt_other.c" />
+    <ClCompile Include="BitBlt_PATCOPY.c" />
+    <ClCompile Include="BitBlt_PATINVERT.c" />
+    <ClCompile Include="BitBlt_PATPAINT.c" />
+    <ClCompile Include="BitBlt_SRCAND.c" />
+    <ClCompile Include="BitBlt_SRCCOPY.c" />
+    <ClCompile Include="BitBlt_SRCERASE.c" />
+    <ClCompile Include="BitBlt_SRCINVERT.c" />
+    <ClCompile Include="BitBlt_SRCPAINT.c" />
+    <ClCompile Include="DibLib.c" />
+    <ClCompile Include="MaskBlt.c" />
+    <ClCompile Include="MaskCopy.c" />
+    <ClCompile Include="MaskPaint.c" />
+    <ClCompile Include="MaskPatBlt.c" />
+    <ClCompile Include="MaskPatPaint.c" />
+    <ClCompile Include="MaskSrcBlt.c" />
+    <ClCompile Include="MaskSrcPaint.c" />
+    <ClCompile Include="MaskSrcPatBlt.c" />
+    <ClCompile Include="PatPaint.c" />
+    <ClCompile Include="RopFunctions.c" />
+    <ClCompile Include="SrcPaint.c" />
+    <ClCompile Include="SrcPatBlt.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DibLib.h" />
+    <ClInclude Include="DibLib_AllDstBPP.h" />
+    <ClInclude Include="DibLib_AllSrcBPP.h" />
+    <ClInclude Include="DibLib_BitBlt.h" />
+    <ClInclude Include="DibLib_interface.h" />
+    <ClInclude Include="RopFunctions.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
