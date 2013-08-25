@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="controls">
+      <UniqueIdentifier>{a590e90e-1171-4500-befb-0b3e7f0492d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{d5104097-821c-4d87-aaf7-2be8f49369a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{3f733ff1-877a-400e-b66c-4b2e8df4e339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{326e4cd7-1567-4b28-8bf7-7ca6073ec5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{f0708f60-a030-49c8-a65d-37af6144d2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{7fe988da-9ccb-4bfa-9a19-64fe57d82e72}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="controls\appswitch.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\combo.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\edit.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\icontitle.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\listbox.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\regcontrol.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\scrollbar.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\static.c">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\dde.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\ddeclient.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\ddeserver.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\desktop.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\display.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\dllmain.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\exit.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\exticon.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\imm.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\misc.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\object.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\resources.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\rtlstr.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\stubs.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\timer.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\usrapihk.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\winhelp.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\winsta.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\accel.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\caret.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\class.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\clipboard.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\cursoricon.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\cursoricon_new.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\dc.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\defwnd.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\dialog.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\draw.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\font.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\hook.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\input.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\mdi.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\menu.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\message.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\messagebox.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\nonclient.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\paint.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\prop.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\rect.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\spy.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\text.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\window.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\winpos.c">
+      <Filter>windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="lang\bg-BG.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\cs-CZ.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\da-DK.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\de-DE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\el-GR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\en-US.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\es-ES.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\fr-FR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\he-IL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\hu-HU.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\id-ID.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\it-IT.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ja-JP.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\lt-LT.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\nl-NL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\no-NO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pl-PL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pt-BR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ro-RO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ru-RU.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sk-SK.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sv-SE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\tr-TR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\uk-UA.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-CN.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="user32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\controls.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dde_private.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ntwrapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\regcontrol.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\resource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\user_x.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\user32.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\user32p.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\obm_btncorners.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_btsize.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_check.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_checkboxes.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_close.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_combo.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_dnarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_dnarrowd.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_dnarrowi.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_lfarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_lfarrowd.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_lfarrowi.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_mnarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_close.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_dnarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_lfarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_reduce.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_restore.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_rgarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_uparrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_old_zoom.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_reduce.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_reduced.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_restore.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_restored.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_rgarrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_rgarrowd.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_rgarrowi.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_size.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_trtype.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_uparrow.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_uparrowd.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_uparrowi.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_zoom.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\obm_zoomd.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_bang.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_hand.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_note.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_ques.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_reactos.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\oic_sample.ico">
+      <Filter>resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\ocr_appstarting.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_cdautostart.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_cross.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_dragobject.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_hand.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_help.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_ibeam.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_icon.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_no.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_normal.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_pen.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_size.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_sizeall.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_sizenesw.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_sizens.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_sizenwse.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_sizewe.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_up.cur">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\ocr_wait.cur">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="user32.spec" />
+  </ItemGroup>
+</Project>
