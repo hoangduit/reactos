@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="gdi">
+      <UniqueIdentifier>{52ef2305-0c13-4447-b62b-2ff7c4cf8084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi\dib">
+      <UniqueIdentifier>{58dcabba-5c7d-4db7-b81d-0e263b33ef97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi\eng">
+      <UniqueIdentifier>{1a04ea8a-a302-49cf-af62-afadb7fabb70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user">
+      <UniqueIdentifier>{c36b389b-9796-49e4-ba93-87f615a4a1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\ntuser">
+      <UniqueIdentifier>{5be44bc3-9092-4188-8ff5-6b5e615f59ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reactx">
+      <UniqueIdentifier>{9da9c99b-6996-41bf-901c-e8f61071c0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="reactx\ntddraw">
+      <UniqueIdentifier>{f1eb0d4c-e2de-4b9f-b99d-d19e2fd18566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi\ntgdi">
+      <UniqueIdentifier>{db5d8b3c-c23a-4584-a973-0ed02f969422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi\dib\i386">
+      <UniqueIdentifier>{d92babfe-f3c5-4e90-a77b-34445d97ce77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\ntuser\misc">
+      <UniqueIdentifier>{348a0226-6514-40ae-9a8a-ac6d3b0e6169}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gdi\eng\i386">
+      <UniqueIdentifier>{ef8def24-ab48-439f-8ec1-92bfb329a147}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\win32k.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\gdi\dib\alphablend.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib1bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib4bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib8bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib16bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib24bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib32bpp.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\floodfill.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\stretchblt.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\alphablend.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\bitblt.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\clip.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\copybits.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\debug.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\device.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\driverobj.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\engbrush.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\engevent.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\engmisc.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\engwindow.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\error.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\float.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\gradient.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\ldevobj.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\lineto.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\mapping.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\math.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\mem.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\mouse.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\paint.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\pdevobj.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\perfcnt.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\rlecomp.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\semaphor.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\sort.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\stretchblt.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\string.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\stubs.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\surface.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\transblt.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\umpdstubs.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\eng\xlateobj.c">
+      <Filter>gdi\eng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\dib\dib.c">
+      <Filter>gdi\dib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\misc\copy.c">
+      <Filter>user\ntuser\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\misc\file.c">
+      <Filter>user\ntuser\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\misc\registry.c">
+      <Filter>user\ntuser\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\misc\rtlstr.c">
+      <Filter>user\ntuser\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\main.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\cursoricon.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\accelerator.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\callback.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\callproc.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\caret.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\class.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\clipboard.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\defwnd.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\desktop.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\display.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\event.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\focus.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\guicheck.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\hook.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\hotkey.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\input.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\kbdlayout.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\keyboard.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\menu.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\message.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\metric.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\misc.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\monitor.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\mouse.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\msgqueue.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\ntstubs.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\ntuser.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\object.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\painting.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\prop.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\scrollbar.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\session.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\simplecall.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\sysparams.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\timer.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\useratom.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\usrheap.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\vis.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\windc.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\window.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\winpos.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\user\ntuser\winsta.c">
+      <Filter>user\ntuser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\arc.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\bezier.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\bitblt.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\bitmaps.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\brush.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\cliprgn.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\coord.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dcattr.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dclife.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dcobjs.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dcstate.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dcutil.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\device.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\dibobj.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\drawing.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\fillshap.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\font.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\freetype.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\gdibatch.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\gdidbg.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\gdiobj.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\gdipool.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\icm.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\line.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\metafile.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\palette.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\path.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\pen.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\polyfill.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\print.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\rect.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\region.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\stockobj.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\text.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\wingl.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gdi\ntgdi\xformobj.c">
+      <Filter>gdi\ntgdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\d3d.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\dd.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\ddraw.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\ddsurf.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\dvp.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\dxeng.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\eng.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reactx\ntddraw\mocomp.c">
+      <Filter>reactx\ntddraw</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\gdi\dib\i386\dib24bpp_hline.s" />
+    <CustomBuild Include="..\gdi\dib\i386\dib32bpp_colorfill.s" />
+    <CustomBuild Include="..\gdi\dib\i386\dib32bpp_hline.s" />
+    <CustomBuild Include="..\win32k.spec" />
+    <CustomBuild Include="..\CMakeLists.txt" />
+    <CustomBuild Include="..\gdi\eng\i386\floatobj.S" />
+  </ItemGroup>
+</Project>
