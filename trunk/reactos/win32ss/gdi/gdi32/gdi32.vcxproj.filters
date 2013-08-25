@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{7287d0e5-de1a-4b53-81a8-ea33d4773a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{38b1129e-d1d2-499f-996c-c62196be086d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{0c43b870-9fa6-4a56-9955-87a0239d934c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{d84cb73c-1cfc-47ff-9420-91e26f020bc1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="gdi32.spec" />
+    <None Include="good api.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gdi32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\gdi32p.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\precomp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\dllmain.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\gdientry.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\hacks.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\heap.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\historic.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\misc.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\stubs.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\stubsa.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\stubsw.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\wingl.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\arc.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\bitmap.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\brush.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\coord.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\dc.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\efloat.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\eng.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\enhmfile.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\font.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\icm.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\linedda.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\metafile.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\painting.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\palette.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\path.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\pen.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\printdrv.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\region.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\text.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\utils.c">
+      <Filter>objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
