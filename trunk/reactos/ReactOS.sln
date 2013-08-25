@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "base", "base", "{09AB9252-3665-4988-9DE5-6EF8E2FA0541}"
 	ProjectSection(SolutionItems) = preProject
 		base\CMakeLists.txt = base\CMakeLists.txt
@@ -885,6 +885,170 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gendib", "tools\gendib\gendib.vcxproj", "{937A35A6-79E7-4384-9682-CCB6275C6078}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32k", "win32ss\win32k\win32k.vcxproj", "{677F726D-0072-4A20-978E-B2917132677E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usp10", "dll\win32\usp10\usp10.vcxproj", "{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "user", "user", "{0535D3DD-4AF1-4CA4-9968-5948EE206FE5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "user32", "win32ss\user\user32\user32.vcxproj", "{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imm32", "dll\win32\imm32\imm32.vcxproj", "{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gdi", "gdi", "{A86216A3-E461-4DA3-9F2F-629E0E7EECD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dib", "dib", "{ABB63700-A973-48E2-A5F1-06A3D792084F}"
+	ProjectSection(SolutionItems) = preProject
+		win32ss\gdi\dib\alphablend.c = win32ss\gdi\dib\alphablend.c
+		win32ss\gdi\dib\dib.c = win32ss\gdi\dib\dib.c
+		win32ss\gdi\dib\dib.h = win32ss\gdi\dib\dib.h
+		win32ss\gdi\dib\dib16bpp.c = win32ss\gdi\dib\dib16bpp.c
+		win32ss\gdi\dib\dib1bpp.c = win32ss\gdi\dib\dib1bpp.c
+		win32ss\gdi\dib\dib24bpp.c = win32ss\gdi\dib\dib24bpp.c
+		win32ss\gdi\dib\dib24bppc.c = win32ss\gdi\dib\dib24bppc.c
+		win32ss\gdi\dib\dib32bpp.c = win32ss\gdi\dib\dib32bpp.c
+		win32ss\gdi\dib\dib32bppc.c = win32ss\gdi\dib\dib32bppc.c
+		win32ss\gdi\dib\dib4bpp.c = win32ss\gdi\dib\dib4bpp.c
+		win32ss\gdi\dib\dib8bpp.c = win32ss\gdi\dib\dib8bpp.c
+		win32ss\gdi\dib\dib_new.c = win32ss\gdi\dib\dib_new.c
+		win32ss\gdi\dib\floodfill.c = win32ss\gdi\dib\floodfill.c
+		win32ss\gdi\dib\stretchblt.c = win32ss\gdi\dib\stretchblt.c
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "i386", "i386", "{AA144082-267B-4641-968A-B12401C80BFF}"
+	ProjectSection(SolutionItems) = preProject
+		win32ss\gdi\dib\i386\dib24bpp_hline.s = win32ss\gdi\dib\i386\dib24bpp_hline.s
+		win32ss\gdi\dib\i386\dib32bpp_colorfill.s = win32ss\gdi\dib\i386\dib32bpp_colorfill.s
+		win32ss\gdi\dib\i386\dib32bpp_hline.s = win32ss\gdi\dib\i386\dib32bpp_hline.s
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "diblib", "win32ss\gdi\diblib\diblib.vcxproj", "{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eng", "eng", "{F4539798-2DD3-48D5-A559-6F9F9CCF137B}"
+	ProjectSection(SolutionItems) = preProject
+		win32ss\gdi\eng\alphablend.c = win32ss\gdi\eng\alphablend.c
+		win32ss\gdi\eng\bitblt.c = win32ss\gdi\eng\bitblt.c
+		win32ss\gdi\eng\bitblt_new.c = win32ss\gdi\eng\bitblt_new.c
+		win32ss\gdi\eng\clip.c = win32ss\gdi\eng\clip.c
+		win32ss\gdi\eng\copybits.c = win32ss\gdi\eng\copybits.c
+		win32ss\gdi\eng\debug.c = win32ss\gdi\eng\debug.c
+		win32ss\gdi\eng\device.c = win32ss\gdi\eng\device.c
+		win32ss\gdi\eng\device.h = win32ss\gdi\eng\device.h
+		win32ss\gdi\eng\driverobj.c = win32ss\gdi\eng\driverobj.c
+		win32ss\gdi\eng\driverobj.h = win32ss\gdi\eng\driverobj.h
+		win32ss\gdi\eng\drvdbg.c = win32ss\gdi\eng\drvdbg.c
+		win32ss\gdi\eng\eng.h = win32ss\gdi\eng\eng.h
+		win32ss\gdi\eng\engbrush.c = win32ss\gdi\eng\engbrush.c
+		win32ss\gdi\eng\engevent.c = win32ss\gdi\eng\engevent.c
+		win32ss\gdi\eng\engevent.h = win32ss\gdi\eng\engevent.h
+		win32ss\gdi\eng\engmisc.c = win32ss\gdi\eng\engmisc.c
+		win32ss\gdi\eng\engobjects.h = win32ss\gdi\eng\engobjects.h
+		win32ss\gdi\eng\engwindow.c = win32ss\gdi\eng\engwindow.c
+		win32ss\gdi\eng\error.c = win32ss\gdi\eng\error.c
+		win32ss\gdi\eng\float.c = win32ss\gdi\eng\float.c
+		win32ss\gdi\eng\floatobj.h = win32ss\gdi\eng\floatobj.h
+		win32ss\gdi\eng\gradient.c = win32ss\gdi\eng\gradient.c
+		win32ss\gdi\eng\inteng.h = win32ss\gdi\eng\inteng.h
+		win32ss\gdi\eng\ldevobj.c = win32ss\gdi\eng\ldevobj.c
+		win32ss\gdi\eng\ldevobj.h = win32ss\gdi\eng\ldevobj.h
+		win32ss\gdi\eng\lineto.c = win32ss\gdi\eng\lineto.c
+		win32ss\gdi\eng\mapping.c = win32ss\gdi\eng\mapping.c
+		win32ss\gdi\eng\mapping.h = win32ss\gdi\eng\mapping.h
+		win32ss\gdi\eng\math.c = win32ss\gdi\eng\math.c
+		win32ss\gdi\eng\mem.c = win32ss\gdi\eng\mem.c
+		win32ss\gdi\eng\mouse.c = win32ss\gdi\eng\mouse.c
+		win32ss\gdi\eng\mouse.h = win32ss\gdi\eng\mouse.h
+		win32ss\gdi\eng\paint.c = win32ss\gdi\eng\paint.c
+		win32ss\gdi\eng\pdevobj.c = win32ss\gdi\eng\pdevobj.c
+		win32ss\gdi\eng\pdevobj.h = win32ss\gdi\eng\pdevobj.h
+		win32ss\gdi\eng\perfcnt.c = win32ss\gdi\eng\perfcnt.c
+		win32ss\gdi\eng\rlecomp.c = win32ss\gdi\eng\rlecomp.c
+		win32ss\gdi\eng\semaphor.c = win32ss\gdi\eng\semaphor.c
+		win32ss\gdi\eng\sort.c = win32ss\gdi\eng\sort.c
+		win32ss\gdi\eng\stretchblt.c = win32ss\gdi\eng\stretchblt.c
+		win32ss\gdi\eng\string.c = win32ss\gdi\eng\string.c
+		win32ss\gdi\eng\stubs.c = win32ss\gdi\eng\stubs.c
+		win32ss\gdi\eng\surface.c = win32ss\gdi\eng\surface.c
+		win32ss\gdi\eng\surface.h = win32ss\gdi\eng\surface.h
+		win32ss\gdi\eng\transblt.c = win32ss\gdi\eng\transblt.c
+		win32ss\gdi\eng\umpdstubs.c = win32ss\gdi\eng\umpdstubs.c
+		win32ss\gdi\eng\xlateobj.c = win32ss\gdi\eng\xlateobj.c
+		win32ss\gdi\eng\xlateobj.h = win32ss\gdi\eng\xlateobj.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "i386", "i386", "{9A2848C0-B630-4A7C-B64B-D5A07C6EFAB2}"
+	ProjectSection(SolutionItems) = preProject
+		win32ss\gdi\eng\i386\floatobj.S = win32ss\gdi\eng\i386\floatobj.S
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ntgdi", "ntgdi", "{F5DF304C-CA58-478B-B7BC-E698EADA92DA}"
+	ProjectSection(SolutionItems) = preProject
+		win32ss\gdi\ntgdi\arc.c = win32ss\gdi\ntgdi\arc.c
+		win32ss\gdi\ntgdi\bezier.c = win32ss\gdi\ntgdi\bezier.c
+		win32ss\gdi\ntgdi\bitblt.c = win32ss\gdi\ntgdi\bitblt.c
+		win32ss\gdi\ntgdi\bitmaps.c = win32ss\gdi\ntgdi\bitmaps.c
+		win32ss\gdi\ntgdi\bitmaps.h = win32ss\gdi\ntgdi\bitmaps.h
+		win32ss\gdi\ntgdi\brush.c = win32ss\gdi\ntgdi\brush.c
+		win32ss\gdi\ntgdi\brush.h = win32ss\gdi\ntgdi\brush.h
+		win32ss\gdi\ntgdi\cliprgn.c = win32ss\gdi\ntgdi\cliprgn.c
+		win32ss\gdi\ntgdi\cliprgn.h = win32ss\gdi\ntgdi\cliprgn.h
+		win32ss\gdi\ntgdi\color.h = win32ss\gdi\ntgdi\color.h
+		win32ss\gdi\ntgdi\coord.c = win32ss\gdi\ntgdi\coord.c
+		win32ss\gdi\ntgdi\coord.h = win32ss\gdi\ntgdi\coord.h
+		win32ss\gdi\ntgdi\dc.h = win32ss\gdi\ntgdi\dc.h
+		win32ss\gdi\ntgdi\dcattr.c = win32ss\gdi\ntgdi\dcattr.c
+		win32ss\gdi\ntgdi\dclife.c = win32ss\gdi\ntgdi\dclife.c
+		win32ss\gdi\ntgdi\dcobjs.c = win32ss\gdi\ntgdi\dcobjs.c
+		win32ss\gdi\ntgdi\dcstate.c = win32ss\gdi\ntgdi\dcstate.c
+		win32ss\gdi\ntgdi\dcutil.c = win32ss\gdi\ntgdi\dcutil.c
+		win32ss\gdi\ntgdi\device.c = win32ss\gdi\ntgdi\device.c
+		win32ss\gdi\ntgdi\dib.h = win32ss\gdi\ntgdi\dib.h
+		win32ss\gdi\ntgdi\dibobj.c = win32ss\gdi\ntgdi\dibobj.c
+		win32ss\gdi\ntgdi\drawing.c = win32ss\gdi\ntgdi\drawing.c
+		win32ss\gdi\ntgdi\fillshap.c = win32ss\gdi\ntgdi\fillshap.c
+		win32ss\gdi\ntgdi\font.c = win32ss\gdi\ntgdi\font.c
+		win32ss\gdi\ntgdi\freetype.c = win32ss\gdi\ntgdi\freetype.c
+		win32ss\gdi\ntgdi\gdibatch.c = win32ss\gdi\ntgdi\gdibatch.c
+		win32ss\gdi\ntgdi\gdidbg.c = win32ss\gdi\ntgdi\gdidbg.c
+		win32ss\gdi\ntgdi\gdidebug.h = win32ss\gdi\ntgdi\gdidebug.h
+		win32ss\gdi\ntgdi\gdifloat.h = win32ss\gdi\ntgdi\gdifloat.h
+		win32ss\gdi\ntgdi\gdikdbgext.c = win32ss\gdi\ntgdi\gdikdbgext.c
+		win32ss\gdi\ntgdi\gdiobj.c = win32ss\gdi\ntgdi\gdiobj.c
+		win32ss\gdi\ntgdi\gdiobj.h = win32ss\gdi\ntgdi\gdiobj.h
+		win32ss\gdi\ntgdi\gdipool.c = win32ss\gdi\ntgdi\gdipool.c
+		win32ss\gdi\ntgdi\icm.c = win32ss\gdi\ntgdi\icm.c
+		win32ss\gdi\ntgdi\intgdi.h = win32ss\gdi\ntgdi\intgdi.h
+		win32ss\gdi\ntgdi\line.c = win32ss\gdi\ntgdi\line.c
+		win32ss\gdi\ntgdi\metafile.c = win32ss\gdi\ntgdi\metafile.c
+		win32ss\gdi\ntgdi\misc.h = win32ss\gdi\ntgdi\misc.h
+		win32ss\gdi\ntgdi\paint.h = win32ss\gdi\ntgdi\paint.h
+		win32ss\gdi\ntgdi\palette.c = win32ss\gdi\ntgdi\palette.c
+		win32ss\gdi\ntgdi\palette.h = win32ss\gdi\ntgdi\palette.h
+		win32ss\gdi\ntgdi\patblt.c = win32ss\gdi\ntgdi\patblt.c
+		win32ss\gdi\ntgdi\path.c = win32ss\gdi\ntgdi\path.c
+		win32ss\gdi\ntgdi\path.h = win32ss\gdi\ntgdi\path.h
+		win32ss\gdi\ntgdi\pen.c = win32ss\gdi\ntgdi\pen.c
+		win32ss\gdi\ntgdi\pen.h = win32ss\gdi\ntgdi\pen.h
+		win32ss\gdi\ntgdi\polyfill.c = win32ss\gdi\ntgdi\polyfill.c
+		win32ss\gdi\ntgdi\print.c = win32ss\gdi\ntgdi\print.c
+		win32ss\gdi\ntgdi\rect.c = win32ss\gdi\ntgdi\rect.c
+		win32ss\gdi\ntgdi\rect.h = win32ss\gdi\ntgdi\rect.h
+		win32ss\gdi\ntgdi\region.c = win32ss\gdi\ntgdi\region.c
+		win32ss\gdi\ntgdi\region.h = win32ss\gdi\ntgdi\region.h
+		win32ss\gdi\ntgdi\stockobj.c = win32ss\gdi\ntgdi\stockobj.c
+		win32ss\gdi\ntgdi\text.c = win32ss\gdi\ntgdi\text.c
+		win32ss\gdi\ntgdi\text.h = win32ss\gdi\ntgdi\text.h
+		win32ss\gdi\ntgdi\wingl.c = win32ss\gdi\ntgdi\wingl.c
+		win32ss\gdi\ntgdi\xformobj.c = win32ss\gdi\ntgdi\xformobj.c
+		win32ss\gdi\ntgdi\xformobj.h = win32ss\gdi\ntgdi\xformobj.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gdi32", "win32ss\gdi\gdi32\gdi32.vcxproj", "{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cacls", "base\applications\cacls\cacls.vcxproj", "{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{3AD15DB4-C933-450B-B977-9ACE2879C7C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reactx", "reactx", "{2FBECD8C-3AB8-4D9A-B344-C89C71BFF478}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1942,6 +2106,42 @@ Global
 		{677F726D-0072-4A20-978E-B2917132677E}.Release|ARM.ActiveCfg = Release|Win32
 		{677F726D-0072-4A20-978E-B2917132677E}.Release|x86_32.ActiveCfg = Release|Win32
 		{677F726D-0072-4A20-978E-B2917132677E}.Release|x86_64.ActiveCfg = Release|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Debug|ARM.ActiveCfg = Debug|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Release|ARM.ActiveCfg = Release|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Release|x86_32.ActiveCfg = Release|Win32
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E}.Release|x86_64.ActiveCfg = Release|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Debug|ARM.ActiveCfg = Debug|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Release|ARM.ActiveCfg = Release|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Release|x86_32.ActiveCfg = Release|Win32
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F}.Release|x86_64.ActiveCfg = Release|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Debug|ARM.ActiveCfg = Debug|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Release|ARM.ActiveCfg = Release|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Release|x86_32.ActiveCfg = Release|Win32
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A}.Release|x86_64.ActiveCfg = Release|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Debug|ARM.ActiveCfg = Debug|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Release|ARM.ActiveCfg = Release|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Release|x86_32.ActiveCfg = Release|Win32
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2}.Release|x86_64.ActiveCfg = Release|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Debug|ARM.ActiveCfg = Debug|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Release|ARM.ActiveCfg = Release|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Release|x86_32.ActiveCfg = Release|Win32
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78}.Release|x86_64.ActiveCfg = Release|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Debug|ARM.ActiveCfg = Debug|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Release|ARM.ActiveCfg = Release|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Release|x86_32.ActiveCfg = Release|Win32
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7}.Release|x86_64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1951,6 +2151,7 @@ Global
 		{862110B5-3153-4CFF-A837-D910173F187D} = {09AB9252-3665-4988-9DE5-6EF8E2FA0541}
 		{5B4C3B52-CD5C-42B9-9A60-61EC5CB441EA} = {09AB9252-3665-4988-9DE5-6EF8E2FA0541}
 		{B51B0F61-EBDB-4C05-BECF-BD1904D77548} = {02F5470C-0C07-4991-8F1F-C33051FBBE96}
+		{106CB8E1-BBCD-4F8D-9D2F-22C2E5FB61E7} = {02F5470C-0C07-4991-8F1F-C33051FBBE96}
 		{0E5C1444-8842-45A5-869C-EE0C584DCB51} = {E6B416EE-F2C0-4161-95E8-F77C2FC3BAA9}
 		{34B7E2DE-45AB-43B1-8DD4-42967F6C9692} = {E6B416EE-F2C0-4161-95E8-F77C2FC3BAA9}
 		{C721C1F5-9608-4910-BECB-642F8D859AA4} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
@@ -1958,6 +2159,8 @@ Global
 		{C25FA985-9124-4BCB-856B-070D333E33D5} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
 		{C76B64E1-5CD0-4474-9C1F-5788C2C02752} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
 		{C5180FE9-3478-4F73-82EB-F378813719DA} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
+		{F3D0C8DF-3582-49D0-BC27-A3F68D13F54E} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
+		{5616B640-0DFF-4F7D-B1ED-3F0E142B5C4A} = {0E5C1444-8842-45A5-869C-EE0C584DCB51}
 		{85DAD007-1D1B-433F-92AE-D7DFBC5BEEDA} = {2F073FC6-B669-45B0-8881-8930B7AD9C9B}
 		{F3EFF133-B32C-4A1B-8B3B-EC90CD138038} = {2F073FC6-B669-45B0-8881-8930B7AD9C9B}
 		{2AD9B4D6-4A46-4F1D-9A1A-4F5E5A55551F} = {2F073FC6-B669-45B0-8881-8930B7AD9C9B}
@@ -2135,7 +2338,19 @@ Global
 		{F8C25D34-2D3D-4C58-B47D-7A8998AB3C0F} = {18D628E1-F4F4-4033-BA45-7B29329E4000}
 		{D649DEC2-1245-4695-AAAD-616CAED744F9} = {9697606D-8033-4968-9407-EF04674316FB}
 		{677F726D-0072-4A20-978E-B2917132677E} = {9697606D-8033-4968-9407-EF04674316FB}
+		{0535D3DD-4AF1-4CA4-9968-5948EE206FE5} = {9697606D-8033-4968-9407-EF04674316FB}
+		{A86216A3-E461-4DA3-9F2F-629E0E7EECD3} = {9697606D-8033-4968-9407-EF04674316FB}
+		{3AD15DB4-C933-450B-B977-9ACE2879C7C0} = {9697606D-8033-4968-9407-EF04674316FB}
+		{2FBECD8C-3AB8-4D9A-B344-C89C71BFF478} = {9697606D-8033-4968-9407-EF04674316FB}
 		{40BBE765-7CDD-4C71-92AE-D630265E8291} = {D649DEC2-1245-4695-AAAD-616CAED744F9}
 		{5BC4F113-EB78-4513-B68C-D4AB4F52C58C} = {40BBE765-7CDD-4C71-92AE-D630265E8291}
+		{4DCCD8BE-F0CB-436F-8A18-6DD1677AE56F} = {0535D3DD-4AF1-4CA4-9968-5948EE206FE5}
+		{ABB63700-A973-48E2-A5F1-06A3D792084F} = {A86216A3-E461-4DA3-9F2F-629E0E7EECD3}
+		{BCA44489-4EC4-4765-8C70-962DDC6AEDB2} = {A86216A3-E461-4DA3-9F2F-629E0E7EECD3}
+		{F4539798-2DD3-48D5-A559-6F9F9CCF137B} = {A86216A3-E461-4DA3-9F2F-629E0E7EECD3}
+		{F5DF304C-CA58-478B-B7BC-E698EADA92DA} = {A86216A3-E461-4DA3-9F2F-629E0E7EECD3}
+		{6C6CF48C-A81C-4F7E-B882-F30DD4E59E78} = {A86216A3-E461-4DA3-9F2F-629E0E7EECD3}
+		{AA144082-267B-4641-968A-B12401C80BFF} = {ABB63700-A973-48E2-A5F1-06A3D792084F}
+		{9A2848C0-B630-4A7C-B64B-D5A07C6EFAB2} = {F4539798-2DD3-48D5-A559-6F9F9CCF137B}
 	EndGlobalSection
 EndGlobal
