@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BitBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_DSTINVERT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_MERGECOPY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_MERGEPAINT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_NOTPATCOPY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_NOTSRCCOPY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_NOTSRCERASE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_other.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_PATCOPY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_PATINVERT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_PATPAINT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_SRCAND.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_SRCCOPY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_SRCERASE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_SRCINVERT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitBlt_SRCPAINT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DibLib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskCopy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskPaint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskPatBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskPatPaint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskSrcBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskSrcPaint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskSrcPatBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatPaint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RopFunctions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcPaint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcPatBlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DibLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DibLib_AllDstBPP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DibLib_AllSrcBPP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DibLib_BitBlt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DibLib_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RopFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
