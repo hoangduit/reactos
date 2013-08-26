@@ -67,7 +67,8 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
-      <AdditionalOptions>"$(OutDir)dib8gen.c" "$(OutDir)dib16gen.c" "$(OutDir)dib32gen.c" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\dib8gen.c" "$(OutDir)\dib16gen.c" "$(OutDir)\dib32gen.c" %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -84,6 +85,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,6 +104,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <AdditionalOptions>"$(OutDir)dib8gen.c" "$(OutDir)dib16gen.c" "$(OutDir)dib32gen.c" %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -119,6 +122,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -195,7 +199,14 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="..\gdi\dib\dib8bpp.c" />
     <ClCompile Include="..\gdi\dib\floodfill.c" />
     <ClCompile Include="..\gdi\dib\stretchblt.c" />
-    <ClCompile Include="..\gdi\eng\alphablend.c" />
+    <ClCompile Include="..\gdi\eng\alphablend.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\gdi\eng\bitblt.c" />
     <ClCompile Include="..\gdi\eng\clip.c" />
     <ClCompile Include="..\gdi\eng\copybits.c" />
@@ -221,7 +232,14 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="..\gdi\eng\rlecomp.c" />
     <ClCompile Include="..\gdi\eng\semaphor.c" />
     <ClCompile Include="..\gdi\eng\sort.c" />
-    <ClCompile Include="..\gdi\eng\stretchblt.c" />
+    <ClCompile Include="..\gdi\eng\stretchblt.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\gdi\eng\string.c" />
     <ClCompile Include="..\gdi\eng\stubs.c" />
     <ClCompile Include="..\gdi\eng\surface.c" />
@@ -230,7 +248,14 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="..\gdi\eng\xlateobj.c" />
     <ClCompile Include="..\gdi\ntgdi\arc.c" />
     <ClCompile Include="..\gdi\ntgdi\bezier.c" />
-    <ClCompile Include="..\gdi\ntgdi\bitblt.c" />
+    <ClCompile Include="..\gdi\ntgdi\bitblt.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\gdi\ntgdi\bitmaps.c" />
     <ClCompile Include="..\gdi\ntgdi\brush.c" />
     <ClCompile Include="..\gdi\ntgdi\cliprgn.c" />
@@ -240,7 +265,14 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="..\gdi\ntgdi\dcobjs.c" />
     <ClCompile Include="..\gdi\ntgdi\dcstate.c" />
     <ClCompile Include="..\gdi\ntgdi\dcutil.c" />
-    <ClCompile Include="..\gdi\ntgdi\device.c" />
+    <ClCompile Include="..\gdi\ntgdi\device.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\gdi\ntgdi\dibobj.c" />
     <ClCompile Include="..\gdi\ntgdi\drawing.c" />
     <ClCompile Include="..\gdi\ntgdi\fillshap.c" />
@@ -300,7 +332,14 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="..\user\ntuser\misc\registry.c" />
     <ClCompile Include="..\user\ntuser\misc\rtlstr.c" />
     <ClCompile Include="..\user\ntuser\monitor.c" />
-    <ClCompile Include="..\user\ntuser\mouse.c" />
+    <ClCompile Include="..\user\ntuser\mouse.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\user\ntuser\msgqueue.c" />
     <ClCompile Include="..\user\ntuser\ntstubs.c" />
     <ClCompile Include="..\user\ntuser\ntuser.c" />
