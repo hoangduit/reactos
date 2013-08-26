@@ -71,6 +71,7 @@ copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
+copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -135,6 +136,7 @@ copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
+copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -252,6 +254,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\drivers\font\ftfd\ftfd.vcxproj">
       <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ss\win32k\win32k.vcxproj">
+      <Project>{677f726d-0072-4a20-978e-b2917132677e}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
