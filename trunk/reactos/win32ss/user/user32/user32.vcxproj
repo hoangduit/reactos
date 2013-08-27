@@ -121,7 +121,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="windows\dc.c" />
-    <ClCompile Include="windows\defwnd.c" />
+    <ClCompile Include="windows\defwnd.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="windows\dialog.c" />
     <ClCompile Include="windows\draw.c" />
     <ClCompile Include="windows\font.c" />
@@ -131,7 +134,10 @@
     <ClCompile Include="windows\menu.c" />
     <ClCompile Include="windows\message.c" />
     <ClCompile Include="windows\messagebox.c" />
-    <ClCompile Include="windows\nonclient.c" />
+    <ClCompile Include="windows\nonclient.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="windows\paint.c" />
     <ClCompile Include="windows\prop.c" />
     <ClCompile Include="windows\rect.c" />
@@ -241,7 +247,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="user32.rc" />
+    <ResourceCompile Include="user32.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\controls.h" />
@@ -328,14 +339,11 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\dll\win32\imm32\imm32.vcxproj">
-      <Project>{5616b640-0dff-4f7d-b1ed-3f0e142b5c4a}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\dll\win32\usp10\usp10.vcxproj">
-      <Project>{f3d0c8df-3582-49d0-bc27-a3f68d13f54e}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\gdi32\gdi32.vcxproj">
+      <Project>{031ea1c5-fbbf-47c8-a00d-c78cf7a763ac}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\win32k\win32k.vcxproj">
       <Project>{e94fa8bb-388e-46e8-96cc-09e69f1166c7}</Project>
@@ -348,9 +356,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
       <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\gdi\gdi32\gdi32.vcxproj">
-      <Project>{6c6cf48c-a81c-4f7e-b882-f30dd4e59e78}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
