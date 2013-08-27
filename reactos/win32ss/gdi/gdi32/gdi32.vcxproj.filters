@@ -28,7 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="gdi32.spec" />
     <None Include="good api.def">
       <Filter>Source Files</Filter>
     </None>
@@ -137,5 +136,8 @@
     <ClCompile Include="objects\utils.c">
       <Filter>objects</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="gdi32.spec" />
   </ItemGroup>
 </Project>
