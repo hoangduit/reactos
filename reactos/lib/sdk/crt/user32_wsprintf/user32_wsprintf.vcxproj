@@ -54,6 +54,9 @@
       <PreprocessorDefinitions>_USER32_WSPRINTF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -71,6 +74,8 @@
       <PreprocessorDefinitions>_USER32_WSPRINTF;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -90,6 +95,8 @@
     <ClCompile Include="..\printf\wstreamout.c" />
     <ClCompile Include="..\printf\wvsnprintfA.c" />
     <ClCompile Include="..\printf\wvsnprintfW.c" />
+    <ClCompile Include="..\printf\wvsprintfA.c" />
+    <ClCompile Include="..\printf\wvsprintfW.c" />
     <ClCompile Include="..\string\mbstowcs_nt.c" />
     <ClCompile Include="..\string\strnlen.c" />
     <ClCompile Include="..\string\wcsnlen.c" />

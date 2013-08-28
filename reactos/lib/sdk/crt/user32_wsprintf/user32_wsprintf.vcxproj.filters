@@ -13,40 +13,52 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="printf">
+      <UniqueIdentifier>{2bc9d2a0-7456-4428-91f0-83128f57a727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string">
+      <UniqueIdentifier>{6f819783-bc85-41c6-bbe0-98862aad9e0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\printf\streamout.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\printf\wsprintfA.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\printf\wsprintfW.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\printf\wstreamout.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\printf\wvsnprintfA.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\printf\wvsnprintfW.c">
-      <Filter>Source Files</Filter>
+      <Filter>printf</Filter>
     </ClCompile>
     <ClCompile Include="..\string\mbstowcs_nt.c">
-      <Filter>Source Files</Filter>
+      <Filter>string</Filter>
     </ClCompile>
     <ClCompile Include="..\string\strnlen.c">
-      <Filter>Source Files</Filter>
+      <Filter>string</Filter>
     </ClCompile>
     <ClCompile Include="..\string\wcsnlen.c">
-      <Filter>Source Files</Filter>
+      <Filter>string</Filter>
     </ClCompile>
     <ClCompile Include="..\string\wcstombs_nt.c">
-      <Filter>Source Files</Filter>
+      <Filter>string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wsprintfA.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wsprintfW.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wstreamout.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wvsnprintfA.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wvsnprintfW.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wvsprintfA.c">
+      <Filter>printf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\printf\wvsprintfW.c">
+      <Filter>printf</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

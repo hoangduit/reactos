@@ -51,17 +51,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;_WIN32_WINNT=0x600;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>wine/typeof.h</ForcedIncludeFiles>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <AdditionalOptions>"$(OutDir)\imm32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\imm32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,10 +73,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;_WIN32_WINNT=0x600;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>wine/typeof.h</ForcedIncludeFiles>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\imm32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -83,6 +86,7 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\imm32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
