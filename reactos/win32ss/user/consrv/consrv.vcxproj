@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}</ProjectGuid>
+    <RootNamespace>consrv</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="alias.c" />
+    <ClCompile Include="condrv\coninput.c" />
+    <ClCompile Include="condrv\conoutput.c" />
+    <ClCompile Include="condrv\console.c" />
+    <ClCompile Include="condrv\graphics.c" />
+    <ClCompile Include="condrv\text.c" />
+    <ClCompile Include="coninput.c" />
+    <ClCompile Include="conoutput.c" />
+    <ClCompile Include="console.c" />
+    <ClCompile Include="frontendctl.c" />
+    <ClCompile Include="frontends\gui\graphics.c" />
+    <ClCompile Include="frontends\gui\guisettings.c" />
+    <ClCompile Include="frontends\gui\guiterm.c" />
+    <ClCompile Include="frontends\gui\text.c" />
+    <ClCompile Include="frontends\input.c" />
+    <ClCompile Include="frontends\tui\tuiterm.c" />
+    <ClCompile Include="handle.c" />
+    <ClCompile Include="init.c" />
+    <ClCompile Include="lineinput.c" />
+    <ClCompile Include="settings.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alias.h" />
+    <ClInclude Include="api.h" />
+    <ClInclude Include="coninput.h" />
+    <ClInclude Include="conio.h" />
+    <ClInclude Include="conoutput.h" />
+    <ClInclude Include="console.h" />
+    <ClInclude Include="consrv.h" />
+    <ClInclude Include="frontends\gui\consolecpl.h" />
+    <ClInclude Include="frontends\gui\guisettings.h" />
+    <ClInclude Include="frontends\gui\guiterm.h" />
+    <ClInclude Include="frontends\gui\resource.h" />
+    <ClInclude Include="frontends\tui\tuiterm.h" />
+    <ClInclude Include="handle.h" />
+    <ClInclude Include="heap.h" />
+    <ClInclude Include="include\conio.h" />
+    <ClInclude Include="include\console.h" />
+    <ClInclude Include="include\settings.h" />
+    <ClInclude Include="lineinput.h" />
+    <ClInclude Include="procinit.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="consrv.spec" />
+    <None Include="frontends\gui\res\terminal.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="consrv.rc" />
+    <ResourceCompile Include="frontends\frontends.rc" />
+    <ResourceCompile Include="frontends\gui\guiterm.rc" />
+    <ResourceCompile Include="frontends\gui\lang\bg-BG.rc" />
+    <ResourceCompile Include="frontends\gui\lang\cs-CZ.rc" />
+    <ResourceCompile Include="frontends\gui\lang\de-DE.rc" />
+    <ResourceCompile Include="frontends\gui\lang\el-GR.rc" />
+    <ResourceCompile Include="frontends\gui\lang\en-US.rc" />
+    <ResourceCompile Include="frontends\gui\lang\es-ES.rc" />
+    <ResourceCompile Include="frontends\gui\lang\fr-FR.rc" />
+    <ResourceCompile Include="frontends\gui\lang\he-IL.rc" />
+    <ResourceCompile Include="frontends\gui\lang\id-ID.rc" />
+    <ResourceCompile Include="frontends\gui\lang\it-IT.rc" />
+    <ResourceCompile Include="frontends\gui\lang\ja-JP.rc" />
+    <ResourceCompile Include="frontends\gui\lang\no-NO.rc" />
+    <ResourceCompile Include="frontends\gui\lang\pl-PL.rc" />
+    <ResourceCompile Include="frontends\gui\lang\pt-BR.rc" />
+    <ResourceCompile Include="frontends\gui\lang\ro-RO.rc" />
+    <ResourceCompile Include="frontends\gui\lang\ru-RU.rc" />
+    <ResourceCompile Include="frontends\gui\lang\sk-SK.rc" />
+    <ResourceCompile Include="frontends\gui\lang\sv-SE.rc" />
+    <ResourceCompile Include="frontends\gui\lang\tr-TR.rc" />
+    <ResourceCompile Include="frontends\gui\lang\uk-UA.rc" />
+    <ResourceCompile Include="frontends\gui\lang\zh-CN.rc" />
+    <ResourceCompile Include="frontends\gui\lang\zh-TW.rc" />
+    <ResourceCompile Include="frontends\gui\rsrc.rc" />
+    <ResourceCompile Include="lang\bg-BG.rc" />
+    <ResourceCompile Include="lang\cs-CZ.rc" />
+    <ResourceCompile Include="lang\de-DE.rc" />
+    <ResourceCompile Include="lang\el-GR.rc" />
+    <ResourceCompile Include="lang\en-US.rc" />
+    <ResourceCompile Include="lang\es-ES.rc" />
+    <ResourceCompile Include="lang\fr-FR.rc" />
+    <ResourceCompile Include="lang\he-IL.rc" />
+    <ResourceCompile Include="lang\id-ID.rc" />
+    <ResourceCompile Include="lang\it-IT.rc" />
+    <ResourceCompile Include="lang\ja-JP.rc" />
+    <ResourceCompile Include="lang\no-NO.rc" />
+    <ResourceCompile Include="lang\pl-PL.rc" />
+    <ResourceCompile Include="lang\pt-BR.rc" />
+    <ResourceCompile Include="lang\ro-RO.rc" />
+    <ResourceCompile Include="lang\ru-RU.rc" />
+    <ResourceCompile Include="lang\sk-SK.rc" />
+    <ResourceCompile Include="lang\sv-SE.rc" />
+    <ResourceCompile Include="lang\tr-TR.rc" />
+    <ResourceCompile Include="lang\uk-UA.rc" />
+    <ResourceCompile Include="lang\zh-CN.rc" />
+    <ResourceCompile Include="lang\zh-TW.rc" />
+    <ResourceCompile Include="rsrc.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

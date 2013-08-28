@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="condrv">
+      <UniqueIdentifier>{68fe3154-9940-4f0a-a312-3da1b08b29f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frontends">
+      <UniqueIdentifier>{a7d19c81-801d-4838-a17b-e03223417407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frontends\gui">
+      <UniqueIdentifier>{4492b605-843c-475b-abb4-89fc66a71f20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frontends\gui\lang">
+      <UniqueIdentifier>{2fa125ce-a748-40a8-bb6e-097bac784994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frontends\gui\res">
+      <UniqueIdentifier>{2b917210-3549-4446-b113-a64442bd7bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frontends\tui">
+      <UniqueIdentifier>{fa1b1c61-0cd6-4b8b-897b-c80736919968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{2ed59315-20db-40fa-bbb2-2c515492bc96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{6ffb980f-4a9a-41a8-9aad-ab5a199f470b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="alias.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="coninput.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="conoutput.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="frontendctl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="handle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lineinput.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="settings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="condrv\coninput.c">
+      <Filter>condrv</Filter>
+    </ClCompile>
+    <ClCompile Include="condrv\conoutput.c">
+      <Filter>condrv</Filter>
+    </ClCompile>
+    <ClCompile Include="condrv\console.c">
+      <Filter>condrv</Filter>
+    </ClCompile>
+    <ClCompile Include="condrv\graphics.c">
+      <Filter>condrv</Filter>
+    </ClCompile>
+    <ClCompile Include="condrv\text.c">
+      <Filter>condrv</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\input.c">
+      <Filter>frontends</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\tui\tuiterm.c">
+      <Filter>frontends\tui</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\gui\graphics.c">
+      <Filter>frontends\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\gui\guisettings.c">
+      <Filter>frontends\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\gui\guiterm.c">
+      <Filter>frontends\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="frontends\gui\text.c">
+      <Filter>frontends\gui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alias.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coninput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="conio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="conoutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="consrv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="heap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lineinput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="procinit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\conio.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\console.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\settings.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="frontends\tui\tuiterm.h">
+      <Filter>frontends\tui</Filter>
+    </ClInclude>
+    <ClInclude Include="frontends\gui\consolecpl.h">
+      <Filter>frontends\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="frontends\gui\guisettings.h">
+      <Filter>frontends\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="frontends\gui\guiterm.h">
+      <Filter>frontends\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="frontends\gui\resource.h">
+      <Filter>frontends\gui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="consrv.spec" />
+    <None Include="frontends\gui\res\terminal.ico">
+      <Filter>frontends\gui\res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="consrv.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\bg-BG.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\cs-CZ.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\de-DE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\el-GR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\en-US.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\es-ES.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\fr-FR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\he-IL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\id-ID.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\it-IT.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ja-JP.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\no-NO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pl-PL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pt-BR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ro-RO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ru-RU.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sk-SK.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sv-SE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\tr-TR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\uk-UA.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-CN.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-TW.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\frontends.rc">
+      <Filter>frontends</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\guiterm.rc">
+      <Filter>frontends\gui</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\rsrc.rc">
+      <Filter>frontends\gui</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\bg-BG.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\cs-CZ.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\de-DE.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\el-GR.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\en-US.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\es-ES.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\fr-FR.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\he-IL.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\id-ID.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\it-IT.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\ja-JP.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\no-NO.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\pl-PL.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\pt-BR.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\ro-RO.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\ru-RU.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\sk-SK.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\sv-SE.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\tr-TR.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\uk-UA.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\zh-CN.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="frontends\gui\lang\zh-TW.rc">
+      <Filter>frontends\gui\lang</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
