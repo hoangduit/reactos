@@ -74,6 +74,7 @@ copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -144,6 +145,7 @@ copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -267,6 +269,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\tools\mkhive\mkhive.vcxproj">
       <Project>{0dce13da-3398-46ec-84c9-d7d8d8ff8d1a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ss\drivers\displays\framebuf\framebuf.vcxproj">
+      <Project>{e053cfae-6136-4a91-9bf3-5e7d94bc3dae}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\drivers\font\ftfd\ftfd.vcxproj">
       <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
