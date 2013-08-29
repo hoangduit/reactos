@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="idl">
+      <UniqueIdentifier>{c59d738d-0858-4e58-ab3c-c01ddc275c1f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cguid_i.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdtreeiid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ieguids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="netfwv6clsid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="otherguids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shguids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="undoc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wdmguids.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\include\psdk\activdbg.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\activscp.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\asptlb.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\atliface.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bdaiface.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bits.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bits1_5.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\comcat.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\commoncontrols.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\control.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\cor.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\cordebug.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ctfutb.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ctxtcall.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\dimm.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\dispex.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\docobj.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\docobjectservice.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\downloadmgr.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\exdisp.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\fusion.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\hlink.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\htiface.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\htiframe.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\httprequest.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\iads.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\imnact.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\imnxport.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\indexsrv.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\metahost.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mimeinfo.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mimeole.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mlang.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mscoree.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msctf.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msdadc.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mshtmhst.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mshtml.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mstask.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msxml.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\netcon.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\netfw.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oaidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\objidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\objsafe.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ocidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ocmm.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oleacc.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oledb.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oleidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\optary.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\perhist.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\propidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\propsys.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\pstore.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\richole.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\sensevts.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\servprov.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\shldisp.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\shobjidl.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\strmif.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\textstor.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tlogstg.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tom.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tuner.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\unknwn.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\urlhist.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\urlmon.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\vmr9.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\wia_xp.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\wincodec.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmldom.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmldso.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmllite.idl">
+      <Filter>idl</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
