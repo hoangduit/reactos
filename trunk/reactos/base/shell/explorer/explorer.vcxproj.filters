@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="utility">
+      <UniqueIdentifier>{6efbd33a-7090-4f98-97cc-91c850ce19ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{5e6cb909-bf58-4455-8713-4d949febeada}</UniqueIdentifier>
+      <Extensions>bmp,ico</Extensions>
+    </Filter>
+    <Filter Include="taskbar">
+      <UniqueIdentifier>{bef362f2-d2e3-40f6-aa38-cdb5364230db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="desktop">
+      <UniqueIdentifier>{cf35e1da-ee21-4723-bb7d-267dfbfa7144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{5ae11f13-f391-4c5e-bf95-12419d2f156b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shell">
+      <UniqueIdentifier>{21789f62-13d7-4eac-bb7f-beda13dbd461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dialogs">
+      <UniqueIdentifier>{3a80965a-7374-41d0-afa4-ae87f282ed98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{62979187-d076-4976-97e0-676afa600631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="services">
+      <UniqueIdentifier>{aaa88648-3582-4492-aef8-9978f50fb155}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="utility\dragdropimpl.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\shellbrowserimpl.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\shellclasses.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\utility.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\window.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\xmlstorage.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\xs-native.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\desktopbar.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\favorites.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\quicklaunch.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\startmenu.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\taskbar.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="taskbar\traynotify.cpp">
+      <Filter>taskbar</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\desktop.cpp">
+      <Filter>desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\entries.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\fatfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\filechild.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\mainframe.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\ntobjfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\pane.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\regfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\shellbrowser.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\shellfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\unixfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\webchild.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="shell\winfs.cpp">
+      <Filter>shell</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\searchprogram.cpp">
+      <Filter>dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\settings.cpp">
+      <Filter>dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="explorer.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="i386-stub-win32.c">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="precomp.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="services\shellservices.cpp">
+      <Filter>services</Filter>
+    </ClCompile>
+    <ClCompile Include="services\startup.c">
+      <Filter>services</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="utility\dragdropimpl.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\shellbrowserimpl.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\shellclasses.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\treedroptarget.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\utility.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\window.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\xmlstorage.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\desktopbar.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\favorites.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="notifyhook\notifyhook.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\quicklaunch.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\startmenu.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\taskbar.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="taskbar\traynotify.h">
+      <Filter>taskbar</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\desktop.h">
+      <Filter>desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\entries.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\fatfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\filechild.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\mainframe.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\ntobjfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\pane.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\regfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\shellbrowser.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\shellfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\unixfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\webchild.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="shell\winfs.h">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\searchprogram.h">
+      <Filter>dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\settings.h">
+      <Filter>dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="explorer.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="externals.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="precomp.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="services\shellservices.h">
+      <Filter>services</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\action.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\administration.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\appicon.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\apps.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\arrow.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\arrow_dwn.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\arrow_up.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\arrowsel.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\computer.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\config.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\control-panel.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\desktop-settings.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\documents.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\dot.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\dot_red.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\dot_trans.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\drivebar.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\explorer.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\favorites.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\floating.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\folder.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoali10.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig0.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig1.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig2.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig3.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig4.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig5.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig6.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig7.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig8.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\icoalig9.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\images.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\info.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\logoff.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\logov.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\logov16.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\logov256.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\mdi.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\minimize.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\network-conns.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\network.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\notify_l.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\notify_r.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\printer.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\reactos.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\recent-documents.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\restart.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\ros-big.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\sdi.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\search-doc.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\search.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\shutdown.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\speaker.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\startmenu.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\toolbar.bmp">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="res\winefile.ico">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="doc\changes.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\readme.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\TODO.txt">
+      <Filter>doc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="explorer-cz.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-de.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-en.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-es.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-fr.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-jp.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-pt.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-ro.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-ru.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer-sv.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="explorer_intres.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="explorer.exe.manifest">
+      <Filter>main</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+</Project>
