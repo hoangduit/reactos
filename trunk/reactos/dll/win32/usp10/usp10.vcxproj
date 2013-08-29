@@ -51,14 +51,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>inline=__inline;__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>"$(OutDir)\usp10_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\usp10_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -68,8 +73,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>inline=__inline;__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>"$(OutDir)\usp10_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,6 +85,8 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\usp10_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -111,6 +120,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\win32ss\gdi\gdi32\gdi32.vcxproj">
       <Project>{6c6cf48c-a81c-4f7e-b882-f30dd4e59e78}</Project>
