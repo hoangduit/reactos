@@ -57,6 +57,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <AdditionalOptions>"$(OutDir)\imm32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,7 +65,10 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalOptions>"$(OutDir)\imm32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <BaseAddress>0x75da0000</BaseAddress>
     </Link>
+    <ProjectReference />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -78,6 +82,7 @@
       <ForcedIncludeFiles>wine/typeof.h</ForcedIncludeFiles>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <AdditionalOptions>"$(OutDir)\imm32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,7 +92,10 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalOptions>"$(OutDir)\imm32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <BaseAddress>0x75da0000</BaseAddress>
     </Link>
+    <ProjectReference />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="imm.c" />
@@ -115,6 +123,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\win32ss\user\user32\user32.vcxproj">
       <Project>{4dccd8be-f0cb-436f-8a18-6dd1677ae56f}</Project>

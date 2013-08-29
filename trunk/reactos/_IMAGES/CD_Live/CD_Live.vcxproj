@@ -68,6 +68,7 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
+copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
@@ -135,6 +136,7 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
+copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
