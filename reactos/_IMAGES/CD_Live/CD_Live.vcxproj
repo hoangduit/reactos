@@ -73,6 +73,7 @@ copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
+copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
@@ -144,6 +145,7 @@ copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
+copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
