@@ -1,0 +1,1032 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7A796DC8-497C-4692-BA33-AF80ED9CA47F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>uuid</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_MIDL_USE_GUIDDEF_;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\mc\build\x86_32\Debug\ReactOS;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <AdditionalOptions>"$(OutDir)\activdbg_i.c" "$(OutDir)\activscp_i.c" "$(OutDir)\asptlb_i.c" "$(OutDir)\atliface_i.c" "$(OutDir)\bdaiface_i.c" "$(OutDir)\bits_i.c" "$(OutDir)\bits1_5_i.c" "$(OutDir)\comcat_i.c" "$(OutDir)\commoncontrols_i.c" "$(OutDir)\control_i.c" "$(OutDir)\cor_i.c" "$(OutDir)\cordebug_i.c" "$(OutDir)\ctfutb_i.c" "$(OutDir)\ctxtcall_i.c" "$(OutDir)\dimm_i.c" "$(OutDir)\dispex_i.c" "$(OutDir)\docobj_i.c" "$(OutDir)\docobjectservice_i.c" "$(OutDir)\downloadmgr_i.c" "$(OutDir)\exdisp_i.c" "$(OutDir)\fusion_i.c" "$(OutDir)\hlink_i.c" "$(OutDir)\htiface_i.c" "$(OutDir)\htiframe_i.c" "$(OutDir)\httprequest_i.c" "$(OutDir)\iads_i.c" "$(OutDir)\imnact_i.c" "$(OutDir)\imnxport_i.c" "$(OutDir)\indexsrv_i.c" "$(OutDir)\metahost_i.c" "$(OutDir)\mimeinfo_i.c" 
+"$(OutDir)\mimeole_i.c" "$(OutDir)\mlang_i.c" "$(OutDir)\mscoree_i.c" "$(OutDir)\msctf_i.c" "$(OutDir)\msdadc_i.c" "$(OutDir)\mshtmhst_i.c" "$(OutDir)\mshtml_i.c" "$(OutDir)\mstask_i.c" 
+"$(OutDir)\msxml_i.c" "$(OutDir)\netcon_i.c" "$(OutDir)\netfw_i.c" "$(OutDir)\oaidl_i.c" "$(OutDir)\objidl_i.c" "$(OutDir)\objsafe_i.c" "$(OutDir)\ocidl_i.c" "$(OutDir)\ocmm_i.c" 
+"$(OutDir)\oleacc_i.c" "$(OutDir)\oledb_i.c" "$(OutDir)\oleidl_i.c" "$(OutDir)\optary_i.c" "$(OutDir)\perhist_i.c" "$(OutDir)\propidl_i.c" "$(OutDir)\propsys_i.c" "$(OutDir)\pstore_i.c" 
+"$(OutDir)\richole_i.c" "$(OutDir)\sensevts_i.c" "$(OutDir)\servprov_i.c" "$(OutDir)\shldisp_i.c" "$(OutDir)\shobjidl_i.c" "$(OutDir)\strmif_i.c" "$(OutDir)\textstor_i.c" 
+"$(OutDir)\tlogstg_i.c" "$(OutDir)\tom_i.c" "$(OutDir)\tuner_i.c" "$(OutDir)\unknwn_i.c" "$(OutDir)\urlhist_i.c" "$(OutDir)\urlmon_i.c" "$(OutDir)\vmr9_i.c" "$(OutDir)\wia_xp_i.c" 
+"$(OutDir)\wincodec_i.c" "$(OutDir)\xmldom_i.c" "$(OutDir)\xmldso_i.c" "$(OutDir)\xmllite_i.c" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>"$(OutDir)\activdbg_i.obj" "$(OutDir)\activscp_i.obj" "$(OutDir)\asptlb_i.obj" "$(OutDir)\atliface_i.obj" "$(OutDir)\bdaiface_i.obj" "$(OutDir)\bits_i.obj" "$(OutDir)\bits1_5_i.obj" "$(OutDir)\comcat_i.obj" "$(OutDir)\commoncontrols_i.obj" "$(OutDir)\control_i.obj" "$(OutDir)\cor_i.obj" "$(OutDir)\cordebug_i.obj" "$(OutDir)\ctfutb_i.obj" "$(OutDir)\ctxtcall_i.obj" "$(OutDir)\dimm_i.obj" "$(OutDir)\dispex_i.obj" "$(OutDir)\docobj_i.obj" "$(OutDir)\docobjectservice_i.obj" "$(OutDir)\downloadmgr_i.obj" "$(OutDir)\exdisp_i.obj" "$(OutDir)\fusion_i.obj" "$(OutDir)\hlink_i.obj" "$(OutDir)\htiface_i.obj" "$(OutDir)\htiframe_i.obj" "$(OutDir)\httprequest_i.obj" "$(OutDir)\iads_i.obj" "$(OutDir)\imnact_i.obj" "$(OutDir)\imnxport_i.obj" "$(OutDir)\indexsrv_i.obj" "$(OutDir)\metahost_i.obj" "$(OutDir)\mimeinfo_i.obj" "$(OutDir)\mimeole_i.obj" "$(OutDir)\mlang_i.obj" "$(OutDir)\mscoree_i.obj" "$(OutDir)\msctf_i.obj" "$(OutDir)\msdadc_i.obj" "$(OutDir)\mshtmhst_i.obj" "$(OutDir)\mshtml_i.obj" "$(OutDir)\mstask_i.obj" "$(OutDir)\msxml_i.obj" "$(OutDir)\netcon_i.obj" "$(OutDir)\netfw_i.obj" "$(OutDir)\oaidl_i.obj" "$(OutDir)\objidl_i.obj" "$(OutDir)\objsafe_i.obj" "$(OutDir)\ocidl_i.obj" "$(OutDir)\ocmm_i.obj" "$(OutDir)\oleacc_i.obj" "$(OutDir)\oledb_i.obj" "$(OutDir)\oleidl_i.obj" "$(OutDir)\optary_i.obj" "$(OutDir)\perhist_i.obj" "$(OutDir)\propidl_i.obj" "$(OutDir)\propsys_i.obj" "$(OutDir)\pstore_i.obj" "$(OutDir)\richole_i.obj" "$(OutDir)\sensevts_i.obj" "$(OutDir)\servprov_i.obj" "$(OutDir)\shldisp_i.obj" "$(OutDir)\shobjidl_i.obj" "$(OutDir)\strmif_i.obj" "$(OutDir)\textstor_i.obj" "$(OutDir)\tlogstg_i.obj" "$(OutDir)\tom_i.obj" "$(OutDir)\tuner_i.obj" "$(OutDir)\unknwn_i.obj" "$(OutDir)\urlhist_i.obj" "$(OutDir)\urlmon_i.obj" "$(OutDir)\vmr9_i.obj" "$(OutDir)\wia_xp_i.obj" "$(OutDir)\wincodec_i.obj" "$(OutDir)\xmldom_i.obj" "$(OutDir)\xmldso_i.obj" "$(OutDir)\xmllite_i.obj"
+      </AdditionalOptions>
+    </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_MIDL_USE_GUIDDEF_;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\mc\build\x86_32\Debug\ReactOS;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <AdditionalOptions>"$(OutDir)\activdbg_i.c" "$(OutDir)\activscp_i.c" "$(OutDir)\asptlb_i.c" "$(OutDir)\atliface_i.c" "$(OutDir)\bdaiface_i.c" "$(OutDir)\bits_i.c" "$(OutDir)\bits1_5_i.c" "$(OutDir)\comcat_i.c" "$(OutDir)\commoncontrols_i.c" "$(OutDir)\control_i.c" "$(OutDir)\cor_i.c" "$(OutDir)\cordebug_i.c" "$(OutDir)\ctfutb_i.c" "$(OutDir)\ctxtcall_i.c" "$(OutDir)\dimm_i.c" "$(OutDir)\dispex_i.c" "$(OutDir)\docobj_i.c" "$(OutDir)\docobjectservice_i.c" "$(OutDir)\downloadmgr_i.c" "$(OutDir)\exdisp_i.c" "$(OutDir)\fusion_i.c" "$(OutDir)\hlink_i.c" "$(OutDir)\htiface_i.c" "$(OutDir)\htiframe_i.c" "$(OutDir)\httprequest_i.c" "$(OutDir)\iads_i.c" "$(OutDir)\imnact_i.c" "$(OutDir)\imnxport_i.c" "$(OutDir)\indexsrv_i.c" "$(OutDir)\metahost_i.c" "$(OutDir)\mimeinfo_i.c" 
+"$(OutDir)\mimeole_i.c" "$(OutDir)\mlang_i.c" "$(OutDir)\mscoree_i.c" "$(OutDir)\msctf_i.c" "$(OutDir)\msdadc_i.c" "$(OutDir)\mshtmhst_i.c" "$(OutDir)\mshtml_i.c" "$(OutDir)\mstask_i.c" 
+"$(OutDir)\msxml_i.c" "$(OutDir)\netcon_i.c" "$(OutDir)\netfw_i.c" "$(OutDir)\oaidl_i.c" "$(OutDir)\objidl_i.c" "$(OutDir)\objsafe_i.c" "$(OutDir)\ocidl_i.c" "$(OutDir)\ocmm_i.c" 
+"$(OutDir)\oleacc_i.c" "$(OutDir)\oledb_i.c" "$(OutDir)\oleidl_i.c" "$(OutDir)\optary_i.c" "$(OutDir)\perhist_i.c" "$(OutDir)\propidl_i.c" "$(OutDir)\propsys_i.c" "$(OutDir)\pstore_i.c" 
+"$(OutDir)\richole_i.c" "$(OutDir)\sensevts_i.c" "$(OutDir)\servprov_i.c" "$(OutDir)\shldisp_i.c" "$(OutDir)\shobjidl_i.c" "$(OutDir)\strmif_i.c" "$(OutDir)\textstor_i.c" 
+"$(OutDir)\tlogstg_i.c" "$(OutDir)\tom_i.c" "$(OutDir)\tuner_i.c" "$(OutDir)\unknwn_i.c" "$(OutDir)\urlhist_i.c" "$(OutDir)\urlmon_i.c" "$(OutDir)\vmr9_i.c" "$(OutDir)\wia_xp_i.c" 
+"$(OutDir)\wincodec_i.c" "$(OutDir)\xmldom_i.c" "$(OutDir)\xmldso_i.c" "$(OutDir)\xmllite_i.c" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalOptions>"$(OutDir)\activdbg_i.obj" "$(OutDir)\activscp_i.obj" "$(OutDir)\asptlb_i.obj" "$(OutDir)\atliface_i.obj" "$(OutDir)\bdaiface_i.obj" "$(OutDir)\bits_i.obj" "$(OutDir)\bits1_5_i.obj" "$(OutDir)\comcat_i.obj" "$(OutDir)\commoncontrols_i.obj" "$(OutDir)\control_i.obj" "$(OutDir)\cor_i.obj" "$(OutDir)\cordebug_i.obj" "$(OutDir)\ctfutb_i.obj" "$(OutDir)\ctxtcall_i.obj" "$(OutDir)\dimm_i.obj" "$(OutDir)\dispex_i.obj" "$(OutDir)\docobj_i.obj" "$(OutDir)\docobjectservice_i.obj" "$(OutDir)\downloadmgr_i.obj" "$(OutDir)\exdisp_i.obj" "$(OutDir)\fusion_i.obj" "$(OutDir)\hlink_i.obj" "$(OutDir)\htiface_i.obj" "$(OutDir)\htiframe_i.obj" "$(OutDir)\httprequest_i.obj" "$(OutDir)\iads_i.obj" "$(OutDir)\imnact_i.obj" "$(OutDir)\imnxport_i.obj" "$(OutDir)\indexsrv_i.obj" "$(OutDir)\metahost_i.obj" "$(OutDir)\mimeinfo_i.obj" "$(OutDir)\mimeole_i.obj" "$(OutDir)\mlang_i.obj" "$(OutDir)\mscoree_i.obj" "$(OutDir)\msctf_i.obj" "$(OutDir)\msdadc_i.obj" "$(OutDir)\mshtmhst_i.obj" "$(OutDir)\mshtml_i.obj" "$(OutDir)\mstask_i.obj" "$(OutDir)\msxml_i.obj" "$(OutDir)\netcon_i.obj" "$(OutDir)\netfw_i.obj" "$(OutDir)\oaidl_i.obj" "$(OutDir)\objidl_i.obj" "$(OutDir)\objsafe_i.obj" "$(OutDir)\ocidl_i.obj" "$(OutDir)\ocmm_i.obj" "$(OutDir)\oleacc_i.obj" "$(OutDir)\oledb_i.obj" "$(OutDir)\oleidl_i.obj" "$(OutDir)\optary_i.obj" "$(OutDir)\perhist_i.obj" "$(OutDir)\propidl_i.obj" "$(OutDir)\propsys_i.obj" "$(OutDir)\pstore_i.obj" "$(OutDir)\richole_i.obj" "$(OutDir)\sensevts_i.obj" "$(OutDir)\servprov_i.obj" "$(OutDir)\shldisp_i.obj" "$(OutDir)\shobjidl_i.obj" "$(OutDir)\strmif_i.obj" "$(OutDir)\textstor_i.obj" "$(OutDir)\tlogstg_i.obj" "$(OutDir)\tom_i.obj" "$(OutDir)\tuner_i.obj" "$(OutDir)\unknwn_i.obj" "$(OutDir)\urlhist_i.obj" "$(OutDir)\urlmon_i.obj" "$(OutDir)\vmr9_i.obj" "$(OutDir)\wia_xp_i.obj" "$(OutDir)\wincodec_i.obj" "$(OutDir)\xmldom_i.obj" "$(OutDir)\xmldso_i.obj" "$(OutDir)\xmllite_i.obj"
+      </AdditionalOptions>
+    </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cguid_i.c" />
+    <ClCompile Include="cmdtreeiid.c" />
+    <ClCompile Include="ieguids.c" />
+    <ClCompile Include="netfwv6clsid.c" />
+    <ClCompile Include="otherguids.c" />
+    <ClCompile Include="shguids.c" />
+    <ClCompile Include="undoc.c" />
+    <ClCompile Include="wdmguids.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\include\psdk\activdbg.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\activscp.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\asptlb.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\atliface.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bdaiface.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bits.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\bits1_5.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\comcat.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\commoncontrols.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\control.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\cor.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\cordebug.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ctfutb.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ctxtcall.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\dimm.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\dispex.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\docobj.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\docobjectservice.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\downloadmgr.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\exdisp.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\fusion.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\hlink.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\htiface.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\htiframe.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\httprequest.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\iads.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\imnact.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\imnxport.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\indexsrv.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\metahost.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mimeinfo.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mimeole.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mlang.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mscoree.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msctf.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msdadc.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mshtmhst.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mshtml.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\mstask.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\msxml.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\netcon.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\netfw.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oaidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\objidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\objsafe.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ocidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\ocmm.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oleacc.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oledb.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\oleidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\optary.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\perhist.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\propidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\propsys.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\pstore.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\richole.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\sensevts.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\servprov.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\shldisp.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\shobjidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\strmif.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\textstor.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tlogstg.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tom.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\tuner.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\unknwn.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\urlhist.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\urlmon.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\vmr9.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\wia_xp.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\wincodec.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmldom.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmldso.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\include\psdk\xmllite.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "$(OutDir)%(Filename)_i.c" "%(FullPath)"
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_i.c</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\include\psdk\psdk.vcxproj">
+      <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
+      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
