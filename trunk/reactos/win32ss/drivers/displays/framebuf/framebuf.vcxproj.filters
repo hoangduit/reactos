@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="framebuf.spec" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dd.c">
@@ -50,5 +49,8 @@
     <ResourceCompile Include="framebuf.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="framebuf.spec" />
   </ItemGroup>
 </Project>

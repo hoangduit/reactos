@@ -16,13 +16,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
@@ -55,12 +55,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\dxsdk</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <SubSystem>Native</SubSystem>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <EntryPointSymbol>DrvEnableDriver@12</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,6 +77,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk;$(SolutionDir)\include\dxsdk</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,15 +87,31 @@
       <AdditionalDependencies>
       </AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <SubSystem>Native</SubSystem>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <EntryPointSymbol>DrvEnableDriver@12</EntryPointSymbol>
+      <BaseAddress>0x00010000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="framebuf.spec" />
+    <CustomBuild Include="framebuf.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dd.c" />
-    <ClCompile Include="ddenable.c" />
+    <ClCompile Include="dd.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ddenable.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="enable.c" />
     <ClCompile Include="palette.c" />
     <ClCompile Include="pointer.c" />
@@ -97,7 +122,26 @@
     <ClInclude Include="framebuf.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="framebuf.rc" />
+    <ResourceCompile Include="framebuf.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\psdk</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\include\psdk\psdk.vcxproj">
+      <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\include\reactos\mc\mc.vcxproj">
+      <Project>{8b41e8f9-abeb-4510-90d6-e56065b0d3ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\lib\sdk\crt\libcntpr\libcntpr.vcxproj">
+      <Project>{271006d5-01b2-4f33-8699-9909a41e0707}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\win32k\win32k.vcxproj">
+      <Project>{677f726d-0072-4a20-978e-b2917132677e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
