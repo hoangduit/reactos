@@ -35,6 +35,7 @@ copy "$(SolutionDir)\HAL\$(Outdir)\HAL.DLL" .
 copy "$(SolutionDir)\Drivers\Base\BootVid\$(Outdir)\BootVid.DLL" .
 copy "$(SolutionDir)\Drivers\Base\KDCOM\$(OutDir)\KDCOM.DLL" .
 copy "$(SolutionDir)\base\applications\ATACTL\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\applications\cacls\$(OutDir)\CACLS.EXE" .
 REM "copy $(SolutionDir)\base\applications\CALC\$(OutDir)\CALC.EXE" .
 copy "$(SolutionDir)\media\nls\*.nls" .
 mkdir drivers
@@ -107,6 +108,7 @@ copy "$(SolutionDir)\HAL\$(Outdir)\HAL.DLL" .
 copy "$(SolutionDir)\Drivers\Base\BootVid\$(Outdir)\BootVid.DLL" .
 copy "$(SolutionDir)\Drivers\Base\KDCOM\$(OutDir)\KDCOM.DLL" .
 copy "$(SolutionDir)\base\applications\ATACTL\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\applications\cacls\$(OutDir)\CACLS.EXE" .
 REM "copy $(SolutionDir)\base\applications\CALC\$(OutDir)\CALC.EXE" .
 copy "$(SolutionDir)\media\nls\*.nls" .
 mkdir drivers
@@ -163,6 +165,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
   <ItemGroup>
     <ProjectReference Include="..\..\base\applications\atactl\atactl.vcxproj">
       <Project>{b51b0f61-ebdb-4c05-becf-bd1904d77548}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\applications\cacls\cacls.vcxproj">
+      <Project>{106cb8e1-bbcd-4f8d-9d2f-22c2e5fb61e7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\base\system\lsass\lsass.vcxproj">
       <Project>{bb3a4309-8882-49d1-91d4-1895f0ff959e}</Project>
