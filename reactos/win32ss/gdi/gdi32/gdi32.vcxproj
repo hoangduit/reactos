@@ -165,6 +165,9 @@
     <ProjectReference Include="..\..\..\lib\sdk\dxguid\dxguid.vcxproj">
       <Project>{7feb118d-0eae-4c52-94a8-e6e6e2048a78}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\win32ksys\win32ksys.vcxproj">
+      <Project>{676ab8c2-85d2-428a-bbbf-3869cc177cde}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
