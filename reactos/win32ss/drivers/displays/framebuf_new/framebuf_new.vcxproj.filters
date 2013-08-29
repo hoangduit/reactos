@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="framebuf_new.spec" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.c">
@@ -47,5 +46,8 @@
     <ResourceCompile Include="framebuf_new.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="framebuf_new.spec" />
   </ItemGroup>
 </Project>
