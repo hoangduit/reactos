@@ -63,13 +63,13 @@ copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
-copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
-copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
-copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
+copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
@@ -136,13 +136,13 @@ copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
-copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
-copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
+copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
-copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
+copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
@@ -201,6 +201,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\secur32\secur32.vcxproj">
       <Project>{8e222163-9810-412f-8521-5d9bfb4015ec}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\userenv\userenv.vcxproj">
+      <Project>{fd2f864e-a5cf-4b06-a16c-04b72fc7412d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\usp10\usp10.vcxproj">
       <Project>{f3d0c8df-3582-49d0-bc27-a3f68d13f54e}</Project>
