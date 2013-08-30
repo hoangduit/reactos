@@ -14,4 +14,180 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="antimoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bindctx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classmoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clipboard.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="comcat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compobj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compositemoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="datacache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="defaulthandler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dictionary.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enumx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="errorinfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filelockbytes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filemoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ftmarshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="git.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hglobalstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ifs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="itemmoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="marshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="memlockbytes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="moniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="msvc-thiscall.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ole2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ole2impl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ole2stubs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ole32_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="oleobj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="oleproxy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pointermoniker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stg_prop.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stg_stream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stubmanager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="usrmarshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="compobj_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dictionary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enumx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="moniker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="msvc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="olestd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storage32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="dcom.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="irot.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="ole32_objidl.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="ole32_oleidl.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="ole32_unknwn.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="drag_copy.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="drag_link.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="drag_move.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="nodrop.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ole32.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ole32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ole32res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
 </Project>

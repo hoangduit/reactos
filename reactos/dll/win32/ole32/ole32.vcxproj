@@ -75,6 +75,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="antimoniker.c" />
+    <ClCompile Include="bindctx.c" />
+    <ClCompile Include="classmoniker.c" />
+    <ClCompile Include="clipboard.c" />
+    <ClCompile Include="comcat.c" />
+    <ClCompile Include="compobj.c" />
+    <ClCompile Include="compositemoniker.c" />
+    <ClCompile Include="datacache.c" />
+    <ClCompile Include="defaulthandler.c" />
+    <ClCompile Include="dictionary.c" />
+    <ClCompile Include="enumx.c" />
+    <ClCompile Include="errorinfo.c" />
+    <ClCompile Include="filelockbytes.c" />
+    <ClCompile Include="filemoniker.c" />
+    <ClCompile Include="ftmarshal.c" />
+    <ClCompile Include="git.c" />
+    <ClCompile Include="hglobalstream.c" />
+    <ClCompile Include="ifs.c" />
+    <ClCompile Include="itemmoniker.c" />
+    <ClCompile Include="marshal.c" />
+    <ClCompile Include="memlockbytes.c" />
+    <ClCompile Include="moniker.c" />
+    <ClCompile Include="msvc-thiscall.c" />
+    <ClCompile Include="ole2.c" />
+    <ClCompile Include="ole2impl.c" />
+    <ClCompile Include="ole2stubs.c" />
+    <ClCompile Include="ole32_main.c" />
+    <ClCompile Include="oleobj.c" />
+    <ClCompile Include="oleproxy.c" />
+    <ClCompile Include="pointermoniker.c" />
+    <ClCompile Include="rpc.c" />
+    <ClCompile Include="stg_prop.c" />
+    <ClCompile Include="stg_stream.c" />
+    <ClCompile Include="storage32.c" />
+    <ClCompile Include="stubmanager.c" />
+    <ClCompile Include="usrmarshal.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="compobj_private.h" />
+    <ClInclude Include="dictionary.h" />
+    <ClInclude Include="enumx.h" />
+    <ClInclude Include="moniker.h" />
+    <ClInclude Include="msvc.h" />
+    <ClInclude Include="olestd.h" />
+    <ClInclude Include="storage32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="dcom.idl" />
+    <Midl Include="irot.idl" />
+    <Midl Include="ole32_objidl.idl" />
+    <Midl Include="ole32_oleidl.idl" />
+    <Midl Include="ole32_unknwn.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="drag_copy.cur" />
+    <None Include="drag_link.cur" />
+    <None Include="drag_move.cur" />
+    <None Include="nodrop.cur" />
+    <None Include="ole32.rgs" />
+    <None Include="ole32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ole32res.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -75,6 +75,58 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="assoc.c" />
+    <ClCompile Include="clist.c" />
+    <ClCompile Include="istream.c" />
+    <ClCompile Include="msgbox.c" />
+    <ClCompile Include="ordinal.c" />
+    <ClCompile Include="path.c" />
+    <ClCompile Include="reg.c" />
+    <ClCompile Include="regstream.c" />
+    <ClCompile Include="shlwapi_main.c" />
+    <ClCompile Include="stopwatch.c" />
+    <ClCompile Include="string.c" />
+    <ClCompile Include="thread.c" />
+    <ClCompile Include="url.c" />
+    <ClCompile Include="wsprintf.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="shlwapi.rc" />
+    <ResourceCompile Include="shlwapi_Da.rc" />
+    <ResourceCompile Include="shlwapi_De.rc" />
+    <ResourceCompile Include="shlwapi_En.rc" />
+    <ResourceCompile Include="shlwapi_Es.rc" />
+    <ResourceCompile Include="shlwapi_Fi.rc" />
+    <ResourceCompile Include="shlwapi_Fr.rc" />
+    <ResourceCompile Include="shlwapi_He.rc" />
+    <ResourceCompile Include="shlwapi_Hu.rc" />
+    <ResourceCompile Include="shlwapi_It.rc" />
+    <ResourceCompile Include="shlwapi_Ja.rc" />
+    <ResourceCompile Include="shlwapi_Ko.rc" />
+    <ResourceCompile Include="shlwapi_Lt.rc" />
+    <ResourceCompile Include="shlwapi_Nl.rc" />
+    <ResourceCompile Include="shlwapi_No.rc" />
+    <ResourceCompile Include="shlwapi_Pl.rc" />
+    <ResourceCompile Include="shlwapi_Pt.rc" />
+    <ResourceCompile Include="shlwapi_Ro.rc" />
+    <ResourceCompile Include="shlwapi_Ru.rc" />
+    <ResourceCompile Include="shlwapi_Si.rc" />
+    <ResourceCompile Include="shlwapi_Sk.rc" />
+    <ResourceCompile Include="shlwapi_Sv.rc" />
+    <ResourceCompile Include="shlwapi_Tr.rc" />
+    <ResourceCompile Include="shlwapi_Uk.rc" />
+    <ResourceCompile Include="shlwapi_Zh.rc" />
+    <ResourceCompile Include="version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shlwapi.spec" />
+    <None Include="shlwapi_ros.diff" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

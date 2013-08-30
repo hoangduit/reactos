@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{96BBC7DE-9752-404C-B6CD-37BE6E8B0565}</ProjectGuid>
+    <RootNamespace>shell32</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <UndefineAllPreprocessorDefinitions>true</UndefineAllPreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="authors.cpp" />
+    <ClCompile Include="autocomplete.cpp" />
+    <ClCompile Include="brsfolder.cpp" />
+    <ClCompile Include="changenotify.cpp" />
+    <ClCompile Include="classes.cpp" />
+    <ClCompile Include="clipboard.cpp" />
+    <ClCompile Include="control.cpp" />
+    <ClCompile Include="dataobject.cpp" />
+    <ClCompile Include="dde.cpp" />
+    <ClCompile Include="debughlp.cpp" />
+    <ClCompile Include="defcontextmenu.cpp" />
+    <ClCompile Include="desktop.cpp" />
+    <ClCompile Include="dialogs.cpp" />
+    <ClCompile Include="dragdrophelper.cpp" />
+    <ClCompile Include="drive.cpp" />
+    <ClCompile Include="drvdefext.cpp" />
+    <ClCompile Include="enumidlist.cpp" />
+    <ClCompile Include="extracticon.cpp" />
+    <ClCompile Include="filedefext.cpp" />
+    <ClCompile Include="folders.cpp" />
+    <ClCompile Include="folders\admintools.cpp" />
+    <ClCompile Include="folders\cpanel.cpp" />
+    <ClCompile Include="folders\desktop.cpp" />
+    <ClCompile Include="folders\fonts.cpp" />
+    <ClCompile Include="folders\fs.cpp" />
+    <ClCompile Include="folders\mycomp.cpp" />
+    <ClCompile Include="folders\mydocuments.cpp" />
+    <ClCompile Include="folders\netplaces.cpp" />
+    <ClCompile Include="folders\printers.cpp" />
+    <ClCompile Include="folders\recyclebin.cpp" />
+    <ClCompile Include="folder_options.cpp" />
+    <ClCompile Include="fprop.cpp" />
+    <ClCompile Include="iconcache.cpp" />
+    <ClCompile Include="newmenu.cpp" />
+    <ClCompile Include="openwithmenu.cpp" />
+    <ClCompile Include="pidl.cpp" />
+    <ClCompile Include="shell32_main.cpp" />
+    <ClCompile Include="shellitem.cpp" />
+    <ClCompile Include="shelllink.cpp" />
+    <ClCompile Include="shellole.cpp" />
+    <ClCompile Include="shellord.cpp" />
+    <ClCompile Include="shellpath.cpp" />
+    <ClCompile Include="shellreg.cpp" />
+    <ClCompile Include="shellstring.cpp" />
+    <ClCompile Include="shlexec.cpp" />
+    <ClCompile Include="shlfileop.cpp" />
+    <ClCompile Include="shlfolder.cpp" />
+    <ClCompile Include="shlfsbind.cpp" />
+    <ClCompile Include="shlmenu.cpp" />
+    <ClCompile Include="shlview.cpp" />
+    <ClCompile Include="shpolicy.cpp" />
+    <ClCompile Include="startmenu.cpp" />
+    <ClCompile Include="stubs.cpp" />
+    <ClCompile Include="systray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="autocomplete.h" />
+    <ClInclude Include="cpanel.h" />
+    <ClInclude Include="debughlp.h" />
+    <ClInclude Include="dragdrophelper.h" />
+    <ClInclude Include="drvdefext.h" />
+    <ClInclude Include="enumidlist.h" />
+    <ClInclude Include="filedefext.h" />
+    <ClInclude Include="folders\admintools.h" />
+    <ClInclude Include="folders\cpanel.h" />
+    <ClInclude Include="folders\desktop.h" />
+    <ClInclude Include="folders\fonts.h" />
+    <ClInclude Include="folders\fs.h" />
+    <ClInclude Include="folders\mycomp.h" />
+    <ClInclude Include="folders\mydocuments.h" />
+    <ClInclude Include="folders\netplaces.h" />
+    <ClInclude Include="folders\printers.h" />
+    <ClInclude Include="folders\recyclebin.h" />
+    <ClInclude Include="newmenu.h" />
+    <ClInclude Include="openwithmenu.h" />
+    <ClInclude Include="pidl.h" />
+    <ClInclude Include="precomp.h" />
+    <ClInclude Include="shell32_main.h" />
+    <ClInclude Include="shell32_version.h" />
+    <ClInclude Include="shellfolder.h" />
+    <ClInclude Include="shellitem.h" />
+    <ClInclude Include="shelllink.h" />
+    <ClInclude Include="shfldr.h" />
+    <ClInclude Include="shresdef.h" />
+    <ClInclude Include="startmenu.h" />
+    <ClInclude Include="undocshell.h" />
+    <ClInclude Include="xdg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="avi_res.rc" />
+    <ResourceCompile Include="bitmap_res.rc" />
+    <ResourceCompile Include="icon_res.rc" />
+    <ResourceCompile Include="lang\bg-BG.rc" />
+    <ResourceCompile Include="lang\ca-ES.rc" />
+    <ResourceCompile Include="lang\cs-CZ.rc" />
+    <ResourceCompile Include="lang\da-DK.rc" />
+    <ResourceCompile Include="lang\de-DE.rc" />
+    <ResourceCompile Include="lang\el-GR.rc" />
+    <ResourceCompile Include="lang\en-GB.rc" />
+    <ResourceCompile Include="lang\en-US.rc" />
+    <ResourceCompile Include="lang\es-ES.rc" />
+    <ResourceCompile Include="lang\fi-FI.rc" />
+    <ResourceCompile Include="lang\fr-FR.rc" />
+    <ResourceCompile Include="lang\he-IL.rc" />
+    <ResourceCompile Include="lang\hu-HU.rc" />
+    <ResourceCompile Include="lang\it-IT.rc" />
+    <ResourceCompile Include="lang\ja-JP.rc" />
+    <ResourceCompile Include="lang\ko-KR.rc" />
+    <ResourceCompile Include="lang\nl-NL.rc" />
+    <ResourceCompile Include="lang\no-NO.rc" />
+    <ResourceCompile Include="lang\pl-PL.rc" />
+    <ResourceCompile Include="lang\pt-BR.rc" />
+    <ResourceCompile Include="lang\pt-PT.rc" />
+    <ResourceCompile Include="lang\ro-RO.rc" />
+    <ResourceCompile Include="lang\ru-RU.rc" />
+    <ResourceCompile Include="lang\sk-SK.rc" />
+    <ResourceCompile Include="lang\sl-SI.rc" />
+    <ResourceCompile Include="lang\sv-SE.rc" />
+    <ResourceCompile Include="lang\tr-TR.rc" />
+    <ResourceCompile Include="lang\uk-UA.rc" />
+    <ResourceCompile Include="lang\zh-CN.rc" />
+    <ResourceCompile Include="lang\zh-TW.rc" />
+    <ResourceCompile Include="rgs_res.rc" />
+    <ResourceCompile Include="shell32.rc" />
+    <ResourceCompile Include="shell32_version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="res\avis\160+161+167+168.avi" />
+    <None Include="res\avis\162.avi" />
+    <None Include="res\avis\163.avi" />
+    <None Include="res\avis\164+169.avi" />
+    <None Include="res\avis\170.avi" />
+    <None Include="res\avis\Licence\COPYING" />
+    <None Include="res\avis\Licence\Tango.txt" />
+    <None Include="res\bitmaps\204.bmp" />
+    <None Include="res\bitmaps\205.bmp" />
+    <None Include="res\bitmaps\206.bmp" />
+    <None Include="res\bitmaps\207.bmp" />
+    <None Include="res\bitmaps\225.bmp" />
+    <None Include="res\bitmaps\226.bmp" />
+    <None Include="res\bitmaps\227.bmp" />
+    <None Include="res\bitmaps\228.bmp" />
+    <None Include="res\bitmaps\shell_about_logo_24bpp.bmp" />
+    <None Include="res\icons\1.ico" />
+    <None Include="res\icons\10.ico" />
+    <None Include="res\icons\1001.ico" />
+    <None Include="res\icons\1004.ico" />
+    <None Include="res\icons\11.ico" />
+    <None Include="res\icons\12.ico" />
+    <None Include="res\icons\13.ico" />
+    <None Include="res\icons\134.ico" />
+    <None Include="res\icons\135.ico" />
+    <None Include="res\icons\137.ico" />
+    <None Include="res\icons\138.ico" />
+    <None Include="res\icons\14.ico" />
+    <None Include="res\icons\15.ico" />
+    <None Include="res\icons\151.ico" />
+    <None Include="res\icons\152.ico" />
+    <None Include="res\icons\153.ico" />
+    <None Include="res\icons\154.ico" />
+    <None Include="res\icons\155.ico" />
+    <None Include="res\icons\156.ico" />
+    <None Include="res\icons\157.ico" />
+    <None Include="res\icons\16.ico" />
+    <None Include="res\icons\160.ico" />
+    <None Include="res\icons\161.ico" />
+    <None Include="res\icons\16710.ico" />
+    <None Include="res\icons\16715.ico" />
+    <None Include="res\icons\16717.ico" />
+    <None Include="res\icons\16718.ico" />
+    <None Include="res\icons\16721.ico" />
+    <None Include="res\icons\17.ico" />
+    <None Include="res\icons\1700.ico" />
+    <None Include="res\icons\172.ico" />
+    <None Include="res\icons\173.ico" />
+    <None Include="res\icons\18.ico" />
+    <None Include="res\icons\182.ico" />
+    <None Include="res\icons\183.ico" />
+    <None Include="res\icons\184.ico" />
+    <None Include="res\icons\185.ico" />
+    <None Include="res\icons\186.ico" />
+    <None Include="res\icons\187.ico" />
+    <None Include="res\icons\19.ico" />
+    <None Include="res\icons\191.ico" />
+    <None Include="res\icons\192.ico" />
+    <None Include="res\icons\2.ico" />
+    <None Include="res\icons\20.ico" />
+    <None Include="res\icons\21.ico" />
+    <None Include="res\icons\210.ico" />
+    <None Include="res\icons\22.ico" />
+    <None Include="res\icons\220.ico" />
+    <None Include="res\icons\221.ico" />
+    <None Include="res\icons\222.ico" />
+    <None Include="res\icons\224.ico" />
+    <None Include="res\icons\225.ico" />
+    <None Include="res\icons\226.ico" />
+    <None Include="res\icons\228.ico" />
+    <None Include="res\icons\23.ico" />
+    <None Include="res\icons\233.ico" />
+    <None Include="res\icons\235.ico" />
+    <None Include="res\icons\236.ico" />
+    <None Include="res\icons\237.ico" />
+    <None Include="res\icons\238.ico" />
+    <None Include="res\icons\24.ico" />
+    <None Include="res\icons\240.ico" />
+    <None Include="res\icons\245.ico" />
+    <None Include="res\icons\246.ico" />
+    <None Include="res\icons\248.ico" />
+    <None Include="res\icons\249.ico" />
+    <None Include="res\icons\25.ico" />
+    <None Include="res\icons\250.ico" />
+    <None Include="res\icons\252.ico" />
+    <None Include="res\icons\254.ico" />
+    <None Include="res\icons\255.ico" />
+    <None Include="res\icons\263.ico" />
+    <None Include="res\icons\265.ico" />
+    <None Include="res\icons\268.ico" />
+    <None Include="res\icons\269.ico" />
+    <None Include="res\icons\270.ico" />
+    <None Include="res\icons\271.ico" />
+    <None Include="res\icons\277.ico" />
+    <None Include="res\icons\279.ico" />
+    <None Include="res\icons\28.ico" />
+    <None Include="res\icons\289.ico" />
+    <None Include="res\icons\29.ico" />
+    <None Include="res\icons\290.ico" />
+    <None Include="res\icons\291.ico" />
+    <None Include="res\icons\292.ico" />
+    <None Include="res\icons\293.ico" />
+    <None Include="res\icons\294.ico" />
+    <None Include="res\icons\295.ico" />
+    <None Include="res\icons\296.ico" />
+    <None Include="res\icons\297.ico" />
+    <None Include="res\icons\298.ico" />
+    <None Include="res\icons\299.ico" />
+    <None Include="res\icons\3.ico" />
+    <None Include="res\icons\30.ico" />
+    <None Include="res\icons\302.ico" />
+    <None Include="res\icons\304.ico" />
+    <None Include="res\icons\305.ico" />
+    <None Include="res\icons\309.ico" />
+    <None Include="res\icons\315.ico" />
+    <None Include="res\icons\317.ico" />
+    <None Include="res\icons\318.ico" />
+    <None Include="res\icons\319.ico" />
+    <None Include="res\icons\32.ico" />
+    <None Include="res\icons\322.ico" />
+    <None Include="res\icons\323.ico" />
+    <None Include="res\icons\324.ico" />
+    <None Include="res\icons\325.ico" />
+    <None Include="res\icons\326.ico" />
+    <None Include="res\icons\327.ico" />
+    <None Include="res\icons\328.ico" />
+    <None Include="res\icons\329.ico" />
+    <None Include="res\icons\33.ico" />
+    <None Include="res\icons\330.ico" />
+    <None Include="res\icons\35.ico" />
+    <None Include="res\icons\36.ico" />
+    <None Include="res\icons\37.ico" />
+    <None Include="res\icons\38.ico" />
+    <None Include="res\icons\39.ico" />
+    <None Include="res\icons\4.ico" />
+    <None Include="res\icons\40.ico" />
+    <None Include="res\icons\41.ico" />
+    <None Include="res\icons\44.ico" />
+    <None Include="res\icons\45.ico" />
+    <None Include="res\icons\46.ico" />
+    <None Include="res\icons\47.ico" />
+    <None Include="res\icons\48.ico" />
+    <None Include="res\icons\5.ico" />
+    <None Include="res\icons\54.ico" />
+    <None Include="res\icons\6.ico" />
+    <None Include="res\icons\7.ico" />
+    <None Include="res\icons\8.ico" />
+    <None Include="res\icons\8240.ico" />
+    <None Include="res\icons\9.ico" />
+    <None Include="res\rgs\adminfoldershortcut.rgs" />
+    <None Include="res\rgs\autocomplete.rgs" />
+    <None Include="res\rgs\controlpanel.rgs" />
+    <None Include="res\rgs\dragdrophelper.rgs" />
+    <None Include="res\rgs\folderoptions.rgs" />
+    <None Include="res\rgs\foldershortcut.rgs" />
+    <None Include="res\rgs\fontsfoldershortcut.rgs" />
+    <None Include="res\rgs\menubandsite.rgs" />
+    <None Include="res\rgs\mycomputer.rgs" />
+    <None Include="res\rgs\mydocuments.rgs" />
+    <None Include="res\rgs\networkplaces.rgs" />
+    <None Include="res\rgs\newmenu.rgs" />
+    <None Include="res\rgs\openwithmenu.rgs" />
+    <None Include="res\rgs\printers.rgs" />
+    <None Include="res\rgs\recyclebin.rgs" />
+    <None Include="res\rgs\shelldesktop.rgs" />
+    <None Include="res\rgs\shelldrvdefext.rgs" />
+    <None Include="res\rgs\shellfiledefext.rgs" />
+    <None Include="res\rgs\shellfsfolder.rgs" />
+    <None Include="res\rgs\shelllink.rgs" />
+    <None Include="res\rgs\startmenu.rgs" />
+    <None Include="shell32.spec" />
+    <None Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="shobjidl_local.idl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

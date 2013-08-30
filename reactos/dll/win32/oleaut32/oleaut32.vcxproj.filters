@@ -14,4 +14,178 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="connpt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dispatch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="oleaut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="olefont.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="olepicture.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="olepropframe.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="recinfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="safearray.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tmarshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="typelib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="typelib2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="usrmarshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="varformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="variant.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vartype.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="connpt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="typelib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="variant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msvc.S" />
+    <None Include="oleaut32.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="oleaut32.spec" />
+    <None Include="oleaut32_oaidl.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="oleaut32_ocidl.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="oleaut32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Bg.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Cy.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Cz.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Da.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_De.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_El.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_En.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Es.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Fr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_He.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Hu.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_It.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Ja.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Ko.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Lt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Nl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_No.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Pl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Pt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Ro.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Ru.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Si.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Sv.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Th.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Tr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Uk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="oleaut32_Zh.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="oleaut32_oaidl.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="oleaut32_ocidl.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
 </Project>
