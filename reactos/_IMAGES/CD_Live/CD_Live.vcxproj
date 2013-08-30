@@ -71,9 +71,10 @@ copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
-copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
+copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
@@ -144,9 +145,10 @@ copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
-copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
+copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
@@ -174,6 +176,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\base\system\smss\smss.vcxproj">
       <Project>{3339218b-863b-4a19-880f-8f6d522f584a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\system\winlogon\winlogon.vcxproj">
+      <Project>{9e88babf-90c5-47a1-b6eb-68946c77e01c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\boot\freeldr\bootsect\bootsect.vcxproj">
       <Project>{f58e944d-47dd-472f-b383-1ab014515b9a}</Project>
