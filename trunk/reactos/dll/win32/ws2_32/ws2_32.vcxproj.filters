@@ -13,5 +13,86 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{26f57191-4211-45fe-bff6-006983b2df29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{d907487d-f9e7-4fd9-9225-c66597e7ddd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests">
+      <UniqueIdentifier>{ab0432de-ce30-46e2-a00e-45f6d7475cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\tests">
+      <UniqueIdentifier>{9d0f043f-240f-41e0-b85a-98648b98f6e3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ws2_32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ws2_32.spec" />
+    <None Include="tests\stubs.tst">
+      <Filter>tests</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\catalog.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\debug.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\handle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\upcall.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ws2_32.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="misc\async.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\bsd.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\catalog.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\dllmain.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\event.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\handle.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\ns.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\sndrcv.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\stubs.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\upcall.c">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\setup.c">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\tests\WinsockEvent.c">
+      <Filter>tests\tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

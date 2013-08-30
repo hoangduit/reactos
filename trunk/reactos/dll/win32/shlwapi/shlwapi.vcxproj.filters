@@ -14,4 +14,140 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="assoc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="istream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="msgbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ordinal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="path.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="reg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="regstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlwapi_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stopwatch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="string.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="url.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wsprintf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="shlwapi.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Da.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_De.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_En.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Es.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Fi.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Fr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_He.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Hu.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_It.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Ja.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Ko.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Lt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Nl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_No.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Pl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Pt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Ro.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Ru.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Si.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Sk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Sv.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Tr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Uk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shlwapi_Zh.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shlwapi.spec" />
+    <None Include="shlwapi_ros.diff" />
+  </ItemGroup>
 </Project>

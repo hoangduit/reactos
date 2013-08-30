@@ -18,14 +18,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -51,11 +51,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>LE;WINSOCK_API_LINKAGE=DECLSPEC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,6 +67,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>LE;WINSOCK_API_LINKAGE=DECLSPEC_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -75,6 +78,55 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ws2_32.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests\stubs.tst" />
+    <None Include="ws2_32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\catalog.h" />
+    <ClInclude Include="include\debug.h" />
+    <ClInclude Include="include\handle.h" />
+    <ClInclude Include="include\upcall.h" />
+    <ClInclude Include="include\ws2_32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="misc\async.c" />
+    <ClCompile Include="misc\bsd.c" />
+    <ClCompile Include="misc\catalog.c" />
+    <ClCompile Include="misc\dllmain.c" />
+    <ClCompile Include="misc\event.c" />
+    <ClCompile Include="misc\handle.c" />
+    <ClCompile Include="misc\ns.c" />
+    <ClCompile Include="misc\sndrcv.c" />
+    <ClCompile Include="misc\stubs.c" />
+    <ClCompile Include="misc\upcall.c" />
+    <ClCompile Include="tests\setup.c" />
+    <ClCompile Include="tests\tests\WinsockEvent.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\win32ss\user\user32\user32.vcxproj">
+      <Project>{4dccd8be-f0cb-436f-8a18-6dd1677ae56f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\kernel32\kernel32.vcxproj">
+      <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
+      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

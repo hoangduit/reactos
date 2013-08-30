@@ -1,0 +1,933 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="folders">
+      <UniqueIdentifier>{4f09d71f-5925-4de2-985f-2e2671400a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{ef5ffca7-ff32-460b-af38-c233918dc76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{68a18a3f-0025-425a-b739-ef7da104bc8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\avis">
+      <UniqueIdentifier>{5ce4ebf9-6b23-4b20-9803-878f3ec08320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\icon">
+      <UniqueIdentifier>{31ce2805-9f0a-4509-9045-21d0e54ebc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\rgs">
+      <UniqueIdentifier>{ee54a034-f4a8-4e00-8771-310de39537cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\icon\Icon_Licence">
+      <UniqueIdentifier>{3a4ee4ce-8625-460d-a99c-2754cbc3cc1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\avis\Licence">
+      <UniqueIdentifier>{a7ea66ef-74ea-42f2-a189-fa6f8e108c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\bitmaps">
+      <UniqueIdentifier>{3218d029-d128-44e7-9d56-195bede2f0ba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="folders\admintools.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\cpanel.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\desktop.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\fonts.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\fs.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\mycomp.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\mydocuments.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\netplaces.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\printers.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="folders\recyclebin.cpp">
+      <Filter>folders</Filter>
+    </ClCompile>
+    <ClCompile Include="authors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="autocomplete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="brsfolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="changenotify.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clipboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="control.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dataobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dde.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debughlp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="defcontextmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrophelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drvdefext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enumidlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="extracticon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filedefext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="folder_options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="folders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fprop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iconcache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="newmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="openwithmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pidl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shell32_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shelllink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellpath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellreg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellstring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlexec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlfileop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlfolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlfsbind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shlview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shpolicy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="startmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stubs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="systray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="folders\admintools.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\cpanel.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\desktop.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\fonts.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\fs.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\mycomp.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\mydocuments.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\netplaces.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\printers.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="folders\recyclebin.h">
+      <Filter>folders</Filter>
+    </ClInclude>
+    <ClInclude Include="autocomplete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debughlp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrophelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drvdefext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enumidlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filedefext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="newmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openwithmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pidl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="precomp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shell32_main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shell32_version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shellfolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shellitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shelllink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shfldr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shresdef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="startmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="undocshell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xdg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="lang\bg-BG.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ca-ES.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\cs-CZ.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\da-DK.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\de-DE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\el-GR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\en-GB.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\en-US.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\es-ES.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\fi-FI.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\fr-FR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\he-IL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\hu-HU.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\it-IT.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ja-JP.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ko-KR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\nl-NL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\no-NO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pl-PL.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pt-BR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pt-PT.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ro-RO.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ru-RU.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sk-SK.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sl-SI.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sv-SE.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\tr-TR.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\uk-UA.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-CN.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-TW.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="avi_res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="bitmap_res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="icon_res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="rgs_res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shell32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="shell32_version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\avis\160+161+167+168.avi">
+      <Filter>res\avis</Filter>
+    </None>
+    <None Include="res\avis\162.avi">
+      <Filter>res\avis</Filter>
+    </None>
+    <None Include="res\avis\163.avi">
+      <Filter>res\avis</Filter>
+    </None>
+    <None Include="res\avis\164+169.avi">
+      <Filter>res\avis</Filter>
+    </None>
+    <None Include="res\avis\170.avi">
+      <Filter>res\avis</Filter>
+    </None>
+    <None Include="res\avis\Licence\COPYING">
+      <Filter>res\avis\Licence</Filter>
+    </None>
+    <None Include="res\avis\Licence\Tango.txt">
+      <Filter>res\avis\Licence</Filter>
+    </None>
+    <None Include="res\bitmaps\204.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\205.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\206.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\207.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\225.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\226.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\227.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\228.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\bitmaps\shell_about_logo_24bpp.bmp">
+      <Filter>res\bitmaps</Filter>
+    </None>
+    <None Include="res\icons\1.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\2.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\3.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\4.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\5.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\6.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\7.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\8.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\9.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\10.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\11.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\12.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\13.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\14.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\15.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\17.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\18.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\19.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\20.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\21.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\22.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\23.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\24.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\25.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\28.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\29.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\30.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\32.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\33.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\35.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\36.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\37.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\38.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\39.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\40.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\41.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\44.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\45.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\46.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\47.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\48.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\54.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\134.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\135.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\137.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\138.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\151.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\152.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\153.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\154.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\155.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\156.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\157.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\160.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\161.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\172.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\173.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\182.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\183.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\184.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\185.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\186.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\187.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\191.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\192.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\210.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\220.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\221.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\222.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\224.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\225.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\226.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\228.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\233.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\235.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\236.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\237.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\238.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\240.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\245.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\246.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\248.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\249.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\250.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\252.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\254.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\255.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\263.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\265.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\268.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\269.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\270.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\271.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\277.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\279.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\289.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\290.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\291.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\292.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\293.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\294.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\295.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\296.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\297.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\298.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\299.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\302.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\304.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\305.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\309.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\315.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\317.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\318.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\319.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\322.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\323.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\324.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\325.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\326.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\327.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\328.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\329.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\330.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\1001.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\1004.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\1700.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\8240.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16710.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16715.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16717.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16718.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\icons\16721.ico">
+      <Filter>res\icon</Filter>
+    </None>
+    <None Include="res\rgs\adminfoldershortcut.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\autocomplete.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\controlpanel.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\dragdrophelper.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\folderoptions.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\foldershortcut.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\fontsfoldershortcut.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\menubandsite.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\mycomputer.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\mydocuments.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\networkplaces.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\newmenu.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\openwithmenu.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\printers.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\recyclebin.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\shelldesktop.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\shelldrvdefext.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\shellfiledefext.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\shellfsfolder.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\shelllink.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="res\rgs\startmenu.rgs">
+      <Filter>res\rgs</Filter>
+    </None>
+    <None Include="CMakeLists.txt" />
+    <None Include="shell32.spec" />
+    <None Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="shobjidl_local.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>

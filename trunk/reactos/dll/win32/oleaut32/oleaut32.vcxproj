@@ -75,6 +75,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="connpt.c" />
+    <ClCompile Include="dispatch.c" />
+    <ClCompile Include="hash.c" />
+    <ClCompile Include="oleaut.c" />
+    <ClCompile Include="olefont.c" />
+    <ClCompile Include="olepicture.c" />
+    <ClCompile Include="olepropframe.c" />
+    <ClCompile Include="recinfo.c" />
+    <ClCompile Include="safearray.c" />
+    <ClCompile Include="tmarshal.c" />
+    <ClCompile Include="typelib.c" />
+    <ClCompile Include="typelib2.c" />
+    <ClCompile Include="usrmarshal.c" />
+    <ClCompile Include="varformat.c" />
+    <ClCompile Include="variant.c" />
+    <ClCompile Include="vartype.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="connpt.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="typelib.h" />
+    <ClInclude Include="variant.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msvc.S" />
+    <None Include="oleaut32.rgs" />
+    <None Include="oleaut32.spec" />
+    <None Include="oleaut32_oaidl.rgs" />
+    <None Include="oleaut32_ocidl.rgs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="oleaut32.rc" />
+    <ResourceCompile Include="oleaut32_Bg.rc" />
+    <ResourceCompile Include="oleaut32_Cy.rc" />
+    <ResourceCompile Include="oleaut32_Cz.rc" />
+    <ResourceCompile Include="oleaut32_Da.rc" />
+    <ResourceCompile Include="oleaut32_De.rc" />
+    <ResourceCompile Include="oleaut32_El.rc" />
+    <ResourceCompile Include="oleaut32_En.rc" />
+    <ResourceCompile Include="oleaut32_Es.rc" />
+    <ResourceCompile Include="oleaut32_Fr.rc" />
+    <ResourceCompile Include="oleaut32_He.rc" />
+    <ResourceCompile Include="oleaut32_Hu.rc" />
+    <ResourceCompile Include="oleaut32_It.rc" />
+    <ResourceCompile Include="oleaut32_Ja.rc" />
+    <ResourceCompile Include="oleaut32_Ko.rc" />
+    <ResourceCompile Include="oleaut32_Lt.rc" />
+    <ResourceCompile Include="oleaut32_Nl.rc" />
+    <ResourceCompile Include="oleaut32_No.rc" />
+    <ResourceCompile Include="oleaut32_Pl.rc" />
+    <ResourceCompile Include="oleaut32_Pt.rc" />
+    <ResourceCompile Include="oleaut32_Ro.rc" />
+    <ResourceCompile Include="oleaut32_Ru.rc" />
+    <ResourceCompile Include="oleaut32_Si.rc" />
+    <ResourceCompile Include="oleaut32_Sv.rc" />
+    <ResourceCompile Include="oleaut32_Th.rc" />
+    <ResourceCompile Include="oleaut32_Tr.rc" />
+    <ResourceCompile Include="oleaut32_Uk.rc" />
+    <ResourceCompile Include="oleaut32_Zh.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="oleaut32_oaidl.idl" />
+    <Midl Include="oleaut32_ocidl.idl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

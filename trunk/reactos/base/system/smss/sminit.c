@@ -2324,6 +2324,26 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 
         /* Execute it */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
+
+		{
+			// Print out information to console: 
+			LARGE_INTEGER MyDelay;
+			UNICODE_STRING MyString;
+
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+			RtlInitUnicodeString(&MyString, L"Hi Xiaochu! about to execute: ");
+
+			ZwDisplayString(&MyString);
+
+			ZwDisplayString(&RegEntry->Name);
+
+			RtlInitUnicodeString(&MyString, L"\n");
+			ZwDisplayString(&MyString);
+
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
         SmpExecuteCommand(&RegEntry->Name, 0, NULL, 0);
 
         /* And free it */
