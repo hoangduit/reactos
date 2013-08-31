@@ -71,11 +71,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="vgaddi.spec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="vgaddi.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="vgaddi.spec" />
   </ItemGroup>
 </Project>
