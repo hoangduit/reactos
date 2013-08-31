@@ -72,6 +72,7 @@ copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
@@ -146,6 +147,7 @@ copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
+copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
 copy "$(SolutionDir)\base\system\smss\$(OutDir)\SMSS.EXE" .
 copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
@@ -171,6 +173,12 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     <ProjectReference Include="..\..\base\applications\cacls\cacls.vcxproj">
       <Project>{106cb8e1-bbcd-4f8d-9d2f-22c2e5fb61e7}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\base\shell\cmd\cmd.vcxproj">
+      <Project>{5e4ab3b3-abea-4b91-9eff-67a788d33ea2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\system\autochk\autochk.vcxproj">
+      <Project>{ef4d02ed-cd4a-405d-9120-870cfb95db5c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\base\system\lsass\lsass.vcxproj">
       <Project>{bb3a4309-8882-49d1-91d4-1895f0ff959e}</Project>
     </ProjectReference>
@@ -191,6 +199,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\imm32\imm32.vcxproj">
+      <Project>{5616b640-0dff-4f7d-b1ed-3f0e142b5c4a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\kernel32\kernel32.vcxproj">
       <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>

@@ -375,6 +375,9 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ProjectReference Include="..\..\lib\sdk\dxguid\dxguid.vcxproj">
       <Project>{7feb118d-0eae-4c52-94a8-e6e6e2048a78}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\tools\gendib\gendib.vcxproj">
+      <Project>{937a35a6-79e7-4384-9682-ccb6275c6078}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\drivers\font\ftfd\ftfd.vcxproj">
       <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
     </ProjectReference>
