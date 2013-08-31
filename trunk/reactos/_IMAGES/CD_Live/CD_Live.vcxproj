@@ -79,6 +79,7 @@ copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -154,6 +155,7 @@ copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -298,6 +300,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\drivers\displays\framebuf\framebuf.vcxproj">
       <Project>{e053cfae-6136-4a91-9bf3-5e7d94bc3dae}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ss\drivers\displays\vga\vga.vcxproj">
+      <Project>{3df33437-44a6-4794-821a-030335293929}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\drivers\font\ftfd\ftfd.vcxproj">
       <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
