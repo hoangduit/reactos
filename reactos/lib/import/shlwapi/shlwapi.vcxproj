@@ -84,6 +84,11 @@ LIB /MACHINE:X86 /DEF:%(Filename).DEF stupid.obj</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).lib</Outputs>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
+      <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
