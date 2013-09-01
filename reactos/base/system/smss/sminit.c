@@ -1504,6 +1504,8 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
     NextEntry = SmpKnownDllsList.Flink;
     while (NextEntry != &SmpKnownDllsList)
     {
+
+
         /* Get the entry and skip it if it's in the exluded list */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
         DPRINT("Processing known DLL: %wZ-%wZ\n", &RegEntry->Name, &RegEntry->Value);
@@ -1528,7 +1530,29 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
                             FILE_SHARE_READ | FILE_SHARE_DELETE,
                             FILE_NON_DIRECTORY_FILE |
                             FILE_SYNCHRONOUS_IO_NONALERT);
-        if (!NT_SUCCESS(Status)) break;
+        if (!NT_SUCCESS(Status)) 
+		{
+			{
+				// Print out information to console: 
+				LARGE_INTEGER MyDelay;
+				UNICODE_STRING MyString;
+
+				MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+				RtlInitUnicodeString(&MyString, L"SmpInitializeKnownDllsInternal! unable to execute: ");
+
+				ZwDisplayString(&MyString);
+
+				ZwDisplayString(&RegEntry->Name);
+
+				RtlInitUnicodeString(&MyString, L"\n");
+				ZwDisplayString(&MyString);
+
+				NtDelayExecution(TRUE, &MyDelay);
+			}
+
+			break;
+		}
 
         /* Checksum it */
         Status = LdrVerifyImageMatchesChecksum((HANDLE)((ULONG_PTR)FileHandle | 1),
@@ -2324,25 +2348,6 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 
         /* Execute it */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
-
-		{
-			// Print out information to console: 
-			LARGE_INTEGER MyDelay;
-			UNICODE_STRING MyString;
-
-			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
-
-			RtlInitUnicodeString(&MyString, L"Hi Xiaochu! about to execute: ");
-
-			ZwDisplayString(&MyString);
-
-			ZwDisplayString(&RegEntry->Name);
-
-			RtlInitUnicodeString(&MyString, L"\n");
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
 
         SmpExecuteCommand(&RegEntry->Name, 0, NULL, 0);
 
