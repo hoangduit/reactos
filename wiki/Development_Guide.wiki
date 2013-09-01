@@ -288,6 +288,23 @@ If you want to perform a test of compiling ReactOS, there's a couple changes you
 https://reactos.googlecode.com/svn/wiki/VS%20Setup%202%20-%20en.png
 
 =Create Visual Studio Projects=
+
+== Cheat Sheet ==
+
+The following cheat sheet allows you to provide immediate, valuable contribution to this project without understanding the entirety of Visual Studio IDE options or the intricacies of the ReactOS source code hierarchy. 
+
+  # Create a *`.vcxproj`* file corresponding to an empty project, making sure that the *`.vcxproj`* file falls within the correct directory. For example, if you are creating the *`.vcxproj`* file for *`calc.exe`*, the *`.vcxproj`* should have the path:<br>*`reactos\base\applications\calc\calc.vcxproj`*<br>Actually, it does not matter whether you create an empty project, a *`.DLL`* project, an *`.EXE`* project, or whatever, because you can easily change the project type later without consequence.
+  # Define *`Configuration Properties->General->Configuration Type`* appropriately, depending upon whether you are creating the *`.vcxproj`* file for a *`.EXE`*, *`.LIB`*, *`.DLL`*, etc. Note that *`.SYS`* executables are nothing more than *`.DLL`*'s with a few bits tweaked in their headers.
+  # Define *`Configuration Properties->General->Output Directory`*, otherwise known as *`$(OutDir)`*, to be *`build\x86_32\$(Configuration)`*.
+  # Define *`Configuration Properties->General->Intermediate Directory`*, otherwise known as *`$(IntDir)`*, to be *`build\x86_32\$(Configuration)`*.
+  # Define *`Configuration Properties->C/C++->Preprocessor->Ignore Standard Include Paths`* to be *`Yes (/X)`*.
+  # Define *`Configuration Properties->Linker->Input->Additional Dependencies`*, to be empty, if appropriate.
+  # Define *`Configuration Properties->Linker->Input->Ignore All Default Libraries`* to be *`YES (/NODEFAULTLIB)`*, if appropriate.
+  # Define *`Configuration Properties->Librarian->General->Additional Dependencies`*, to be empty, if appropriate.
+  # Define *`Configuration Properties->Librarian->General->Ignore All Default Libraries`* to be *`YES (/NODEFAULTLIB)`*, if appropriate.
+  # After the *`.vcxproj`* has been completed, you will see that *`BUILD->Configuration Manager->Active solution platforms`* now includes a 4th platform: *`Win32`*. This is bad. We do not use the name *`Win32`* to denote the Intel 32-bit platform. Instead, we use *`x86_32`*. Delete the *`Win32`* platform that was just created. Be careful not to accidentally delete *`x86_32`*, *`x86_64`*, or *`ARM`*!!!
+  # At this point, you have done enough to take a break. Use TortoiseSVN to check-in your new project so that your new *`ReactOS.sln`*, which has been modified due to your creating the new project, can be seen by everyone else.
+
 ==CMakeLists.txt==
 ===A Command-Line Tool===
 ===Message Codes (bugcodes.h)===
