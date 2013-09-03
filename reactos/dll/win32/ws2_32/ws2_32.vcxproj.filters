@@ -35,7 +35,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ws2_32.spec" />
     <None Include="tests\stubs.tst">
       <Filter>tests</Filter>
     </None>
@@ -94,5 +93,8 @@
     <ClCompile Include="tests\tests\WinsockEvent.c">
       <Filter>tests\tests</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ws2_32.spec" />
   </ItemGroup>
 </Project>
