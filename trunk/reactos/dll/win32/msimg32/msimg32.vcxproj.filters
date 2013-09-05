@@ -18,11 +18,11 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="msimg32.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="msimg32_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="msimg32.spec" />
   </ItemGroup>
 </Project>

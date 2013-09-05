@@ -75,6 +75,7 @@ copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
+copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -155,6 +156,7 @@ copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
+copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -221,6 +223,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\lsasrv\lsasrv.vcxproj">
       <Project>{c5180fe9-3478-4f73-82eb-f378813719da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\msimg32\msimg32.vcxproj">
+      <Project>{7f5c3e20-7db5-4db7-a48b-a34e2afd5d58}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\msvcrt\msvcrt.vcxproj">
       <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>

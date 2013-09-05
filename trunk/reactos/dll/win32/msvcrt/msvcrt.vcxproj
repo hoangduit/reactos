@@ -73,7 +73,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <EntryPointSymbol>DllMain@12</EntryPointSymbol>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalDependencies />
     </Link>
@@ -102,7 +102,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <EntryPointSymbol>DllMain</EntryPointSymbol>
+      <EntryPointSymbol>DllMain@12</EntryPointSymbol>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalDependencies />
     </Link>
