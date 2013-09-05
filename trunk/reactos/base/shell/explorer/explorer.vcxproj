@@ -22,7 +22,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -39,11 +38,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\x86_32\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\x86_32\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\x86_32\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\x86_32\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -54,32 +53,32 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;_DEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Debug/explorer.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
-      <ObjectFileName>.\Debug/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\c++\stlport</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0407</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;advapi32.lib;gdi32.lib;user32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/explorer.exe</OutputFile>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>oleaut32.dll;wsock32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/explorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -87,6 +86,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>explorer.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -105,7 +105,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;NDEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -113,28 +113,29 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Release/explorer.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
-      <ObjectFileName>.\Release/</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\c++\stlport</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0407</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;advapi32.lib;gdi32.lib;user32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/explorer.exe</OutputFile>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>oleaut32.dll;wsock32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
       <ProgramDatabaseFile>.\Release/explorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>explorer.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -457,6 +458,53 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\dll\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\comctl32\comctl32.vcxproj">
+      <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\kernel32\kernel32.vcxproj">
+      <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\msimg32\msimg32.vcxproj">
+      <Project>{7f5c3e20-7db5-4db7-a48b-a34e2afd5d58}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\msvcrt\msvcrt.vcxproj">
+      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\ole32\ole32.vcxproj">
+      <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\oleaut32\oleaut32.vcxproj">
+      <Project>{578bf447-74b7-42bc-a889-e8f8157eb28c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\shell32\shell32.vcxproj">
+      <Project>{96bbc7de-9752-404c-b6cd-37be6e8b0565}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\shlwapi\shlwapi.vcxproj">
+      <Project>{7626c8b3-a1d6-4f8b-a435-9c84aeded246}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\ws2_32\ws2_32.vcxproj">
+      <Project>{d0222fd4-713f-45da-8a93-81618baa662f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\comsupp\comsupp.vcxproj">
+      <Project>{d595ab34-7e09-420b-98ae-b87212ba51c1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
+      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\win32ss\gdi\gdi32\gdi32.vcxproj">
+      <Project>{6c6cf48c-a81c-4f7e-b882-f30dd4e59e78}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
