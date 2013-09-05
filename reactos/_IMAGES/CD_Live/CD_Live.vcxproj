@@ -63,6 +63,7 @@ copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
@@ -141,6 +142,7 @@ copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
+copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
@@ -205,6 +207,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\fmifs\fmifs.vcxproj">
+      <Project>{85baa556-0afb-4274-ac4d-6b9b99711ad6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\imm32\imm32.vcxproj">
       <Project>{5616b640-0dff-4f7d-b1ed-3f0e142b5c4a}</Project>
