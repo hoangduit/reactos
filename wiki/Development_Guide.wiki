@@ -864,6 +864,141 @@ https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_P
 =====Windows Metadata=====
 =====Advanced=====
 ======Entry Point======
+
+While creating *`msimg32.vcxpro`*, the following linker error occurs:
+
+{{{
+1>------ Build started: Project: msimg32, Configuration: Debug Win32 ------
+1>     Creating library build\x86_32\Debug\msimg32.lib and object build\x86_32\Debug\msimg32.exp
+1>LINK : error LNK2001: unresolved external symbol __DllMainCRTStartup@12
+1>build\x86_32\Debug\msimg32.dll : fatal error LNK1120: 1 unresolved externals
+========== Build: 0 succeeded, 1 failed, 26 up-to-date, 0 skipped ==========
+}}}
+
+In other words, the linker is unhappy because it it needs the symbol, *`__DllMainCRTStartup@12`*, to finish the linking process. We check the *`CMakeLists.txt`* file that corresponds to *`msimg32.vcxproj`*...
+{{{
+
+include_directories(${REACTOS_SOURCE_DIR}/include/reactos/wine)
+add_definitions(-D__WINESRC__)
+
+spec2def(msimg32.dll msimg32.spec ADD_IMPORTLIB)
+
+list(APPEND SOURCE
+    msimg32_main.c
+    ${CMAKE_CURRENT_BINARY_DIR}/msimg32.def)
+
+add_library(msimg32 SHARED ${SOURCE})
+
+set_module_type(msimg32 win32dll)
+target_link_libraries(msimg32 wine)
+add_importlibs(msimg32 gdi32 msvcrt kernel32 ntdll)
+add_cd_file(TARGET msimg32 DESTINATION reactos/system32 FOR all)
+}}}
+
+...and see that it only prescribes compilation/linking of one *`.c`* file, namely *`msimg32_main.c`*, which, itself, is quite simple, and certainly does not contain any references to anything like *`DllMainCRTStartup`*:
+
+{{{
+
+#define WIN32_NO_STATUS
+
+#include <stdarg.h>
+
+#include <windef.h>
+#include <winbase.h>
+//#include "wingdi.h"
+//#include "winerror.h"
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(msimg32);
+
+/***********************************************************************
+ *           DllInitialize (MSIMG32.@)
+ *
+ * MSIMG32 initialisation routine.
+ */
+BOOL WINAPI DllMain( HINSTANCE inst, DWORD reason, LPVOID reserved )
+{
+    if (reason == DLL_PROCESS_ATTACH) DisableThreadLibraryCalls( inst );
+    return TRUE;
+}
+
+
+/******************************************************************************
+ *           vSetDdrawflag   (MSIMG32.@)
+ */
+void WINAPI vSetDdrawflag(void)
+{
+    static unsigned int vDrawflag=1;
+    FIXME("stub: vSetDrawFlag %u\n", vDrawflag);
+    SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
+}
+}}}
+
+However, the *`CMakeLists.txt`* file _does_ prescribe a dependency upon *`msvcrt`*, and, implicitly, *`msvcrtex`*, and we know that *`msvcrtex`* contains a file, *`crtdll.c`* that defines a some functions that are somewhat like *`DllMainCRTStartup`*:
+
+{{{
+
+static WINBOOL __DllMainCRTStartup (HANDLE, DWORD, LPVOID);
+
+WINBOOL WINAPI DllMainCRTStartup (HANDLE, DWORD, LPVOID);
+int __mingw_init_ehandler (void);
+
+WINBOOL WINAPI
+DllMainCRTStartup (HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)
+{
+  mingw_app_type = 0;
+  if (dwReason == DLL_PROCESS_ATTACH)
+    {
+      __security_init_cookie ();
+#ifdef _WIN64
+      __mingw_init_ehandler ();
+#endif
+    }
+  return __DllMainCRTStartup (hDllHandle, dwReason, lpreserved);
+}
+
+__declspec(noinline) WINBOOL
+__DllMainCRTStartup (HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)
+}}}
+
+The only problem is that the functions in *`crtdll.c`* are either preceded by no underbars or two underbars. Therefore, after decoration, these functions in *`crtdll.c`* will have either one or three underbars, as can be seen in the dump of the symbols from *`msvcrtex`* using the *`DUMPBIN.EXE`* utility:
+
+{{{
+035 00000000 UNDEF  notype       External     | __imp__Sleep@4
+036 00000000 UNDEF  notype ()    External     | _free
+037 00000000 UNDEF  notype ()    External     | _malloc
+038 00000000 UNDEF  notype       External     | __imp___amsg_exit
+039 00000000 UNDEF  notype ()    External     | __encode_pointer
+03A 00000000 UNDEF  notype ()    External     | __decode_pointer
+03B 00000000 UNDEF  notype ()    External     | ___security_init_cookie
+03C 00000000 UNDEF  notype ()    External     | _DllMain@12
+03D 00000000 SECTB  notype ()    External     | __CRT_INIT@12
+03E 00000000 UNDEF  notype ()    External     | __initterm
+03F 00000000 UNDEF  notype ()    External     | ___main
+040 00000000 UNDEF  notype ()    External     | __pei386_runtime_relocator
+041 00000000 UNDEF  notype ()    External     | _DllEntryPoint@12
+042 00000000 SECTD  notype ()    Static       | ___DllMainCRTStartup
+043 00000000 SECT7  notype ()    External     | _DllMainCRTStartup@12
+044 0000012B SECTD  notype       Label        | $i__leave$14
+045 00000000 UNDEF  notype       External     | ___native_startup_state
+046 00000000 UNDEF  notype       External     | ___native_startup_lock
+047 00000000 UNDEF  notype       External     | ___native_dllmain_reason
+}}}
+
+We count the number of underbars in the linker error above very carefully to see that it wants only *TWO* underbars. Something is very puzzling here. No where in our entire source code is there a function that could generate a function *`DllMainCRTStartup`* that is preceded by exactly two underbars, and we have not indicated any kind of weird options to the linker to cause it to want *`DllMainCRTStartup`* that is preceded by exactly two underbars. 
+
+This is what is happening:
+
+The linker knows that what we are trying to generate, *`imm32.dll`* is a DLL, and, per [http://msdn.microsoft.com/en-us/library/988ye33t.aspx MSDN documentation], unless we use the *`/ENTRY`* linker option, the linker will determine for itself that that the entry point into the final DLL will be a function having the undecorated signature *`_DllMainCRTStartup`*:
+
+Notice that this function has *ONE* underbar. Therefore, after decoration, the final symbol will be *`__DllMainCRTStartup@12`*, and the problem is solved: the linker is the culprit. 
+
+We fix this issue by telling the linker to use our (eventually) single-underbar *`_DllMainCRTStartup@12`* function that is defined in *`crtdll.c`*:
+
+https://reactos.googlecode.com/svn/wiki/Development_Guide/Create_Visual_Studio_Projects/Project_Properties/Entry_Point.png
+
+Notice how the linker expects us to omit the underbar in the IDE option.
+
 ======No Entry Point======
 ======Set Checksum======
 ======Base Address======
