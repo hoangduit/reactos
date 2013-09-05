@@ -72,6 +72,7 @@ copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
+copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
@@ -151,6 +152,7 @@ copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
+copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
@@ -234,6 +236,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\usp10\usp10.vcxproj">
       <Project>{f3d0c8df-3582-49d0-bc27-a3f68d13f54e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\version\version.vcxproj">
+      <Project>{9ae41259-6534-4d9f-be18-ec9ff7f4e752}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\winmm\winmm.vcxproj">
       <Project>{b632d964-df35-4cce-afbe-7c3b26cef0cb}</Project>
