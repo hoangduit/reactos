@@ -493,6 +493,9 @@
     <ProjectReference Include="..\..\..\dll\win32\ws2_32\ws2_32.vcxproj">
       <Project>{d0222fd4-713f-45da-8a93-81618baa662f}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\include\psdk\psdk.vcxproj">
+      <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
     </ProjectReference>
