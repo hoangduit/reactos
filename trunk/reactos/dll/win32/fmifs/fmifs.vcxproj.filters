@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="fmifs.spec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="fmifs.rc">
@@ -53,5 +52,8 @@
     <ClInclude Include="precomp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="fmifs.spec" />
   </ItemGroup>
 </Project>
