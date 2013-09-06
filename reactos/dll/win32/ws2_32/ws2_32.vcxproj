@@ -61,6 +61,7 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,6 +81,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -133,6 +135,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\win32ss\user\user32\user32.vcxproj">
       <Project>{4dccd8be-f0cb-436f-8a18-6dd1677ae56f}</Project>

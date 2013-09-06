@@ -147,7 +147,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shlwapi.spec" />
     <None Include="shlwapi_ros.diff" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="shlwapi.spec" />
   </ItemGroup>
 </Project>
