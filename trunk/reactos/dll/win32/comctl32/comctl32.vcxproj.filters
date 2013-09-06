@@ -14,4 +14,128 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="comctl32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="animate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="comboex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="comctl32undoc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commctrl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="datetime.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dpa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="draglist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dsa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="flatsb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="header.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hotkey.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imagelist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ipaddress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="listview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="monthcal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nativefont.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="progress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="propsheet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rebar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="smoothscroll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="string.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stubs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="syslink.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theme_button.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theme_combo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theme_dialog.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theme_edit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theme_listbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="theming.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="toolbar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tooltips.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trackbar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="treeview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="updown.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
