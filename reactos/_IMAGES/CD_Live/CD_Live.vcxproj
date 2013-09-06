@@ -68,16 +68,17 @@ copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
+copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
+copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
-copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -151,9 +152,11 @@ copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
+copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
+copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
@@ -242,6 +245,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\secur32\secur32.vcxproj">
       <Project>{8e222163-9810-412f-8521-5d9bfb4015ec}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\setupapi\setupapi.vcxproj">
+      <Project>{158ab90e-1a96-4c64-8211-dd43c55eeb7e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\userenv\userenv.vcxproj">
       <Project>{fd2f864e-a5cf-4b06-a16c-04b72fc7412d}</Project>
