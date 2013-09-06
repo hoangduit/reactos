@@ -12,21 +12,22 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC1F70C4-F793-4C58-8814-AF2CA0819FD7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
     <RootNamespace>ole32</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -48,9 +49,17 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;__WINESRC__;_OLE32_;COM_NO_WINDOWS_H;ENTRY_PREFIX=OLE32_;PROXY_CLSID=CLSID_PSFactoryBuffer;WINE_REGISTER_DLL;CMAKE_INTDIR="Debug";ole32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.c" "$(OutDir)\irot_c.c" "$(OutDir)\ole32_oleidl_p.c" "$(OutDir)\dcom_i.c" "$(OutDir)\dcom_p.c" "$(OutDir)\ole32_objidl_p.c" </AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,11 +134,88 @@
     <ClInclude Include="storage32.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="dcom.idl" />
-    <Midl Include="irot.idl" />
-    <Midl Include="ole32_objidl.idl" />
-    <Midl Include="ole32_oleidl.idl" />
-    <Midl Include="ole32_unknwn.idl" />
+    <CustomBuild Include="dcom.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).h</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="irot.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)c
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).h</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="ole32_objidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_.h</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="ole32_oleidl.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_.h</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="ole32_unknwn.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_.h</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="drag_copy.cur" />
@@ -141,6 +227,14 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ole32res.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
+      <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
+      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

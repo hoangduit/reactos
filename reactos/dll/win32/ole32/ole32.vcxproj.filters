@@ -151,23 +151,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="dcom.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-    <Midl Include="irot.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-    <Midl Include="ole32_objidl.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-    <Midl Include="ole32_oleidl.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-    <Midl Include="ole32_unknwn.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="drag_copy.cur">
       <Filter>Resource Files</Filter>
     </None>
@@ -189,5 +172,22 @@
     <ResourceCompile Include="ole32res.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="dcom.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="irot.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ole32_objidl.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ole32_oleidl.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ole32_unknwn.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
