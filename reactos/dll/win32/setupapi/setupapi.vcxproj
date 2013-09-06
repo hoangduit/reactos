@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1CE9B05E-E313-4CD4-9B51-D17484292E37}</ProjectGuid>
+    <ProjectGuid>{158AB90E-1A96-4C64-8211-DD43C55EEB7E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>comctl32</RootNamespace>
+    <RootNamespace>setupapi</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,10 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -53,42 +57,36 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__WINESRC__;_WINE;_COMCTL32_;_WIN32_WINNT=0x600;CMAKE_INTDIR="Debug";comctl32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_SETUPAPI_;_CFGMGR32_;wcsnicmp=_wcsnicmp;CMAKE_INTDIR="Debug";setupapi_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;$(SolutionDir)\include\reactos\wine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\setupapi_stubs.c" "$(OutDir)\pnp_c.c"</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies />
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies />
-      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="comctl32.spec">
+    <CustomBuild Include="setupapi.spec">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def"  -s="$(OutDir)%(FileName)_stubs.c" "%(FullPath)"
 </Command>
@@ -99,46 +97,43 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="rsrc.rc" />
+    <ClCompile Include="cfgmgr.c" />
+    <ClCompile Include="devclass.c" />
+    <ClCompile Include="devinst.c" />
+    <ClCompile Include="dirid.c" />
+    <ClCompile Include="diskspace.c" />
+    <ClCompile Include="driver.c" />
+    <ClCompile Include="install.c" />
+    <ClCompile Include="interface.c" />
+    <ClCompile Include="misc.c" />
+    <ClCompile Include="parser.c" />
+    <ClCompile Include="query.c" />
+    <ClCompile Include="queue.c" />
+    <ClCompile Include="rpc.c" />
+    <ClCompile Include="setupcab.c" />
+    <ClCompile Include="stringtable.c" />
+    <ClCompile Include="stubs.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="animate.c" />
-    <ClCompile Include="comboex.c" />
-    <ClCompile Include="comctl32undoc.c" />
-    <ClCompile Include="commctrl.c" />
-    <ClCompile Include="datetime.c" />
-    <ClCompile Include="dpa.c" />
-    <ClCompile Include="draglist.c" />
-    <ClCompile Include="dsa.c" />
-    <ClCompile Include="flatsb.c" />
-    <ClCompile Include="header.c" />
-    <ClCompile Include="hotkey.c" />
-    <ClCompile Include="imagelist.c" />
-    <ClCompile Include="ipaddress.c" />
-    <ClCompile Include="listview.c" />
-    <ClCompile Include="monthcal.c" />
-    <ClCompile Include="nativefont.c" />
-    <ClCompile Include="pager.c" />
-    <ClCompile Include="progress.c" />
-    <ClCompile Include="propsheet.c" />
-    <ClCompile Include="rebar.c" />
-    <ClCompile Include="smoothscroll.c" />
-    <ClCompile Include="status.c" />
-    <ClCompile Include="string.c" />
-    <ClCompile Include="stubs.c" />
-    <ClCompile Include="syslink.c" />
-    <ClCompile Include="tab.c" />
-    <ClCompile Include="theme_button.c" />
-    <ClCompile Include="theme_combo.c" />
-    <ClCompile Include="theme_dialog.c" />
-    <ClCompile Include="theme_edit.c" />
-    <ClCompile Include="theme_listbox.c" />
-    <ClCompile Include="theming.c" />
-    <ClCompile Include="toolbar.c" />
-    <ClCompile Include="tooltips.c" />
-    <ClCompile Include="trackbar.c" />
-    <ClCompile Include="treeview.c" />
-    <ClCompile Include="updown.c" />
+    <ResourceCompile Include="setupapi.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\include\reactos\idl\pnp.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
+cd ..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_c.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename)_c.h</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
@@ -149,6 +144,12 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
       <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\rpcrt4\rpcrt4.vcxproj">
+      <Project>{e67e3ad8-6887-4a05-ad49-e19754b34ade}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
+      <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
       <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
@@ -162,20 +163,23 @@
     <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
       <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
+      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
     </ProjectReference>
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\comctl32\comctl32.vcxproj">
+      <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
       <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\uxtheme\uxtheme.vcxproj">
-      <Project>{c3875900-5a6b-4e7d-ad3b-fc4d778f8213}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\winmm\winmm.vcxproj">
-      <Project>{b632d964-df35-4cce-afbe-7c3b26cef0cb}</Project>
+    <ProjectReference Include="..\version\version.vcxproj">
+      <Project>{9ae41259-6534-4d9f-be18-ec9ff7f4e752}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
