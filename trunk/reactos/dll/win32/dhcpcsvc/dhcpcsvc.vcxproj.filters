@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{156b8775-93de-4fa5-99c5-41c338c05bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dhcp">
+      <UniqueIdentifier>{c5410097-443f-4fa5-9a0c-dbf7b2353979}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dhcp\adapter.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\alloc.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\api.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\compat.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\dhclient.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\dispatch.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\hash.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\options.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\pipe.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\socket.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\tables.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\tree.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcp\util.c">
+      <Filter>dhcp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhcpcsvc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\debug.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dhcp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dhcpd.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hash.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rosdhcp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tree.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dhcpcsvc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dhcpcsvc.spec" />
+  </ItemGroup>
+</Project>
