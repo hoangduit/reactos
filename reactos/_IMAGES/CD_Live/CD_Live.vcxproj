@@ -81,6 +81,7 @@ copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
+copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -89,7 +90,7 @@ copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
-copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
+REM (not working yet?) copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -167,7 +168,7 @@ copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
-copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\MSIMG32.DLL" .
+copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -176,7 +177,7 @@ copy "$(SolutionDir)\base\system\winlogon\$(OutDir)\WINLOGON.EXE" .
 copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
-copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
+REM (not working yet?) copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
