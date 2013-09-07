@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="adns_win32">
+      <UniqueIdentifier>{10af74e1-da6d-4e19-9771-11f0b22d5bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="client">
+      <UniqueIdentifier>{64d4b9a7-c6ad-4e1c-be34-18664401af03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{67aff2f3-868a-41a7-b2fd-2c40307ac75a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dynamic">
+      <UniqueIdentifier>{8692f5b3-87dc-4c2d-b124-4828f2b05df0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adns_win32\adns_unix_calls.c">
+      <Filter>adns_win32</Filter>
+    </ClCompile>
+    <ClCompile Include="adns_win32\getopt.c">
+      <Filter>adns_win32</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adh-main.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adh-opts.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adh-query.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adnslogres.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adnsresfilter.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\adnstest.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\fanftest.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\check.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\general.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parse.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\poll.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\query.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\reply.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\setup.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transmit.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="adns_win32\adns_win32.h">
+      <Filter>adns_win32</Filter>
+    </ClInclude>
+    <ClInclude Include="adns_win32\getopt.h">
+      <Filter>adns_win32</Filter>
+    </ClInclude>
+    <ClInclude Include="adns_win32\timercmp.h">
+      <Filter>adns_win32</Filter>
+    </ClInclude>
+    <ClInclude Include="client\adnshost.h">
+      <Filter>client</Filter>
+    </ClInclude>
+    <ClInclude Include="client\client.h">
+      <Filter>client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\adns.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dlist.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tvarith.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="acconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="adns_win32\README.TXT">
+      <Filter>adns_win32</Filter>
+    </None>
+    <None Include="client\Makefile.in">
+      <Filter>client</Filter>
+    </None>
+    <None Include="dynamic\Makefile.in">
+      <Filter>dynamic</Filter>
+    </None>
+    <None Include="src\adns.make">
+      <Filter>src</Filter>
+    </None>
+    <None Include="src\config.h.in">
+      <Filter>src</Filter>
+    </None>
+    <None Include="src\Makefile.in">
+      <Filter>src</Filter>
+    </None>
+    <None Include="aclocal.m4" />
+    <None Include="changelog" />
+    <None Include="CMakeLists.txt" />
+    <None Include="configure.in" />
+    <None Include="COPYING" />
+    <None Include="GPL-vs-LGPL" />
+    <None Include="INSTALL" />
+    <None Include="install-sh" />
+    <None Include="Makefile.in" />
+    <None Include="README" />
+    <None Include="README.html" />
+    <None Include="settings.make.in" />
+    <None Include="TODO" />
+  </ItemGroup>
+</Project>
