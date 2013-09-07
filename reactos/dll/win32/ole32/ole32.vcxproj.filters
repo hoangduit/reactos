@@ -166,7 +166,6 @@
     <None Include="ole32.rgs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ole32.spec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ole32res.rc">
@@ -189,5 +188,6 @@
     <CustomBuild Include="ole32_unknwn.idl">
       <Filter>Source Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="ole32.spec" />
   </ItemGroup>
 </Project>
