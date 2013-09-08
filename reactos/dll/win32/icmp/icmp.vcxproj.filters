@@ -23,9 +23,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="icmp.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="icmp_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,5 +34,8 @@
     <ClInclude Include="ip_icmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="icmp.spec" />
   </ItemGroup>
 </Project>
