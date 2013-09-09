@@ -54,9 +54,6 @@
     <ClCompile Include="dhcp\tables.c">
       <Filter>dhcp</Filter>
     </ClCompile>
-    <ClCompile Include="dhcp\tree.c">
-      <Filter>dhcp</Filter>
-    </ClCompile>
     <ClCompile Include="dhcp\util.c">
       <Filter>dhcp</Filter>
     </ClCompile>
@@ -93,6 +90,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="dhcpcsvc.spec" />
+    <CustomBuild Include="dhcpcsvc.spec" />
   </ItemGroup>
 </Project>
