@@ -157,6 +157,9 @@
     <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
       <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\ws2help\ws2help.vcxproj">
+      <Project>{54955409-76a6-4348-ad5b-7a8ed55d9dbd}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
