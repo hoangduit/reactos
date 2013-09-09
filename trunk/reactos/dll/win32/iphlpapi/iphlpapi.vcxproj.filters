@@ -57,13 +57,7 @@
     <ClCompile Include="registry.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="resinfo.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="resinfo_reactos.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="route.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="route_reactos.c">
@@ -76,6 +70,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="iphlpapi.spec" />
+    <CustomBuild Include="iphlpapi.spec" />
   </ItemGroup>
 </Project>

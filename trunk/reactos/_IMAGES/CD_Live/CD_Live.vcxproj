@@ -69,6 +69,7 @@ copy "$(SolutionDir)\dll\win32\dhcpcsvc\$(OutDir)\DHCPCSVC.DLL" .
 copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
+copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
@@ -159,6 +160,7 @@ copy "$(SolutionDir)\dll\win32\dhcpcsvc\$(OutDir)\DHCPCSVC.DLL" .
 copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
+copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
@@ -244,6 +246,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\imm32\imm32.vcxproj">
       <Project>{5616b640-0dff-4f7d-b1ed-3f0e142b5c4a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\iphlpapi\iphlpapi.vcxproj">
+      <Project>{dad8650c-d65c-4d72-8e76-fef84d7d0d9c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\kernel32\kernel32.vcxproj">
       <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
