@@ -66,12 +66,14 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\comctl32\$(OutDir)\COMCTL32.DLL" .
 copy "$(SolutionDir)\dll\win32\devmgr\$(OutDir)\DEVMGR.DLL" .
 copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
+copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
+copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
@@ -82,7 +84,6 @@ copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
-copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -154,12 +155,14 @@ copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\comctl32\$(OutDir)\COMCTL32.DLL" .
 copy "$(SolutionDir)\dll\win32\devmgr\$(OutDir)\DEVMGR.DLL" .
 copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
+copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
 copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
+copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
@@ -170,7 +173,6 @@ copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
-copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -252,6 +254,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\newdev\newdev.vcxproj">
       <Project>{79443516-808e-4cb7-bb83-133b2a401e77}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\ole32\ole32.vcxproj">
+      <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\samsrv\samsrv.vcxproj">
       <Project>{c76b64e1-5cd0-4474-9c1f-5788c2c02752}</Project>
