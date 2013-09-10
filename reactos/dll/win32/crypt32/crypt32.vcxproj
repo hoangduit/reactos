@@ -147,6 +147,9 @@
     <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
       <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\crt\oldnames\oldnames.vcxproj">
+      <Project>{c915528f-2f47-45eb-a724-3f30c4b3e295}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
       <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
