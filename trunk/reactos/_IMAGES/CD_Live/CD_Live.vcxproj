@@ -78,6 +78,7 @@ copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
 copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
+copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PAAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
@@ -172,6 +173,7 @@ copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
 copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
+copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PAAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
@@ -279,6 +281,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\psapi\psapi.vcxproj">
+      <Project>{3405ad27-56a9-4b89-8688-dd4139f12611}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\samsrv\samsrv.vcxproj">
       <Project>{c76b64e1-5cd0-4474-9c1f-5788c2c02752}</Project>
