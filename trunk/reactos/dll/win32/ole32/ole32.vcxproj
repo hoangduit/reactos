@@ -166,13 +166,13 @@ mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
@@ -183,12 +183,12 @@ cd ..\..</Command>
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)c
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
@@ -199,12 +199,12 @@ cd ..\..</Command>
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
@@ -215,12 +215,12 @@ cd ..\..</Command>
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
@@ -231,12 +231,12 @@ cd ..\..</Command>
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
 "$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_p.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-cd ..\..</Command>
+cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename)_p.h</Outputs>
