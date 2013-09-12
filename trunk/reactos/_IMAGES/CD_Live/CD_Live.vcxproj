@@ -102,7 +102,7 @@ copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\base\shell\explorer\notifyhook\$(OutDir)\NOTIFYHOOK.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
-REM (not working yet?) copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
@@ -201,7 +201,7 @@ copy "$(SolutionDir)\base\shell\cmd\$(OutDir)\CMD.EXE" .
 copy "$(SolutionDir)\base\shell\explorer\notifyhook\$(OutDir)\NOTIFYHOOK.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\font\ftfd\$(OutDir)\FTFD.DLL" .
 copy "$(SolutionDir)\win32ss\drivers\displays\framebuf\$(OutDir)\FRAMEBUF.DLL" .
-REM (not working yet?) copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
+copy "$(SolutionDir)\win32ss\drivers\displays\vga\$(OutDir)\VGADDI.DLL" .
 copy "$(SolutionDir)\win32ss\win32k\$(OutDir)\WIN32K.SYS" .
 copy "$(SolutionDir)\win32ss\user\user32\$(OutDir)\USER32.DLL" .
 copy "$(SolutionDir)\win32ss\gdi\gdi32\$(OutDir)\GDI32.DLL" .
