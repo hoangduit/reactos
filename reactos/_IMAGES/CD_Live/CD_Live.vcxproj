@@ -72,7 +72,7 @@ copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imagehlp\$(OutDir)\IMAGEHLP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
-copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI" .
+copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
@@ -80,7 +80,7 @@ copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
 copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
-copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PAAPI.DLL" .
+copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
@@ -89,7 +89,7 @@ copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
-copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DRV" .
+copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2help\$(OutDir)\WS2HELP.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
@@ -110,7 +110,7 @@ mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
 echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
-"$(SolutionDir)\tools\cdmake\$(OutDir)\cdmake.exe" -b "$(SolutionDir)\boot\freeldr\bootsect\$(OutDir)\isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"</Command>
+"$(SolutionDir)\tools\cdmake\$(OutDir)\cdmake.exe" -j -b "$(SolutionDir)\boot\freeldr\bootsect\$(OutDir)\isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd "$(OutDir)"
 mkdir root
 cd root
@@ -171,7 +171,7 @@ copy "$(SolutionDir)\dll\win32\fmifs\$(OutDir)\FMIFS.DLL" .
 copy "$(SolutionDir)\dll\win32\icmp\$(OutDir)\ICMP.DLL" .
 copy "$(SolutionDir)\dll\win32\imagehlp\$(OutDir)\IMAGEHLP.DLL" .
 copy "$(SolutionDir)\dll\win32\imm32\$(OutDir)\IMM32.DLL" .
-copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI" .
+copy "$(SolutionDir)\dll\win32\iphlpapi\$(OutDir)\IPHLPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\kernel32\$(OutDir)\KERNEL32.DLL" .
 copy "$(SolutionDir)\dll\win32\lsasrv\$(OutDir)\LSASRV.DLL" .
 copy "$(SolutionDir)\dll\win32\msimg32\$(OutDir)\MSIMG32.DLL" .
@@ -179,7 +179,7 @@ copy "$(SolutionDir)\dll\win32\msvcrt\$(OutDir)\MSVCRT.DLL" .
 copy "$(SolutionDir)\dll\win32\newdev\$(OutDir)\NEWDEV.DLL" .
 copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
-copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PAAPI.DLL" .
+copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
@@ -188,7 +188,7 @@ copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
-copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DRV" .
+copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2help\$(OutDir)\WS2HELP.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
@@ -209,7 +209,7 @@ mkdir config
 cd "$(SolutionDir)\boot\bootdata"
 "$(SolutionDir)\tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
 echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
-"$(SolutionDir)\tools\cdmake\$(OutDir)\cdmake.exe" -b "$(SolutionDir)\boot\freeldr\bootsect\$(OutDir)\isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"</Command>
+"$(SolutionDir)\tools\cdmake\$(OutDir)\cdmake.exe" -j -b "$(SolutionDir)\boot\freeldr\bootsect\$(OutDir)\isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\DUMMY.ZZZ</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\DUMMY.ZZZ</Outputs>
     </CustomBuild>
