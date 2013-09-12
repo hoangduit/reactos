@@ -141,6 +141,9 @@
     <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
       <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
       <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
     </ProjectReference>
@@ -161,9 +164,6 @@
     </ProjectReference>
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
-      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
