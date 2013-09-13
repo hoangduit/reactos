@@ -95,6 +95,7 @@ copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2help\$(OutDir)\WS2HELP.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
+copy "$(SolutionDir)\dll\win32\advpack\$(OutDir)\ADVPACK.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -196,6 +197,7 @@ copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2help\$(OutDir)\WS2HELP.DLL" .
 copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
+copy "$(SolutionDir)\dll\win32\advpack\$(OutDir)\ADVPACK.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -254,6 +256,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\advpack\advpack.vcxproj">
+      <Project>{d16a108a-704a-4f5d-97d5-c1b5e6b5d583}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\comctl32\comctl32.vcxproj">
       <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>

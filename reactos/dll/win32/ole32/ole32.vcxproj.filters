@@ -125,9 +125,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="compobj_private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -189,5 +186,6 @@
       <Filter>Source Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ole32.spec" />
+    <CustomBuild Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

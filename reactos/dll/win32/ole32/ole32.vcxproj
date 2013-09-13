@@ -58,15 +58,16 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.c" "$(OutDir)\irot_c.c" "$(OutDir)\ole32_oleidl_p.c" "$(OutDir)\dcom_i.c" "$(OutDir)\dcom_p.c" "$(OutDir)\ole32_objidl_p.c" "$(OutDir)\proxy.dlldata.c"</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.c" "$(OutDir)\irot_c.c" "$(OutDir)\ole32_oleidl_p.c" "$(OutDir)\dcom_i.c" "$(OutDir)\dcom_p.c" "$(OutDir)\ole32_objidl_p.c" "$(OutDir)\proxy.dlldata.c" "$(OutDir)\ole32_stubs.c"</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" "$(OutDir)\ole32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +83,7 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.c" "$(OutDir)\irot_c.c" "$(OutDir)\ole32_oleidl_p.c" "$(OutDir)\dcom_i.c" "$(OutDir)\dcom_p.c" "$(OutDir)\ole32_objidl_p.c" "$(OutDir)\proxy.dlldata.c"</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.c" "$(OutDir)\irot_c.c" "$(OutDir)\ole32_oleidl_p.c" "$(OutDir)\dcom_i.c" "$(OutDir)\dcom_p.c" "$(OutDir)\ole32_objidl_p.c" "$(OutDir)\proxy.dlldata.c" "$(OutDir)\ole32_stubs.c"</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -91,8 +92,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
-      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" "$(OutDir)\ole32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
