@@ -36,6 +36,7 @@ copy "$(SolutionDir)\Drivers\Base\BootVid\$(Outdir)\BootVid.DLL" .
 copy "$(SolutionDir)\Drivers\Base\KDCOM\$(OutDir)\KDCOM.DLL" .
 copy "$(SolutionDir)\base\applications\ATACTL\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\applications\cacls\$(OutDir)\CACLS.EXE" .
+copy "$(SolutionDir)\base\applications\sc\$(OutDir)\sc.EXE" .
 REM "copy $(SolutionDir)\base\applications\CALC\$(OutDir)\CALC.EXE" .
 copy "$(SolutionDir)\media\nls\*.nls" .
 mkdir drivers
