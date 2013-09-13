@@ -88,6 +88,7 @@ copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
+copy "$(SolutionDir)\dll\win32\wininet\$(OutDir)\WININET.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
@@ -188,6 +189,7 @@ copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
 copy "$(SolutionDir)\dll\win32\version\$(OutDir)\VERSION.DLL" .
+copy "$(SolutionDir)\dll\win32\wininet\$(OutDir)\WININET.DLL" .
 copy "$(SolutionDir)\dll\win32\winmm\$(OutDir)\WINMM.DLL" .
 copy "$(SolutionDir)\dll\win32\winspool\$(OutDir)\WINSPOOL.DRV" .
 copy "$(SolutionDir)\dll\win32\wintrust\$(OutDir)\WINTRUST.DLL" .
@@ -327,6 +329,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\version\version.vcxproj">
       <Project>{9ae41259-6534-4d9f-be18-ec9ff7f4e752}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\wininet\wininet.vcxproj">
+      <Project>{a5ac8218-9496-4566-91fb-2034f4cf2fae}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\winmm\winmm.vcxproj">
       <Project>{b632d964-df35-4cce-afbe-7c3b26cef0cb}</Project>
