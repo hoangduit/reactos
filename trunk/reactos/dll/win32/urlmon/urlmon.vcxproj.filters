@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="urlmon.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="axinstall.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bindctx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="binding.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bindprot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="download.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="format.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ftp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gopher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="http.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="internet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mimefilter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protocol.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sec_mgr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="session.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="umon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="umstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="uri.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="urlmon_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="usrmarshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="urlmon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

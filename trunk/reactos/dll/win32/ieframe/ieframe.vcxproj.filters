@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ieframe.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="classinfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="client.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dochost.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="events.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="frame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ie.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ieframe_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iehtmlwnd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iexplore.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="intshcut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="navigate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="oleobject.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="persist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shellbrowser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shelluihelper.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="urlhist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="webbrowser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
