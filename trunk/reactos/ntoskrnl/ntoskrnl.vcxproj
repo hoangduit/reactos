@@ -493,7 +493,12 @@
     </ClCompile>
     <ClCompile Include="ke\timerobj.c" />
     <ClCompile Include="ke\wait.c" />
-    <ClCompile Include="KrnlFun.c" />
+    <ClCompile Include="KrnlFun.c">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ntoskrnl.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ntoskrnl.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="lpc\close.c" />
     <ClCompile Include="lpc\complete.c" />
     <ClCompile Include="lpc\connect.c" />
@@ -595,7 +600,10 @@
     <ClCompile Include="ob\obsecure.c" />
     <ClCompile Include="ob\obwait.c" />
     <ClCompile Include="po\events.c" />
-    <ClCompile Include="po\guid.c" />
+    <ClCompile Include="po\guid.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="po\poshtdwn.c" />
     <ClCompile Include="po\povolume.c" />
     <ClCompile Include="po\power.c" />
@@ -1129,6 +1137,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ntoskrnl.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -1188,6 +1198,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ntoskrnl.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
