@@ -86,6 +86,7 @@ copy "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
+copy "$(SolutionDir)\dll\win32\urlmon\$(OutDir)\URLMON.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
@@ -190,6 +191,7 @@ copy "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
 copy "$(SolutionDir)\dll\win32\secur32\$(OutDir)\SECUR32.DLL" .
 copy "$(SolutionDir)\dll\win32\setupapi\$(OutDir)\SETUPAPI.DLL" .
+copy "$(SolutionDir)\dll\win32\urlmon\$(OutDir)\URLMON.DLL" .
 copy "$(SolutionDir)\dll\win32\userenv\$(OutDir)\USERENV.DLL" .
 copy "$(SolutionDir)\dll\win32\usp10\$(OutDir)\USP10.DLL" .
 copy "$(SolutionDir)\dll\win32\uxtheme\$(OutDir)\UXTHEME.DLL" .
@@ -329,6 +331,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\setupapi\setupapi.vcxproj">
       <Project>{158ab90e-1a96-4c64-8211-dd43c55eeb7e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\urlmon\urlmon.vcxproj">
+      <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\userenv\userenv.vcxproj">
       <Project>{fd2f864e-a5cf-4b06-a16c-04b72fc7412d}</Project>
