@@ -936,8 +936,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     </None>
     <CustomBuild Include="ntoskrnl.spec">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 -n="%(Filename).exe" --kill-at --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 -n="%(Filename).exe" --kill-at --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 -n="%(Filename).exe" --kill-at --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 -n="%(Filename).exe" --kill-at --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
     </CustomBuild>
