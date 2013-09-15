@@ -65,6 +65,7 @@ cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\comctl32\$(OutDir)\COMCTL32.DLL" .
+copy "$(SolutionDir)\dll\win32\cryptui\$(OutDir)\CRYPTUI.DLL" .
 copy "$(SolutionDir)\dll\win32\dbghelp\$(OutDir)\DBGHELP.DLL" .
 copy "$(SolutionDir)\dll\win32\devmgr\$(OutDir)\DEVMGR.DLL" .
 copy "$(SolutionDir)\dll\win32\dhcpcsvc\$(OutDir)\DHCPCSVC.DLL" .
@@ -170,6 +171,7 @@ cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
 copy "$(SolutionDir)\dll\win32\comctl32\$(OutDir)\COMCTL32.DLL" .
+copy "$(SolutionDir)\dll\win32\cryptui\$(OutDir)\CRYPTUI.DLL" .
 copy "$(SolutionDir)\dll\win32\dbghelp\$(OutDir)\DBGHELP.DLL" .
 copy "$(SolutionDir)\dll\win32\devmgr\$(OutDir)\DEVMGR.DLL" .
 copy "$(SolutionDir)\dll\win32\dhcpcsvc\$(OutDir)\DHCPCSVC.DLL" .
@@ -271,6 +273,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\crypt32\crypt32.vcxproj">
       <Project>{706871f9-d9b7-4f04-97d2-05b3ec835eb6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\cryptui\cryptui.vcxproj">
+      <Project>{92468a25-9a59-4dac-b4e0-282d5732f53f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\dbghelp\dbghelp.vcxproj">
       <Project>{3d6cdc46-8214-4f27-a6c8-7190ab187963}</Project>
