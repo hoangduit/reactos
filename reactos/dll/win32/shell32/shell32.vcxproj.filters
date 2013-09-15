@@ -922,12 +922,14 @@
       <Filter>res\rgs</Filter>
     </None>
     <None Include="CMakeLists.txt" />
-    <None Include="shell32.spec" />
     <None Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="shobjidl_local.idl">
       <Filter>Source Files</Filter>
     </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="shell32.spec" />
   </ItemGroup>
 </Project>

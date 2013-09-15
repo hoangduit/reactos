@@ -58,9 +58,10 @@
       <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\mc\build\x86_32\Debug\ReactOS;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>
+      </RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -81,9 +82,10 @@
       <PreprocessorDefinitions>__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\mc\build\x86_32\Debug\ReactOS;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>
+      </RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
