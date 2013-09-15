@@ -30,7 +30,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="battc.spec" />
     <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="battc.spec" />
   </ItemGroup>
 </Project>

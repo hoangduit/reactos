@@ -61,6 +61,7 @@ copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
 copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
+copy "$(SolutionDir)\drivers\battery\battc\$(OutDir)\BATTC.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
@@ -167,6 +168,7 @@ copy "$(SolutionDir)\drivers\storage\class\ramdisk\$(OutDir)\RAMDISK.SYS" .
 copy "$(SolutionDir)\drivers\base\nmidebug\$(OutDir)\NMIDEBUG.SYS" .
 copy "$(SolutionDir)\drivers\filesystems\mup\$(OutDir)\MUP.SYS" .
 copy "$(SolutionDir)\drivers\network\ndis\$(OutDir)\NDIS.SYS" .
+copy "$(SolutionDir)\drivers\battery\battc\$(OutDir)\BATTC.SYS" .
 cd ..
 copy "$(SolutionDir)\dll\ntdll\$(OutDir)\NTDLL.DLL" .
 copy "$(SolutionDir)\dll\win32\advapi32\$(OutDir)\ADVAPI32.DLL" .
@@ -378,6 +380,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\nmidebug\nmidebug.vcxproj">
       <Project>{1fa3d6c0-aeb7-4893-87e1-ea6f971a08d3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\battery\battc\battc.vcxproj">
+      <Project>{1ecfa5b2-92c1-479a-8366-4c77084ca9c6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\bus\acpi\acpi.vcxproj">
       <Project>{2b600902-5b27-4636-bc04-2df86ee2e15b}</Project>
