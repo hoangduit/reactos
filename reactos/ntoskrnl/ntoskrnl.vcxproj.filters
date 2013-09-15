@@ -1209,15 +1209,13 @@
     <ClCompile Include="wmi\wmi.c">
       <Filter>wmi</Filter>
     </ClCompile>
-    <ClCompile Include="KrnlFun.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="kd\i386\kdmemsup.c">
       <Filter>kd\i386</Filter>
     </ClCompile>
     <ClCompile Include="kd\i386\kdbg.c">
       <Filter>kd\i386</Filter>
     </ClCompile>
+    <ClCompile Include="KrnlFun.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cache\newcc.h">
