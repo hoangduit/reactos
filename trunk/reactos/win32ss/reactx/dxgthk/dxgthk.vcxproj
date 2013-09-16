@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
-    <TargetName>build\x86_32\$(Configuration)\</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
