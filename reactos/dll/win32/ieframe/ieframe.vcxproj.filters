@@ -18,9 +18,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ieframe.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="classinfo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,5 +72,16 @@
     <ClCompile Include="webbrowser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ieframe.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ieframe.spec" />
+    <CustomBuild Include="ieframe_v1.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

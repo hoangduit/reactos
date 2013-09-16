@@ -11,9 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FA959EAE-93E3-46A4-BF9F-D00023D346BB}</ProjectGuid>
+    <ProjectGuid>{E8AD5228-7832-40AD-ACCB-38C22FA536D2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ieframe</RootNamespace>
+    <RootNamespace>stdole2tlb</RootNamespace>
+    <TargetName>stdole2</TargetName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,32 +43,30 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <TargetExt>.tlb</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <TargetExt>.tlb</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__WINESRC__;CMAKE_INTDIR="Debug";ieframe_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__WINESRC__;CMAKE_INTDIR="Debug";stdole2_tlb_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\lib\sdk\crt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <AdditionalOptions>"$(OutDir)\ieframe_stubs.c"</AdditionalOptions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <AdditionalDependencies />
-      <AdditionalOptions>"$(OutDir)\ieframe_stubs.obj"</AdditionalOptions>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <NoEntryPoint>true</NoEntryPoint>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,94 +86,26 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="ieframe.spec">
+    <CustomBuild Include="stdole2.tlb.spec">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def"  -s="$(OutDir)%(FileName)_stubs.c" "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def"  -s="$(OutDir)stdole2_stubs.c" "%(FullPath)"
 </Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def"  -s="$(OutDir)%(FileName)_stubs.c" "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def"  -s="$(OutDir)stdole2_stubs.c" "%(FullPath)"
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="classinfo.c" />
-    <ClCompile Include="client.c" />
-    <ClCompile Include="dochost.c" />
-    <ClCompile Include="events.c" />
-    <ClCompile Include="frame.c" />
-    <ClCompile Include="ie.c" />
-    <ClCompile Include="ieframe_main.c" />
-    <ClCompile Include="iehtmlwnd.c" />
-    <ClCompile Include="iexplore.c" />
-    <ClCompile Include="intshcut.c" />
-    <ClCompile Include="navigate.c" />
-    <ClCompile Include="oleobject.c" />
-    <ClCompile Include="persist.c" />
-    <ClCompile Include="shellbrowser.c" />
-    <ClCompile Include="shelluihelper.c" />
-    <ClCompile Include="urlhist.c" />
-    <ClCompile Include="view.c" />
-    <ClCompile Include="webbrowser.c" />
+    <ResourceCompile Include="rsrc.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
-      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\gdi32\gdi32.vcxproj">
-      <Project>{031ea1c5-fbbf-47c8-a00d-c78cf7a763ac}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
-      <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
-      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
-      <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
-      <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
-      <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
-      <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
-      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
-      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
-      <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
-      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
-      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\advapi32\advapi32.vcxproj">
-      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\comctl32\comctl32.vcxproj">
-      <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\ole32\ole32.vcxproj">
-      <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\stdole2.tlb\stdole2.tlb.vcxproj">
-      <Project>{e8ad5228-7832-40ad-accb-38c22fa536d2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\urlmon\urlmon.vcxproj">
-      <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ieframe_v1.idl">
+    <CustomBuild Include="std_ole_v2.idl">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
@@ -192,12 +123,18 @@ cd ..\..\..</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ieframe.rc">
-      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
-      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
-    </ResourceCompile>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
+      <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\widl\widl.vcxproj">
+      <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
