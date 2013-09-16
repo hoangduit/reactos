@@ -18,10 +18,109 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="comdlg32.spec" />
+    <None Include="comdlg32_ros.diff" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Bg.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ca.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Cs.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Da.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_De.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_El.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_En.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Eo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Es.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Fi.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Fr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_He.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Hu.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_It.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ja.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ko.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Lt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Nl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_No.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Pl.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Pt.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ro.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ru.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Si.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sv.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Th.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Tr.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Tw.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Uk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_xx.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Zh.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -53,5 +152,57 @@
     <ClCompile Include="printdlg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="800.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cdrom.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="floppy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="folder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="folder2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fontpics.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="hdisk.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="network.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pd32_collate.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pd32_landscape.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pd32_nocollate.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pd32_portrait.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filedlg31.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filedlgbrowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="comdlg32.spec" />
   </ItemGroup>
 </Project>

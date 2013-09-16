@@ -16,17 +16,15 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -38,15 +36,33 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);.\;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\comdlg32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies />
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <AdditionalOptions>"$(OutDir)\comdlg32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -55,22 +71,303 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);.\;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\comdlg32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies />
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <AdditionalOptions>"$(OutDir)\comdlg32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="comdlg32.spec" />
+    <CustomBuild Include="comdlg32.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
+    <None Include="comdlg32_ros.diff" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="rsrc.rc" />
+    <ResourceCompile Include="cdlg_Bg.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ca.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Cs.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Da.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_De.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_El.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_En.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Eo.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Es.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Fi.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Fr.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_He.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Hu.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_It.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ja.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ko.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Lt.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Nl.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_No.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Pl.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Pt.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ro.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Ru.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Si.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sk.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sr.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Sv.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Th.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Tr.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Tw.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Uk.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_xx.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="cdlg_Zh.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="rsrc.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos;$(SolutionDir)\include</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cdlg32.c" />
@@ -82,6 +379,69 @@
     <ClCompile Include="fontdlg.c" />
     <ClCompile Include="itemdlg.c" />
     <ClCompile Include="printdlg.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="800.bmp" />
+    <Image Include="cdrom.ico" />
+    <Image Include="floppy.ico" />
+    <Image Include="folder.ico" />
+    <Image Include="folder2.ico" />
+    <Image Include="fontpics.bmp" />
+    <Image Include="hdisk.ico" />
+    <Image Include="network.ico" />
+    <Image Include="pd32_collate.ico" />
+    <Image Include="pd32_landscape.ico" />
+    <Image Include="pd32_nocollate.ico" />
+    <Image Include="pd32_portrait.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cdlg.h" />
+    <ClInclude Include="filedlg31.h" />
+    <ClInclude Include="filedlgbrowser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
+      <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
+      <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
+      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\win32ss\gdi\gdi32\gdi32.vcxproj">
+      <Project>{6c6cf48c-a81c-4f7e-b882-f30dd4e59e78}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\win32ss\user\user32\user32.vcxproj">
+      <Project>{4dccd8be-f0cb-436f-8a18-6dd1677ae56f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\comctl32\comctl32.vcxproj">
+      <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\kernel32\kernel32.vcxproj">
+      <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
+      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ole32\ole32.vcxproj">
+      <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\winspool\winspool.vcxproj">
+      <Project>{4cf8adf8-85eb-4bfd-9410-29158a8bcb77}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
