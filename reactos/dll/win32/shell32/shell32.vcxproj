@@ -69,6 +69,7 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalOptions>"$(OutDir)\shell32_stubs.obj"</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -93,6 +94,7 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalOptions>"$(OutDir)\shell32_stubs.obj"</AdditionalOptions>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -686,6 +688,9 @@
     <ProjectReference Include="..\..\..\lib\atl\atlnew.vcxproj">
       <Project>{77c413bf-12e4-4259-b7ae-23ac7842145b}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\comdlg32\comdlg32.vcxproj">
+      <Project>{4aea1da9-737c-4c2c-8232-4cad4e7ad902}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
       <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
     </ProjectReference>
@@ -727,6 +732,9 @@
     </ProjectReference>
     <ProjectReference Include="..\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\shdocvw\shdocvw.vcxproj">
+      <Project>{859a8376-5104-47e8-88ff-cba8f9269f1d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\version\version.vcxproj">
       <Project>{9ae41259-6534-4d9f-be18-ec9ff7f4e752}</Project>
