@@ -37,16 +37,16 @@ VOID ErrorMessage (DWORD dwErrorCode, LPTSTR szFormat, ...)
 
     if (szFormat)
     {
-        va_start (arg_ptr, szFormat);
-        _vstprintf (szMessage, szFormat, arg_ptr);
-        va_end (arg_ptr);
+        va_start(arg_ptr, szFormat);
+        _vstprintf(szMessage, szFormat, arg_ptr);
+        va_end(arg_ptr);
     }
 
     if (FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER,
                        NULL, dwErrorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                        (LPTSTR)&szError, 0, NULL))
     {
-        ConErrPrintf (_T("%s %s\n"), szError, szMessage);
+        ConErrPrintf(_T("%s %s\n"), szError, szMessage);
         if (szError)
             LocalFree (szError);
         return;
@@ -54,9 +54,9 @@ VOID ErrorMessage (DWORD dwErrorCode, LPTSTR szFormat, ...)
 
     /* Fall back just in case the error is not defined */
     if (szFormat)
-        ConErrPrintf (_T("%s -- %s\n"), szMsg, szMessage);
+        ConErrPrintf(_T("%s -- %s\n"), szMsg, szMessage);
     else
-        ConErrPrintf (_T("%s\n"), szMsg);
+        ConErrPrintf(_T("%s\n"), szMsg);
 }
 
 VOID error_parameter_format(TCHAR ch)

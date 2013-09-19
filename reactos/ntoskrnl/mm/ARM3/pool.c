@@ -118,7 +118,7 @@ MiProtectedPoolUnProtectLinks(IN PLIST_ENTRY Links,
 
         /* So make it safe to access */
         Safe = MiUnProtectFreeNonPagedPool(PoolVa, 1);
-        if (Safe) PoolFlink = PoolVa;
+        if (Safe) *PoolFlink = PoolVa;
     }
 
     /* Are we going to need a backward link too? */
@@ -129,7 +129,7 @@ MiProtectedPoolUnProtectLinks(IN PLIST_ENTRY Links,
 
         /* Make it safe to access */
         Safe = MiUnProtectFreeNonPagedPool(PoolVa, 1);
-        if (Safe) PoolBlink = PoolVa;
+        if (Safe) *PoolBlink = PoolVa;
     }
 }
 
@@ -482,7 +482,7 @@ MiAllocatePoolPages(IN POOL_TYPE PoolType,
             // Get the page bit count
             //
             i = ((SizeInPages - 1) / PTE_COUNT) + 1;
-            DPRINT1("Paged pool expansion: %d %x\n", i, SizeInPages);
+            DPRINT("Paged pool expansion: %lu %x\n", i, SizeInPages);
 
             //
             // Check if there is enougn paged pool expansion space left

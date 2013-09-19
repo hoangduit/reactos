@@ -2165,8 +2165,8 @@ NTSYSAPI
 BOOLEAN
 NTAPI
 RtlPrefixString(
-    PCANSI_STRING String1,
-    PCANSI_STRING String2,
+    PSTRING String1,
+    PSTRING String2,
     BOOLEAN CaseInsensitive
 );
 
@@ -3511,8 +3511,12 @@ NTSYSAPI
 NTSTATUS
 NTAPI
 RtlCreateActivationContext(
-    _Out_ PHANDLE Handle,
-    _Inout_ PVOID ReturnedData
+    _In_ ULONG Flags,
+    _In_ PACTIVATION_CONTEXT_DATA ActivationContextData,
+    _In_ ULONG ExtraBytes,
+    _In_ PVOID NotificationRoutine,
+    _In_ PVOID NotificationContext,
+    _Out_ PACTIVATION_CONTEXT *ActCtx
 );
 
 NTSYSAPI
@@ -4112,12 +4116,22 @@ RtlUnlockBootStatusData(
 #endif
 
 #ifdef NTOS_MODE_USER
+_Must_inspect_result_
 NTSYSAPI
 NTSTATUS
 NTAPI
 RtlGUIDFromString(
     _In_ PUNICODE_STRING GuidString,
     _Out_ GUID *Guid);
+
+_Must_inspect_result_
+NTSYSAPI
+NTSTATUS
+NTAPI
+RtlStringFromGUID(
+  _In_ REFGUID Guid,
+  _Out_ _At_(GuidString->Buffer, __drv_allocatesMem(Mem))
+    PUNICODE_STRING GuidString);
 
 NTSYSAPI
 NTSTATUS

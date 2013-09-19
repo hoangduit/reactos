@@ -3,7 +3,7 @@
  * PROJECT:         ReactOS Client/Server Runtime SubSystem
  * FILE:            include/reactos/subsys/csr/csrsrv.h
  * PURPOSE:         Public definitions for CSR Servers
- * PROGRAMMERS:     Alex Ionescu (alex@relsoft.net)
+ * PROGRAMMERS:     Alex Ionescu (alex.ionescu@reactos.org)
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
  */
 
@@ -148,7 +148,6 @@ typedef struct _CSR_WAIT_BLOCK
 {
     ULONG Size;                     // Size of the wait block (variable-sized)
     LIST_ENTRY WaitList;
-    LIST_ENTRY UserWaitList;
     PVOID WaitContext;
     PCSR_THREAD WaitThread;
     CSR_WAIT_FUNCTION WaitFunction;
@@ -208,7 +207,6 @@ ULONG
 typedef struct _CSR_SERVER_DLL
 {
     ULONG Length;
-    HANDLE Event;
     ANSI_STRING Name;
     HANDLE ServerHandle;
     ULONG ServerId;
@@ -227,7 +225,7 @@ typedef struct _CSR_SERVER_DLL
     PCSR_SHUTDOWNPROCESS_CALLBACK ShutdownProcessCallback;
     ULONG Unknown2[3];
 } CSR_SERVER_DLL, *PCSR_SERVER_DLL;
-
+C_ASSERT(FIELD_OFFSET(CSR_SERVER_DLL, SharedSection) == 0x3C);
 
 typedef
 NTSTATUS
@@ -286,8 +284,7 @@ CsrCreateWait(IN PLIST_ENTRY WaitList,
               IN CSR_WAIT_FUNCTION WaitFunction,
               IN PCSR_THREAD CsrWaitThread,
               IN OUT PCSR_API_MESSAGE WaitApiMessage,
-              IN PVOID WaitContext,
-              IN PLIST_ENTRY UserWaitList OPTIONAL);
+              IN PVOID WaitContext);
 
 NTSTATUS
 NTAPI

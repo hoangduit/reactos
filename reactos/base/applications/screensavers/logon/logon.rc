@@ -15,6 +15,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDB_WORKSTATION BITMAP DISCARDABLE	"res/0.bmp"
 IDB_SERVER 	BITMAP DISCARDABLE	"res/1.bmp"
 
+#include <reactos/manifest_exe.rc>
+
 // UTF-8
 #pragma code_page(65001)
 #ifdef LANGUAGE_BG_BG
@@ -76,6 +78,9 @@ IDB_SERVER 	BITMAP DISCARDABLE	"res/1.bmp"
 #endif
 #ifdef LANGUAGE_SV_SE
     #include "lang/sv-SE.rc"
+#endif
+#ifdef LANGUAGE_TR_TR
+    #include "lang/tr-TR.rc"
 #endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/uk-UA.rc"

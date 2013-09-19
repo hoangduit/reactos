@@ -45,7 +45,8 @@ extern HANDLE hBootstrapOk;
 extern HANDLE CsrApiPort;
 extern HANDLE CsrSmApiPort;
 extern HANDLE CsrSbApiPort;
-extern LIST_ENTRY CsrThreadHashTable[256];
+#define NUMBER_THREAD_HASH_BUCKETS 257
+extern LIST_ENTRY CsrThreadHashTable[NUMBER_THREAD_HASH_BUCKETS];
 extern PCSR_PROCESS CsrRootProcess;
 extern UNICODE_STRING CsrDirectoryName;
 extern ULONG CsrDebug;
@@ -136,10 +137,14 @@ BOOLEAN
 NTAPI
 UnProtectHandle(IN HANDLE ObjectHandle);
 
-VOID
+NTSTATUS
 NTAPI
 CsrInsertThread(IN PCSR_PROCESS Process,
                 IN PCSR_THREAD Thread);
+
+VOID
+NTAPI
+CsrDeallocateThread(IN PCSR_THREAD CsrThread);
 
 VOID
 NTAPI
@@ -171,7 +176,7 @@ CsrInitializeNtSessionList(VOID);
 NTSTATUS
 NTAPI
 CsrSrvAttachSharedSection(IN PCSR_PROCESS CsrProcess OPTIONAL,
-                          OUT PCSR_CONNECTION_INFO ConnectInfo);
+                          OUT PCSR_API_CONNECTINFO ConnectInfo);
 
 NTSTATUS
 NTAPI

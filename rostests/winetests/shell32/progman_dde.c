@@ -701,6 +701,12 @@ START_TEST(progman_dde)
     HCONV hConv;
     int testnum;
 
+    if(!winetest_interactive)
+    {
+        skip("Skipping progman_dde() until we have a sane DDE implementation. CORE-6559.\n");
+        return;
+    }
+
     init_function_pointers();
     init_strings();
 

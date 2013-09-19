@@ -41,7 +41,7 @@ VOID
 WINAPI
 SetDebugErrorLevel( DWORD dwLevel )
 {
-    DbgPrint("(%ld): stub\n", dwLevel);
+    DbgPrint("(%lu): stub\n", dwLevel);
 }
 
 
@@ -214,17 +214,6 @@ GetInputDesktop ( VOID )
 BOOL
 WINAPI
 GetAccCursorInfo ( PCURSORINFO pci )
-{
-  UNIMPLEMENTED;
-  return FALSE;
-}
-
-/*
- * @unimplemented
- */
-BOOL
-WINAPI
-ClientThreadSetup ( VOID )
 {
   UNIMPLEMENTED;
   return FALSE;

@@ -687,13 +687,12 @@ MmCreatePeb(IN PEPROCESS Process,
         Peb->NumberOfProcessors = KeNumberProcessors;
         Peb->BeingDebugged = (BOOLEAN)(Process->DebugPort != NULL);
         Peb->NtGlobalFlag = NtGlobalFlag;
-        /*Peb->HeapSegmentReserve = MmHeapSegmentReserve;
-         Peb->HeapSegmentCommit = MmHeapSegmentCommit;
-         Peb->HeapDeCommitTotalFreeThreshold = MmHeapDeCommitTotalFreeThreshold;
-         Peb->HeapDeCommitFreeBlockThreshold = MmHeapDeCommitFreeBlockThreshold;*/
+        Peb->HeapSegmentReserve = MmHeapSegmentReserve;
+        Peb->HeapSegmentCommit = MmHeapSegmentCommit;
+        Peb->HeapDeCommitTotalFreeThreshold = MmHeapDeCommitTotalFreeThreshold;
+        Peb->HeapDeCommitFreeBlockThreshold = MmHeapDeCommitFreeBlockThreshold;
         Peb->CriticalSectionTimeout = MmCriticalSectionTimeout;
-        /*Peb->MinimumStackCommit = MmMinimumStackCommitInBytes;
-         */
+        Peb->MinimumStackCommit = MmMinimumStackCommitInBytes;
         Peb->MaximumNumberOfHeaps = (PAGE_SIZE - sizeof(PEB)) / sizeof(PVOID);
         Peb->ProcessHeaps = (PVOID*)(Peb + 1);
 
@@ -1577,11 +1576,11 @@ MiReleaseProcessReferenceToSessionDataPage(IN PMM_SESSION_SPACE SessionGlobal)
 
     /* Get the session ID */
     SessionId = SessionGlobal->SessionId;
-    DPRINT1("Last process in sessino %d going down!!!\n", SessionId);
+    DPRINT1("Last process in sessino %lu going down!!!\n", SessionId);
 
     /* Free the session page tables */
 #ifndef _M_AMD64
-    ExFreePool(SessionGlobal->PageTables);
+    ExFreePoolWithTag(SessionGlobal->PageTables, 'tHmM');
 #endif
     ASSERT(!MI_IS_PHYSICAL_ADDRESS(SessionGlobal));
 
@@ -1987,7 +1986,7 @@ MiSessionCreateInternal(OUT PULONG SessionId)
     MmSessionSpace->PageTables[PointerPde - MiAddressToPde(MmSessionBase)] = *PointerPde;
 #endif
     InitializeListHead(&MmSessionSpace->ImageList);
-    DPRINT1("Session %d is ready to go: 0x%p 0x%p, %lx 0x%p\n",
+    DPRINT1("Session %lu is ready to go: 0x%p 0x%p, %lx 0x%p\n",
             *SessionId, MmSessionSpace, SessionGlobal, SessionPageDirIndex, PageTables);
 
     /* Initialize session pool */
