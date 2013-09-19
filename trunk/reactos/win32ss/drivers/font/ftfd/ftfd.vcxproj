@@ -125,7 +125,7 @@
       <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\lib\3rdparty\freetype\freetype.vcxproj">
-      <Project>{215eeca2-2aaf-48fc-913e-0c91e1710d36}</Project>
+      <Project>{dce07e64-7db5-4ba2-a0d7-78e384d115ee}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\lib\import\win32k\win32k.vcxproj">
       <Project>{6f6fed5b-4af3-458c-a694-8f861c4f87ab}</Project>

@@ -102,6 +102,7 @@ copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
 copy "$(SolutionDir)\dll\win32\advpack\$(OutDir)\ADVPACK.DLL" .
 copy "$(SolutionDir)\dll\win32\comdlg32\$(OutDir)\COMDLG32.DLL" .
+copy "$(SolutionDir)\dll\win32\lz32\$(OutDir)\LZ32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -210,6 +211,7 @@ copy "$(SolutionDir)\dll\win32\ws2_32\$(OutDir)\WS2_32.DLL" .
 copy "$(SolutionDir)\dll\win32\crypt32\$(OutDir)\CRYPT32.DLL" .
 copy "$(SolutionDir)\dll\win32\advpack\$(OutDir)\ADVPACK.DLL" .
 copy "$(SolutionDir)\dll\win32\comdlg32\$(OutDir)\COMDLG32.DLL" .
+copy "$(SolutionDir)\dll\win32\lz32\$(OutDir)\LZ32.DLL" .
 copy "$(SolutionDir)\base\applications\atactl\$(OutDir)\ATACTL.EXE" .
 copy "$(SolutionDir)\base\system\autochk\$(OutDir)\AUTOCHK.EXE" .
 copy "$(SolutionDir)\base\system\lsass\$(OutDir)\LSASS.EXE" .
@@ -238,6 +240,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\base\applications\cacls\cacls.vcxproj">
       <Project>{106cb8e1-bbcd-4f8d-9d2f-22c2e5fb61e7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\applications\sc\sc.vcxproj">
+      <Project>{873050f0-3805-404e-b5ae-bfda2dfe7ce3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\base\shell\cmd\cmd.vcxproj">
       <Project>{5e4ab3b3-abea-4b91-9eff-67a788d33ea2}</Project>
@@ -313,6 +318,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\lsasrv\lsasrv.vcxproj">
       <Project>{c5180fe9-3478-4f73-82eb-f378813719da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\lz32\lz32.vcxproj">
+      <Project>{f7f26447-c004-42b9-b4da-20c2fb05d3c1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\mpr\mpr.vcxproj">
       <Project>{88d37bba-5d24-462a-964e-a88357ff985e}</Project>
@@ -442,6 +450,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\hal\hal.vcxproj">
       <Project>{ba5347bf-c0fd-44f0-976e-510b4d48e07b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ntkrnlmp\ntkrnlmp.vcxproj">
+      <Project>{ab439b24-6b02-4c18-a067-57de9c9518d5}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\ntoskrnl\ntoskrnl.vcxproj">
       <Project>{2406d983-79b4-4596-86c8-8c2cdbcba77b}</Project>
