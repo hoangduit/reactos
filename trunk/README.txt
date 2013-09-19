@@ -1,1 +1,0 @@
-This edit is a test of Google's SVN server.

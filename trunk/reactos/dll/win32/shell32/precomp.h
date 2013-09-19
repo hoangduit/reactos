@@ -25,6 +25,7 @@
 #include <shlwapi.h>
 #include <shlobj.h>
 #include <shlobj_undoc.h>
+#include <shlwapi_undoc.h>
 #include <appmgmt.h>
 #include <ntquery.h>
 #include <recyclebin.h>
@@ -70,6 +71,8 @@
 #include "startmenu.h"
 #include "filedefext.h"
 #include "drvdefext.h"
+#include "CMenuBand.h"
+#include "CMenuDeskBar.h"
 
 #include <wine/debug.h>
 

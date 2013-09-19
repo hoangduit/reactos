@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>-b C:\Users\John\Desktop\reactos\reactos\\boot\freeldr\bootsect\build\x86_32\Debug\\isoboot.bin C:\Users\John\Desktop\reactos\reactos\Debug\root_of_CD ReactOS C:\Users\John\Desktop\reactos\reactos\Debug\\CD_live.iso</LocalDebuggerCommandArguments>
-    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-  </PropertyGroup>
-</Project>

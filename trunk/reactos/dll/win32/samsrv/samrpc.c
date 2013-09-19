@@ -145,6 +145,9 @@ SamrConnect(IN PSAMPR_SERVER_NAME ServerName,
     TRACE("SamrConnect(%p %p %lx)\n",
           ServerName, ServerHandle, DesiredAccess);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Map generic access rights */
     RtlMapGenericMask(&DesiredAccess,
                       &ServerMapping);
@@ -159,6 +162,8 @@ SamrConnect(IN PSAMPR_SERVER_NAME ServerName,
                               &ServerObject);
     if (NT_SUCCESS(Status))
         *ServerHandle = (SAMPR_HANDLE)ServerObject;
+
+    RtlReleaseResource(&SampResource);
 
     TRACE("SamrConnect done (Status 0x%08lx)\n", Status);
 
@@ -176,6 +181,9 @@ SamrCloseHandle(IN OUT SAMPR_HANDLE *SamHandle)
 
     TRACE("SamrCloseHandle(%p)\n", SamHandle);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     Status = SampValidateDbObject(*SamHandle,
                                   SamDbIgnoreObject,
                                   0,
@@ -185,6 +193,8 @@ SamrCloseHandle(IN OUT SAMPR_HANDLE *SamHandle)
         Status = SampCloseDbObject(DbObject);
         *SamHandle = NULL;
     }
+
+    RtlReleaseResource(&SampResource);
 
     TRACE("SamrCloseHandle done (Status 0x%08lx)\n", Status);
 
@@ -226,11 +236,17 @@ SamrShutdownSamServer(IN SAMPR_HANDLE ServerHandle)
 
     TRACE("(%p)\n", ServerHandle);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the server handle */
     Status = SampValidateDbObject(ServerHandle,
                                   SamDbServerObject,
                                   SAM_SERVER_SHUTDOWN,
                                   &ServerObject);
+
+    RtlReleaseResource(&SampResource);
+
     if (!NT_SUCCESS(Status))
         return Status;
 
@@ -262,13 +278,16 @@ SamrLookupDomainInSamServer(IN SAMPR_HANDLE ServerHandle,
     TRACE("SamrLookupDomainInSamServer(%p %p %p)\n",
           ServerHandle, Name, DomainId);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the server handle */
     Status = SampValidateDbObject(ServerHandle,
                                   SamDbServerObject,
                                   SAM_SERVER_LOOKUP_DOMAIN,
                                   &ServerObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     *DomainId = NULL;
 
@@ -277,7 +296,7 @@ SamrLookupDomainInSamServer(IN SAMPR_HANDLE ServerHandle,
                             KEY_READ,
                             &DomainsKeyHandle);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Index = 0;
     while (Found == FALSE)
@@ -339,13 +358,17 @@ SamrLookupDomainInSamServer(IN SAMPR_HANDLE ServerHandle,
                 }
             }
 
-            NtClose(DomainKeyHandle);
+            SampRegCloseKey(&DomainKeyHandle);
         }
 
         Index++;
     }
 
-    NtClose(DomainsKeyHandle);
+done:
+    SampRegCloseKey(&DomainKeyHandle);
+    SampRegCloseKey(&DomainsKeyHandle);
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -362,8 +385,8 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
 {
     PSAM_DB_OBJECT ServerObject;
     WCHAR DomainKeyName[64];
-    HANDLE DomainsKeyHandle;
-    HANDLE DomainKeyHandle;
+    HANDLE DomainsKeyHandle = NULL;
+    HANDLE DomainKeyHandle = NULL;
     ULONG EnumIndex;
     ULONG EnumCount;
     ULONG RequiredLength;
@@ -376,20 +399,23 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
           ServerHandle, EnumerationContext, Buffer, PreferedMaximumLength,
           CountReturned);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the server handle */
     Status = SampValidateDbObject(ServerHandle,
                                   SamDbServerObject,
                                   SAM_SERVER_ENUMERATE_DOMAINS,
                                   &ServerObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(ServerObject->KeyHandle,
                             L"Domains",
                             KEY_READ,
                             &DomainsKeyHandle);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     EnumIndex = *EnumerationContext;
     EnumCount = 0;
@@ -432,7 +458,7 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
                 EnumCount++;
             }
 
-            NtClose(DomainKeyHandle);
+            SampRegCloseKey(&DomainKeyHandle);
         }
 
         EnumIndex++;
@@ -491,7 +517,7 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
                 EnumBuffer->Buffer[i].Name.Buffer = midl_user_allocate(DataLength);
                 if (EnumBuffer->Buffer[i].Name.Buffer == NULL)
                 {
-                    NtClose(DomainKeyHandle);
+                    SampRegCloseKey(&DomainKeyHandle);
                     Status = STATUS_INSUFFICIENT_RESOURCES;
                     goto done;
                 }
@@ -508,7 +534,7 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
                 }
             }
 
-            NtClose(DomainKeyHandle);
+            SampRegCloseKey(&DomainKeyHandle);
 
             if (!NT_SUCCESS(Status))
                 goto done;
@@ -523,6 +549,9 @@ SamrEnumerateDomainsInSamServer(IN SAMPR_HANDLE ServerHandle,
     }
 
 done:
+    SampRegCloseKey(&DomainKeyHandle);
+    SampRegCloseKey(&DomainsKeyHandle);
+
     if (!NT_SUCCESS(Status))
     {
         *EnumerationContext = 0;
@@ -549,7 +578,7 @@ done:
         }
     }
 
-    NtClose(DomainsKeyHandle);
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -573,6 +602,9 @@ SamrOpenDomain(IN SAMPR_HANDLE ServerHandle,
     /* Map generic access rights */
     RtlMapGenericMask(&DesiredAccess,
                       &DomainMapping);
+
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
 
     /* Validate the server handle */
     Status = SampValidateDbObject(ServerHandle,
@@ -627,6 +659,8 @@ SamrOpenDomain(IN SAMPR_HANDLE ServerHandle,
 
     if (NT_SUCCESS(Status))
         *DomainHandle = (SAMPR_HANDLE)DomainObject;
+
+    RtlReleaseResource(&SampResource);
 
     TRACE("SamrOpenDomain done (Status 0x%08lx)\n", Status);
 
@@ -709,12 +743,10 @@ SampGetNumberOfAccounts(PSAM_DB_OBJECT DomainObject,
     Status = SampRegQueryKeyInfo(NamesKeyHandle,
                                  NULL,
                                  Count);
-done:
-    if (NamesKeyHandle != NULL)
-        SampRegCloseKey(NamesKeyHandle);
 
-    if (AccountKeyHandle != NULL)
-        SampRegCloseKey(AccountKeyHandle);
+done:
+    SampRegCloseKey(&NamesKeyHandle);
+    SampRegCloseKey(&AccountKeyHandle);
 
     return Status;
 }
@@ -1378,13 +1410,16 @@ SamrQueryInformationDomain(IN SAMPR_HANDLE DomainHandle,
             return STATUS_INVALID_INFO_CLASS;
     }
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the server handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DesiredAccess,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (DomainInformationClass)
     {
@@ -1451,6 +1486,9 @@ SamrQueryInformationDomain(IN SAMPR_HANDLE DomainHandle,
         default:
             Status = STATUS_NOT_IMPLEMENTED;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -1652,13 +1690,16 @@ SamrSetInformationDomain(IN SAMPR_HANDLE DomainHandle,
             return STATUS_INVALID_INFO_CLASS;
     }
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the server handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DesiredAccess,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (DomainInformationClass)
     {
@@ -1673,27 +1714,21 @@ SamrSetInformationDomain(IN SAMPR_HANDLE DomainHandle,
             break;
 
         case DomainOemInformation:
-            Status = SampSetObjectAttribute(DomainObject,
-                                            L"OemInformation",
-                                            REG_SZ,
-                                            DomainInformation->Oem.OemInformation.Buffer,
-                                            DomainInformation->Oem.OemInformation.Length + sizeof(WCHAR));
+            Status = SampSetObjectAttributeString(DomainObject,
+                                                  L"OemInformation",
+                                                  &DomainInformation->Oem.OemInformation);
             break;
 
         case DomainNameInformation:
-            Status = SampSetObjectAttribute(DomainObject,
-                                            L"Name",
-                                            REG_SZ,
-                                            DomainInformation->Name.DomainName.Buffer,
-                                            DomainInformation->Name.DomainName.Length + sizeof(WCHAR));
+            Status = SampSetObjectAttributeString(DomainObject,
+                                                  L"Name",
+                                                  &DomainInformation->Name.DomainName);
             break;
 
         case DomainReplicationInformation:
-            Status = SampSetObjectAttribute(DomainObject,
-                                            L"ReplicaSourceNodeName",
-                                            REG_SZ,
-                                            DomainInformation->Replication.ReplicaSourceNodeName.Buffer,
-                                            DomainInformation->Replication.ReplicaSourceNodeName.Length + sizeof(WCHAR));
+            Status = SampSetObjectAttributeString(DomainObject,
+                                                  L"ReplicaSourceNodeName",
+                                                  &DomainInformation->Replication.ReplicaSourceNodeName);
             break;
 
         case DomainServerRoleInformation:
@@ -1715,6 +1750,9 @@ SamrSetInformationDomain(IN SAMPR_HANDLE DomainHandle,
             Status = STATUS_NOT_IMPLEMENTED;
     }
 
+done:
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -1728,7 +1766,6 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
                         OUT SAMPR_HANDLE *GroupHandle,
                         OUT unsigned long *RelativeId)
 {
-    UNICODE_STRING EmptyString = RTL_CONSTANT_STRING(L"");
     SAM_DOMAIN_FIXED_DATA FixedDomainData;
     SAM_GROUP_FIXED_DATA FixedGroupData;
     PSAM_DB_OBJECT DomainObject;
@@ -1745,6 +1782,9 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &GroupMapping);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -1753,7 +1793,15 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
+    }
+
+    /* Check the group account name */
+    Status = SampCheckAccountName(Name, 256);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        goto done;
     }
 
     /* Check if the group name already exists in the domain */
@@ -1763,7 +1811,7 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     {
         TRACE("Group name \'%S\' already exists in domain (Status 0x%08lx)\n",
               Name->Buffer, Status);
-        return Status;
+        goto done;
     }
 
     /* Get the fixed domain attributes */
@@ -1776,7 +1824,7 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Increment the NextRid attribute */
@@ -1785,14 +1833,14 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
 
     /* Store the fixed domain attributes */
     Status = SampSetObjectAttribute(DomainObject,
-                           L"F",
-                           REG_BINARY,
-                           &FixedDomainData,
-                           ulSize);
+                                    L"F",
+                                    REG_BINARY,
+                                    &FixedDomainData,
+                                    ulSize);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     TRACE("RID: %lx\n", ulRid);
@@ -1811,7 +1859,7 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Add the account name of the user object */
@@ -1822,13 +1870,12 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Initialize fixed user data */
     memset(&FixedGroupData, 0, sizeof(SAM_GROUP_FIXED_DATA));
     FixedGroupData.Version = 1;
-
     FixedGroupData.GroupId = ulRid;
 
     /* Set fixed user data attribute */
@@ -1840,31 +1887,27 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Name attribute */
-    Status = SampSetObjectAttribute(GroupObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    (LPVOID)Name->Buffer,
-                                    Name->MaximumLength);
+    Status = SampSetObjectAttributeString(GroupObject,
+                                          L"Name",
+                                          Name);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the AdminComment attribute */
-    Status = SampSetObjectAttribute(GroupObject,
-                                    L"AdminComment",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(GroupObject,
+                                          L"AdminComment",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     if (NT_SUCCESS(Status))
@@ -1872,6 +1915,9 @@ SamrCreateGroupInDomain(IN SAMPR_HANDLE DomainHandle,
         *GroupHandle = (SAMPR_HANDLE)GroupObject;
         *RelativeId = ulRid;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     TRACE("returns with status 0x%08lx\n", Status);
 
@@ -1907,20 +1953,23 @@ SamrEnumerateGroupsInDomain(IN SAMPR_HANDLE DomainHandle,
           DomainHandle, EnumerationContext, Buffer,
           PreferedMaximumLength, CountReturned);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DOMAIN_LIST_ACCOUNTS,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(DomainObject->KeyHandle,
                             L"Groups",
                             KEY_READ,
                             &GroupsKeyHandle);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(GroupsKeyHandle,
                             L"Names",
@@ -2069,14 +2118,13 @@ done:
         }
     }
 
-    if (NamesKeyHandle != NULL)
-        SampRegCloseKey(NamesKeyHandle);
-
-    if (GroupsKeyHandle != NULL)
-        SampRegCloseKey(GroupsKeyHandle);
+    SampRegCloseKey(&NamesKeyHandle);
+    SampRegCloseKey(&GroupsKeyHandle);
 
     if ((Status == STATUS_SUCCESS) && (MoreEntries == TRUE))
         Status = STATUS_MORE_ENTRIES;
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -2091,7 +2139,6 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
                        OUT SAMPR_HANDLE *UserHandle,
                        OUT unsigned long *RelativeId)
 {
-    UNICODE_STRING EmptyString = RTL_CONSTANT_STRING(L"");
     SAM_DOMAIN_FIXED_DATA FixedDomainData;
     SAM_USER_FIXED_DATA FixedUserData;
     PSAM_DB_OBJECT DomainObject;
@@ -2117,6 +2164,9 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &UserMapping);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -2125,7 +2175,15 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
+    }
+
+    /* Check the user account name */
+    Status = SampCheckAccountName(Name, 20);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        goto done;
     }
 
     /* Check if the user name already exists in the domain */
@@ -2135,7 +2193,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     {
         TRACE("User name \'%S\' already exists in domain (Status 0x%08lx)\n",
               Name->Buffer, Status);
-        return Status;
+        goto done;
     }
 
     /* Get the fixed domain attributes */
@@ -2148,7 +2206,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Increment the NextRid attribute */
@@ -2164,7 +2222,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     TRACE("RID: %lx\n", ulRid);
@@ -2183,7 +2241,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Add the account name for the user object */
@@ -2194,7 +2252,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Initialize fixed user data */
@@ -2228,127 +2286,107 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Name attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    (LPVOID)Name->Buffer,
-                                    Name->MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"Name",
+                                          Name);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the FullName attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"FullName",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"FullName",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the HomeDirectory attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"HomeDirectory",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"HomeDirectory",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the HomeDirectoryDrive attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"HomeDirectoryDrive",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"HomeDirectoryDrive",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the ScriptPath attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"ScriptPath",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"ScriptPath",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the ProfilePath attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"ProfilePath",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"ProfilePath",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the AdminComment attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"AdminComment",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"AdminComment",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the UserComment attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"UserComment",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"UserComment",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the WorkStations attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"WorkStations",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"WorkStations",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Parameters attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"Parameters",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"Parameters",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LogonHours attribute*/
@@ -2363,7 +2401,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set Groups attribute*/
@@ -2380,7 +2418,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LMPwd attribute*/
@@ -2392,7 +2430,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set NTPwd attribute*/
@@ -2404,7 +2442,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LMPwdHistory attribute*/
@@ -2416,7 +2454,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set NTPwdHistory attribute*/
@@ -2428,7 +2466,7 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* FIXME: Set SecDesc attribute*/
@@ -2438,6 +2476,9 @@ SamrCreateUserInDomain(IN SAMPR_HANDLE DomainHandle,
         *UserHandle = (SAMPR_HANDLE)UserObject;
         *RelativeId = ulRid;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     TRACE("returns with status 0x%08lx\n", Status);
 
@@ -2474,20 +2515,23 @@ SamrEnumerateUsersInDomain(IN SAMPR_HANDLE DomainHandle,
           DomainHandle, EnumerationContext, UserAccountControl, Buffer,
           PreferedMaximumLength, CountReturned);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DOMAIN_LIST_ACCOUNTS,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(DomainObject->KeyHandle,
                             L"Users",
                             KEY_READ,
                             &UsersKeyHandle);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(UsersKeyHandle,
                             L"Names",
@@ -2636,14 +2680,13 @@ done:
         }
     }
 
-    if (NamesKeyHandle != NULL)
-        SampRegCloseKey(NamesKeyHandle);
-
-    if (UsersKeyHandle != NULL)
-        SampRegCloseKey(UsersKeyHandle);
+    SampRegCloseKey(&NamesKeyHandle);
+    SampRegCloseKey(&UsersKeyHandle);
 
     if ((Status == STATUS_SUCCESS) && (MoreEntries == TRUE))
         Status = STATUS_MORE_ENTRIES;
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -2661,7 +2704,6 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     SAM_DOMAIN_FIXED_DATA FixedDomainData;
     PSAM_DB_OBJECT DomainObject;
     PSAM_DB_OBJECT AliasObject;
-    UNICODE_STRING EmptyString = RTL_CONSTANT_STRING(L"");
     ULONG ulSize;
     ULONG ulRid;
     WCHAR szRid[9];
@@ -2674,6 +2716,9 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &AliasMapping);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -2682,7 +2727,15 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
+    }
+
+    /* Check the alias acoount name */
+    Status = SampCheckAccountName(AccountName, 256);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        goto done;
     }
 
     /* Check if the alias name already exists in the domain */
@@ -2692,7 +2745,7 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     {
         TRACE("Alias name \'%S\' already exists in domain (Status 0x%08lx)\n",
               AccountName->Buffer, Status);
-        return Status;
+        goto done;
     }
 
     /* Get the fixed domain attributes */
@@ -2705,7 +2758,7 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Increment the NextRid attribute */
@@ -2721,7 +2774,7 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     TRACE("RID: %lx\n", ulRid);
@@ -2740,7 +2793,7 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Add the account name for the alias object */
@@ -2751,31 +2804,27 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Name attribute */
-    Status = SampSetObjectAttribute(AliasObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    (LPVOID)AccountName->Buffer,
-                                    AccountName->MaximumLength);
+    Status = SampSetObjectAttributeString(AliasObject,
+                                          L"Name",
+                                          AccountName);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Description attribute */
-    Status = SampSetObjectAttribute(AliasObject,
-                                    L"Description",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(AliasObject,
+                                          L"Description",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     if (NT_SUCCESS(Status))
@@ -2783,6 +2832,9 @@ SamrCreateAliasInDomain(IN SAMPR_HANDLE DomainHandle,
         *AliasHandle = (SAMPR_HANDLE)AliasObject;
         *RelativeId = ulRid;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     TRACE("returns with status 0x%08lx\n", Status);
 
@@ -2818,20 +2870,23 @@ SamrEnumerateAliasesInDomain(IN SAMPR_HANDLE DomainHandle,
           DomainHandle, EnumerationContext, Buffer,
           PreferedMaximumLength, CountReturned);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DOMAIN_LIST_ACCOUNTS,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(DomainObject->KeyHandle,
                             L"Aliases",
                             KEY_READ,
                             &AliasesKeyHandle);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(AliasesKeyHandle,
                             L"Names",
@@ -2980,14 +3035,13 @@ done:
         }
     }
 
-    if (NamesKeyHandle != NULL)
-        SampRegCloseKey(NamesKeyHandle);
-
-    if (AliasesKeyHandle != NULL)
-        SampRegCloseKey(AliasesKeyHandle);
+    SampRegCloseKey(&NamesKeyHandle);
+    SampRegCloseKey(&AliasesKeyHandle);
 
     if ((Status == STATUS_SUCCESS) && (MoreEntries == TRUE))
         Status = STATUS_MORE_ENTRIES;
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -3016,13 +3070,16 @@ SamrGetAliasMembership(IN SAMPR_HANDLE DomainHandle,
     TRACE("SamrGetAliasMembership(%p %p %p)\n",
           DomainHandle, SidArray, Membership);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
                                   DOMAIN_GET_ALIAS_MEMBERSHIP,
                                   &DomainObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     Status = SampRegOpenKey(DomainObject->KeyHandle,
                             L"Aliases",
@@ -3068,7 +3125,7 @@ TRACE("Open %S\n", MemberSidString);
                 MaxSidCount += ValueCount;
             }
 
-            NtClose(MemberKeyHandle);
+            SampRegCloseKey(&MemberKeyHandle);
         }
 
         if (Status == STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3127,13 +3184,17 @@ TRACE("Open %S\n", MemberSidString);
                 }
             }
 
-            NtClose(MemberKeyHandle);
+            SampRegCloseKey(&MemberKeyHandle);
         }
 
         LocalFree(MemberSidString);
     }
 
 done:
+    SampRegCloseKey(&MembersKeyHandle);
+    SampRegCloseKey(&MembersKeyHandle);
+    SampRegCloseKey(&AliasesKeyHandle);
+
     if (NT_SUCCESS(Status))
     {
         Membership->Count = MaxSidCount;
@@ -3145,14 +3206,7 @@ done:
             midl_user_free(RidArray);
     }
 
-    if (MembersKeyHandle != NULL)
-        NtClose(MembersKeyHandle);
-
-    if (MembersKeyHandle != NULL)
-        NtClose(MembersKeyHandle);
-
-    if (AliasesKeyHandle != NULL)
-        NtClose(AliasesKeyHandle);
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -3168,8 +3222,8 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
                         OUT PSAMPR_ULONG_ARRAY Use)
 {
     PSAM_DB_OBJECT DomainObject;
-    HANDLE AccountsKeyHandle;
-    HANDLE NamesKeyHandle;
+    HANDLE AccountsKeyHandle = NULL;
+    HANDLE NamesKeyHandle = NULL;
     ULONG MappedCount = 0;
     ULONG DataLength;
     ULONG i;
@@ -3179,6 +3233,9 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
     TRACE("SamrLookupNamesInDomain(%p %lu %p %p %p)\n",
           DomainHandle, Count, Names, RelativeIds, Use);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -3187,14 +3244,17 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     RelativeIds->Count = 0;
     Use->Count = 0;
 
     if (Count == 0)
-        return STATUS_SUCCESS;
+    {
+        Status = STATUS_SUCCESS;
+        goto done;
+    }
 
     /* Allocate the relative IDs array */
     RelativeIds->Element = midl_user_allocate(Count * sizeof(ULONG));
@@ -3241,10 +3301,10 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
                                            &RelativeId,
                                            &DataLength);
 
-                SampRegCloseKey(NamesKeyHandle);
+                SampRegCloseKey(&NamesKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3280,10 +3340,10 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
                                            &RelativeId,
                                            &DataLength);
 
-                SampRegCloseKey(NamesKeyHandle);
+                SampRegCloseKey(&NamesKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3319,10 +3379,10 @@ SamrLookupNamesInDomain(IN SAMPR_HANDLE DomainHandle,
                                            &RelativeId,
                                            &DataLength);
 
-                SampRegCloseKey(NamesKeyHandle);
+                SampRegCloseKey(&NamesKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3373,6 +3433,8 @@ done:
         Use->Count = 0;
     }
 
+    RtlReleaseResource(&SampResource);
+
     TRACE("Returned Status %lx\n", Status);
 
     return Status;
@@ -3390,8 +3452,8 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
 {
     PSAM_DB_OBJECT DomainObject;
     WCHAR RidString[9];
-    HANDLE AccountsKeyHandle;
-    HANDLE AccountKeyHandle;
+    HANDLE AccountsKeyHandle = NULL;
+    HANDLE AccountKeyHandle = NULL;
     ULONG MappedCount = 0;
     ULONG DataLength;
     ULONG i;
@@ -3399,6 +3461,9 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
 
     TRACE("SamrLookupIdsInDomain(%p %lu %p %p %p)\n",
           DomainHandle, Count, RelativeIds, Names, Use);
+
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
 
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
@@ -3408,14 +3473,17 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     Names->Count = 0;
     Use->Count = 0;
 
     if (Count == 0)
-        return STATUS_SUCCESS;
+    {
+        Status = STATUS_SUCCESS;
+        goto done;
+    }
 
     /* Allocate the names array */
     Names->Element = midl_user_allocate(Count * sizeof(ULONG));
@@ -3480,10 +3548,10 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
                     }
                 }
 
-                SampRegCloseKey(AccountKeyHandle);
+                SampRegCloseKey(&AccountKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3536,10 +3604,10 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
                     }
                 }
 
-                SampRegCloseKey(AccountKeyHandle);
+                SampRegCloseKey(&AccountKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3594,10 +3662,10 @@ SamrLookupIdsInDomain(IN SAMPR_HANDLE DomainHandle,
                     }
                 }
 
-                SampRegCloseKey(AccountKeyHandle);
+                SampRegCloseKey(&AccountKeyHandle);
             }
 
-            SampRegCloseKey(AccountsKeyHandle);
+            SampRegCloseKey(&AccountsKeyHandle);
         }
 
         if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_NOT_FOUND)
@@ -3652,6 +3720,8 @@ done:
         Use->Count = 0;
     }
 
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -3676,6 +3746,9 @@ SamrOpenGroup(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &GroupMapping);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -3684,7 +3757,7 @@ SamrOpenGroup(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Convert the RID into a string (hex) */
@@ -3701,12 +3774,15 @@ SamrOpenGroup(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     *GroupHandle = (SAMPR_HANDLE)GroupObject;
 
-    return STATUS_SUCCESS;
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -3923,13 +3999,16 @@ SamrQueryInformationGroup(IN SAMPR_HANDLE GroupHandle,
     TRACE("SamrQueryInformationGroup(%p %lu %p)\n",
           GroupHandle, GroupInformationClass, Buffer);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
                                   GROUP_READ_INFORMATION,
                                   &GroupObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (GroupInformationClass)
     {
@@ -3958,6 +4037,9 @@ SamrQueryInformationGroup(IN SAMPR_HANDLE GroupHandle,
             break;
     }
 
+done:
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -3977,6 +4059,14 @@ SampSetGroupName(PSAM_DB_OBJECT GroupObject,
     {
         TRACE("SampGetObjectAttributeString failed (Status 0x%08lx)\n", Status);
         goto done;
+    }
+
+    /* Check the new account name */
+    Status = SampCheckAccountName(&Buffer->Name.Name, 256);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        return Status;
     }
 
     NewGroupName.Length = Buffer->Name.Name.Length;
@@ -4014,11 +4104,9 @@ SampSetGroupName(PSAM_DB_OBJECT GroupObject,
         goto done;
     }
 
-    Status = SampSetObjectAttribute(GroupObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    NewGroupName.Buffer,
-                                    NewGroupName.Length + sizeof(WCHAR));
+    Status = SampSetObjectAttributeString(GroupObject,
+                                          L"Name",
+                                          (PRPC_UNICODE_STRING)&NewGroupName);
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampSetObjectAttribute failed (Status 0x%08lx)\n", Status);
@@ -4075,13 +4163,16 @@ SamrSetInformationGroup(IN SAMPR_HANDLE GroupHandle,
     TRACE("SamrSetInformationGroup(%p %lu %p)\n",
           GroupHandle, GroupInformationClass, Buffer);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
                                   GROUP_WRITE_ACCOUNT,
                                   &GroupObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (GroupInformationClass)
     {
@@ -4096,17 +4187,18 @@ SamrSetInformationGroup(IN SAMPR_HANDLE GroupHandle,
             break;
 
         case GroupAdminCommentInformation:
-            Status = SampSetObjectAttribute(GroupObject,
-                                            L"Description",
-                                            REG_SZ,
-                                            Buffer->AdminComment.AdminComment.Buffer,
-                                            Buffer->AdminComment.AdminComment.Length + sizeof(WCHAR));
+            Status = SampSetObjectAttributeString(GroupObject,
+                                                  L"Description",
+                                                  &Buffer->AdminComment.AdminComment);
             break;
 
         default:
             Status = STATUS_INVALID_INFO_CLASS;
             break;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4126,13 +4218,16 @@ SamrAddMemberToGroup(IN SAMPR_HANDLE GroupHandle,
     TRACE("(%p %lu %lx)\n",
           GroupHandle, MemberId, Attributes);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
                                   GROUP_ADD_MEMBER,
                                   &GroupObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     /* Open the user object in the same domain */
     Status = SampOpenUserObject(GroupObject->ParentObject,
@@ -4167,11 +4262,13 @@ done:
     if (UserObject)
         SampCloseDbObject(UserObject);
 
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
 
-/* Function 21 */
+/* Function 23 */
 NTSTATUS
 NTAPI
 SamrDeleteGroup(IN OUT SAMPR_HANDLE *GroupHandle)
@@ -4182,6 +4279,9 @@ SamrDeleteGroup(IN OUT SAMPR_HANDLE *GroupHandle)
 
     TRACE("(%p)\n", GroupHandle);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(*GroupHandle,
                                   SamDbGroupObject,
@@ -4190,14 +4290,15 @@ SamrDeleteGroup(IN OUT SAMPR_HANDLE *GroupHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject() failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Fail, if the group is built-in */
     if (GroupObject->RelativeId < 1000)
     {
         TRACE("You can not delete a special account!\n");
-        return STATUS_SPECIAL_ACCOUNT;
+        Status = STATUS_SPECIAL_ACCOUNT;
+        goto done;
     }
 
     /* Get the length of the Members attribute */
@@ -4211,7 +4312,8 @@ SamrDeleteGroup(IN OUT SAMPR_HANDLE *GroupHandle)
     if (Length != 0)
     {
         TRACE("There are still members in the group!\n");
-        return STATUS_MEMBER_IN_GROUP;
+        Status = STATUS_MEMBER_IN_GROUP;
+        goto done;
     }
 
     /* FIXME: Remove the group from all aliases */
@@ -4221,13 +4323,16 @@ SamrDeleteGroup(IN OUT SAMPR_HANDLE *GroupHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampDeleteAccountDbObject() failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Invalidate the handle */
     *GroupHandle = NULL;
 
-    return STATUS_SUCCESS;
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -4244,13 +4349,16 @@ SamrRemoveMemberFromGroup(IN SAMPR_HANDLE GroupHandle,
     TRACE("(%p %lu)\n",
           GroupHandle, MemberId);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
                                   GROUP_REMOVE_MEMBER,
                                   &GroupObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     /* Open the user object in the same domain */
     Status = SampOpenUserObject(GroupObject->ParentObject,
@@ -4284,6 +4392,8 @@ done:
     if (UserObject)
         SampCloseDbObject(UserObject);
 
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -4300,17 +4410,23 @@ SamrGetMembersInGroup(IN SAMPR_HANDLE GroupHandle,
     ULONG i;
     NTSTATUS Status;
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
                                   GROUP_LIST_MEMBERS,
                                   &GroupObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     MembersBuffer = midl_user_allocate(sizeof(SAMPR_GET_MEMBERS_BUFFER));
     if (MembersBuffer == NULL)
-        return STATUS_INSUFFICIENT_RESOURCES;
+    {
+        Status = STATUS_INSUFFICIENT_RESOURCES;
+        goto done;
+    }
 
     SampGetObjectAttribute(GroupObject,
                            L"Members",
@@ -4326,7 +4442,8 @@ SamrGetMembersInGroup(IN SAMPR_HANDLE GroupHandle,
 
         *Members = MembersBuffer;
 
-        return STATUS_SUCCESS;
+        Status = STATUS_SUCCESS;
+        goto done;
     }
 
     MembersBuffer->Members = midl_user_allocate(Length);
@@ -4386,6 +4503,8 @@ done:
         }
     }
 
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -4400,6 +4519,9 @@ SamrSetMemberAttributesOfGroup(IN SAMPR_HANDLE GroupHandle,
     PSAM_DB_OBJECT GroupObject;
     NTSTATUS Status;
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the group handle */
     Status = SampValidateDbObject(GroupHandle,
                                   SamDbGroupObject,
@@ -4408,7 +4530,7 @@ SamrSetMemberAttributesOfGroup(IN SAMPR_HANDLE GroupHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     Status = SampSetUserGroupAttributes(GroupObject->ParentObject,
@@ -4419,6 +4541,9 @@ SamrSetMemberAttributesOfGroup(IN SAMPR_HANDLE GroupHandle,
     {
         TRACE("SampSetUserGroupAttributes failed with status 0x%08lx\n", Status);
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4444,6 +4569,9 @@ SamrOpenAlias(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &AliasMapping);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -4452,7 +4580,7 @@ SamrOpenAlias(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Convert the RID into a string (hex) */
@@ -4469,12 +4597,15 @@ SamrOpenAlias(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     *AliasHandle = (SAMPR_HANDLE)AliasObject;
 
-    return STATUS_SUCCESS;
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -4541,8 +4672,7 @@ SampQueryAliasGeneral(PSAM_DB_OBJECT AliasObject,
     *Buffer = InfoBuffer;
 
 done:
-    if (MembersKeyHandle != NULL)
-        SampRegCloseKey(MembersKeyHandle);
+    SampRegCloseKey(&MembersKeyHandle);
 
     if (!NT_SUCCESS(Status))
     {
@@ -4655,13 +4785,16 @@ SamrQueryInformationAlias(IN SAMPR_HANDLE AliasHandle,
     TRACE("SamrQueryInformationAlias(%p %lu %p)\n",
           AliasHandle, AliasInformationClass, Buffer);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(AliasHandle,
                                   SamDbAliasObject,
                                   ALIAS_READ_INFORMATION,
                                   &AliasObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (AliasInformationClass)
     {
@@ -4685,6 +4818,9 @@ SamrQueryInformationAlias(IN SAMPR_HANDLE AliasHandle,
             break;
     }
 
+done:
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -4704,6 +4840,14 @@ SampSetAliasName(PSAM_DB_OBJECT AliasObject,
     {
         TRACE("SampGetObjectAttributeString failed (Status 0x%08lx)\n", Status);
         goto done;
+    }
+
+    /* Check the new account name */
+    Status = SampCheckAccountName(&Buffer->Name.Name, 256);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        return Status;
     }
 
     NewAliasName.Length = Buffer->Name.Name.Length;
@@ -4741,11 +4885,9 @@ SampSetAliasName(PSAM_DB_OBJECT AliasObject,
         goto done;
     }
 
-    Status = SampSetObjectAttribute(AliasObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    NewAliasName.Buffer,
-                                    NewAliasName.Length + sizeof(WCHAR));
+    Status = SampSetObjectAttributeString(AliasObject,
+                                          L"Name",
+                                          (PRPC_UNICODE_STRING)&NewAliasName);
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampSetObjectAttribute failed (Status 0x%08lx)\n", Status);
@@ -4772,13 +4914,16 @@ SamrSetInformationAlias(IN SAMPR_HANDLE AliasHandle,
     TRACE("SamrSetInformationAlias(%p %lu %p)\n",
           AliasHandle, AliasInformationClass, Buffer);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(AliasHandle,
                                   SamDbAliasObject,
                                   ALIAS_WRITE_ACCOUNT,
                                   &AliasObject);
     if (!NT_SUCCESS(Status))
-        return Status;
+        goto done;
 
     switch (AliasInformationClass)
     {
@@ -4788,17 +4933,18 @@ SamrSetInformationAlias(IN SAMPR_HANDLE AliasHandle,
             break;
 
         case AliasAdminCommentInformation:
-            Status = SampSetObjectAttribute(AliasObject,
-                                            L"Description",
-                                            REG_SZ,
-                                            Buffer->AdminComment.AdminComment.Buffer,
-                                            Buffer->AdminComment.AdminComment.Length + sizeof(WCHAR));
+            Status = SampSetObjectAttributeString(AliasObject,
+                                                  L"Description",
+                                                  &Buffer->AdminComment.AdminComment);
             break;
 
         default:
             Status = STATUS_INVALID_INFO_CLASS;
             break;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4812,6 +4958,9 @@ SamrDeleteAlias(IN OUT SAMPR_HANDLE *AliasHandle)
     PSAM_DB_OBJECT AliasObject;
     NTSTATUS Status;
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(*AliasHandle,
                                   SamDbAliasObject,
@@ -4820,14 +4969,15 @@ SamrDeleteAlias(IN OUT SAMPR_HANDLE *AliasHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Fail, if the alias is built-in */
     if (AliasObject->RelativeId < 1000)
     {
         TRACE("You can not delete a special account!\n");
-        return STATUS_SPECIAL_ACCOUNT;
+        Status = STATUS_SPECIAL_ACCOUNT;
+        goto done;
     }
 
     /* FIXME: Remove all members from the alias */
@@ -4837,11 +4987,14 @@ SamrDeleteAlias(IN OUT SAMPR_HANDLE *AliasHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampDeleteAccountDbObject() failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Invalidate the handle */
     *AliasHandle = NULL;
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4858,6 +5011,9 @@ SamrAddMemberToAlias(IN SAMPR_HANDLE AliasHandle,
 
     TRACE("(%p %p)\n", AliasHandle, MemberId);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(AliasHandle,
                                   SamDbAliasObject,
@@ -4866,7 +5022,7 @@ SamrAddMemberToAlias(IN SAMPR_HANDLE AliasHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     Status = SampAddMemberToAlias(AliasObject,
@@ -4875,6 +5031,9 @@ SamrAddMemberToAlias(IN SAMPR_HANDLE AliasHandle,
     {
         TRACE("failed with status 0x%08lx\n", Status);
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4891,6 +5050,9 @@ SamrRemoveMemberFromAlias(IN SAMPR_HANDLE AliasHandle,
 
     TRACE("(%p %p)\n", AliasHandle, MemberId);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(AliasHandle,
                                   SamDbAliasObject,
@@ -4899,7 +5061,7 @@ SamrRemoveMemberFromAlias(IN SAMPR_HANDLE AliasHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     Status = SampRemoveMemberFromAlias(AliasObject,
@@ -4908,6 +5070,9 @@ SamrRemoveMemberFromAlias(IN SAMPR_HANDLE AliasHandle,
     {
         TRACE("failed with status 0x%08lx\n", Status);
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -4930,6 +5095,9 @@ SamrGetMembersInAlias(IN SAMPR_HANDLE AliasHandle,
     TRACE("SamrGetMembersInAlias(%p %p %p)\n",
           AliasHandle, Members);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the alias handle */
     Status = SampValidateDbObject(AliasHandle,
                                   SamDbAliasObject,
@@ -4938,7 +5106,7 @@ SamrGetMembersInAlias(IN SAMPR_HANDLE AliasHandle,
     if (!NT_SUCCESS(Status))
     {
         ERR("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Open the members key of the alias objct */
@@ -4949,7 +5117,7 @@ SamrGetMembersInAlias(IN SAMPR_HANDLE AliasHandle,
     if (!NT_SUCCESS(Status))
     {
         ERR("SampRegOpenKey failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Get the number of members */
@@ -5038,8 +5206,9 @@ done:
     }
 
     /* Close the members key */
-    if (MembersKeyHandle != NULL)
-        SampRegCloseKey(MembersKeyHandle);
+    SampRegCloseKey(&MembersKeyHandle);
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -5065,6 +5234,9 @@ SamrOpenUser(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &UserMapping);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -5073,7 +5245,7 @@ SamrOpenUser(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Convert the RID into a string (hex) */
@@ -5090,12 +5262,15 @@ SamrOpenUser(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     *UserHandle = (SAMPR_HANDLE)UserObject;
 
-    return STATUS_SUCCESS;
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -5109,6 +5284,9 @@ SamrDeleteUser(IN OUT SAMPR_HANDLE *UserHandle)
 
     TRACE("(%p)\n", UserHandle);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the user handle */
     Status = SampValidateDbObject(*UserHandle,
                                   SamDbUserObject,
@@ -5117,14 +5295,15 @@ SamrDeleteUser(IN OUT SAMPR_HANDLE *UserHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject() failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Fail, if the user is built-in */
     if (UserObject->RelativeId < 1000)
     {
         TRACE("You can not delete a special account!\n");
-        return STATUS_SPECIAL_ACCOUNT;
+        Status = STATUS_SPECIAL_ACCOUNT;
+        goto done;
     }
 
     /* FIXME: Remove the user from all groups */
@@ -5136,13 +5315,16 @@ SamrDeleteUser(IN OUT SAMPR_HANDLE *UserHandle)
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampDeleteAccountDbObject() failed (Status 0x%08lx)\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Invalidate the handle */
     *UserHandle = NULL;
 
-    return STATUS_SUCCESS;
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -6631,6 +6813,9 @@ SamrQueryInformationUser(IN SAMPR_HANDLE UserHandle,
             return STATUS_INVALID_INFO_CLASS;
     }
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(UserHandle,
                                   SamDbUserObject,
@@ -6639,7 +6824,7 @@ SamrQueryInformationUser(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     switch (UserInformationClass)
@@ -6747,6 +6932,9 @@ SamrQueryInformationUser(IN SAMPR_HANDLE UserHandle,
             Status = STATUS_INVALID_INFO_CLASS;
     }
 
+done:
+    RtlReleaseResource(&SampResource);
+
     return Status;
 }
 
@@ -6757,6 +6945,14 @@ SampSetUserName(PSAM_DB_OBJECT UserObject,
 {
     UNICODE_STRING OldUserName = {0, 0, NULL};
     NTSTATUS Status;
+
+    /* Check the account name */
+    Status = SampCheckAccountName(NewUserName, 20);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        return Status;
+    }
 
     Status = SampGetObjectAttributeString(UserObject,
                                           L"Name",
@@ -6798,11 +6994,9 @@ SampSetUserName(PSAM_DB_OBJECT UserObject,
         goto done;
     }
 
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    NewUserName->Buffer,
-                                    NewUserName->Length + sizeof(WCHAR));
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"Name",
+                                          NewUserName);
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampSetObjectAttribute failed (Status 0x%08lx)\n", Status);
@@ -6848,27 +7042,21 @@ SampSetUserGeneral(PSAM_DB_OBJECT UserObject,
     if (!NT_SUCCESS(Status))
         goto done;
 
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"FullName",
-                                    REG_SZ,
-                                    Buffer->General.FullName.Buffer,
-                                    Buffer->General.FullName.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"FullName",
+                                          &Buffer->General.FullName);
     if (!NT_SUCCESS(Status))
         goto done;
 
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"AdminComment",
-                                    REG_SZ,
-                                    Buffer->General.AdminComment.Buffer,
-                                    Buffer->General.AdminComment.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"AdminComment",
+                                          &Buffer->General.AdminComment);
     if (!NT_SUCCESS(Status))
         goto done;
 
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"UserComment",
-                                    REG_SZ,
-                                    Buffer->General.UserComment.Buffer,
-                                    Buffer->General.UserComment.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"UserComment",
+                                          &Buffer->General.UserComment);
 
 done:
     return Status;
@@ -6903,11 +7091,9 @@ SampSetUserPreferences(PSAM_DB_OBJECT UserObject,
     if (!NT_SUCCESS(Status))
         goto done;
 
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"UserComment",
-                                    REG_SZ,
-                                    Buffer->Preferences.UserComment.Buffer,
-                                    Buffer->Preferences.UserComment.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"UserComment",
+                                          &Buffer->Preferences.UserComment);
 
 done:
     return Status;
@@ -7067,9 +7253,24 @@ SampSetUserAll(PSAM_DB_OBJECT UserObject,
     SAM_USER_FIXED_DATA FixedData;
     ULONG Length = 0;
     ULONG WhichFields;
+    PENCRYPTED_NT_OWF_PASSWORD NtPassword = NULL;
+    PENCRYPTED_LM_OWF_PASSWORD LmPassword = NULL;
+    BOOLEAN NtPasswordPresent = FALSE;
+    BOOLEAN LmPasswordPresent = FALSE;
+    BOOLEAN WriteFixedData = FALSE;
     NTSTATUS Status = STATUS_SUCCESS;
 
     WhichFields = Buffer->All.WhichFields;
+
+    /* Get the fixed size attributes */
+    Length = sizeof(SAM_USER_FIXED_DATA);
+    Status = SampGetObjectAttribute(UserObject,
+                                    L"F",
+                                    NULL,
+                                    (PVOID)&FixedData,
+                                    &Length);
+    if (!NT_SUCCESS(Status))
+        goto done;
 
     if (WhichFields & USER_ALL_USERNAME)
     {
@@ -7081,99 +7282,81 @@ SampSetUserAll(PSAM_DB_OBJECT UserObject,
 
     if (WhichFields & USER_ALL_FULLNAME)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"FullName",
-                                        REG_SZ,
-                                        Buffer->All.FullName.Buffer,
-                                        Buffer->All.FullName.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"FullName",
+                                              &Buffer->All.FullName);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_ADMINCOMMENT)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"AdminComment",
-                                        REG_SZ,
-                                        Buffer->All.AdminComment.Buffer,
-                                        Buffer->All.AdminComment.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"AdminComment",
+                                              &Buffer->All.AdminComment);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_USERCOMMENT)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"UserComment",
-                                        REG_SZ,
-                                        Buffer->All.UserComment.Buffer,
-                                        Buffer->All.UserComment.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"UserComment",
+                                              &Buffer->All.UserComment);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_HOMEDIRECTORY)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"HomeDirectory",
-                                        REG_SZ,
-                                        Buffer->All.HomeDirectory.Buffer,
-                                        Buffer->All.HomeDirectory.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"HomeDirectory",
+                                              &Buffer->All.HomeDirectory);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_HOMEDIRECTORYDRIVE)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"HomeDirectoryDrive",
-                                        REG_SZ,
-                                        Buffer->All.HomeDirectoryDrive.Buffer,
-                                        Buffer->All.HomeDirectoryDrive.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"HomeDirectoryDrive",
+                                              &Buffer->All.HomeDirectoryDrive);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_SCRIPTPATH)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"ScriptPath",
-                                        REG_SZ,
-                                        Buffer->All.ScriptPath.Buffer,
-                                        Buffer->All.ScriptPath.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"ScriptPath",
+                                              &Buffer->All.ScriptPath);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_PROFILEPATH)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"ProfilePath",
-                                        REG_SZ,
-                                        Buffer->All.ProfilePath.Buffer,
-                                        Buffer->All.ProfilePath.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"ProfilePath",
+                                              &Buffer->All.ProfilePath);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_WORKSTATIONS)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"WorkStations",
-                                        REG_SZ,
-                                        Buffer->All.WorkStations.Buffer,
-                                        Buffer->All.WorkStations.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"WorkStations",
+                                              &Buffer->All.WorkStations);
         if (!NT_SUCCESS(Status))
             goto done;
     }
 
     if (WhichFields & USER_ALL_PARAMETERS)
     {
-        Status = SampSetObjectAttribute(UserObject,
-                                        L"Parameters",
-                                        REG_SZ,
-                                        Buffer->All.Parameters.Buffer,
-                                        Buffer->All.Parameters.MaximumLength);
+        Status = SampSetObjectAttributeString(UserObject,
+                                              L"Parameters",
+                                              &Buffer->All.Parameters);
         if (!NT_SUCCESS(Status))
             goto done;
     }
@@ -7186,39 +7369,89 @@ SampSetUserAll(PSAM_DB_OBJECT UserObject,
             goto done;
     }
 
-    if (WhichFields & (USER_ALL_PRIMARYGROUPID |
-                       USER_ALL_ACCOUNTEXPIRES |
-                       USER_ALL_USERACCOUNTCONTROL |
-                       USER_ALL_COUNTRYCODE |
-                       USER_ALL_CODEPAGE))
+    if (WhichFields & USER_ALL_PRIMARYGROUPID)
     {
-        Length = sizeof(SAM_USER_FIXED_DATA);
-        Status = SampGetObjectAttribute(UserObject,
-                                        L"F",
-                                        NULL,
-                                        (PVOID)&FixedData,
-                                        &Length);
+        FixedData.PrimaryGroupId = Buffer->All.PrimaryGroupId;
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & USER_ALL_ACCOUNTEXPIRES)
+    {
+        FixedData.AccountExpires.LowPart = Buffer->All.AccountExpires.LowPart;
+        FixedData.AccountExpires.HighPart = Buffer->All.AccountExpires.HighPart;
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & USER_ALL_USERACCOUNTCONTROL)
+    {
+        FixedData.UserAccountControl = Buffer->All.UserAccountControl;
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & USER_ALL_COUNTRYCODE)
+    {
+        FixedData.CountryCode = Buffer->All.CountryCode;
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & USER_ALL_CODEPAGE)
+    {
+        FixedData.CodePage = Buffer->All.CodePage;
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & (USER_ALL_NTPASSWORDPRESENT |
+                       USER_ALL_LMPASSWORDPRESENT))
+    {
+        if (WhichFields & USER_ALL_NTPASSWORDPRESENT)
+        {
+            NtPassword = (PENCRYPTED_NT_OWF_PASSWORD)Buffer->All.NtOwfPassword.Buffer;
+            NtPasswordPresent = Buffer->All.NtPasswordPresent;
+        }
+
+        if (WhichFields & USER_ALL_LMPASSWORDPRESENT)
+        {
+            LmPassword = (PENCRYPTED_LM_OWF_PASSWORD)Buffer->All.LmOwfPassword.Buffer;
+            LmPasswordPresent = Buffer->All.LmPasswordPresent;
+        }
+
+        Status = SampSetUserPassword(UserObject,
+                                     NtPassword,
+                                     NtPasswordPresent,
+                                     LmPassword,
+                                     LmPasswordPresent);
         if (!NT_SUCCESS(Status))
             goto done;
 
-        if (WhichFields & USER_ALL_PRIMARYGROUPID)
-            FixedData.PrimaryGroupId = Buffer->All.PrimaryGroupId;
+        /* The password has just been set */
+        Status = NtQuerySystemTime(&FixedData.PasswordLastSet);
+        if (!NT_SUCCESS(Status))
+            goto done;
 
-        if (WhichFields & USER_ALL_ACCOUNTEXPIRES)
+        WriteFixedData = TRUE;
+    }
+
+    if (WhichFields & USER_ALL_PASSWORDEXPIRED)
+    {
+        if (Buffer->All.PasswordExpired)
         {
-            FixedData.AccountExpires.LowPart = Buffer->All.AccountExpires.LowPart;
-            FixedData.AccountExpires.HighPart = Buffer->All.AccountExpires.HighPart;
+            /* The pasword was last set ages ago */
+            FixedData.PasswordLastSet.LowPart = 0;
+            FixedData.PasswordLastSet.HighPart = 0;
+        }
+        else
+        {
+            /* The pasword was last set right now */
+            Status = NtQuerySystemTime(&FixedData.PasswordLastSet);
+            if (!NT_SUCCESS(Status))
+                goto done;
         }
 
-        if (WhichFields & USER_ALL_USERACCOUNTCONTROL)
-            FixedData.UserAccountControl = Buffer->All.UserAccountControl;
+        WriteFixedData = TRUE;
+    }
 
-        if (WhichFields & USER_ALL_COUNTRYCODE)
-            FixedData.CountryCode = Buffer->Preferences.CountryCode;
-
-        if (WhichFields & USER_ALL_CODEPAGE)
-            FixedData.CodePage = Buffer->Preferences.CodePage;
-
+    if (WriteFixedData == TRUE)
+    {
         Status = SampSetObjectAttribute(UserObject,
                                         L"F",
                                         REG_BINARY,
@@ -7228,15 +7461,7 @@ SampSetUserAll(PSAM_DB_OBJECT UserObject,
             goto done;
     }
 
-/*
-FIXME:
-    USER_ALL_NTPASSWORDPRESENT
-    USER_ALL_LMPASSWORDPRESENT
-    USER_ALL_PASSWORDEXPIRED
-*/
-
 done:
-
     return Status;
 }
 
@@ -7295,6 +7520,9 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
             return STATUS_INVALID_INFO_CLASS;
     }
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(UserHandle,
                                   SamDbUserObject,
@@ -7303,7 +7531,7 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     switch (UserInformationClass)
@@ -7329,11 +7557,9 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
             if (!NT_SUCCESS(Status))
                 break;
 
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"FullName",
-                                            REG_SZ,
-                                            Buffer->Name.FullName.Buffer,
-                                            Buffer->Name.FullName.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"FullName",
+                                                  &Buffer->Name.FullName);
             break;
 
         case UserAccountNameInformation:
@@ -7342,11 +7568,9 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
             break;
 
         case UserFullNameInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"FullName",
-                                            REG_SZ,
-                                            Buffer->FullName.FullName.Buffer,
-                                            Buffer->FullName.FullName.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"FullName",
+                                                  &Buffer->FullName.FullName);
             break;
 
         case UserPrimaryGroupInformation:
@@ -7355,62 +7579,48 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
             break;
 
         case UserHomeInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"HomeDirectory",
-                                            REG_SZ,
-                                            Buffer->Home.HomeDirectory.Buffer,
-                                            Buffer->Home.HomeDirectory.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"HomeDirectory",
+                                                  &Buffer->Home.HomeDirectory);
             if (!NT_SUCCESS(Status))
                 break;
 
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"HomeDirectoryDrive",
-                                            REG_SZ,
-                                            Buffer->Home.HomeDirectoryDrive.Buffer,
-                                            Buffer->Home.HomeDirectoryDrive.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"HomeDirectoryDrive",
+                                                  &Buffer->Home.HomeDirectoryDrive);
             break;
 
         case UserScriptInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"ScriptPath",
-                                            REG_SZ,
-                                            Buffer->Script.ScriptPath.Buffer,
-                                            Buffer->Script.ScriptPath.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"ScriptPath",
+                                                  &Buffer->Script.ScriptPath);
             break;
 
         case UserProfileInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"ProfilePath",
-                                            REG_SZ,
-                                            Buffer->Profile.ProfilePath.Buffer,
-                                            Buffer->Profile.ProfilePath.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"ProfilePath",
+                                                  &Buffer->Profile.ProfilePath);
             break;
 
         case UserAdminCommentInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"AdminComment",
-                                            REG_SZ,
-                                            Buffer->AdminComment.AdminComment.Buffer,
-                                            Buffer->AdminComment.AdminComment.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"AdminComment",
+                                                  &Buffer->AdminComment.AdminComment);
             break;
 
         case UserWorkStationsInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"WorkStations",
-                                            REG_SZ,
-                                            Buffer->WorkStations.WorkStations.Buffer,
-                                            Buffer->WorkStations.WorkStations.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"WorkStations",
+                                                  &Buffer->WorkStations.WorkStations);
             break;
 
         case UserSetPasswordInformation:
             TRACE("Password: %S\n", Buffer->SetPassword.Password.Buffer);
             TRACE("PasswordExpired: %d\n", Buffer->SetPassword.PasswordExpired);
 
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"Password",
-                                            REG_SZ,
-                                            Buffer->SetPassword.Password.Buffer,
-                                            Buffer->SetPassword.Password.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"Password",
+                                                  &Buffer->SetPassword.Password);
             break;
 
         case UserControlInformation:
@@ -7429,11 +7639,9 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
             break;
 
         case UserParametersInformation:
-            Status = SampSetObjectAttribute(UserObject,
-                                            L"Parameters",
-                                            REG_SZ,
-                                            Buffer->Parameters.Parameters.Buffer,
-                                            Buffer->Parameters.Parameters.MaximumLength);
+            Status = SampSetObjectAttributeString(UserObject,
+                                                  L"Parameters",
+                                                  &Buffer->Parameters.Parameters);
             break;
 
         case UserAllInformation:
@@ -7449,6 +7657,9 @@ SamrSetInformationUser(IN SAMPR_HANDLE UserHandle,
         default:
             Status = STATUS_INVALID_INFO_CLASS;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -7469,8 +7680,224 @@ SamrChangePasswordUser(IN SAMPR_HANDLE UserHandle,
                        IN unsigned char LmCrossEncryptionPresent,
                        IN PENCRYPTED_LM_OWF_PASSWORD NewLmEncryptedWithNewNt)
 {
-    UNIMPLEMENTED;
-    return STATUS_NOT_IMPLEMENTED;
+    ENCRYPTED_LM_OWF_PASSWORD StoredLmPassword;
+    ENCRYPTED_NT_OWF_PASSWORD StoredNtPassword;
+    PENCRYPTED_LM_OWF_PASSWORD OldLmPassword;
+    PENCRYPTED_LM_OWF_PASSWORD NewLmPassword;
+    PENCRYPTED_NT_OWF_PASSWORD OldNtPassword;
+    PENCRYPTED_NT_OWF_PASSWORD NewNtPassword;
+    BOOLEAN StoredLmPresent = FALSE;
+    BOOLEAN StoredNtPresent = FALSE;
+    BOOLEAN StoredLmEmpty = TRUE;
+    BOOLEAN StoredNtEmpty = TRUE;
+    PSAM_DB_OBJECT UserObject;
+    ULONG Length;
+    SAM_USER_FIXED_DATA UserFixedData;
+    SAM_DOMAIN_FIXED_DATA DomainFixedData;
+    LARGE_INTEGER SystemTime;
+    NTSTATUS Status;
+
+    TRACE("(%p %u %p %p %u %p %p %u %p %u %p)\n",
+          UserHandle, LmPresent, OldLmEncryptedWithNewLm, NewLmEncryptedWithOldLm,
+          NtPresent, OldNtEncryptedWithNewNt, NewNtEncryptedWithOldNt, NtCrossEncryptionPresent,
+          NewNtEncryptedWithNewLm, LmCrossEncryptionPresent, NewLmEncryptedWithNewNt);
+
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
+    /* Validate the user handle */
+    Status = SampValidateDbObject(UserHandle,
+                                  SamDbUserObject,
+                                  USER_CHANGE_PASSWORD,
+                                  &UserObject);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
+        goto done;
+    }
+
+    /* Get the current time */
+    Status = NtQuerySystemTime(&SystemTime);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("NtQuerySystemTime failed (Status 0x%08lx)\n", Status);
+        goto done;
+    }
+
+    /* Retrieve the LM password */
+    Length = sizeof(ENCRYPTED_LM_OWF_PASSWORD);
+    Status = SampGetObjectAttribute(UserObject,
+                                    L"LMPwd",
+                                    NULL,
+                                    &StoredLmPassword,
+                                    &Length);
+    if (NT_SUCCESS(Status))
+    {
+        if (Length == sizeof(ENCRYPTED_LM_OWF_PASSWORD))
+        {
+            StoredLmPresent = TRUE;
+            if (!RtlEqualMemory(&StoredLmPassword,
+                                &EmptyLmHash,
+                                sizeof(ENCRYPTED_LM_OWF_PASSWORD)))
+                StoredLmEmpty = FALSE;
+        }
+    }
+
+    /* Retrieve the NT password */
+    Length = sizeof(ENCRYPTED_NT_OWF_PASSWORD);
+    Status = SampGetObjectAttribute(UserObject,
+                                    L"NTPwd",
+                                    NULL,
+                                    &StoredNtPassword,
+                                    &Length);
+    if (NT_SUCCESS(Status))
+    {
+        if (Length == sizeof(ENCRYPTED_NT_OWF_PASSWORD))
+        {
+            StoredNtPresent = TRUE;
+            if (!RtlEqualMemory(&StoredNtPassword,
+                                &EmptyNtHash,
+                                sizeof(ENCRYPTED_NT_OWF_PASSWORD)))
+                StoredNtEmpty = FALSE;
+        }
+    }
+
+    /* Retrieve the fixed size user data */
+    Length = sizeof(SAM_USER_FIXED_DATA);
+    Status = SampGetObjectAttribute(UserObject,
+                                    L"F",
+                                    NULL,
+                                    &UserFixedData,
+                                    &Length);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampGetObjectAttribute failed to retrieve the fixed user data (Status 0x%08lx)\n", Status);
+        goto done;
+    }
+
+    /* Check if we can change the password at this time */
+    if ((StoredNtEmpty == FALSE) || (StoredNtEmpty == FALSE))
+    {
+        /* Get fixed domain data */
+        Length = sizeof(SAM_DOMAIN_FIXED_DATA);
+        Status = SampGetObjectAttribute(UserObject->ParentObject,
+                                        L"F",
+                                        NULL,
+                                        &DomainFixedData,
+                                        &Length);
+        if (!NT_SUCCESS(Status))
+        {
+            TRACE("SampGetObjectAttribute failed to retrieve the fixed domain data (Status 0x%08lx)\n", Status);
+            return Status;
+        }
+
+        if (DomainFixedData.MinPasswordAge.QuadPart > 0)
+        {
+            if (SystemTime.QuadPart < (UserFixedData.PasswordLastSet.QuadPart + DomainFixedData.MinPasswordAge.QuadPart))
+                return STATUS_ACCOUNT_RESTRICTION;
+        }
+    }
+
+    /* FIXME: Decrypt passwords */
+    OldLmPassword = OldLmEncryptedWithNewLm;
+    NewLmPassword = NewLmEncryptedWithOldLm;
+    OldNtPassword = OldNtEncryptedWithNewNt;
+    NewNtPassword = NewNtEncryptedWithOldNt;
+
+    /* Check if the old passwords match the stored ones */
+    if (NtPresent)
+    {
+        if (LmPresent)
+        {
+            if (!RtlEqualMemory(&StoredLmPassword,
+                                OldLmPassword,
+                                sizeof(ENCRYPTED_LM_OWF_PASSWORD)))
+            {
+                TRACE("Old LM Password does not match!\n");
+                Status = STATUS_WRONG_PASSWORD;
+            }
+            else
+            {
+                if (!RtlEqualMemory(&StoredNtPassword,
+                                    OldNtPassword,
+                                    sizeof(ENCRYPTED_LM_OWF_PASSWORD)))
+                {
+                    TRACE("Old NT Password does not match!\n");
+                    Status = STATUS_WRONG_PASSWORD;
+                }
+            }
+        }
+        else
+        {
+            if (!RtlEqualMemory(&StoredNtPassword,
+                                OldNtPassword,
+                                sizeof(ENCRYPTED_LM_OWF_PASSWORD)))
+            {
+                TRACE("Old NT Password does not match!\n");
+                Status = STATUS_WRONG_PASSWORD;
+            }
+        }
+    }
+    else
+    {
+        if (LmPresent)
+        {
+            if (!RtlEqualMemory(&StoredLmPassword,
+                                OldLmPassword,
+                                sizeof(ENCRYPTED_LM_OWF_PASSWORD)))
+            {
+                TRACE("Old LM Password does not match!\n");
+                Status = STATUS_WRONG_PASSWORD;
+            }
+        }
+        else
+        {
+            Status = STATUS_INVALID_PARAMETER;
+        }
+    }
+
+    /* Store the new password hashes */
+    if (NT_SUCCESS(Status))
+    {
+        Status = SampSetUserPassword(UserObject,
+                                     NewNtPassword,
+                                     NtPresent,
+                                     NewLmPassword,
+                                     LmPresent);
+        if (NT_SUCCESS(Status))
+        {
+            /* Update PasswordLastSet */
+            UserFixedData.PasswordLastSet.QuadPart = SystemTime.QuadPart;
+
+            /* Set the fixed size user data */
+            Length = sizeof(SAM_USER_FIXED_DATA);
+            Status = SampSetObjectAttribute(UserObject,
+                                            L"F",
+                                            REG_BINARY,
+                                            &UserFixedData,
+                                            Length);
+        }
+    }
+
+    if (Status == STATUS_WRONG_PASSWORD)
+    {
+        /* Update BadPasswordCount and LastBadPasswordTime */
+        UserFixedData.BadPasswordCount++;
+        UserFixedData.LastBadPasswordTime.QuadPart = SystemTime.QuadPart;
+
+        /* Set the fixed size user data */
+        Length = sizeof(SAM_USER_FIXED_DATA);
+        Status = SampSetObjectAttribute(UserObject,
+                                        L"F",
+                                        REG_BINARY,
+                                        &UserFixedData,
+                                        Length);
+    }
+
+done:
+    RtlReleaseResource(&SampResource);
+
+    return Status;
 }
 
 
@@ -7488,6 +7915,9 @@ SamrGetGroupsForUser(IN SAMPR_HANDLE UserHandle,
     TRACE("SamrGetGroupsForUser(%p %p)\n",
           UserHandle, Groups);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the user handle */
     Status = SampValidateDbObject(UserHandle,
                                   SamDbUserObject,
@@ -7496,13 +7926,16 @@ SamrGetGroupsForUser(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Allocate the groups buffer */
     GroupsBuffer = midl_user_allocate(sizeof(SAMPR_GET_GROUPS_BUFFER));
     if (GroupsBuffer == NULL)
-        return STATUS_INSUFFICIENT_RESOURCES;
+    {
+        Status = STATUS_INSUFFICIENT_RESOURCES;
+        goto done;
+    }
 
     /*
      * Get the size of the Groups attribute.
@@ -7523,7 +7956,8 @@ SamrGetGroupsForUser(IN SAMPR_HANDLE UserHandle,
 
         *Groups = GroupsBuffer;
 
-        return STATUS_SUCCESS;
+        Status = STATUS_SUCCESS;
+        goto done;
     }
 
     /* Allocate a buffer for the Groups attribute */
@@ -7563,6 +7997,8 @@ done:
             midl_user_free(GroupsBuffer);
         }
     }
+
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -7631,6 +8067,9 @@ SamrGetUserDomainPasswordInformation(IN SAMPR_HANDLE UserHandle,
     TRACE("(%p %p)\n",
           UserHandle, PasswordInformation);
 
+    RtlAcquireResourceShared(&SampResource,
+                             TRUE);
+
     /* Validate the user handle */
     Status = SampValidateDbObject(UserHandle,
                                   SamDbUserObject,
@@ -7639,7 +8078,7 @@ SamrGetUserDomainPasswordInformation(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Validate the domain object */
@@ -7650,7 +8089,7 @@ SamrGetUserDomainPasswordInformation(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Get fixed user data */
@@ -7663,7 +8102,7 @@ SamrGetUserDomainPasswordInformation(IN SAMPR_HANDLE UserHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampGetObjectAttribute failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     if ((UserObject->RelativeId == DOMAIN_USER_RID_KRBTGT) ||
@@ -7686,12 +8125,15 @@ SamrGetUserDomainPasswordInformation(IN SAMPR_HANDLE UserHandle,
         if (!NT_SUCCESS(Status))
         {
             TRACE("SampGetObjectAttribute failed with status 0x%08lx\n", Status);
-            return Status;
+            goto done;
         }
 
         PasswordInformation->MinPasswordLength = DomainFixedData.MinPasswordLength;
         PasswordInformation->PasswordProperties = DomainFixedData.PasswordProperties;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return STATUS_SUCCESS;
 }
@@ -7710,6 +8152,9 @@ SamrRemoveMemberFromForeignDomain(IN SAMPR_HANDLE DomainHandle,
     TRACE("(%p %p)\n",
           DomainHandle, MemberSid);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain object */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -7718,7 +8163,7 @@ SamrRemoveMemberFromForeignDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampValidateDbObject failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Retrieve the RID from the MemberSID */
@@ -7727,14 +8172,15 @@ SamrRemoveMemberFromForeignDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("SampGetRidFromSid failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Fail, if the RID represents a special account */
     if (Rid < 1000)
     {
         TRACE("Cannot remove a special account (RID: %lu)\n", Rid);
-        return STATUS_SPECIAL_ACCOUNT;
+        Status = STATUS_SPECIAL_ACCOUNT;
+        goto done;
     }
 
     /* Remove the member from all aliases in the domain */
@@ -7744,6 +8190,9 @@ SamrRemoveMemberFromForeignDomain(IN SAMPR_HANDLE DomainHandle,
     {
         TRACE("SampRemoveMemberFromAllAliases failed with status 0x%08lx\n", Status);
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     return Status;
 }
@@ -7836,7 +8285,6 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
                         OUT unsigned long *GrantedAccess,
                         OUT unsigned long *RelativeId)
 {
-    UNICODE_STRING EmptyString = RTL_CONSTANT_STRING(L"");
     SAM_DOMAIN_FIXED_DATA FixedDomainData;
     SAM_USER_FIXED_DATA FixedUserData;
     PSAM_DB_OBJECT DomainObject;
@@ -7870,6 +8318,9 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     RtlMapGenericMask(&DesiredAccess,
                       &UserMapping);
 
+    RtlAcquireResourceExclusive(&SampResource,
+                                TRUE);
+
     /* Validate the domain handle */
     Status = SampValidateDbObject(DomainHandle,
                                   SamDbDomainObject,
@@ -7878,7 +8329,15 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
+    }
+
+    /* Check the user account name */
+    Status = SampCheckAccountName(Name, 20);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SampCheckAccountName failed (Status 0x%08lx)\n", Status);
+        goto done;
     }
 
     /* Check if the user name already exists in the domain */
@@ -7888,7 +8347,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     {
         TRACE("User name \'%S\' already exists in domain (Status 0x%08lx)\n",
               Name->Buffer, Status);
-        return Status;
+        goto done;
     }
 
     /* Get the fixed domain attributes */
@@ -7901,7 +8360,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Increment the NextRid attribute */
@@ -7917,7 +8376,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     TRACE("RID: %lx\n", ulRid);
@@ -7936,7 +8395,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Add the account name for the user object */
@@ -7947,7 +8406,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Initialize fixed user data */
@@ -7980,127 +8439,107 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Name attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"Name",
-                                    REG_SZ,
-                                    (LPVOID)Name->Buffer,
-                                    Name->MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"Name",
+                                          Name);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the FullName attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"FullName",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"FullName",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the HomeDirectory attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"HomeDirectory",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"HomeDirectory",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the HomeDirectoryDrive attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"HomeDirectoryDrive",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"HomeDirectoryDrive",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the ScriptPath attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"ScriptPath",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"ScriptPath",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the ProfilePath attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"ProfilePath",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"ProfilePath",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the AdminComment attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"AdminComment",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"AdminComment",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the UserComment attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"UserComment",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"UserComment",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the WorkStations attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"WorkStations",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"WorkStations",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set the Parameters attribute */
-    Status = SampSetObjectAttribute(UserObject,
-                                    L"Parameters",
-                                    REG_SZ,
-                                    EmptyString.Buffer,
-                                    EmptyString.MaximumLength);
+    Status = SampSetObjectAttributeString(UserObject,
+                                          L"Parameters",
+                                          NULL);
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LogonHours attribute*/
@@ -8115,7 +8554,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set Groups attribute*/
@@ -8132,7 +8571,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LMPwd attribute*/
@@ -8144,7 +8583,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set NTPwd attribute*/
@@ -8156,7 +8595,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set LMPwdHistory attribute*/
@@ -8168,7 +8607,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* Set NTPwdHistory attribute*/
@@ -8180,7 +8619,7 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
     if (!NT_SUCCESS(Status))
     {
         TRACE("failed with status 0x%08lx\n", Status);
-        return Status;
+        goto done;
     }
 
     /* FIXME: Set SecDesc attribute*/
@@ -8191,6 +8630,9 @@ SamrCreateUser2InDomain(IN SAMPR_HANDLE DomainHandle,
         *RelativeId = ulRid;
         *GrantedAccess = UserObject->Access;
     }
+
+done:
+    RtlReleaseResource(&SampResource);
 
     TRACE("returns with status 0x%08lx\n", Status);
 

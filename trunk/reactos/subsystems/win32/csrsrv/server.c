@@ -168,7 +168,6 @@ CsrLoadServerDll(IN PCHAR DllString,
     /* Set up the Object */
     ServerDll->Length = Size;
     ServerDll->SharedSection = CsrSrvSharedSectionHeap; // Send to the server dll our shared heap pointer.
-    ServerDll->Event = CsrInitializationEvent;
     ServerDll->Name.Length = DllName.Length;
     ServerDll->Name.MaximumLength = DllName.MaximumLength;
     ServerDll->Name.Buffer = (PCHAR)(ServerDll + 1);
@@ -444,7 +443,7 @@ CsrSrvCreateSharedSection(IN PCHAR ParameterValue)
 NTSTATUS
 NTAPI
 CsrSrvAttachSharedSection(IN PCSR_PROCESS CsrProcess OPTIONAL,
-                          OUT PCSR_CONNECTION_INFO ConnectInfo)
+                          OUT PCSR_API_CONNECTINFO ConnectInfo)
 {
     NTSTATUS Status;
     ULONG ViewSize = 0;
@@ -469,7 +468,7 @@ CsrSrvAttachSharedSection(IN PCSR_PROCESS CsrProcess OPTIONAL,
     /* Write the values in the Connection Info structure */
     ConnectInfo->SharedSectionBase = CsrSrvSharedSectionBase;
     ConnectInfo->SharedSectionHeap = CsrSrvSharedSectionHeap;
-    ConnectInfo->SharedSectionData = CsrSrvSharedStaticServerData;
+    ConnectInfo->SharedStaticServerData = CsrSrvSharedStaticServerData;
 
     /* Return success */
     return STATUS_SUCCESS;

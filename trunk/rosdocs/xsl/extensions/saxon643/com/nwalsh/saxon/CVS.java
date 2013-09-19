@@ -57,7 +57,7 @@ public class CVS {
    * @return The date, converted to local time and reformatted.
    */
   public static String localTime (String cvsDate) {
-    // A cvsDate has the following form "$Date: 2002-06-13 15:29:51 -0500 (Thu, 13 Jun 2002) $"
+    // A cvsDate has the following form "$Date: 2002-06-13 16:29:51 -0400 (Thu, 13 Jun 2002) $"
     if (!cvsDate.startsWith("$Date: ")) {
       return cvsDate;
     }

@@ -18,8 +18,8 @@
 
 BOOLEAN (*CsrClientThreadSetup)(VOID) = NULL;
 UNICODE_STRING CsrApiPortName;
-volatile LONG CsrpStaticThreadCount;
-volatile LONG CsrpDynamicThreadTotal;
+volatile ULONG CsrpStaticThreadCount;
+volatile ULONG CsrpDynamicThreadTotal;
 extern ULONG CsrMaxApiRequestThreads;
 
 /* FUNCTIONS ******************************************************************/
@@ -76,11 +76,13 @@ CsrCallServerFromServer(IN PCSR_API_MESSAGE ReceiveMsg,
             ((ServerDll->ValidTable) && !(ServerDll->ValidTable[ApiId])))
         {
             /* We are beyond the Maximum API ID, or it doesn't exist */
+            DPRINT1("API: %d\n", ApiId);
             DPRINT1("CSRSS: %lx (%s) is invalid ApiTableIndex for %Z or is an "
                     "invalid API to call from the server.\n",
-                    ServerDll->ValidTable[ApiId],
+                    ApiId,
                     ((ServerDll->NameTable) && (ServerDll->NameTable[ApiId])) ?
-                    ServerDll->NameTable[ApiId] : "*** UNKNOWN ***", &ServerDll->Name);
+                    ServerDll->NameTable[ApiId] : "*** UNKNOWN ***",
+                    &ServerDll->Name);
             // DbgBreakPoint();
             ReplyMsg->Status = STATUS_ILLEGAL_FUNCTION;
             return STATUS_ILLEGAL_FUNCTION;
@@ -134,7 +136,7 @@ CsrApiHandleConnectionRequest(IN PCSR_API_MESSAGE ApiMessage)
     PCSR_THREAD CsrThread = NULL;
     PCSR_PROCESS CsrProcess = NULL;
     NTSTATUS Status = STATUS_SUCCESS;
-    PCSR_CONNECTION_INFO ConnectInfo = &ApiMessage->ConnectionInfo;
+    PCSR_API_CONNECTINFO ConnectInfo = &ApiMessage->ConnectionInfo;
     BOOLEAN AllowConnection = FALSE;
     REMOTE_PORT_VIEW RemotePortView;
     HANDLE ServerPort;
@@ -180,7 +182,12 @@ CsrApiHandleConnectionRequest(IN PCSR_API_MESSAGE ApiMessage)
                 Status = CsrSrvAttachSharedSection(CsrProcess, ConnectInfo);
 
                 /* Check how this went */
-                if (NT_SUCCESS(Status)) AllowConnection = TRUE;
+                if (NT_SUCCESS(Status))
+                {
+                    /* Allow the connection, and return debugging flag */
+                    ConnectInfo->DebugFlags = CsrDebug;
+                    AllowConnection = TRUE;
+                }
             }
 
             /* Dereference the project */
@@ -197,7 +204,7 @@ CsrApiHandleConnectionRequest(IN PCSR_API_MESSAGE ApiMessage)
     RemotePortView.ViewBase = NULL;
 
     /* Save the Process ID */
-    ConnectInfo->ProcessId = NtCurrentTeb()->ClientId.UniqueProcess;
+    ConnectInfo->ServerProcessId = NtCurrentTeb()->ClientId.UniqueProcess;
 
     /* Accept the Connection */
     Status = NtAcceptConnectPort(&ServerPort,
@@ -269,7 +276,7 @@ CsrpCheckRequestThreads(VOID)
     NTSTATUS Status;
 
     /* Decrease the count, and see if we're out */
-    if (_InterlockedDecrement(&CsrpStaticThreadCount) == 0)
+    if (InterlockedDecrementUL(&CsrpStaticThreadCount) == 0)
     {
         /* Check if we've still got space for a Dynamic Thread */
         if (CsrpDynamicThreadTotal < CsrMaxApiRequestThreads)
@@ -289,8 +296,8 @@ CsrpCheckRequestThreads(VOID)
             if (NT_SUCCESS(Status))
             {
                 /* Increase the thread counts */
-                _InterlockedIncrement(&CsrpStaticThreadCount);
-                _InterlockedIncrement(&CsrpDynamicThreadTotal);
+                InterlockedIncrementUL(&CsrpStaticThreadCount);
+                InterlockedIncrementUL(&CsrpDynamicThreadTotal);
 
                 /* Add a new server thread */
                 if (CsrAddStaticServerThread(hThread,
@@ -303,8 +310,8 @@ CsrpCheckRequestThreads(VOID)
                 else
                 {
                     /* Failed to create a new static thread */
-                    _InterlockedDecrement(&CsrpStaticThreadCount);
-                    _InterlockedDecrement(&CsrpDynamicThreadTotal);
+                    InterlockedDecrementUL(&CsrpStaticThreadCount);
+                    InterlockedDecrementUL(&CsrpDynamicThreadTotal);
 
                     /* Terminate it */
                     DPRINT1("Failing\n");
@@ -383,8 +390,8 @@ CsrApiRequestThread(IN PVOID Parameter)
         ASSERT(NT_SUCCESS(Status));
 
         /* Increase the Thread Counts */
-        _InterlockedIncrement(&CsrpStaticThreadCount);
-        _InterlockedIncrement(&CsrpDynamicThreadTotal);
+        InterlockedIncrementUL(&CsrpStaticThreadCount);
+        InterlockedIncrementUL(&CsrpDynamicThreadTotal);
     }
 
     /* Now start the loop */
@@ -513,7 +520,7 @@ CsrApiRequestThread(IN PVOID Parameter)
                 }
 
                 /* Increase the thread count */
-                _InterlockedIncrement(&CsrpStaticThreadCount);
+                InterlockedIncrementUL(&CsrpStaticThreadCount);
 
                 /* If the response was 0xFFFFFFFF, we'll ignore it */
                 if (HardErrorMsg->Response == 0xFFFFFFFF)
@@ -595,7 +602,7 @@ CsrApiRequestThread(IN PVOID Parameter)
                     ServerDll->DispatchTable[ApiId](&ReceiveMsg, &ReplyCode);
 
                     /* Increase the static thread count */
-                    _InterlockedIncrement(&CsrpStaticThreadCount);
+                    InterlockedIncrementUL(&CsrpStaticThreadCount);
                 }
                 _SEH2_EXCEPT(CsrUnhandledExceptionFilter(_SEH2_GetExceptionInformation()))
                 {
@@ -706,7 +713,7 @@ CsrApiRequestThread(IN PVOID Parameter)
                 }
 
                 /* Increase the thread count */
-                _InterlockedIncrement(&CsrpStaticThreadCount);
+                InterlockedIncrementUL(&CsrpStaticThreadCount);
 
                 /* If the response was 0xFFFFFFFF, we'll ignore it */
                 if (HardErrorMsg->Response == 0xFFFFFFFF)
@@ -818,7 +825,7 @@ CsrApiRequestThread(IN PVOID Parameter)
             ReplyMsg->Status = ServerDll->DispatchTable[ApiId](&ReceiveMsg, &ReplyCode);
 
             /* Increase the static thread count */
-            _InterlockedIncrement(&CsrpStaticThreadCount);
+            InterlockedIncrementUL(&CsrpStaticThreadCount);
 
             Teb->CsrClientThread = CurrentThread;
 
@@ -913,7 +920,7 @@ CsrApiPortInitialize(VOID)
     {
         DPRINT1("CSRSS: Creating %wZ port and associated threads\n", &CsrApiPortName);
         DPRINT1("CSRSS: sizeof( CONNECTINFO ) == %ld  sizeof( API_MSG ) == %ld\n",
-                sizeof(CSR_CONNECTION_INFO), sizeof(CSR_API_MESSAGE));
+                sizeof(CSR_API_CONNECTINFO), sizeof(CSR_API_MESSAGE));
     }
 
     /* FIXME: Create a Security Descriptor */
@@ -928,7 +935,7 @@ CsrApiPortInitialize(VOID)
     /* Create the Port Object */
     Status = NtCreatePort(&CsrApiPort,
                           &ObjectAttributes,
-                          sizeof(CSR_CONNECTION_INFO),
+                          sizeof(CSR_API_CONNECTINFO),
                           sizeof(CSR_API_MESSAGE),
                           16 * PAGE_SIZE);
     if (NT_SUCCESS(Status))
@@ -1009,7 +1016,6 @@ PCSR_THREAD
 NTAPI
 CsrConnectToUser(VOID)
 {
-#if 0 // FIXME: This code is OK, however it is ClientThreadSetup which sucks.
     NTSTATUS Status;
     ANSI_STRING DllName;
     UNICODE_STRING TempName;
@@ -1066,21 +1072,6 @@ CsrConnectToUser(VOID)
 
     /* Return it */
     return CsrThread;
-
-#else
-
-    PTEB Teb = NtCurrentTeb();
-    PCSR_THREAD CsrThread;
-
-    /* Save pointer to this thread in TEB */
-    CsrAcquireProcessLock();
-    CsrThread = CsrLocateThreadInProcess(NULL, &Teb->ClientId);
-    CsrReleaseProcessLock();
-    if (CsrThread) Teb->CsrClientThread = CsrThread;
-
-    /* Return it */
-    return CsrThread;
-#endif
 }
 
 /*++

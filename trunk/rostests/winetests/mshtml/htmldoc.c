@@ -4176,7 +4176,7 @@ static HRESULT WINAPI WebBrowser_get_Name(IWebBrowser2 *iface, BSTR *Name)
     return E_NOTIMPL;
 }
 
-static HRESULT WINAPI WebBrowser_get_HWND(IWebBrowser2 *iface, LONG *pHWND)
+static HRESULT WINAPI WebBrowser_get_HWND(IWebBrowser2 *iface, SHANDLE_PTR *pHWND)
 {
     ok(0, "unexpected call\n");
     return E_NOTIMPL;
@@ -7574,17 +7574,21 @@ START_TEST(htmldoc)
     test_HTMLDocument(TRUE, TRUE);
     test_HTMLDocument_StreamLoad();
     test_HTMLDocument_StreamInitNew();
-#if ROSTESTS_113_IS_FIXED
-    test_editing_mode(FALSE);
-#endif
-    win_skip("Skipping test_editing_mode(FALSE). ROSTESTS-113.\n");
+    if (winetest_interactive)
+        test_editing_mode(FALSE);
+    else
+        skip("Skipping test_editing_mode(FALSE). ROSTESTS-113.\n");
     test_editing_mode(TRUE);
-#if ROSTESTS_113_IS_FIXED
-    test_HTMLDocument_http(FALSE);
-    test_HTMLDocument_http(TRUE);
-#endif
-    win_skip("Skipping test_HTMLDocument_http(FALSE). ROSTESTS-113.\n");
-    win_skip("Skipping test_HTMLDocument_http(TRUE). ROSTESTS-113.\n");
+    if (winetest_interactive)
+    {
+        test_HTMLDocument_http(FALSE);
+        test_HTMLDocument_http(TRUE);
+    }
+    else
+    {
+        skip("Skipping test_HTMLDocument_http(FALSE). ROSTESTS-113.\n");
+        skip("Skipping test_HTMLDocument_http(TRUE). ROSTESTS-113.\n");
+    }
 
     test_UIActivate(FALSE, FALSE, FALSE);
     test_UIActivate(FALSE, TRUE, FALSE);

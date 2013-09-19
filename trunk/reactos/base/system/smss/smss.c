@@ -67,7 +67,7 @@ SmpExecuteImage(IN PUNICODE_STRING FileName,
     if (!NT_SUCCESS(Status))
     {
         /* This is a pretty bad failure. ASSERT on checked builds and exit */
-        ASSERTMSG(NT_SUCCESS(Status), "RtlCreateProcessParameters");
+        ASSERTMSG("RtlCreateProcessParameters", NT_SUCCESS(Status));
         DPRINT1("SMSS: RtlCreateProcessParameters failed for %wZ - Status == %lx\n",
                 FileName, Status);
         return Status;
@@ -420,7 +420,7 @@ SmpUnhandledExceptionFilter(IN PEXCEPTION_POINTERS ExceptionInfo)
     UNICODE_STRING DestinationString;
 
     /* Print and breakpoint into the debugger */
-    DbgPrint("SMSS: Unhandled exception - Status == %x  IP == %x\n",
+    DbgPrint("SMSS: Unhandled exception - Status == %x  IP == %p\n",
              ExceptionInfo->ExceptionRecord->ExceptionCode,
              ExceptionInfo->ExceptionRecord->ExceptionAddress);
     DbgPrint("      Memory Address: %x  Read/Write: %x\n",
