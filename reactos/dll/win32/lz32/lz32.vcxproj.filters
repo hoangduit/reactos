@@ -18,11 +18,11 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lz32.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="lz32.spec" />
   </ItemGroup>
 </Project>
