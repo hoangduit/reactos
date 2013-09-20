@@ -111,8 +111,13 @@
     <ClCompile Include="privileges.c" />
     <ClCompile Include="registry.c" />
     <ClCompile Include="security.c" />
+    <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="lang\en-US.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
     <ResourceCompile Include="lsasrv.rc">
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
@@ -183,6 +188,10 @@ cd ..\..</Command>
     <ProjectReference Include="..\samsrv\samsrv.vcxproj">
       <Project>{c76b64e1-5cd0-4474-9c1f-5788c2c02752}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lsasrv.h" />
+    <ClInclude Include="resources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,9 +18,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ws2help.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="apc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,5 +33,8 @@
     <ClCompile Include="notify.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ws2help.spec" />
   </ItemGroup>
 </Project>

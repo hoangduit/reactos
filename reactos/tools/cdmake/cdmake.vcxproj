@@ -81,11 +81,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cdmake.c" />
+    <ClCompile Include="dirhash.c" />
     <ClCompile Include="llmosrt.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
     <None Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dirhash.h" />
+    <ClInclude Include="dirsep.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,9 +21,6 @@
     <None Include="wpp_ros.diff" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lex.yy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ppy.tab.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,6 +28,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wpp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ppl.yy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
