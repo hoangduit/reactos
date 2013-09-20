@@ -1505,7 +1505,22 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
             continue;
         }
 
-        /* Open the actual file */
+		{
+			//LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			//MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+			RtlInitUnicodeString(&MyString, L"\nSmpInitializeKnownDllsInternal: ");
+
+			ZwDisplayString(&MyString);
+
+			ZwDisplayString(&RegEntry->Name);
+
+			//NtDelayExecution(TRUE, &MyDelay);
+		}
+
+		/* Open the actual file */
         InitializeObjectAttributes(&ObjectAttributes,
                                    &RegEntry->Value,
                                    OBJ_CASE_INSENSITIVE,
@@ -1591,13 +1606,23 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
 
         /* Go to the next entry */
         NextEntry = NextEntry->Flink;
-    }
+	}
 
 Quickie:
-    /* Close both handles and free the NT path buffer */
-    if (DirHandle)
-    {
-        Status1 = NtClose(DirHandle);
+
+	{
+		// Delay a little while so that we may see what is on thes screen:
+		LARGE_INTEGER MyDelay;
+
+		MyDelay.QuadPart = -25LL * 1000000LL * 10LL; // 25 seconds relative to now
+
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+	/* Close both handles and free the NT path buffer */
+	if (DirHandle)
+	{
+		Status1 = NtClose(DirHandle);
         ASSERT(NT_SUCCESS(Status1));
     }
     if (DirFileHandle)
@@ -1618,9 +1643,14 @@ SmpInitializeKnownDlls(VOID)
     UNICODE_STRING DestinationString;
     PLIST_ENTRY Head, NextEntry;
 
+	
+
+
+
     /* Call the internal function */
     RtlInitUnicodeString(&DestinationString, L"\\KnownDlls");
     Status = SmpInitializeKnownDllsInternal(&DestinationString, &SmpKnownDllPath);
+
 
     /* Wipe out the list regardless of success */
     Head = &SmpKnownDllsList;
