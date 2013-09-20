@@ -325,9 +325,24 @@ WinLdrLoadBootDrivers(PLOADER_PARAMETER_BLOCK LoaderBlock,
 
         // If loading failed - cry loudly
         //FIXME: Maybe remove it from the list and try to continue?
-        if (!Status)
-        {
-            UiMessageBox("Can't load boot driver!");
+		if (!Status)
+		{
+			UiMessageBox("Can't load boot driver!");
+			{
+
+				char text[1024];
+				unsigned int i = 0;
+
+				while (i < sizeof(text))
+				{
+					text[i] = BootDriver->FilePath.Buffer[i];
+					if (text[i++] == 0)
+						break;
+				}
+
+				UiMessageBox(text);
+			}
+	
             return FALSE;
         }
 
