@@ -116,13 +116,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{F120
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reactos", "reactos", "{A25EA71E-A803-4F51-BC72-2EA208A687BE}"
 	ProjectSection(SolutionItems) = preProject
+		include\reactos\buildno.h = include\reactos\buildno.h
 		include\reactos\buildno.h.cmake = include\reactos\buildno.h.cmake
 		include\reactos\debug.h = include\reactos\debug.h
 		include\reactos\exeformat.h = include\reactos\exeformat.h
 		include\reactos\kddll.h = include\reactos\kddll.h
 		include\reactos\kdros.h = include\reactos\kdros.h
 		include\reactos\msvctarget.h = include\reactos\msvctarget.h
-		include\reactos\buildno.h = include\reactos\buildno.h
 		include\reactos\reactx.h = include\reactos\reactx.h
 		include\reactos\rosioctl.h = include\reactos\rosioctl.h
 		include\reactos\rossym.h = include\reactos\rossym.h
@@ -1342,6 +1342,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shdocvw", "dll\win32\shdocvw\shdocvw.vcxproj", "{859A8376-5104-47E8-88FF-CBA8F9269F1D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lz32", "dll\win32\lz32\lz32.vcxproj", "{F7F26447-C004-42B9-B4DA-20C2FB05D3C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sacdrv", "drivers\sac\sacdrv.vcxproj", "{F48813C7-3B05-4658-8E25-7630202AA688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -3177,6 +3179,14 @@ Global
 		{F7F26447-C004-42B9-B4DA-20C2FB05D3C1}.Release|x86_32.ActiveCfg = Release|Win32
 		{F7F26447-C004-42B9-B4DA-20C2FB05D3C1}.Release|x86_32.Build.0 = Release|Win32
 		{F7F26447-C004-42B9-B4DA-20C2FB05D3C1}.Release|x86_64.ActiveCfg = Release|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Debug|ARM.ActiveCfg = Debug|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Debug|x86_32.Build.0 = Debug|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Debug|x86_64.ActiveCfg = Debug|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Release|ARM.ActiveCfg = Release|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Release|x86_32.ActiveCfg = Release|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Release|x86_32.Build.0 = Release|Win32
+		{F48813C7-3B05-4658-8E25-7630202AA688}.Release|x86_64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -3321,6 +3331,7 @@ Global
 		{25513668-2AB3-408C-8534-15EF0242718D} = {6018911D-D644-4AD6-BDA4-A5DF496A1989}
 		{9A6B3424-D8C5-4868-B5DE-6321205CC7F7} = {6018911D-D644-4AD6-BDA4-A5DF496A1989}
 		{18D628E1-F4F4-4033-BA45-7B29329E4000} = {6018911D-D644-4AD6-BDA4-A5DF496A1989}
+		{F48813C7-3B05-4658-8E25-7630202AA688} = {6018911D-D644-4AD6-BDA4-A5DF496A1989}
 		{F13D9725-1E2C-471D-817D-6D5D48D6D5D8} = {8992F847-E537-408D-8E9F-E25487666557}
 		{93DE4D34-26CC-4386-945D-14D9CC191D94} = {8992F847-E537-408D-8E9F-E25487666557}
 		{A81FBC9A-15DB-4735-9DA6-FEDCDB5BB70E} = {8992F847-E537-408D-8E9F-E25487666557}

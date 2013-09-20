@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="driver">
+      <UniqueIdentifier>{1341c081-c048-4cf4-bf5a-a4eab74a6a0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="driver\chanmgr.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\channel.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\cmdchan.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\concmd.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\conmgr.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\data.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\dispatch.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\init.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\memory.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\rawchan.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\util.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="driver\vtutf8chan.c">
+      <Filter>driver</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="driver\CMakeLists.txt">
+      <Filter>driver</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="driver\sacdrv.h">
+      <Filter>driver</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="driver\sacdrv.rc">
+      <Filter>driver</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
