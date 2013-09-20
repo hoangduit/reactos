@@ -21,9 +21,20 @@
     <ClCompile Include="llmosrt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dirhash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
     <None Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dirhash.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dirsep.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

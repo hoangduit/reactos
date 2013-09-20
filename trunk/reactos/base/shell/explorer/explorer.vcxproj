@@ -483,12 +483,6 @@
     <ProjectReference Include="..\..\..\dll\win32\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\dll\win32\oleaut32\oleaut32.vcxproj">
-      <Project>{578bf447-74b7-42bc-a889-e8f8157eb28c}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\dll\win32\shell32\shell32.vcxproj">
-      <Project>{96bbc7de-9752-404c-b6cd-37be6e8b0565}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\dll\win32\shlwapi\shlwapi.vcxproj">
       <Project>{7626c8b3-a1d6-4f8b-a435-9c84aeded246}</Project>
     </ProjectReference>
@@ -500,6 +494,12 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
+      <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
+      <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\comsupp\comsupp.vcxproj">
       <Project>{d595ab34-7e09-420b-98ae-b87212ba51c1}</Project>

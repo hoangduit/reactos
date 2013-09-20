@@ -56,8 +56,8 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <None Include="CMakeLists.txt" />
     <CustomBuild Include="kernel32.spec">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\..\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
     </CustomBuild>
@@ -263,6 +263,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="client\actctx.c" />
     <ClCompile Include="client\appcache.c" />
     <ClCompile Include="client\atom.c" />
     <ClCompile Include="client\compname.c" />
@@ -288,6 +289,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="client\file\delete.c" />
     <ClCompile Include="client\file\deviceio.c" />
     <ClCompile Include="client\file\dir.c" />
+    <ClCompile Include="client\file\disk.c" />
     <ClCompile Include="client\file\fileinfo.c" />
     <ClCompile Include="client\file\filemap.c" />
     <ClCompile Include="client\file\filename.c" />
@@ -297,6 +299,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
     <ClCompile Include="client\file\lfile.c" />
     <ClCompile Include="client\file\lock.c" />
     <ClCompile Include="client\file\mailslot.c" />
+    <ClCompile Include="client\file\mntpoint.c" />
     <ClCompile Include="client\file\move.c" />
     <ClCompile Include="client\file\npipe.c" />
     <ClCompile Include="client\file\rw.c" />
@@ -329,7 +332,10 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="wine\actctx.c" />
+    <ClCompile Include="wine\actctx.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="wine\comm.c" />
     <ClCompile Include="wine\lzexpand.c" />
     <ClCompile Include="wine\muldiv.c" />
@@ -465,7 +471,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;inline=__inline;__STDC__=1;LANGUAGE_EN_US;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KERNEL32_;WIN32;_DEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;inline=__inline;__STDC__=1;LANGUAGE_EN_US;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\psdk;..\..\..\include\crt;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;..\..\..\include\reactos\subsys;..\..\..\include\reactos\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -521,7 +527,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KERNEL32_;WIN32;NDEBUG;_WINDOWS;_USRDLL;KERNEL32_EXPORTS;_WIN32_WINNT=0x502;_KERNEL32_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;..\..\..\include;..\..\..\include\psdk;..\..\..\include\crt;..\..\..\include\crt\msc;..\..\..\include\ndk;..\..\..\include\ddk;..\..\..\include\reactos;..\..\..\include\reactos\subsys;..\..\..\include\reactos\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>

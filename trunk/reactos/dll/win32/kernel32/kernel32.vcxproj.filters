@@ -748,6 +748,15 @@
     <ClCompile Include="winnls\string\sortkey.c">
       <Filter>winnls\string</Filter>
     </ClCompile>
+    <ClCompile Include="client\actctx.c">
+      <Filter>client</Filter>
+    </ClCompile>
+    <ClCompile Include="client\file\disk.c">
+      <Filter>client\file</Filter>
+    </ClCompile>
+    <ClCompile Include="client\file\mntpoint.c">
+      <Filter>client\file</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="client\i386\thread.S">

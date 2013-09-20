@@ -96,7 +96,7 @@
     <None Include="wpp_ros.diff" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lex.yy.c" />
+    <ClCompile Include="ppl.yy.c" />
     <ClCompile Include="ppy.tab.c" />
     <ClCompile Include="preproc.c" />
     <ClCompile Include="wpp.c" />
