@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bitmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bmpdecode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bmpencode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clipper.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clsfactory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="colorcontext.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="colortransform.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="converter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fliprotate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gifformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="icnsformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="icoformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgfactory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="info.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jpegformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metadatahandler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="palette.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pngformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="propertybag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="regsvr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scaler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tgaformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tiffformat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ungif.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="windowscodecs.spec" />
+    <None Include="windowscodecs_wincodec.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="typeof.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ungif.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wincodecs_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="windowscodecs_wincodec.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>
