@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9A64D26C-3CAF-4712-9003-9EA4FC1A9191}</ProjectGuid>
+    <RootNamespace>cards</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
+    <IntDir>build\x86_32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\lib\recyclebin;$(SolutionDir)\lib\atl;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;.\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;_SHELL32_;_WINE;CMAKE_INTDIR="Debug";shell32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <NoEntryPoint>true</NoEntryPoint>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\lib\recyclebin;$(SolutionDir)\lib\atl;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;.\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_X86_;_WIN32;_WIN32_WINNT=0x600;inline=__inline;_SHELL32_;_WINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <NoEntryPoint>true</NoEntryPoint>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cards.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cards.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="cards.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cards.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bavarian\Eichel10.bmp" />
+    <Image Include="res\bavarian\Eichel2.bmp" />
+    <Image Include="res\bavarian\Eichel3.bmp" />
+    <Image Include="res\bavarian\Eichel4.bmp" />
+    <Image Include="res\bavarian\Eichel5.bmp" />
+    <Image Include="res\bavarian\Eichel6.bmp" />
+    <Image Include="res\bavarian\Eichel7.bmp" />
+    <Image Include="res\bavarian\Eichel8.bmp" />
+    <Image Include="res\bavarian\Eichel9.bmp" />
+    <Image Include="res\bavarian\EichelAs.bmp" />
+    <Image Include="res\bavarian\EichelKoenig.bmp" />
+    <Image Include="res\bavarian\EichelOber.bmp" />
+    <Image Include="res\bavarian\EichelUnter.bmp" />
+    <Image Include="res\bavarian\FreeCard.bmp" />
+    <Image Include="res\bavarian\Gras10.bmp" />
+    <Image Include="res\bavarian\Gras2.bmp" />
+    <Image Include="res\bavarian\Gras3.bmp" />
+    <Image Include="res\bavarian\Gras4.bmp" />
+    <Image Include="res\bavarian\Gras5.bmp" />
+    <Image Include="res\bavarian\Gras6.bmp" />
+    <Image Include="res\bavarian\Gras7.bmp" />
+    <Image Include="res\bavarian\Gras8.bmp" />
+    <Image Include="res\bavarian\Gras9.bmp" />
+    <Image Include="res\bavarian\GrasAs.bmp" />
+    <Image Include="res\bavarian\GrasKoenig.bmp" />
+    <Image Include="res\bavarian\GrasOber.bmp" />
+    <Image Include="res\bavarian\GrasUnter.bmp" />
+    <Image Include="res\bavarian\Herz10.bmp" />
+    <Image Include="res\bavarian\Herz2.bmp" />
+    <Image Include="res\bavarian\Herz3.bmp" />
+    <Image Include="res\bavarian\Herz4.bmp" />
+    <Image Include="res\bavarian\Herz5.bmp" />
+    <Image Include="res\bavarian\Herz6.bmp" />
+    <Image Include="res\bavarian\Herz7.bmp" />
+    <Image Include="res\bavarian\Herz8.bmp" />
+    <Image Include="res\bavarian\Herz9.bmp" />
+    <Image Include="res\bavarian\HerzAs.bmp" />
+    <Image Include="res\bavarian\HerzKoenig.bmp" />
+    <Image Include="res\bavarian\HerzOber.bmp" />
+    <Image Include="res\bavarian\HerzUnter.bmp" />
+    <Image Include="res\bavarian\Joker.bmp" />
+    <Image Include="res\bavarian\OSign.bmp" />
+    <Image Include="res\bavarian\Ruecken1.bmp" />
+    <Image Include="res\bavarian\Ruecken10.bmp" />
+    <Image Include="res\bavarian\Ruecken11.bmp" />
+    <Image Include="res\bavarian\Ruecken12.bmp" />
+    <Image Include="res\bavarian\Ruecken2.bmp" />
+    <Image Include="res\bavarian\Ruecken3.bmp" />
+    <Image Include="res\bavarian\Ruecken4.bmp" />
+    <Image Include="res\bavarian\Ruecken5.bmp" />
+    <Image Include="res\bavarian\Ruecken6.bmp" />
+    <Image Include="res\bavarian\Ruecken7.bmp" />
+    <Image Include="res\bavarian\Ruecken8.bmp" />
+    <Image Include="res\bavarian\Ruecken9.bmp" />
+    <Image Include="res\bavarian\Schellen10.bmp" />
+    <Image Include="res\bavarian\Schellen2.bmp" />
+    <Image Include="res\bavarian\Schellen3.bmp" />
+    <Image Include="res\bavarian\Schellen4.bmp" />
+    <Image Include="res\bavarian\Schellen5.bmp" />
+    <Image Include="res\bavarian\Schellen6.bmp" />
+    <Image Include="res\bavarian\Schellen7.bmp" />
+    <Image Include="res\bavarian\Schellen8.bmp" />
+    <Image Include="res\bavarian\Schellen9.bmp" />
+    <Image Include="res\bavarian\SchellenAs.bmp" />
+    <Image Include="res\bavarian\SchellenKoenig.bmp" />
+    <Image Include="res\bavarian\SchellenOber.bmp" />
+    <Image Include="res\bavarian\SchellenUnter.bmp" />
+    <Image Include="res\bavarian\XSign.bmp" />
+    <Image Include="res\default\Background_1.bmp" />
+    <Image Include="res\default\Background_10.bmp" />
+    <Image Include="res\default\Background_11.bmp" />
+    <Image Include="res\default\Background_12.bmp" />
+    <Image Include="res\default\Background_2.bmp" />
+    <Image Include="res\default\Background_3.bmp" />
+    <Image Include="res\default\Background_4.bmp" />
+    <Image Include="res\default\Background_5.bmp" />
+    <Image Include="res\default\Background_6.bmp" />
+    <Image Include="res\default\Background_7.bmp" />
+    <Image Include="res\default\Background_8.bmp" />
+    <Image Include="res\default\Background_9.bmp" />
+    <Image Include="res\default\Clubs_Ace.bmp" />
+    <Image Include="res\default\Clubs_Eight.bmp" />
+    <Image Include="res\default\Clubs_Five.bmp" />
+    <Image Include="res\default\Clubs_Four.bmp" />
+    <Image Include="res\default\Clubs_Jack.bmp" />
+    <Image Include="res\default\Clubs_King.bmp" />
+    <Image Include="res\default\Clubs_Nine.bmp" />
+    <Image Include="res\default\Clubs_Queen.bmp" />
+    <Image Include="res\default\Clubs_Seven.bmp" />
+    <Image Include="res\default\Clubs_Six.bmp" />
+    <Image Include="res\default\Clubs_Ten.bmp" />
+    <Image Include="res\default\Clubs_Three.bmp" />
+    <Image Include="res\default\Clubs_Two.bmp" />
+    <Image Include="res\default\Diamonds_Ace.bmp" />
+    <Image Include="res\default\Diamonds_Eight.bmp" />
+    <Image Include="res\default\Diamonds_Five.bmp" />
+    <Image Include="res\default\Diamonds_Four.bmp" />
+    <Image Include="res\default\Diamonds_Jack.bmp" />
+    <Image Include="res\default\Diamonds_King.bmp" />
+    <Image Include="res\default\Diamonds_Nine.bmp" />
+    <Image Include="res\default\Diamonds_Queen.bmp" />
+    <Image Include="res\default\Diamonds_Seven.bmp" />
+    <Image Include="res\default\Diamonds_Six.bmp" />
+    <Image Include="res\default\Diamonds_Ten.bmp" />
+    <Image Include="res\default\Diamonds_Three.bmp" />
+    <Image Include="res\default\Diamonds_Two.bmp" />
+    <Image Include="res\default\FreeCard.bmp" />
+    <Image Include="res\default\Hearts_Ace.bmp" />
+    <Image Include="res\default\Hearts_Eight.bmp" />
+    <Image Include="res\default\Hearts_Five.bmp" />
+    <Image Include="res\default\Hearts_Four.bmp" />
+    <Image Include="res\default\Hearts_Jack.bmp" />
+    <Image Include="res\default\Hearts_King.bmp" />
+    <Image Include="res\default\Hearts_Nine.bmp" />
+    <Image Include="res\default\Hearts_Queen.bmp" />
+    <Image Include="res\default\Hearts_Seven.bmp" />
+    <Image Include="res\default\Hearts_Six.bmp" />
+    <Image Include="res\default\Hearts_Ten.bmp" />
+    <Image Include="res\default\Hearts_Three.bmp" />
+    <Image Include="res\default\Hearts_Two.bmp" />
+    <Image Include="res\default\Joker.bmp" />
+    <Image Include="res\default\OSign.bmp" />
+    <Image Include="res\default\Spades_Ace.bmp" />
+    <Image Include="res\default\Spades_Eight.bmp" />
+    <Image Include="res\default\Spades_Five.bmp" />
+    <Image Include="res\default\Spades_Four.bmp" />
+    <Image Include="res\default\Spades_Jack.bmp" />
+    <Image Include="res\default\Spades_King.bmp" />
+    <Image Include="res\default\Spades_Nine.bmp" />
+    <Image Include="res\default\Spades_Queen.bmp" />
+    <Image Include="res\default\Spades_Seven.bmp" />
+    <Image Include="res\default\Spades_Six.bmp" />
+    <Image Include="res\default\Spades_Ten.bmp" />
+    <Image Include="res\default\Spades_Three.bmp" />
+    <Image Include="res\default\Spades_Two.bmp" />
+    <Image Include="res\default\XSign.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
