@@ -82,11 +82,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="msvc.S" />
     <None Include="oleaut32.rgs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="oleaut32.spec" />
     <None Include="oleaut32_oaidl.rgs">
       <Filter>Resource Files</Filter>
     </None>
@@ -181,11 +179,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="oleaut32_oaidl.idl">
+    <CustomBuild Include="msvc.S" />
+    <CustomBuild Include="oleaut32_oaidl.idl">
       <Filter>Source Files</Filter>
-    </Midl>
-    <Midl Include="oleaut32_ocidl.idl">
+    </CustomBuild>
+    <CustomBuild Include="oleaut32_ocidl.idl">
       <Filter>Source Files</Filter>
-    </Midl>
+    </CustomBuild>
+    <CustomBuild Include="oleaut32.spec" />
   </ItemGroup>
 </Project>
