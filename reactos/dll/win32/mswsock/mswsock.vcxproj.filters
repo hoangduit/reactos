@@ -31,11 +31,11 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="mswsock.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="precomp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="mswsock.spec" />
   </ItemGroup>
 </Project>
