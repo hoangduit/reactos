@@ -544,9 +544,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
     </CustomBuild>
     <CustomBuild Include="activaut.idl">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"
-
-"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).h</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
