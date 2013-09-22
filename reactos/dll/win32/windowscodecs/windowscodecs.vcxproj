@@ -51,11 +51,24 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos/libs/libjpeg;$(SolutionDir)\include\reactos/libs/zlib;$(SolutionDir)\include\reactos/libs/libpng;$(SolutionDir)\include\reactos/libs/libtiff</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__REACTOS__;_X86_;inline=__inline;add_definitions(;__WINESRC__;ENTRY_PREFIX=WIC_;PROXY_DELEGATION;WINE_REGISTER_DLL;_WIN32_WINNT=0x600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>typeof.h</ForcedIncludeFiles>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\proxy.dlldata.c"
+"$(OutDir)\windowscodecs_stubs.c"
+"$(OutDir)\windowscodecs_wincodec_p.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\proxy.dlldata.obj"
+"$(OutDir)\windowscodecs_stubs.obj"
+"$(OutDir)\windowscodecs_wincodec_p.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,6 +78,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos/libs/libjpeg;$(SolutionDir)\include\reactos/libs/zlib;$(SolutionDir)\include\reactos/libs/libpng;$(SolutionDir)\include\reactos/libs/libtiff</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__REACTOS__;_X86_;inline=__inline;add_definitions(;__WINESRC__;ENTRY_PREFIX=WIC_;PROXY_DELEGATION;WINE_REGISTER_DLL;_WIN32_WINNT=0x600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>typeof.h</ForcedIncludeFiles>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>"$(OutDir)\proxy.dlldata.c"
+"$(OutDir)\windowscodecs_stubs.c"
+"$(OutDir)\windowscodecs_wincodec_p.c" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -72,6 +92,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>"$(OutDir)\proxy.dlldata.obj"
+"$(OutDir)\windowscodecs_stubs.obj"
+"$(OutDir)\windowscodecs_wincodec_p.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -105,7 +130,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="windowscodecs.spec" />
+    <CustomBuild Include="windowscodecs.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
     <None Include="windowscodecs_wincodec.rgs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,10 +145,76 @@
     <ClInclude Include="wincodecs_private.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="version.rc" />
+    <ResourceCompile Include="version.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="windowscodecs_wincodec.idl" />
+    <CustomBuild Include="windowscodecs_wincodec.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).h</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\gdi32\gdi32.vcxproj">
+      <Project>{031ea1c5-fbbf-47c8-a00d-c78cf7a763ac}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
+      <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
+      <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\rpcrt4\rpcrt4.vcxproj">
+      <Project>{e67e3ad8-6887-4a05-ad49-e19754b34ade}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
+      <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
+      <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
+      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ole32\ole32.vcxproj">
+      <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -99,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="windowscodecs.spec" />
     <None Include="windowscodecs_wincodec.rgs">
       <Filter>Resource Files</Filter>
     </None>
@@ -121,8 +120,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="windowscodecs_wincodec.idl">
+    <CustomBuild Include="windowscodecs_wincodec.idl">
       <Filter>Source Files</Filter>
-    </Midl>
+    </CustomBuild>
+    <CustomBuild Include="windowscodecs.spec" />
   </ItemGroup>
 </Project>
