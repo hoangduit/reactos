@@ -414,6 +414,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     <ProjectReference Include="..\..\drivers\network\ndis\ndis.vcxproj">
       <Project>{f8c25d34-2d3d-4c58-b47d-7a8998ab3c0f}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\drivers\sac\sacdrv.vcxproj">
+      <Project>{f48813c7-3b05-4658-8e25-7630202aa688}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\drivers\storage\class\cdrom\cdrom.vcxproj">
       <Project>{a79a2209-d848-4312-8805-c7cac88837a2}</Project>
     </ProjectReference>
