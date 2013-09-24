@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include <wine/test.h>
+#include <apitest.h>
 #include <wingdi.h>
 
 #define COUNT 26

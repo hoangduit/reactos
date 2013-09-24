@@ -3440,7 +3440,7 @@ StartScan:
                     ((_wcsnicmp(ExtBuffer, L".bat", 4)) &&
                      (_wcsnicmp(ExtBuffer, L".cmd", 4))))
                 {
-                    DPRINT1("Invalid EXE, and not a batch or script file\n");
+                    DPRINT1("'%wZ': Invalid EXE, and not a batch or script file\n", &PathName);
                     SetLastError(ERROR_BAD_EXE_FORMAT);
                     Result = FALSE;
                     goto Quickie;
