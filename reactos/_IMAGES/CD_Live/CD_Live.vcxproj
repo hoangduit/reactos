@@ -87,6 +87,7 @@ copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\oleaut32\$(OutDir)\OLEAUT32.DLL" .
 copy "$(SolutionDir)\dll\win32\olecli32\$(OutDir)\OLECLI32.DLL" .
 copy "$(SolutionDir)\dll\win32\olesvr32\$(OutDir)\OLESVR32.DLL" .
+copy "$(SolutionDir)\dll\win32\olethk32\$(OutDir)\OLETHK32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
@@ -201,6 +202,7 @@ copy "$(SolutionDir)\dll\win32\ole32\$(OutDir)\OLE32.DLL" .
 copy "$(SolutionDir)\dll\win32\oleaut32\$(OutDir)\OLEAUT32.DLL" .
 copy "$(SolutionDir)\dll\win32\olecli32\$(OutDir)\OLECLI32.DLL" .
 copy "$(SolutionDir)\dll\win32\olesvr32\$(OutDir)\OLESVR32.DLL" .
+copy "$(SolutionDir)\dll\win32\olethk32\$(OutDir)\OLETHK32.DLL" .
 copy "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 copy "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 copy "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
@@ -355,6 +357,9 @@ echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\olesvr32\olesvr32.vcxproj">
       <Project>{50d7459b-b51f-49c4-89aa-81d8323167bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\olethk32\olethk32.vcxproj">
+      <Project>{3773efbf-73f9-4386-8c7b-e2feb458eff3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\propsys\propsys.vcxproj">
       <Project>{e69cb5c7-95c6-46bc-b1d5-59685c6f44fd}</Project>
