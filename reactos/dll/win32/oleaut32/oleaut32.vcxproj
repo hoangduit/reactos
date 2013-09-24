@@ -51,25 +51,27 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>inline=__inline;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;__WINESRC__;_OLE32_;COM_NO_WINDOWS_H;ENTRY_PREFIX=OLE32_;PROXY_CLSID=CLSID_PSFactoryBuffer;WINE_REGISTER_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;__WINESRC__;COM_NO_WINDOWS_H;_OLEAUT32_;PROXY_DELEGATION;WINE_REGISTER_DLL;ENTRY_PREFIX=OLEAUTPS_;PROXY_CLSID=CLSID_PSFactoryBuffer;CMAKE_INTDIR="Debug";oleaut32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions> "$(OutDir)\oleaut32_stubs.c"
  "$(OutDir)\proxy.dlldata.c"
  "$(OutDir)\oleaut32_oaidl_p.c"
  "$(OutDir)\oleaut32_ocidl_p.c"
- %(AdditionalOptions)</AdditionalOptions>
+ </AdditionalOptions>
       <AdditionalIncludeDirectories>.\;$(OutDir);$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Windows</SubSystem>
+     <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions> "$(OutDir)\oleaut32_stubs.obj"
  "$(OutDir)\proxy.dlldata.obj"
  "$(OutDir)\oleaut32_oaidl_p.obj"
  "$(OutDir)\oleaut32_ocidl_p.obj"
- %(AdditionalOptions)</AdditionalOptions>
+ </AdditionalOptions>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
