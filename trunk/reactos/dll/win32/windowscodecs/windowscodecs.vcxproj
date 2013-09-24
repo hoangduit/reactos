@@ -52,7 +52,7 @@
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos/libs/libjpeg;$(SolutionDir)\include\reactos/libs/zlib;$(SolutionDir)\include\reactos/libs/libpng;$(SolutionDir)\include\reactos/libs/libtiff</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__REACTOS__;_X86_;inline=__inline;add_definitions(;__WINESRC__;ENTRY_PREFIX=WIC_;PROXY_DELEGATION;WINE_REGISTER_DLL;_WIN32_WINNT=0x600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__WINESRC__;ENTRY_PREFIX=WIC_;PROXY_DELEGATION;WINE_REGISTER_DLL;_WIN32_WINNT=0x600;CMAKE_INTDIR="Debug";windowscodecs_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>typeof.h</ForcedIncludeFiles>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -129,7 +129,18 @@
     <ClCompile Include="ungif.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CMakeLists.txt" />
+    <CustomBuild Include="CMakeLists.txt">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" --dlldata-only -o "$(OutDir)proxy.dlldata.c" windowscodecs_wincodec.idl
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" --dlldata-only -o "$(OutDir)proxy.dlldata.c" windowscodecs_wincodec.idl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling proxy.dlldata.c</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling proxy.dlldata.c</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)proxy.dlldata.c</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)proxy.dlldata.c</Outputs>
+    </CustomBuild>
     <CustomBuild Include="windowscodecs.spec">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
