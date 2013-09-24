@@ -5,12 +5,12 @@
  * PROGRAMMERS:     Timo Kreuzer
  */
 
+#include <apitest.h>
+
 #include <stdio.h>
-#include <wine/test.h>
 #include <wingdi.h>
 #include <winddi.h>
 #include <winuser.h>
-#include <pseh/pseh2.h>
 #include <include/ntgdityp.h>
 #include <include/ntgdihdl.h>
 

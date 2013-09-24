@@ -5,9 +5,9 @@
  * PROGRAMMERS:     Timo Kreuzer
  */
 
-#include <wine/test.h>
+#include <apitest.h>
+
 #include <wingdi.h>
-#include <libs/pseh/pseh2.h>
 
 void Test_AddFontResourceExW()
 {

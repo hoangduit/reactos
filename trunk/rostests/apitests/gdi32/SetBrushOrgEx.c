@@ -5,9 +5,9 @@
  * PROGRAMMERS:     Timo Kreuzer
  */
 
-#include <wine/test.h>
+#include <apitest.h>
+
 #include <wingdi.h>
-#include <pseh/pseh2.h>
 
 void Test_Set(ULONG ulLine, HDC hdc, INT x, INT y, LPPOINT ppt, BOOL bExp, DWORD dwErrExp)
 {

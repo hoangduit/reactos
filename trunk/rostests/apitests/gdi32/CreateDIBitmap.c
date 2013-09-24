@@ -5,10 +5,10 @@
  * PROGRAMMERS:     Timo Kreuzer
  */
 
-#include <wine/test.h>
+#include <apitest.h>
+
 #include <wingdi.h>
 #include <winuser.h>
-#include <pseh/pseh2.h>
 
 #include "init.h"
 
