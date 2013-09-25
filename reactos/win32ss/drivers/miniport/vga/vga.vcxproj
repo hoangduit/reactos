@@ -55,6 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\dxsdk\;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\lib\recyclebin;$(SolutionDir)\lib\atl;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;.\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -70,6 +71,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\dxsdk\;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\lib\recyclebin;$(SolutionDir)\lib\atl;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;.\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

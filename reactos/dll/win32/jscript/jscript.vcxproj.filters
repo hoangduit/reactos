@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{b9e841fe-2cf1-4f06-b384-4fbc8a245133}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="activex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="array.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bool.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="date.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="decode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dispex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="function.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jscript.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jscript_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jsregexp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jsstr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jsutils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="number.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="parser.tab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="regexp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="string.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vbarray.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jscript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jsglobal_dispid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jsstr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jsval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="regexp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="jscript.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Da.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_De.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_En.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Es.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Fr.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_He.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Hu.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_It.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Ja.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Ko.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Lt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Nl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_No.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Pl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Pt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Ro.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Ru.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Si.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\jscript_Uk.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="jscript.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="jscript.spec" />
+    <None Include="jscript_classes.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="parser.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="jscript_classes.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+    <Midl Include="jsglobal.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>
