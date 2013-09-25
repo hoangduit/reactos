@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A3EBA2CE-4D8D-42CD-8A0F-F33A150F8031}</ProjectGuid>
-    <RootNamespace>browseui</RootNamespace>
+    <ProjectGuid>{41CC3FEF-3320-40F3-9E3E-AC28310711C6}</ProjectGuid>
+    <RootNamespace>mapi32</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -55,8 +55,6 @@
       <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;_SHELL32_;_WINE;CMAKE_INTDIR="Debug";shell32_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PrecompiledHeader>Create</PrecompiledHeader>
-      <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -82,8 +80,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\lib\recyclebin;$(SolutionDir)\lib\atl;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;.\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_X86_;_WIN32;_WIN32_WINNT=0x600;inline=__inline;_SHELL32_;_WINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PrecompiledHeader>Create</PrecompiledHeader>
-      <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,100 +98,109 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aclmulti.cpp" />
-    <ClCompile Include="addressband.cpp" />
-    <ClCompile Include="addresseditbox.cpp" />
-    <ClCompile Include="bandproxy.cpp" />
-    <ClCompile Include="bandsite.cpp" />
-    <ClCompile Include="bandsitemenu.cpp" />
-    <ClCompile Include="basebar.cpp" />
-    <ClCompile Include="basebarsite.cpp" />
-    <ClCompile Include="brandband.cpp" />
-    <ClCompile Include="browseui.cpp" />
-    <ClCompile Include="browseuiord.cpp" />
-    <ClCompile Include="commonbrowser.cpp" />
-    <ClCompile Include="dllinstall.c" />
-    <ClCompile Include="globalfoldersettings.cpp" />
-    <ClCompile Include="internettoolbar.cpp" />
-    <ClCompile Include="regtreeoptions.cpp" />
-    <ClCompile Include="shellbrowser.cpp" />
-    <ClCompile Include="toolsband.cpp" />
-    <ClCompile Include="travellog.cpp" />
-    <ClCompile Include="utility.cpp" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aclmulti.h" />
-    <ClInclude Include="addressband.h" />
-    <ClInclude Include="addresseditbox.h" />
-    <ClInclude Include="bandproxy.h" />
-    <ClInclude Include="bandsite.h" />
-    <ClInclude Include="bandsitemenu.h" />
-    <ClInclude Include="brandband.h" />
-    <ClInclude Include="commonbrowser.h" />
-    <ClInclude Include="globalfoldersettings.h" />
-    <ClInclude Include="internettoolbar.h" />
-    <ClInclude Include="newatlinterfaces.h" />
-    <ClInclude Include="precomp.h" />
-    <ClInclude Include="regtreeoptions.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="utility.h" />
+    <ClCompile Include="imalloc.c" />
+    <ClCompile Include="mapi32_main.c" />
+    <ClCompile Include="prop.c" />
+    <ClCompile Include="sendmail.c" />
+    <ClCompile Include="stubs.c" />
+    <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="browseui.rc" />
-    <ResourceCompile Include="lang\bg-BG.rc">
+    <None Include="mapi32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="res.h" />
+    <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="lang\Cy.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\en-US.rc">
+    <ResourceCompile Include="lang\Da.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\es-ES.rc">
+    <ResourceCompile Include="lang\De.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\he-IL.rc">
+    <ResourceCompile Include="lang\En.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\it-IT.rc">
+    <ResourceCompile Include="lang\Es.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\pl-PL.rc">
+    <ResourceCompile Include="lang\Fr.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\ro-RO.rc">
+    <ResourceCompile Include="lang\Ga.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\tr-TR.rc">
+    <ResourceCompile Include="lang\He.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
-    <ResourceCompile Include="lang\uk-UA.rc">
+    <ResourceCompile Include="lang\Hu.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\It.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ja.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ko.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Lt.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Nl.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\No.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Pl.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Pt.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ro.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ru.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Si.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Uk.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="version.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="browseui.spec" />
-    <None Include="res\addressband.rgs" />
-    <None Include="res\addresseditbox.rgs" />
-    <None Include="res\autocompletecontainer.rgs" />
-    <None Include="res\bandproxy.rgs" />
-    <None Include="res\bandsitemenu.rgs" />
-    <None Include="res\brandband.rgs" />
-    <None Include="res\commonbrowser.rgs" />
-    <None Include="res\globalfoldersettings.rgs" />
-    <None Include="res\internettoolbar.rgs" />
-    <None Include="res\rebarbandsite.rgs" />
-    <None Include="res\regtreeoptions.rgs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

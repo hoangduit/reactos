@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{4147dc9a-132d-463c-b6da-efc2e5e5d1dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="imalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mapi32_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prop.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sendmail.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stubs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mapi32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="res.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Cy.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Da.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\De.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\En.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Es.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Fr.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ga.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\He.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Hu.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\It.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ja.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ko.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Lt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Nl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\No.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Pl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Pt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ro.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Ru.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Si.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\Uk.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

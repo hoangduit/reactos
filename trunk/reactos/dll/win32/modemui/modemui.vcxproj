@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B880F5E8-C304-4366-895F-797F39BA16C8}</ProjectGuid>
-    <RootNamespace>getuname</RootNamespace>
+    <ProjectGuid>{CC05E292-4D71-4C7A-91B0-83BA06B4C88E}</ProjectGuid>
+    <RootNamespace>modemui</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -101,16 +101,32 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="getuname.c" />
+    <ClCompile Include="modemui.c" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="getuname.rc" />
-    <ResourceCompile Include="lang\en-US.rc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ResourceCompile>
+    <ResourceCompile Include="lang\de-DE.rc" />
+    <ResourceCompile Include="lang\en-US.rc" />
+    <ResourceCompile Include="lang\es-ES.rc" />
+    <ResourceCompile Include="lang\he-IL.rc" />
+    <ResourceCompile Include="lang\no-NO.rc" />
+    <ResourceCompile Include="lang\pl-PL.rc" />
+    <ResourceCompile Include="lang\ro-RO.rc" />
+    <ResourceCompile Include="lang\ru-RU.rc" />
+    <ResourceCompile Include="lang\uk-UA.rc" />
+    <ResourceCompile Include="modemui.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="getuname.spec" />
+    <None Include="modemui.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\5100.ico" />
+    <Image Include="res\700.ico" />
+    <Image Include="res\701.ico" />
+    <Image Include="res\702.ico" />
+    <Image Include="res\703.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
