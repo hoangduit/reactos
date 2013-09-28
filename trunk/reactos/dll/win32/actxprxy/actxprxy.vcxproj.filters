@@ -20,7 +20,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="actxprxy.spec" />
     <None Include="actxprxy_activscp.rgs">
       <Filter>Resource Files</Filter>
     </None>
@@ -103,5 +102,8 @@
     <ClCompile Include="usrmarshal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="actxprxy.spec" />
   </ItemGroup>
 </Project>

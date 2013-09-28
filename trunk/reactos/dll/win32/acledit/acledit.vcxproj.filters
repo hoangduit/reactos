@@ -28,9 +28,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="acledit.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="acleditint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,5 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="acledit.spec" />
   </ItemGroup>
 </Project>
