@@ -2,6 +2,9 @@
 list(APPEND SOURCE
     LdrEnumResources.c
     NtAllocateVirtualMemory.c
+    NtContinue.c
+    NtCreateFile.c
+    NtCreateThread.c
     NtFreeVirtualMemory.c
     NtMapViewOfSection.c
     NtProtectVirtualMemory.c
@@ -15,15 +18,15 @@ list(APPEND SOURCE
     RtlGetFullPathName_U.c
     RtlGetFullPathName_Ustr.c
     RtlGetFullPathName_UstrEx.c
+    RtlGetLengthWithoutTrailingPathSeperators.c
     RtlGetLongestNtPathLength.c
     RtlInitializeBitMap.c
     SystemInfo.c
     Timer.c
-    ZwContinue.c
     testlist.c)
 
 if(ARCH STREQUAL "i386")
-    add_asm_files(ntdll_apitest_asm i386/ZwContinue.S)
+    add_asm_files(ntdll_apitest_asm i386/NtContinue.S)
 endif()
 
 add_executable(ntdll_apitest ${SOURCE} ${ntdll_apitest_asm})

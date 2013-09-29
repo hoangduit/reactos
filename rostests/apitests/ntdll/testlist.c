@@ -5,6 +5,9 @@
 
 extern void func_LdrEnumResources(void);
 extern void func_NtAllocateVirtualMemory(void);
+extern void func_NtContinue(void);
+extern void func_NtCreateFile(void);
+extern void func_NtCreateThread(void);
 extern void func_NtFreeVirtualMemory(void);
 extern void func_NtMapViewOfSection(void);
 extern void func_NtProtectVirtualMemory(void);
@@ -19,15 +22,18 @@ extern void func_RtlDosSearchPath_Ustr(void);
 extern void func_RtlGetFullPathName_U(void);
 extern void func_RtlGetFullPathName_Ustr(void);
 extern void func_RtlGetFullPathName_UstrEx(void);
+extern void func_RtlGetLengthWithoutTrailingPathSeperators(void);
 extern void func_RtlGetLongestNtPathLength(void);
 extern void func_RtlInitializeBitMap(void);
 extern void func_TimerResolution(void);
-extern void func_ZwContinue(void);
 
 const struct test winetest_testlist[] =
 {
     { "LdrEnumResources",               func_LdrEnumResources },
     { "NtAllocateVirtualMemory",        func_NtAllocateVirtualMemory },
+    { "NtContinue",                     func_NtContinue },
+    { "NtCreateFile",                   func_NtCreateFile },
+    { "NtCreateThread",                 func_NtCreateThread },
     { "NtFreeVirtualMemory",            func_NtFreeVirtualMemory },
     { "NtMapViewOfSection",             func_NtMapViewOfSection },
     { "NtProtectVirtualMemory",         func_NtProtectVirtualMemory },
@@ -42,10 +48,10 @@ const struct test winetest_testlist[] =
     { "RtlGetFullPathName_U",           func_RtlGetFullPathName_U },
     { "RtlGetFullPathName_Ustr",        func_RtlGetFullPathName_Ustr },
     { "RtlGetFullPathName_UstrEx",      func_RtlGetFullPathName_UstrEx },
+    { "RtlGetLengthWithoutTrailingPathSeperators", func_RtlGetLengthWithoutTrailingPathSeperators },
     { "RtlGetLongestNtPathLength",      func_RtlGetLongestNtPathLength },
     { "RtlInitializeBitMap",            func_RtlInitializeBitMap },
     { "TimerResolution",                func_TimerResolution },
-    { "ZwContinue",                     func_ZwContinue },
 
     { 0, 0 }
 };
