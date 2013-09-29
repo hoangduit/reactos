@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="lang">
+      <UniqueIdentifier>{2297d330-5913-41d0-840d-7ecb1d8d9eb1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="msrle_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="msrle32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msrle32.spec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rsrc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Bg.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Cs.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Cy.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Da.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_De.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_En.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Es.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Fr.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_He.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Hu.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_It.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Ja.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Ko.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Lt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Nl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_No.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Pl.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Pt.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Ro.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Ru.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Si.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Sv.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Tr.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\msrle_Uk.rc">
+      <Filter>lang</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
