@@ -11,23 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7FE60E96-C5D5-463F-98D0-D60736F8A797}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>chkstk</RootNamespace>
+    <ProjectGuid>{BCD742A8-5F65-425E-B857-6A874B87DF98}</ProjectGuid>
+    <RootNamespace>cpprt</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -49,52 +48,58 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies />
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies />
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="..\except\i386\chkstk_asm.s">
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ehvec.cpp" />
+    <ClCompile Include="typeinfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amd64\cpprt.s" />
+    <CustomBuild Include="i386\cpprt.s">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /I..\..\..\..\include\asm\$(OutDir)  /I..\..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
 ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /I..\..\..\..\include\asm\$(OutDir)  /I..\..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
 ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\include\asm\asm.vcxproj">
-      <Project>{f11df557-8941-4427-b720-d99eefcff744}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
