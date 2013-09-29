@@ -1,0 +1,1191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{9e025faa-7ef2-4824-bb03-2aff05981c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="etc">
+      <UniqueIdentifier>{eb8da260-3c36-4969-88bd-7176bbaf389e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{ede316e1-e9ac-488e-8dad-ba02f7c3d0ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{d52f8189-4c3e-4a3f-9d90-e50b251fcb47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c_locale_dummy">
+      <UniqueIdentifier>{13a5184d-8507-48a3-8a3d-c5366c1173af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c_locale_glibc">
+      <UniqueIdentifier>{2b0de890-bc88-4f65-b237-49b31402bf40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c_locale_win32">
+      <UniqueIdentifier>{42ca9b7e-07f3-4273-8dec-2f5371e416df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\details">
+      <UniqueIdentifier>{3e5b7d2a-c334-4342-85d9-88b787241f6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\compiler">
+      <UniqueIdentifier>{b4b4fe60-a518-479d-8a4c-ab019db9f10c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\eh">
+      <UniqueIdentifier>{fe09c7a4-9e0b-4aad-87fb-f492b083ffc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\unit">
+      <UniqueIdentifier>{48d3bd95-1769-4e7d-b08a-c51ca9fe484f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\compiler\StTerm-order">
+      <UniqueIdentifier>{3fbe9527-b93e-4e13-b77b-a45d583aac0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\unit\cppunit">
+      <UniqueIdentifier>{bf3a4ea9-13ff-4517-86af-471dc3d9a5eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\details\fstream_stdio.cpp">
+      <Filter>src\details</Filter>
+    </ClCompile>
+    <ClCompile Include="src\details\fstream_unistd.cpp">
+      <Filter>src\details</Filter>
+    </ClCompile>
+    <ClCompile Include="src\details\fstream_win32io.cpp">
+      <Filter>src\details</Filter>
+    </ClCompile>
+    <ClCompile Include="src\c_locale_win32\c_locale_win32.c">
+      <Filter>src\c_locale_win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\c_locale_win32\c_wlocale_win32.c">
+      <Filter>src\c_locale_win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\c_locale_glibc\c_locale_glibc2.c">
+      <Filter>src\c_locale_glibc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\c_locale_dummy\c_locale_dummy.c">
+      <Filter>src\c_locale_dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\StTerm-order\stterm-test.cc">
+      <Filter>test\compiler\StTerm-order</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\eh.cc">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\movable.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\partial_spec.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei1.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei2.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei3.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei4.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei5.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei6.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\compiler\ttei7.cpp">
+      <Filter>test\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\bug.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\locale.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\main.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\mwerks_console_OS_X.c">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\nc_alloc.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\random_number.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_algo.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_algobase.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_bit_vector.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_bitset.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_deque.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_hash_map.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_hash_set.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_list.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_map.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_rope.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_set.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_slist.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_string.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_valarray.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\test_vector.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\eh\TestClass.cpp">
+      <Filter>test\eh</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\_template.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\accum_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\adj_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\advance_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\alg_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\algorithm_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\allocator_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\assert_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bcompos_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bind_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\binsert_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bitset_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bitset_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bnegate_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\boost_check.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bound_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bsearch_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\bvector_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\c_limits_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\c_locale_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cassert_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cctype_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cerrno_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cfloat_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ciso646_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\climits_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\clocale_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cmath_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cmath_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\codecvt_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\collate_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\complex_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\config_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\copy_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\count_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\csetjmp_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\csignal_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstdarg_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstddef_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstdio_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstdlib_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstring_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cstring_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ctime_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ctype_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ctype_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cwchar_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cwctype_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\deque_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\deque_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\divides_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\epilog_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\equal_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\errno_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\exception_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\exception_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\fill_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\find_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\finsert_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\float_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\foreach_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\fstream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\fstream_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\func_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\functional_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\generator_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\greater_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\hash_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\heap_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\includes_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\innerprod_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\inplace_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\insert_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ioiter_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iomanip_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ios_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iosfwd_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iostream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iostream_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iota_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iso646_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\istmit_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\istream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iter_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\iterator_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\less_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\lexcmp_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\limits_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\limits_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\list_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\list_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\locale_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\locale_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\logic_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\macro_checks.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\map_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\map_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\math_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\max_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\memory_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\memory_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\merge_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\messages_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\mfunptr_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\min_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\mismatch_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\modulus_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\money_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\multiset_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\mvctor_declaration_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\mvctor_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\mvctor_traits_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\neq_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\new_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\nthelm_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\num_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\num_put_get_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\numeric_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ostmit_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ostream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\pair_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\partial_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\partition_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\perm_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\plusminus_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ptr2_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\ptrspec_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\queue_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\queue_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\rawriter_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\reference_wrapper_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\resolve_name.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\reviter_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\rm_cp_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\rndshf_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\rope_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\rotate_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\search_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\set_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\set_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\setdiff_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\setinter_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\setjmp_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\setjmp_header_test2.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\setunion_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\shared_ptr_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\signal_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\slist_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\sort_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\sstream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\sstream_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stack_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stack_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stdarg_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stddef_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stdexcept_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stdio_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stdlib_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\stldbg_include.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\streambuf_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\string_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\string_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\string_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\strstream_buffer_read_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\strstream_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\strstream_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\swap_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\test_errno.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\time_facets_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\time_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\times_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\transform_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\type_traits_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\typeinfo_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\unary_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\uninitialized_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\unique_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\unordered_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\utility_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\valarray_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\valarray_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\vector_header_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\vector_test.cpp">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\wchar_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\wctype_header_test.c">
+      <Filter>test\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="test\unit\cppunit\test_main.cpp">
+      <Filter>test\unit\cppunit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\allocators.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bitset.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\c_locale.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\codecvt.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\complex.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\complex_io.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\complex_trig.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ctype.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cxa.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dll_main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\facets_byname.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fstream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ios.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iostream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\istream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\locale.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\locale_catalog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\locale_impl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\messages.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\monetary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\num_get.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\num_get_float.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\num_put.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\num_put_float.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\numpunct.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ostream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sstream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdio_streambuf.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\string.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\strstream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\time_facets.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test\compiler\StTerm-order\Makefile">
+      <Filter>test\compiler\StTerm-order</Filter>
+    </None>
+    <None Include="test\compiler\StTerm-order\Makefile.inc">
+      <Filter>test\compiler\StTerm-order</Filter>
+    </None>
+    <None Include="test\compiler\gcc.mak">
+      <Filter>test\compiler</Filter>
+    </None>
+    <None Include="test\compiler\Makefile.inc">
+      <Filter>test\compiler</Filter>
+    </None>
+    <None Include="test\compiler\README">
+      <Filter>test\compiler</Filter>
+    </None>
+    <None Include="test\eh\bcb.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\como.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\como-linux.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\cray.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\cygwin.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\deccxx.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\descrip.mms">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\djgpp.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\egcs.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\export">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc7.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-99r1.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-amigaos-m68k.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-apple-macosx.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-freebsd.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-hp11.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-irix.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-linux.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\gcc-netbsd.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\hp.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\hpacc.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\intel.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\intel45.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\intel50.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\kai.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\mingw32.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\sgi_mipspro.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\sunpro.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\sunpro42.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="test\eh\sunpro-64.mak">
+      <Filter>test\eh</Filter>
+    </None>
+    <None Include="src\sparc_atomic.s">
+      <Filter>src</Filter>
+    </None>
+    <None Include="src\sparc_atomic64.s">
+      <Filter>src</Filter>
+    </None>
+    <None Include="doc\FAQ">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.borland">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.cygwin">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.dmc">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.evc3">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.evc4">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.evc8">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.evc9">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.intel">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.mingw">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.msvc">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.utf8">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.wince">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\README.windows">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="etc\autoexp.dat">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\ChangeLog">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\ChangeLog-4.0">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\ChangeLog-5.1">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\msvcincl.dat">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\STLport-4.5.1.spec">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\STLport-4.5.3.spec">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="etc\STLport-4.6.spec">
+      <Filter>etc</Filter>
+    </None>
+    <None Include="configure" />
+    <None Include="configure.bat">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="INSTALL" />
+    <None Include="INSTALL.unixes" />
+    <None Include="Makefile" />
+    <None Include="README" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="test\eh\LeakCheck.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\mwerks_debug_prefix.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\mwerks_nosgi_debug_prefix.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\mwerks_nosgi_prefix.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\mwerks_prefix.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\nc_alloc.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\Prefix.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\random_number.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\SortClass.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_assign_op.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_construct.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_hash_resize.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_insert.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_push_back.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\test_push_front.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\TestClass.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\Tests.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\eh\ThrowCompare.h">
+      <Filter>test\eh</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\complete_digits.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\fadapter.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\fib.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\full_streambuf.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\iota.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\locale_test.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\math_aux.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\mvctor_test.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\stack_allocator.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\unary.h">
+      <Filter>test\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\cppunit\cppunit_mini.h">
+      <Filter>test\unit\cppunit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\cppunit\cppunit_proxy.h">
+      <Filter>test\unit\cppunit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\cppunit\cppunit_timer.h">
+      <Filter>test\unit\cppunit</Filter>
+    </ClInclude>
+    <ClInclude Include="test\unit\cppunit\file_reporter.h">
+      <Filter>test\unit\cppunit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\_stdio_file.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquire_release.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aligned_buffer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\c_locale.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\locale_impl.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lock_free_slist.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\message_facets.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stdio_streambuf.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stlport_prefix.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\warning_disable.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\stlport.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\build_system.txt">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="doc\pointer_specialization.txt">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="doc\stlport_namespaces.txt">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="etc\ReleaseNote.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers_c.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers_c_h.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers_classic_iostreams.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers_cpp_runtime.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="etc\std_headers_cpp_runtime_h.txt">
+      <Filter>etc</Filter>
+    </Text>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+</Project>
