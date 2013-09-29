@@ -55,14 +55,12 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;_DEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;WIN32;_X86_;__MINGW32__;__WINDRES__;NATIVE_CPP_INCLUDE=$(SolutionDir)\include\c++;_DEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Debug/explorer.pch</PrecompiledHeaderOutputFile>
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -70,6 +68,7 @@
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\c++\stlport</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -107,19 +106,18 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>_X86_;NDEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;WIN32;_X86_;__MINGW32__;__WINDRES__;NATIVE_CPP_INCLUDE=$(SolutionDir)\include\c++;NDEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Release/explorer.pch</PrecompiledHeaderOutputFile>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\c++\stlport</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -483,9 +481,6 @@
     <ProjectReference Include="..\..\..\dll\win32\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\dll\win32\shlwapi\shlwapi.vcxproj">
-      <Project>{7626c8b3-a1d6-4f8b-a435-9c84aeded246}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\dll\win32\ws2_32\ws2_32.vcxproj">
       <Project>{d0222fd4-713f-45da-8a93-81618baa662f}</Project>
     </ProjectReference>
@@ -501,8 +496,14 @@
     <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
       <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
+      <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\comsupp\comsupp.vcxproj">
       <Project>{d595ab34-7e09-420b-98ae-b87212ba51c1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\cpprt\cpprt.vcxproj">
+      <Project>{bcd742a8-5f65-425e-b857-6a874b87df98}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
       <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
