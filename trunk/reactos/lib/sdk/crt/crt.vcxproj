@@ -1391,6 +1391,11 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
     </ProjectReference>
     <ProjectReference Include="chkstk\chkstk.vcxproj">
       <Project>{7fe60e96-c5d5-463f-98d0-d60736f8a797}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

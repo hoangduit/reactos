@@ -55,7 +55,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>__REACTOS__;WIN32;_X86_;__MINGW32__;__WINDRES__;NATIVE_CPP_INCLUDE=$(SolutionDir)\include\c++;_DEBUG;WIN32;_WIN32_IE=0x0600;_WIN32_WINNT=0x0501;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NATIVE_CPP_INCLUDE=$(SolutionDir)/include/c++;UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;i386;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;__MINGW32__;__WINDRES__;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -88,6 +88,8 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>explorer.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -136,6 +138,8 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>explorer.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -490,6 +494,9 @@
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\3rdparty\stlport\stlport.vcxproj">
+      <Project>{51cfcc8c-eeca-434d-8be4-8cb39d9c17b0}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
       <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
     </ProjectReference>
@@ -504,6 +511,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\cpprt\cpprt.vcxproj">
       <Project>{bcd742a8-5f65-425e-b857-6a874b87df98}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
       <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
