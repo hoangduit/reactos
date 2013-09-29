@@ -39,9 +39,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cards.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -453,5 +450,8 @@
     <Image Include="res\default\XSign.bmp">
       <Filter>res\default</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="cards.spec" />
   </ItemGroup>
 </Project>
