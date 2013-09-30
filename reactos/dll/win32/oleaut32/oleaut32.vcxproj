@@ -62,8 +62,8 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
-       <SubSystem>Windows</SubSystem>
-     <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
@@ -132,7 +132,6 @@
     <ClCompile Include="safearray.c" />
     <ClCompile Include="tmarshal.c" />
     <ClCompile Include="typelib.c" />
-    <ClCompile Include="typelib2.c" />
     <ClCompile Include="usrmarshal.c" />
     <ClCompile Include="varformat.c" />
     <ClCompile Include="variant.c" />

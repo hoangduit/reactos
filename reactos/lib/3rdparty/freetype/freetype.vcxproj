@@ -69,6 +69,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -92,6 +95,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
@@ -603,40 +609,27 @@
   <ItemGroup>
     <None Include="autogen.sh" />
     <None Include="ChangeLog" />
-    <None Include="ChangeLog.20" />
-    <None Include="ChangeLog.21" />
-    <None Include="ChangeLog.22" />
-    <None Include="ChangeLog.23" />
     <None Include="configure" />
     <None Include="freetype.def" />
     <None Include="freetype_ros.diff" />
-    <None Include="Jamfile" />
-    <None Include="Jamrules" />
-    <None Include="Makefile" />
     <None Include="modules.cfg" />
     <None Include="objs\README" />
     <None Include="README" />
-    <None Include="README.git" />
-    <None Include="README.ROS" />
     <None Include="src\bdf\Jamfile" />
     <None Include="src\bdf\module.mk" />
     <None Include="src\bdf\README" />
     <None Include="src\bdf\rules.mk" />
     <None Include="src\cache\Jamfile" />
     <None Include="src\cache\rules.mk" />
-    <None Include="src\cff\Jamfile" />
     <None Include="src\cff\module.mk" />
     <None Include="src\cff\rules.mk" />
-    <None Include="src\cid\Jamfile" />
     <None Include="src\cid\module.mk" />
     <None Include="src\cid\rules.mk" />
-    <None Include="src\gxvalid\Jamfile" />
     <None Include="src\gxvalid\module.mk" />
     <None Include="src\gxvalid\README" />
     <None Include="src\gxvalid\rules.mk" />
     <None Include="src\gzip\Jamfile" />
     <None Include="src\gzip\rules.mk" />
-    <None Include="src\Jamfile" />
     <None Include="src\lzw\Jamfile" />
     <None Include="src\lzw\rules.mk" />
     <None Include="src\otvalid\Jamfile" />
@@ -689,7 +682,6 @@
     <None Include="src\winfonts\Jamfile" />
     <None Include="src\winfonts\module.mk" />
     <None Include="src\winfonts\rules.mk" />
-    <None Include="version.sed" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="devel\ft2build.h" />
