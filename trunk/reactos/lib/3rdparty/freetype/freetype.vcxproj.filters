@@ -598,26 +598,13 @@
     </None>
     <None Include="autogen.sh" />
     <None Include="ChangeLog" />
-    <None Include="ChangeLog.20" />
-    <None Include="ChangeLog.21" />
-    <None Include="ChangeLog.22" />
-    <None Include="ChangeLog.23" />
     <None Include="configure" />
     <None Include="freetype.def">
       <Filter>Source Files</Filter>
     </None>
     <None Include="freetype_ros.diff" />
-    <None Include="Jamfile" />
-    <None Include="Jamrules" />
-    <None Include="Makefile" />
     <None Include="modules.cfg" />
     <None Include="README" />
-    <None Include="README.git" />
-    <None Include="README.ROS" />
-    <None Include="version.sed" />
-    <None Include="src\Jamfile">
-      <Filter>src</Filter>
-    </None>
     <None Include="src\truetype\Jamfile">
       <Filter>src\truetype</Filter>
     </None>
@@ -648,26 +635,17 @@
     <None Include="src\cache\rules.mk">
       <Filter>src\cache</Filter>
     </None>
-    <None Include="src\cff\Jamfile">
-      <Filter>src\cff</Filter>
-    </None>
     <None Include="src\cff\module.mk">
       <Filter>src\cff</Filter>
     </None>
     <None Include="src\cff\rules.mk">
       <Filter>src\cff</Filter>
     </None>
-    <None Include="src\cid\Jamfile">
-      <Filter>src\cid</Filter>
-    </None>
     <None Include="src\cid\module.mk">
       <Filter>src\cid</Filter>
     </None>
     <None Include="src\cid\rules.mk">
       <Filter>src\cid</Filter>
-    </None>
-    <None Include="src\gxvalid\Jamfile">
-      <Filter>src\gxvalid</Filter>
     </None>
     <None Include="src\gxvalid\module.mk">
       <Filter>src\gxvalid</Filter>

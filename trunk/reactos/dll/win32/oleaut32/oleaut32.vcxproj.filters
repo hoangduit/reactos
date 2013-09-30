@@ -48,9 +48,6 @@
     <ClCompile Include="typelib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="typelib2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="usrmarshal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
