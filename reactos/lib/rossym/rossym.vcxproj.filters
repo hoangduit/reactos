@@ -35,9 +35,6 @@
     <ClCompile Include="delete.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dummy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dwarf386.c">
       <Filter>Source Files</Filter>
     </ClCompile>
