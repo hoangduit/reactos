@@ -27,6 +27,8 @@ echo We would write profile files here.
 cd ..
 mkdir reactos
 cd reactos
+call :copy_to_CD "$(SolutionDir)\base\shell\explorer\$(OutDir)\EXPLORER.EXE" .
+call :copy_to_CD "$(SolutionDir)\base\shell\explorer\explorer-cfg-template.xml" .
 mkdir system32
 cd system32
 call :copy_to_CD "$(SolutionDir)\ntkrnlmp\$(OutDir)\NTKRNLMP.EXE" .
@@ -148,6 +150,8 @@ echo We would write profile files here.
 cd ..
 mkdir reactos
 cd reactos
+call :copy_to_CD "$(SolutionDir)\base\shell\explorer\$(OutDir)\EXPLORER.EXE" .
+call :copy_to_CD "$(SolutionDir)\base\shell\explorer\explorer-cfg-template.xml" .
 mkdir system32
 cd system32
 call :copy_to_CD "$(SolutionDir)\ntkrnlmp\$(OutDir)\NTKRNLMP.EXE" .
@@ -270,6 +274,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\base\shell\cmd\cmd.vcxproj">
       <Project>{5e4ab3b3-abea-4b91-9eff-67a788d33ea2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\shell\explorer\explorer.vcxproj">
+      <Project>{bfbae588-8c68-4303-9bf6-c830087d8f25}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\base\shell\explorer\notifyhook\notifyhook.vcxproj">
       <Project>{f28b575d-7dba-44de-aaef-fa0d065e5162}</Project>

@@ -76,10 +76,10 @@
   <ItemGroup>
     <CustomBuild Include="..\oldnames-msvcrt.S">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /I..\..\..\..\include\asm\$(OutDir)  /I..\..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /I..\..\..\..\include\asm\$(OutDir)  /I..\..\..\..\include\asm  /nologo /X -D__REACTOS__ -DDBG=1 -D_SEH_ENABLE_TRACE -D_WINKD_=1 -DWINVER=0x502 -D_WIN32_IE=0x600 -D_WIN32_WINNT=0x502 -D_WIN32_WINDOWS=0x502 -D_SETUPAPI_VER=0x502 -D_M_IX86 -D_X86_ -D__i386__ -Di386 -DUSE_COMPILER_EXCEPTIONS -D_USE_32BIT_TIME_T -DWIN32 -D_WINDOWS -Dinline=__inline -D__STDC__=1 -DLANGUAGE_EN_US -D_CRTBLD /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
 ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl   /I..\..\..\include\asm\$(OutDir)  /I..\..\..\include\asm  /nologo /X /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /I..\..\..\..\include\asm\$(OutDir)  /I..\..\..\..\include\asm  /nologo /X -D__REACTOS__ -DDBG=1 -D_SEH_ENABLE_TRACE -D_WINKD_=1 -DWINVER=0x502 -D_WIN32_IE=0x600 -D_WIN32_WINNT=0x502 -D_WIN32_WINDOWS=0x502 -D_SETUPAPI_VER=0x502 -D_M_IX86 -D_X86_ -D__i386__ -Di386 -DUSE_COMPILER_EXCEPTIONS -D_USE_32BIT_TIME_T -DWIN32 -D_WINDOWS -Dinline=__inline -D__STDC__=1 -DLANGUAGE_EN_US -D_CRTBLD /D__ASM__ /D_USE_ML /EP /c "%(FullPath)" &gt; "$(OutDir)\%(Filename).tmp"
+ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tmp"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).obj</Outputs>
     </CustomBuild>

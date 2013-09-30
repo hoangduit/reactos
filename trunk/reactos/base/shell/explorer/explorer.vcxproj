@@ -81,7 +81,6 @@
       <DelayLoadDLLs>
       </DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/explorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -131,7 +130,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
-      <ProgramDatabaseFile>.\Release/explorer.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -140,6 +138,7 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>explorer.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -483,9 +482,6 @@
     <ProjectReference Include="..\..\..\dll\win32\msimg32\msimg32.vcxproj">
       <Project>{7f5c3e20-7db5-4db7-a48b-a34e2afd5d58}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\dll\win32\msvcrt\msvcrt.vcxproj">
-      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\dll\win32\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
@@ -501,6 +497,9 @@
     <ProjectReference Include="..\..\..\lib\3rdparty\stlport\stlport.vcxproj">
       <Project>{51cfcc8c-eeca-434d-8be4-8cb39d9c17b0}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
       <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
     </ProjectReference>
@@ -515,6 +514,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\cpprt\cpprt.vcxproj">
       <Project>{bcd742a8-5f65-425e-b857-6a874b87df98}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\crt\oldnames\oldnames.vcxproj">
+      <Project>{c915528f-2f47-45eb-a724-3f30c4b3e295}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
       <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
