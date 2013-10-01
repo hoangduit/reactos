@@ -90,6 +90,7 @@ call :copy_to_CD "$(SolutionDir)\dll\win32\oleaut32\$(OutDir)\OLEAUT32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olecli32\$(OutDir)\OLECLI32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olesvr32\$(OutDir)\OLESVR32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olethk32\$(OutDir)\OLETHK32.DLL" .
+call :copy_to_CD "$(SolutionDir)\dll\win32\rpcrt4\$(OutDir)\RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
@@ -213,6 +214,7 @@ call :copy_to_CD "$(SolutionDir)\dll\win32\oleaut32\$(OutDir)\OLEAUT32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olecli32\$(OutDir)\OLECLI32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olesvr32\$(OutDir)\OLESVR32.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\olethk32\$(OutDir)\OLETHK32.DLL" .
+call :copy_to_CD "$(SolutionDir)\dll\win32\rpcrt4\$(OutDir)\RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\samsrv\$(OutDir)\SAMSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\propsys\$(OutDir)\PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)\dll\win32\psapi\$(OutDir)\PSAPI.DLL" .
@@ -385,6 +387,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\psapi\psapi.vcxproj">
       <Project>{3405ad27-56a9-4b89-8688-dd4139f12611}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\rpcrt4\rpcrt4.vcxproj">
+      <Project>{1c89e57d-14e4-4e94-a116-b9d71b1e02f0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\samsrv\samsrv.vcxproj">
       <Project>{c76b64e1-5cd0-4474-9c1f-5788c2c02752}</Project>
