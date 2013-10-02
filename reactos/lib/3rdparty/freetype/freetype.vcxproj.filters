@@ -593,9 +593,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="objs\README">
-      <Filter>objs</Filter>
-    </None>
     <None Include="autogen.sh" />
     <None Include="ChangeLog" />
     <None Include="configure" />
@@ -999,12 +996,6 @@
     </ClInclude>
     <ClInclude Include="include\ft2build.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="devel\ft2build.h">
-      <Filter>devel</Filter>
-    </ClInclude>
-    <ClInclude Include="devel\ftoption.h">
-      <Filter>devel</Filter>
     </ClInclude>
     <ClInclude Include="src\truetype\ttdriver.h">
       <Filter>src\truetype</Filter>
