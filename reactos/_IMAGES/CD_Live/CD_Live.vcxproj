@@ -117,6 +117,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\crypt32\$(OutDir)CRYPT32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advpack\$(OutDir)ADVPACK.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\comdlg32\$(OutDir)COMDLG32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\lz32\$(OutDir)LZ32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wldap32\$(OutDir)WLDAP32.DLL" .
 call :copy_to_CD "$(SolutionDir)base\applications\atactl\$(OutDir)ATACTL.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\autochk\$(OutDir)AUTOCHK.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
@@ -248,6 +249,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\crypt32\$(OutDir)CRYPT32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advpack\$(OutDir)ADVPACK.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\comdlg32\$(OutDir)COMDLG32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\lz32\$(OutDir)LZ32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wldap32\$(OutDir)WLDAP32.DLL" .
 call :copy_to_CD "$(SolutionDir)base\applications\atactl\$(OutDir)ATACTL.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\autochk\$(OutDir)AUTOCHK.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
@@ -464,6 +466,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\wintrust\wintrust.vcxproj">
       <Project>{7ec76f35-31b5-4707-bd2e-06aba10fb0b7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\wldap32\wldap32.vcxproj">
+      <Project>{e57ae809-6638-4b67-ac8c-5f4739feb461}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\ws2help\ws2help.vcxproj">
       <Project>{54955409-76a6-4348-ad5b-7a8ed55d9dbd}</Project>
