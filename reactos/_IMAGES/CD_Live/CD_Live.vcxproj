@@ -118,6 +118,7 @@ call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\smss\$(OutDir)SMSS.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\winlogon\$(OutDir)WINLOGON.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\userinit\$(OutDir)USERINIT.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\services\$(OutDir)SERVICES.EXE" .
 call :copy_to_CD "$(SolutionDir)base\shell\cmd\$(OutDir)CMD.EXE" .
 call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHOOK.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
@@ -243,6 +244,7 @@ call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\smss\$(OutDir)SMSS.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\winlogon\$(OutDir)WINLOGON.EXE" .
 call :copy_to_CD "$(SolutionDir)base\system\userinit\$(OutDir)USERINIT.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\services\$(OutDir)SERVICES.EXE" .
 call :copy_to_CD "$(SolutionDir)base\shell\cmd\$(OutDir)CMD.EXE" .
 call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHOOK.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
@@ -290,6 +292,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\base\system\lsass\lsass.vcxproj">
       <Project>{bb3a4309-8882-49d1-91d4-1895f0ff959e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\base\system\services\services.vcxproj">
+      <Project>{d35805f3-dceb-4b48-8461-6f1f7f7fa1d4}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\base\system\smss\smss.vcxproj">
       <Project>{3339218b-863b-4a19-880f-8f6d522f584a}</Project>
