@@ -270,4 +270,9 @@
       <Filter>idl</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Midl Include="..\..\..\include\psdk\shdeprecated.idl">
+      <Filter>idl</Filter>
+    </Midl>
+  </ItemGroup>
 </Project>

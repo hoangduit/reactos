@@ -1687,5 +1687,16 @@
     <CustomBuild Include="access.idl">
       <Filter>Source Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="docobjectservice.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="htiface.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="tlogstg.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
   </ItemGroup>
 </Project>
