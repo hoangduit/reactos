@@ -1512,6 +1512,34 @@
       <Project>{532400e1-c173-42e2-801b-3d9c3f2dfca9}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="audiopolicy.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).h</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="devicetopology.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).h</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="endpointvolume.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"..\..\tools\widl\$(OutDir)\widl.exe" -h -I . -I ..\..\include\dxsdk -o "$(OutDir)\%(Filename).h" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).h</Outputs>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
