@@ -1693,10 +1693,17 @@
     <CustomBuild Include="htiface.idl">
       <Filter>Source Files</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="tlogstg.idl">
+    <CustomBuild Include="tlogstg.idl">
       <Filter>Source Files</Filter>
-    </Midl>
+    </CustomBuild>
+    <CustomBuild Include="audiopolicy.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="devicetopology.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="endpointvolume.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
