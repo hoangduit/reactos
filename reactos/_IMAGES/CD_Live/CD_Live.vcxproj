@@ -100,6 +100,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\setupapi\$(OutDir)SETUPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\url\$(OutDir)URL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\urlmon\$(OutDir)URLMON.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\userenv\$(OutDir)USERENV.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\usp10\$(OutDir)USP10.DLL" .
@@ -230,6 +231,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\setupapi\$(OutDir)SETUPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\url\$(OutDir)URL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\urlmon\$(OutDir)URLMON.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\userenv\$(OutDir)USERENV.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\usp10\$(OutDir)USP10.DLL" .
@@ -432,6 +434,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\urlmon\urlmon.vcxproj">
       <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\url\url.vcxproj">
+      <Project>{63ac3a9e-b7dd-4a59-88c2-d14721ae3544}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\userenv\userenv.vcxproj">
       <Project>{fd2f864e-a5cf-4b06-a16c-04b72fc7412d}</Project>
