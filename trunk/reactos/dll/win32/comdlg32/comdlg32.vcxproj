@@ -384,20 +384,6 @@
     <ClCompile Include="printdlg.c" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="800.bmp" />
-    <Image Include="cdrom.ico" />
-    <Image Include="floppy.ico" />
-    <Image Include="folder.ico" />
-    <Image Include="folder2.ico" />
-    <Image Include="fontpics.bmp" />
-    <Image Include="hdisk.ico" />
-    <Image Include="network.ico" />
-    <Image Include="pd32_collate.ico" />
-    <Image Include="pd32_landscape.ico" />
-    <Image Include="pd32_nocollate.ico" />
-    <Image Include="pd32_portrait.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="cdlg.h" />
     <ClInclude Include="filedlg31.h" />
     <ClInclude Include="filedlgbrowser.h" />
@@ -445,6 +431,20 @@
     <ProjectReference Include="..\winspool\winspool.vcxproj">
       <Project>{4cf8adf8-85eb-4bfd-9410-29158a8bcb77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmaps\800.bmp" />
+    <Image Include="res\bitmaps\fontpics.bmp" />
+    <Image Include="res\icons\cdrom.ico" />
+    <Image Include="res\icons\floppy.ico" />
+    <Image Include="res\icons\folder.ico" />
+    <Image Include="res\icons\folder2.ico" />
+    <Image Include="res\icons\hdisk.ico" />
+    <Image Include="res\icons\network.ico" />
+    <Image Include="res\icons\pd32_collate.ico" />
+    <Image Include="res\icons\pd32_landscape.ico" />
+    <Image Include="res\icons\pd32_nocollate.ico" />
+    <Image Include="res\icons\pd32_portrait.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
