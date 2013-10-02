@@ -61,6 +61,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -691,6 +692,9 @@
     <ProjectReference Include="..\..\..\lib\import\comdlg32\comdlg32.vcxproj">
       <Project>{4aea1da9-737c-4c2c-8232-4cad4e7ad902}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\shlwapi\shlwapi.vcxproj">
       <Project>{a3334d80-2994-40ae-9882-4bf239886337}</Project>
     </ProjectReference>
@@ -715,6 +719,9 @@
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\browseui\browseui.vcxproj">
+      <Project>{a3eba2ce-4d8d-42cd-8a0f-f33a150f8031}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\comctl32\comctl32.vcxproj">
       <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
     </ProjectReference>
@@ -726,9 +733,6 @@
     </ProjectReference>
     <ProjectReference Include="..\kernel32\kernel32.vcxproj">
       <Project>{c721c1f5-9608-4910-becb-642f8d859aa4}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\msvcrt\msvcrt.vcxproj">
-      <Project>{5a823c70-89c5-40f6-b6f9-b6f68e408fa4}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>

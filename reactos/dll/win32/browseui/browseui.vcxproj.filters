@@ -133,9 +133,6 @@
     <ResourceCompile Include="browseui.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="version.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
     <ResourceCompile Include="lang\bg-BG.rc">
       <Filter>lang</Filter>
     </ResourceCompile>
@@ -165,7 +162,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="browseui.spec" />
     <None Include="res\addressband.rgs">
       <Filter>res</Filter>
     </None>
@@ -202,5 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="browseui.spec" />
   </ItemGroup>
 </Project>
