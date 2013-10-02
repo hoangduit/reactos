@@ -123,6 +123,8 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precomp.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precomp.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="CMenuBand.cpp" />
+    <ClCompile Include="CMenuDeskBar.cpp" />
     <ClCompile Include="control.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precomp.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precomp.h</PrecompiledHeaderFile>

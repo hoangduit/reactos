@@ -204,6 +204,12 @@
     <ClCompile Include="systray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CMenuBand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenuDeskBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="folders\admintools.h">
