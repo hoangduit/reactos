@@ -196,8 +196,7 @@ flush( struct copy_context *copy )
 	       &copy->dstib,
 	       GL_TRUE,
 	       0,
-	       copy->dstbuf_nr - 1,
-	       NULL );
+	       copy->dstbuf_nr - 1);
 
    /* Reset all pointers: 
     */
@@ -513,7 +512,6 @@ replay_init( struct copy_context *copy )
 
       dst->Size = src->Size;
       dst->Type = src->Type;
-      dst->Format = GL_RGBA;
       dst->Stride = copy->vertex_size;
       dst->StrideB = copy->vertex_size;
       dst->Ptr = copy->dstbuf + offset;

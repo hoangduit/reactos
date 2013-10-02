@@ -139,10 +139,6 @@ typedef void *GLeglImageOES;
 #define GL_COMPRESSED_LUMINANCE_ALPHA_3DC_ATI 0x8837
 #endif
 
-#ifndef GL_OES_compressed_ETC1_RGB8_texture
-#define GL_ETC1_RGB8_OES                                        0x8D64
-#endif
-
 
 /**
  * Internal token to represent a GLSL shader program (a collection of
@@ -152,13 +148,6 @@ typedef void *GLeglImageOES;
  * GL_VERTEX/FRAGMENT/GEOMETRY_PROGRAM tokens.
  */
 #define GL_SHADER_PROGRAM_MESA 0x9999
-
-
-/**
- * Internal token for geometry programs.
- * Use the value for GL_GEOMETRY_PROGRAM_NV for now.
- */
-#define MESA_GEOMETRY_PROGRAM 0x8c26
 
 /* Several fields of struct gl_config can take these as values.  Since
  * GLX header files may not be available everywhere they need to be used,

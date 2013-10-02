@@ -40,10 +40,6 @@
 #include "main/dispatch.h"
 
 
-/** Used to do error checking for GL_EXT_vertex_array_bgra */
-#define BGRA_OR_4  5
-
-
 /** Used to indicate which GL datatypes are accepted by each of the
  * glVertex/Color/Attrib/EtcPointer() functions.
  */
@@ -59,8 +55,6 @@
 #define DOUBLE_BIT           0x200
 #define FIXED_ES_BIT         0x400
 #define FIXED_GL_BIT         0x800
-#define UNSIGNED_INT_2_10_10_10_REV_BIT 0x1000
-#define INT_2_10_10_10_REV_BIT 0x2000
 
 
 /** Convert GL datatype enum into a <type>_BIT value seen above */
@@ -93,10 +87,6 @@ type_to_bit(const struct gl_context *ctx, GLenum type)
       return DOUBLE_BIT;
    case GL_FIXED:
       return ctx->API == API_OPENGL ? FIXED_GL_BIT : FIXED_ES_BIT;
-   case GL_UNSIGNED_INT_2_10_10_10_REV:
-      return UNSIGNED_INT_2_10_10_10_REV_BIT;
-   case GL_INT_2_10_10_10_REV:
-      return INT_2_10_10_10_REV_BIT;
    default:
       return 0;
    }
@@ -111,7 +101,7 @@ type_to_bit(const struct gl_context *ctx, GLenum type)
  * \param attrib  the attribute array index to update
  * \param legalTypes  bitmask of *_BIT above indicating legal datatypes
  * \param sizeMin  min allowable size value
- * \param sizeMax  max allowable size value (may also be BGRA_OR_4)
+ * \param sizeMax  max allowable size value
  * \param size  components per element (1, 2, 3 or 4)
  * \param type  datatype of each component (GL_FLOAT, GL_INT, etc)
  * \param stride  stride between elements, in elements
@@ -131,7 +121,6 @@ update_array(struct gl_context *ctx,
    struct gl_client_array *array;
    GLbitfield typeBit;
    GLsizei elementSize;
-   GLenum format = GL_RGBA;
 
    if (ctx->API != API_OPENGLES && ctx->API != API_OPENGLES2) {
       /* fixed point arrays / data is only allowed with OpenGL ES 1.x/2.0 */
@@ -139,10 +128,6 @@ update_array(struct gl_context *ctx,
    }
    if (!ctx->Extensions.ARB_ES2_compatibility) {
       legalTypesMask &= ~FIXED_GL_BIT;
-   }
-   if (!ctx->Extensions.ARB_vertex_type_2_10_10_10_rev) {
-      legalTypesMask &= ~(UNSIGNED_INT_2_10_10_10_REV_BIT |
-                          INT_2_10_10_10_REV_BIT);
    }
 
    typeBit = type_to_bit(ctx, type);
@@ -152,39 +137,9 @@ update_array(struct gl_context *ctx,
       return;
    }
 
-   /* Do size parameter checking.
-    * If sizeMax = BGRA_OR_4 it means that size = GL_BGRA is legal and
-    * must be handled specially.
-    */
-   if (ctx->Extensions.EXT_vertex_array_bgra &&
-       sizeMax == BGRA_OR_4 &&
-       size == GL_BGRA) {
-      GLboolean bgra_error = GL_FALSE;
-
-      if (ctx->Extensions.ARB_vertex_type_2_10_10_10_rev) {
-         if (type != GL_UNSIGNED_INT_2_10_10_10_REV &&
-             type != GL_INT_2_10_10_10_REV &&
-             type != GL_UNSIGNED_BYTE)
-            bgra_error = GL_TRUE;
-      } else if (type != GL_UNSIGNED_BYTE)
-         bgra_error = GL_TRUE;
-
-      if (bgra_error) {
-         _mesa_error(ctx, GL_INVALID_VALUE, "%s(GL_BGRA/GLubyte)", func);
-         return;
-      }
-      format = GL_BGRA;
-      size = 4;
-   }
-   else if (size < sizeMin || size > sizeMax || size > 4) {
+   /* Do size parameter checking. */
+   if (size < sizeMin || size > sizeMax || size > 4) {
       _mesa_error(ctx, GL_INVALID_VALUE, "%s(size=%d)", func, size);
-      return;
-   }
-
-   if (ctx->Extensions.ARB_vertex_type_2_10_10_10_rev &&
-       (type == GL_UNSIGNED_INT_2_10_10_10_REV ||
-        type == GL_INT_2_10_10_10_REV) && size != 4) {
-      _mesa_error(ctx, GL_INVALID_OPERATION, "%s(size=%d)", func, size);
       return;
    }
 
@@ -209,7 +164,6 @@ update_array(struct gl_context *ctx,
    array = &ctx->Array.ArrayObj->VertexAttrib[attrib];
    array->Size = size;
    array->Type = type;
-   array->Format = format;
    array->Stride = stride;
    array->StrideB = stride ? stride : elementSize;
    array->Normalized = normalized;
@@ -229,9 +183,7 @@ void GLAPIENTRY
 _mesa_VertexPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *ptr)
 {
    GLbitfield legalTypes = (SHORT_BIT | INT_BIT | FLOAT_BIT |
-                            DOUBLE_BIT | HALF_BIT | FIXED_ES_BIT |
-                            UNSIGNED_INT_2_10_10_10_REV_BIT |
-                            INT_2_10_10_10_REV_BIT);
+                            DOUBLE_BIT | HALF_BIT | FIXED_ES_BIT);
    GET_CURRENT_CONTEXT(ctx);
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
 
@@ -249,9 +201,7 @@ _mesa_NormalPointer(GLenum type, GLsizei stride, const GLvoid *ptr )
 {
    const GLbitfield legalTypes = (BYTE_BIT | SHORT_BIT | INT_BIT |
                                   HALF_BIT | FLOAT_BIT | DOUBLE_BIT |
-                                  FIXED_ES_BIT |
-                                  UNSIGNED_INT_2_10_10_10_REV_BIT |
-                                  INT_2_10_10_10_REV_BIT);
+                                  FIXED_ES_BIT);
    GET_CURRENT_CONTEXT(ctx);
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
 
@@ -268,14 +218,12 @@ _mesa_ColorPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *ptr)
                                   SHORT_BIT | UNSIGNED_SHORT_BIT |
                                   INT_BIT | UNSIGNED_INT_BIT |
                                   HALF_BIT | FLOAT_BIT | DOUBLE_BIT |
-                                  FIXED_ES_BIT |
-                                  UNSIGNED_INT_2_10_10_10_REV_BIT |
-                                  INT_2_10_10_10_REV_BIT);
+                                  FIXED_ES_BIT);
    GET_CURRENT_CONTEXT(ctx);
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
 
    update_array(ctx, "glColorPointer", VERT_ATTRIB_COLOR0,
-                legalTypes, 3, BGRA_OR_4,
+                legalTypes, 3, 4,
                 size, type, stride, GL_TRUE, GL_FALSE, ptr);
 }
 
@@ -314,14 +262,12 @@ _mesa_SecondaryColorPointerEXT(GLint size, GLenum type,
    const GLbitfield legalTypes = (BYTE_BIT | UNSIGNED_BYTE_BIT |
                                   SHORT_BIT | UNSIGNED_SHORT_BIT |
                                   INT_BIT | UNSIGNED_INT_BIT |
-                                  HALF_BIT | FLOAT_BIT | DOUBLE_BIT |
-                                  UNSIGNED_INT_2_10_10_10_REV_BIT |
-                                  INT_2_10_10_10_REV_BIT);
+                                  HALF_BIT | FLOAT_BIT | DOUBLE_BIT);
    GET_CURRENT_CONTEXT(ctx);
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
 
    update_array(ctx, "glSecondaryColorPointer", VERT_ATTRIB_COLOR1,
-                legalTypes, 3, BGRA_OR_4,
+                legalTypes, 3, 4,
                 size, type, stride, GL_TRUE, GL_FALSE, ptr);
 }
 
@@ -332,9 +278,7 @@ _mesa_TexCoordPointer(GLint size, GLenum type, GLsizei stride,
 {
    GLbitfield legalTypes = (SHORT_BIT | INT_BIT |
                             HALF_BIT | FLOAT_BIT | DOUBLE_BIT |
-                            FIXED_ES_BIT |
-                            UNSIGNED_INT_2_10_10_10_REV_BIT |
-                            INT_2_10_10_10_REV_BIT);
+                            FIXED_ES_BIT);
    GET_CURRENT_CONTEXT(ctx);
    const GLuint unit = ctx->Array.ActiveTexture;
    ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
@@ -411,7 +355,7 @@ _mesa_VertexAttribPointerNV(GLuint index, GLint size, GLenum type,
    }
 
    update_array(ctx, "glVertexAttribPointerNV", VERT_ATTRIB_GENERIC(index),
-                legalTypes, 1, BGRA_OR_4,
+                legalTypes, 1, 4,
                 size, type, stride, normalized, GL_FALSE, ptr);
 }
 #endif
@@ -432,9 +376,7 @@ _mesa_VertexAttribPointerARB(GLuint index, GLint size, GLenum type,
                                   SHORT_BIT | UNSIGNED_SHORT_BIT |
                                   INT_BIT | UNSIGNED_INT_BIT |
                                   HALF_BIT | FLOAT_BIT | DOUBLE_BIT |
-                                  FIXED_ES_BIT | FIXED_GL_BIT |
-                                  UNSIGNED_INT_2_10_10_10_REV_BIT |
-                                  INT_2_10_10_10_REV_BIT);
+                                  FIXED_ES_BIT | FIXED_GL_BIT);
    GET_CURRENT_CONTEXT(ctx);
    ASSERT_OUTSIDE_BEGIN_END(ctx);
 
@@ -444,7 +386,7 @@ _mesa_VertexAttribPointerARB(GLuint index, GLint size, GLenum type,
    }
 
    update_array(ctx, "glVertexAttribPointer", VERT_ATTRIB_GENERIC(index),
-                legalTypes, 1, BGRA_OR_4,
+                legalTypes, 1, 4,
                 size, type, stride, normalized, GL_FALSE, ptr);
 }
 #endif
@@ -558,11 +500,6 @@ get_vertex_array_attrib(struct gl_context *ctx, GLuint index, GLenum pname,
    case GL_VERTEX_ATTRIB_ARRAY_INTEGER:
       if (ctx->VersionMajor >= 3 || ctx->Extensions.EXT_gpu_shader4) {
          return array->Integer;
-      }
-      goto error;
-   case GL_VERTEX_ATTRIB_ARRAY_DIVISOR_ARB:
-      if (ctx->Extensions.ARB_instanced_arrays) {
-         return array->InstanceDivisor;
       }
       goto error;
    default:
@@ -1096,34 +1033,6 @@ _mesa_PrimitiveRestartIndex(GLuint index)
 }
 
 
-/**
- * See GL_ARB_instanced_arrays.
- * Note that the instance divisor only applies to generic arrays, not
- * the legacy vertex arrays.
- */
-void GLAPIENTRY
-_mesa_VertexAttribDivisor(GLuint index, GLuint divisor)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_BEGIN_END_AND_FLUSH(ctx);
-
-   if (!ctx->Extensions.ARB_instanced_arrays) {
-      _mesa_error(ctx, GL_INVALID_OPERATION, "glVertexAttribDivisor()");
-      return;
-   }
-
-   if (index >= ctx->Const.VertexProgram.MaxAttribs) {
-      _mesa_error(ctx, GL_INVALID_ENUM, "glVertexAttribDivisor(index = %u)",
-                  index);
-      return;
-   }
-
-   ASSERT(VERT_ATTRIB_GENERIC(index) < Elements(ctx->Array.ArrayObj->VertexAttrib));
-
-   ctx->Array.ArrayObj->VertexAttrib[VERT_ATTRIB_GENERIC(index)].InstanceDivisor = divisor;
-}
-
-
 
 /**
  * Copy one client vertex array to another.
@@ -1135,14 +1044,12 @@ _mesa_copy_client_array(struct gl_context *ctx,
 {
    dst->Size = src->Size;
    dst->Type = src->Type;
-   dst->Format = src->Format;
    dst->Stride = src->Stride;
    dst->StrideB = src->StrideB;
    dst->Ptr = src->Ptr;
    dst->Enabled = src->Enabled;
    dst->Normalized = src->Normalized;
    dst->Integer = src->Integer;
-   dst->InstanceDivisor = src->InstanceDivisor;
    dst->_ElementSize = src->_ElementSize;
    _mesa_reference_buffer_object(ctx, &dst->BufferObj, src->BufferObj);
    dst->_MaxElement = src->_MaxElement;

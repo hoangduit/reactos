@@ -40,7 +40,7 @@
 #include "main/bufferobj.h"
 #include "main/buffers.h"
 #include "main/colortab.h"
-#include "main/condrender.h"
+#include "main/context.h"
 #include "main/depth.h"
 #include "main/enable.h"
 #include "main/fbobject.h"
@@ -65,7 +65,6 @@
 #include "main/teximage.h"
 #include "main/texparam.h"
 #include "main/texstate.h"
-#include "main/transformfeedback.h"
 #include "main/uniforms.h"
 #include "main/varray.h"
 #include "main/viewport.h"
@@ -130,7 +129,6 @@ struct save_state
    GLboolean FragmentProgramEnabled;
    struct gl_fragment_program *FragmentProgram;
    struct gl_shader_program *VertexShader;
-   struct gl_shader_program *GeometryShader;
    struct gl_shader_program *FragmentShader;
    struct gl_shader_program *ActiveShader;
 
@@ -170,10 +168,6 @@ struct save_state
    /** MESA_META_CLAMP_VERTEX_COLOR */
    GLenum ClampVertexColor;
 
-   /** MESA_META_CONDITIONAL_RENDER */
-   struct gl_query_object *CondRenderQuery;
-   GLenum CondRenderMode;
-
    /** MESA_META_SELECT_FEEDBACK */
    GLenum RenderMode;
    struct gl_selection Select;
@@ -182,7 +176,6 @@ struct save_state
    /** Miscellaneous (always disabled) */
    GLboolean Lighting;
    GLboolean RasterDiscard;
-   GLboolean TransformFeedbackNeedsResume;
 };
 
 /**
@@ -439,15 +432,6 @@ _mesa_meta_begin(struct gl_context *ctx, GLbitfield state)
    memset(save, 0, sizeof(*save));
    save->SavedState = state;
 
-   /* Pausing transform feedback needs to be done early, or else we won't be
-    * able to change other state.
-    */
-   save->TransformFeedbackNeedsResume =
-      ctx->TransformFeedback.CurrentObject->Active &&
-      !ctx->TransformFeedback.CurrentObject->Paused;
-   if (save->TransformFeedbackNeedsResume)
-      _mesa_PauseTransformFeedback();
-
    if (state & MESA_META_ALPHA_TEST) {
       save->AlphaEnabled = ctx->Color.AlphaEnabled;
       save->AlphaFunc = ctx->Color.AlphaFunc;
@@ -459,15 +443,7 @@ _mesa_meta_begin(struct gl_context *ctx, GLbitfield state)
    if (state & MESA_META_BLEND) {
       save->BlendEnabled = ctx->Color.BlendEnabled;
       if (ctx->Color.BlendEnabled) {
-         if (ctx->Extensions.EXT_draw_buffers2) {
-            GLuint i;
-            for (i = 0; i < ctx->Const.MaxDrawBuffers; i++) {
-               _mesa_set_enablei(ctx, GL_BLEND, i, GL_FALSE);
-            }
-         }
-         else {
-            _mesa_set_enable(ctx, GL_BLEND, GL_FALSE);
-         }
+         _mesa_set_enable(ctx, GL_BLEND, GL_FALSE);
       }
       save->ColorLogicOpEnabled = ctx->Color.ColorLogicOpEnabled;
       if (ctx->Color.ColorLogicOpEnabled)
@@ -563,8 +539,6 @@ _mesa_meta_begin(struct gl_context *ctx, GLbitfield state)
       if (ctx->Extensions.ARB_shader_objects) {
 	 _mesa_reference_shader_program(ctx, &save->VertexShader,
 					ctx->Shader.CurrentVertexProgram);
-	 _mesa_reference_shader_program(ctx, &save->GeometryShader,
-					ctx->Shader.CurrentGeometryProgram);
 	 _mesa_reference_shader_program(ctx, &save->FragmentShader,
 					ctx->Shader.CurrentFragmentProgram);
 	 _mesa_reference_shader_program(ctx, &save->ActiveShader,
@@ -706,14 +680,6 @@ _mesa_meta_begin(struct gl_context *ctx, GLbitfield state)
       _mesa_ClampColorARB(GL_CLAMP_VERTEX_COLOR, GL_FALSE);
    }
 
-   if (state & MESA_META_CONDITIONAL_RENDER) {
-      save->CondRenderQuery = ctx->Query.CondRenderQuery;
-      save->CondRenderMode = ctx->Query.CondRenderMode;
-
-      if (ctx->Query.CondRenderQuery)
-	 _mesa_EndConditionalRender();
-   }
-
    if (state & MESA_META_SELECT_FEEDBACK) {
       save->RenderMode = ctx->RenderMode;
       if (ctx->RenderMode == GL_SELECT) {
@@ -754,15 +720,7 @@ _mesa_meta_end(struct gl_context *ctx)
 
    if (state & MESA_META_BLEND) {
       if (ctx->Color.BlendEnabled != save->BlendEnabled) {
-         if (ctx->Extensions.EXT_draw_buffers2) {
-            GLuint i;
-            for (i = 0; i < ctx->Const.MaxDrawBuffers; i++) {
-               _mesa_set_enablei(ctx, GL_BLEND, i, (save->BlendEnabled >> i) & 1);
-            }
-         }
-         else {
-            _mesa_set_enable(ctx, GL_BLEND, (save->BlendEnabled & 1));
-         }
+         _mesa_set_enable(ctx, GL_BLEND, (save->BlendEnabled & 1));
       }
       if (ctx->Color.ColorLogicOpEnabled != save->ColorLogicOpEnabled)
          _mesa_set_enable(ctx, GL_COLOR_LOGIC_OP, save->ColorLogicOpEnabled);
@@ -852,10 +810,6 @@ _mesa_meta_end(struct gl_context *ctx)
       if (ctx->Extensions.ARB_vertex_shader)
 	 _mesa_use_shader_program(ctx, GL_VERTEX_SHADER, save->VertexShader);
 
-      if (ctx->Extensions.ARB_geometry_shader4)
-	 _mesa_use_shader_program(ctx, GL_GEOMETRY_SHADER_ARB,
-				  save->GeometryShader);
-
       if (ctx->Extensions.ARB_fragment_shader)
 	 _mesa_use_shader_program(ctx, GL_FRAGMENT_SHADER,
 				  save->FragmentShader);
@@ -864,7 +818,6 @@ _mesa_meta_end(struct gl_context *ctx)
 				     save->ActiveShader);
 
       _mesa_reference_shader_program(ctx, &save->VertexShader, NULL);
-      _mesa_reference_shader_program(ctx, &save->GeometryShader, NULL);
       _mesa_reference_shader_program(ctx, &save->FragmentShader, NULL);
       _mesa_reference_shader_program(ctx, &save->ActiveShader, NULL);
    }
@@ -992,22 +945,6 @@ _mesa_meta_end(struct gl_context *ctx)
       _mesa_ClampColorARB(GL_CLAMP_VERTEX_COLOR, save->ClampVertexColor);
    }
 
-   if (state & MESA_META_CONDITIONAL_RENDER) {
-      if (save->CondRenderQuery)
-	 _mesa_BeginConditionalRender(save->CondRenderQuery->Id,
-				      save->CondRenderMode);
-   }
-
-   if (state & MESA_META_SELECT_FEEDBACK) {
-      if (save->RenderMode == GL_SELECT) {
-	 _mesa_RenderMode(GL_SELECT);
-	 ctx->Select = save->Select;
-      } else if (save->RenderMode == GL_FEEDBACK) {
-	 _mesa_RenderMode(GL_FEEDBACK);
-	 ctx->Feedback = save->Feedback;
-      }
-   }
-
    /* misc */
    if (save->Lighting) {
       _mesa_set_enable(ctx, GL_LIGHTING, GL_TRUE);
@@ -1015,8 +952,6 @@ _mesa_meta_end(struct gl_context *ctx)
    if (save->RasterDiscard) {
       _mesa_set_enable(ctx, GL_RASTERIZER_DISCARD, GL_TRUE);
    }
-   if (save->TransformFeedbackNeedsResume)
-      _mesa_ResumeTransformFeedback();
 }
 
 
@@ -1329,7 +1264,6 @@ blitframebuffer_texture(struct gl_context *ctx,
          const GLint maxLevelSave = texObj->MaxLevel;
          const GLenum wrapSSave = texObj->Sampler.WrapS;
          const GLenum wrapTSave = texObj->Sampler.WrapT;
-         const GLenum srgbSave = texObj->Sampler.sRGBDecode;
          const GLenum fbo_srgb_save = ctx->Color.sRGBEnabled;
          const GLenum target = texObj->Target;
 
@@ -1364,10 +1298,6 @@ blitframebuffer_texture(struct gl_context *ctx,
          _mesa_TexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	 /* Always do our blits with no sRGB decode or encode.*/
-	 if (ctx->Extensions.EXT_texture_sRGB_decode) {
-	    _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT,
-				GL_SKIP_DECODE_EXT);
-	 }
          if (ctx->Extensions.EXT_framebuffer_sRGB) {
             _mesa_set_enable(ctx, GL_FRAMEBUFFER_SRGB_EXT, GL_FALSE);
          }
@@ -1433,9 +1363,6 @@ blitframebuffer_texture(struct gl_context *ctx,
          }
          _mesa_TexParameteri(target, GL_TEXTURE_WRAP_S, wrapSSave);
          _mesa_TexParameteri(target, GL_TEXTURE_WRAP_T, wrapTSave);
-	 if (ctx->Extensions.EXT_texture_sRGB_decode) {
-	    _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT, srgbSave);
-	 }
 	 if (ctx->Extensions.EXT_framebuffer_sRGB && fbo_srgb_save) {
 	    _mesa_set_enable(ctx, GL_FRAMEBUFFER_SRGB_EXT, GL_TRUE);
 	 }
@@ -1645,8 +1572,7 @@ _mesa_meta_Clear(struct gl_context *ctx, GLbitfield buffers)
    /* save all state but scissor, pixel pack/unpack */
    GLbitfield metaSave = (MESA_META_ALL -
 			  MESA_META_SCISSOR -
-			  MESA_META_PIXEL_STORE -
-			  MESA_META_CONDITIONAL_RENDER);
+			  MESA_META_PIXEL_STORE);
    const GLuint stencilMax = (1 << ctx->DrawBuffer->Visual.stencilBits) - 1;
 
    if (buffers & BUFFER_BITS_COLOR) {
@@ -2297,14 +2223,7 @@ _mesa_meta_DrawPixels(struct gl_context *ctx,
       }
    }
    else if (_mesa_is_depth_format(format)) {
-      if (ctx->Extensions.ARB_depth_texture &&
-          ctx->Extensions.ARB_fragment_program) {
-         texIntFormat = GL_DEPTH_COMPONENT;
-         metaExtraSave = (MESA_META_SHADER);
-      }
-      else {
-         fallback = GL_TRUE;
-      }
+      fallback = GL_TRUE;
    }
    else {
       fallback = GL_TRUE;
@@ -2682,8 +2601,7 @@ _mesa_meta_check_generate_mipmap_fallback(struct gl_context *ctx, GLenum target,
       return GL_TRUE;
    }
 
-   if (_mesa_get_format_color_encoding(baseImage->TexFormat) == GL_SRGB &&
-       !ctx->Extensions.EXT_texture_sRGB_decode) {
+   if (_mesa_get_format_color_encoding(baseImage->TexFormat) == GL_SRGB) {
       /* The texture format is sRGB but we can't turn off sRGB->linear
        * texture sample conversion.  So we won't be able to generate the
        * right colors when rendering.  Need to use a fallback.
@@ -2908,7 +2826,6 @@ _mesa_meta_GenerateMipmap(struct gl_context *ctx, GLenum target,
    const GLenum wrapSSave = texObj->Sampler.WrapS;
    const GLenum wrapTSave = texObj->Sampler.WrapT;
    const GLenum wrapRSave = texObj->Sampler.WrapR;
-   const GLenum srgbDecodeSave = texObj->Sampler.sRGBDecode;
    const GLenum srgbBufferSave = ctx->Color.sRGBEnabled;
    const GLuint fboSave = ctx->DrawBuffer->Name;
    const GLuint original_active_unit = ctx->Texture.CurrentUnit;
@@ -2973,10 +2890,6 @@ _mesa_meta_GenerateMipmap(struct gl_context *ctx, GLenum target,
    _mesa_TexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
    /* We don't want to encode or decode sRGB values; treat them as linear */
-   if (ctx->Extensions.EXT_texture_sRGB_decode) {
-      _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT,
-                          GL_SKIP_DECODE_EXT);
-   }
    if (ctx->Extensions.EXT_framebuffer_sRGB) {
       _mesa_set_enable(ctx, GL_FRAMEBUFFER_SRGB_EXT, GL_FALSE);
    }
@@ -3102,10 +3015,6 @@ _mesa_meta_GenerateMipmap(struct gl_context *ctx, GLenum target,
       _mesa_DrawArrays(GL_TRIANGLE_FAN, 0, 4);
    }
 
-   if (ctx->Extensions.EXT_texture_sRGB_decode) {
-      _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT,
-                          srgbDecodeSave);
-   }
    if (ctx->Extensions.EXT_framebuffer_sRGB && srgbBufferSave) {
       _mesa_set_enable(ctx, GL_FRAMEBUFFER_SRGB_EXT, GL_TRUE);
    }
@@ -3415,7 +3324,6 @@ decompress_texture_image(struct gl_context *ctx,
       const GLint maxLevelSave = texObj->MaxLevel;
       const GLenum wrapSSave = texObj->Sampler.WrapS;
       const GLenum wrapTSave = texObj->Sampler.WrapT;
-      const GLenum srgbSave = texObj->Sampler.sRGBDecode;
 
       /* restrict sampling to the texture level of interest */
       _mesa_TexParameteri(target, GL_TEXTURE_BASE_LEVEL, texImage->Level);
@@ -3424,11 +3332,6 @@ decompress_texture_image(struct gl_context *ctx,
       _mesa_TexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       _mesa_TexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-      /* No sRGB decode or encode.*/
-      if (ctx->Extensions.EXT_texture_sRGB_decode) {
-         _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT,
-                             GL_SKIP_DECODE_EXT);
-      }
       if (ctx->Extensions.EXT_framebuffer_sRGB) {
          _mesa_set_enable(ctx, GL_FRAMEBUFFER_SRGB_EXT, GL_FALSE);
       }
@@ -3447,9 +3350,6 @@ decompress_texture_image(struct gl_context *ctx,
       }
       _mesa_TexParameteri(target, GL_TEXTURE_WRAP_S, wrapSSave);
       _mesa_TexParameteri(target, GL_TEXTURE_WRAP_T, wrapTSave);
-      if (ctx->Extensions.EXT_texture_sRGB_decode) {
-         _mesa_TexParameteri(target, GL_TEXTURE_SRGB_DECODE_EXT, srgbSave);
-      }
    }
 
    /* read pixels from renderbuffer */

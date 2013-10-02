@@ -39,17 +39,9 @@
 #include "main/texcompress_fxt1.h"
 #include "main/texcompress_s3tc.h"
 #include "main/texcompress_rgtc.h"
-#include "main/texcompress_etc.h"
 #include "main/teximage.h"
 #include "s_context.h"
 #include "s_texfetch.h"
-#if 0
-#include "../../gallium/auxiliary/util/u_format_rgb9e5.h"
-#include "../../gallium/auxiliary/util/u_format_r11g11b10f.h"
-#else
-#include "../main/u_format_rgb9e5.h"
-#include "../main/u_format_r11g11b10f.h"
-#endif
 
 
 /**
@@ -1027,12 +1019,6 @@ texfetch_funcs[MESA_FORMAT_COUNT] =
       NULL
    },
    {
-      MESA_FORMAT_ETC1_RGB8,
-      NULL,
-      _mesa_fetch_texel_2d_f_etc1_rgb8,
-      NULL
-   },
-   {
       MESA_FORMAT_SIGNED_A8,
       fetch_texel_1d_signed_a8,
       fetch_texel_2d_signed_a8,
@@ -1081,18 +1067,6 @@ texfetch_funcs[MESA_FORMAT_COUNT] =
       fetch_texel_3d_signed_i16
    },
    {
-      MESA_FORMAT_RGB9_E5_FLOAT,
-      fetch_texel_1d_rgb9_e5,
-      fetch_texel_2d_rgb9_e5,
-      fetch_texel_3d_rgb9_e5
-   },
-   {
-      MESA_FORMAT_R11_G11_B10_FLOAT,
-      fetch_texel_1d_r11_g11_b10f,
-      fetch_texel_2d_r11_g11_b10f,
-      fetch_texel_3d_r11_g11_b10f
-   },
-   {
       MESA_FORMAT_Z32_FLOAT,
       fetch_texel_1d_f_r_f32, /* Reuse the R32F functions. */
       fetch_texel_2d_f_r_f32,
@@ -1103,12 +1077,6 @@ texfetch_funcs[MESA_FORMAT_COUNT] =
       fetch_texel_1d_z32f_x24s8,
       fetch_texel_2d_z32f_x24s8,
       fetch_texel_3d_z32f_x24s8
-   },
-   {
-      MESA_FORMAT_ARGB2101010_UINT,
-      NULL,
-      NULL,
-      NULL
    }
 };
 
@@ -1152,8 +1120,7 @@ set_fetch_functions(struct swrast_texture_image *texImage, GLuint dims)
 
    ASSERT(dims == 1 || dims == 2 || dims == 3);
 
-   if (texImage->Base.TexObject->Sampler.sRGBDecode == GL_SKIP_DECODE_EXT &&
-       _mesa_get_format_color_encoding(format) == GL_SRGB) {
+   if (_mesa_get_format_color_encoding(format) == GL_SRGB) {
       format = _mesa_get_srgb_format_linear(format);
    }
 

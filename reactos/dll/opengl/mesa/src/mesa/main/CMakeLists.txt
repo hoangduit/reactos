@@ -2,13 +2,10 @@
 list(APPEND SOURCE
     api_arrayelt.c
     api_exec.c
-    # api_exec_es1.c
-    # api_exec_es2.c
     api_loopback.c
     api_validate.c
     accum.c
     arbprogram.c
-    # atifragshader.c
     attrib.c
     arrayobj.c
     blend.c
@@ -17,7 +14,6 @@ list(APPEND SOURCE
     clear.c
     clip.c
     colortab.c
-    condrender.c
     context.c
     convolve.c
     cpuinfo.c
@@ -54,7 +50,6 @@ list(APPEND SOURCE
     mipmap.c
     mm.c
     multisample.c
-    # nvprogram.c
     pack.c
     pbo.c
     pixel.c
@@ -63,12 +58,9 @@ list(APPEND SOURCE
     points.c
     polygon.c
     querymatrix.c
-    queryobj.c
     rastpos.c
     readpix.c
-    remap.c
     renderbuffer.c
-    samplerobj.c
     scissor.c
     shaderapi.c
     shaderobj.c
@@ -76,12 +68,10 @@ list(APPEND SOURCE
     shared.c
     state.c
     stencil.c
-    syncobj.c
     texcompress.c
     texcompress_rgtc.c
     texcompress_s3tc.c
     texcompress_fxt1.c
-    texcompress_etc.c
     texenv.c
     texformat.c
     texgen.c
@@ -94,7 +84,6 @@ list(APPEND SOURCE
     texstorage.c
     texstore.c
     texturebarrier.c
-    transformfeedback.c
     uniform_query.cpp
     uniforms.c
     varray.c

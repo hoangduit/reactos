@@ -242,7 +242,6 @@ vbo_exec_bind_arrays( struct gl_context *ctx )
 	 arrays[attr].StrideB = exec->vtx.vertex_size * sizeof(GLfloat);
 	 arrays[attr].Stride = exec->vtx.vertex_size * sizeof(GLfloat);
 	 arrays[attr].Type = GL_FLOAT;
-         arrays[attr].Format = GL_RGBA;
 	 arrays[attr].Enabled = 1;
          arrays[attr]._ElementSize = arrays[attr].Size * sizeof(GLfloat);
          _mesa_reference_buffer_object(ctx,
@@ -411,8 +410,7 @@ vbo_exec_vtx_flush(struct vbo_exec_context *exec, GLboolean keepUnmapped)
 				       NULL,
 				       GL_TRUE,
 				       0,
-				       exec->vtx.vert_count - 1,
-				       NULL);
+				       exec->vtx.vert_count - 1);
 
 	 /* If using a real VBO, get new storage -- unless asked not to.
           */

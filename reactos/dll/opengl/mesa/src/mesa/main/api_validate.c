@@ -206,11 +206,7 @@ check_index_bounds(struct gl_context *ctx, GLsizei count, GLenum type,
 GLboolean
 _mesa_valid_prim_mode(const struct gl_context *ctx, GLenum mode)
 {
-   if (ctx->Extensions.ARB_geometry_shader4 &&
-       mode > GL_TRIANGLE_STRIP_ADJACENCY_ARB) {
-      return GL_FALSE;
-   }
-   else if (mode > GL_POLYGON) {
+   if (mode > GL_POLYGON) {
       return GL_FALSE;
    }
    else {
@@ -475,36 +471,3 @@ _mesa_validate_DrawElementsInstanced(struct gl_context *ctx,
    return GL_TRUE;
 }
 
-
-#if FEATURE_EXT_transform_feedback
-
-GLboolean
-_mesa_validate_DrawTransformFeedback(struct gl_context *ctx,
-                                     GLenum mode,
-                                     struct gl_transform_feedback_object *obj)
-{
-   ASSERT_OUTSIDE_BEGIN_END_WITH_RETVAL(ctx, GL_FALSE);
-
-   if (!_mesa_valid_prim_mode(ctx, mode)) {
-      _mesa_error(ctx, GL_INVALID_ENUM, "glDrawTransformFeedback(mode)");
-      return GL_FALSE;
-   }
-
-   if (!obj) {
-      _mesa_error(ctx, GL_INVALID_VALUE, "glDrawTransformFeedback(name)");
-      return GL_FALSE;
-   }
-
-   if (!obj->EndedAnytime) {
-      _mesa_error(ctx, GL_INVALID_OPERATION, "glDrawTransformFeedback");
-      return GL_FALSE;
-   }
-
-   if (!check_valid_to_render(ctx, "glDrawTransformFeedback")) {
-      return GL_FALSE;
-   }
-
-   return GL_TRUE;
-}
-
-#endif

@@ -872,25 +872,6 @@ struct dd_function_table {
    /**@}*/
 
    /**
-    * \name GL_ARB_sync interfaces
-    */
-   /*@{*/
-   struct gl_sync_object * (*NewSyncObject)(struct gl_context *, GLenum);
-   void (*FenceSync)(struct gl_context *, struct gl_sync_object *, GLenum, GLbitfield);
-   void (*DeleteSyncObject)(struct gl_context *, struct gl_sync_object *);
-   void (*CheckSync)(struct gl_context *, struct gl_sync_object *);
-   void (*ClientWaitSync)(struct gl_context *, struct gl_sync_object *,
-			  GLbitfield, GLuint64);
-   void (*ServerWaitSync)(struct gl_context *, struct gl_sync_object *,
-			  GLbitfield, GLuint64);
-   /*@}*/
-
-   /** GL_NV_conditional_render */
-   void (*BeginConditionalRender)(struct gl_context *ctx, struct gl_query_object *q,
-                                  GLenum mode);
-   void (*EndConditionalRender)(struct gl_context *ctx, struct gl_query_object *q);
-
-   /**
     * \name GL_OES_draw_texture interface
     */
    /*@{*/
@@ -910,33 +891,9 @@ struct dd_function_table {
 					     void *image_handle);
 
    /**
-    * \name GL_EXT_transform_feedback interface
-    */
-   struct gl_transform_feedback_object *
-        (*NewTransformFeedback)(struct gl_context *ctx, GLuint name);
-   void (*DeleteTransformFeedback)(struct gl_context *ctx,
-                                   struct gl_transform_feedback_object *obj);
-   void (*BeginTransformFeedback)(struct gl_context *ctx, GLenum mode,
-                                  struct gl_transform_feedback_object *obj);
-   void (*EndTransformFeedback)(struct gl_context *ctx,
-                                struct gl_transform_feedback_object *obj);
-   void (*PauseTransformFeedback)(struct gl_context *ctx,
-                                  struct gl_transform_feedback_object *obj);
-   void (*ResumeTransformFeedback)(struct gl_context *ctx,
-                                   struct gl_transform_feedback_object *obj);
-
-   /**
     * \name GL_NV_texture_barrier interface
     */
    void (*TextureBarrier)(struct gl_context *ctx);
-
-   /**
-    * \name GL_ARB_sampler_objects
-    */
-   struct gl_sampler_object * (*NewSamplerObject)(struct gl_context *ctx,
-                                                  GLuint name);
-   void (*DeleteSamplerObject)(struct gl_context *ctx,
-                               struct gl_sampler_object *samp);
 };
 
 
@@ -1047,70 +1004,6 @@ typedef struct {
    void (GLAPIENTRYP VertexAttribI3uiv)( GLuint index, const GLuint *v);
    void (GLAPIENTRYP VertexAttribI4uiv)( GLuint index, const GLuint *v);
 
-   /* GL_ARB_vertex_type_10_10_10_2_rev / GL3.3 */
-   void (GLAPIENTRYP VertexP2ui)( GLenum type, GLuint value );
-   void (GLAPIENTRYP VertexP2uiv)( GLenum type, const GLuint *value);
-
-   void (GLAPIENTRYP VertexP3ui)( GLenum type, GLuint value );
-   void (GLAPIENTRYP VertexP3uiv)( GLenum type, const GLuint *value);
-
-   void (GLAPIENTRYP VertexP4ui)( GLenum type, GLuint value );
-   void (GLAPIENTRYP VertexP4uiv)( GLenum type, const GLuint *value);
-
-   void (GLAPIENTRYP TexCoordP1ui)( GLenum type, GLuint coords );
-   void (GLAPIENTRYP TexCoordP1uiv)( GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP TexCoordP2ui)( GLenum type, GLuint coords );
-   void (GLAPIENTRYP TexCoordP2uiv)( GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP TexCoordP3ui)( GLenum type, GLuint coords );
-   void (GLAPIENTRYP TexCoordP3uiv)( GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP TexCoordP4ui)( GLenum type, GLuint coords );
-   void (GLAPIENTRYP TexCoordP4uiv)( GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP MultiTexCoordP1ui)( GLenum texture, GLenum type, GLuint coords );
-   void (GLAPIENTRYP MultiTexCoordP1uiv)( GLenum texture, GLenum type, const GLuint *coords );
-   void (GLAPIENTRYP MultiTexCoordP2ui)( GLenum texture, GLenum type, GLuint coords );
-   void (GLAPIENTRYP MultiTexCoordP2uiv)( GLenum texture, GLenum type, const GLuint *coords );
-   void (GLAPIENTRYP MultiTexCoordP3ui)( GLenum texture, GLenum type, GLuint coords );
-   void (GLAPIENTRYP MultiTexCoordP3uiv)( GLenum texture, GLenum type, const GLuint *coords );
-   void (GLAPIENTRYP MultiTexCoordP4ui)( GLenum texture, GLenum type, GLuint coords );
-   void (GLAPIENTRYP MultiTexCoordP4uiv)( GLenum texture, GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP NormalP3ui)( GLenum type, GLuint coords );
-   void (GLAPIENTRYP NormalP3uiv)( GLenum type, const GLuint *coords );
-
-   void (GLAPIENTRYP ColorP3ui)( GLenum type, GLuint color );
-   void (GLAPIENTRYP ColorP3uiv)( GLenum type, const GLuint *color );
-
-   void (GLAPIENTRYP ColorP4ui)( GLenum type, GLuint color );
-   void (GLAPIENTRYP ColorP4uiv)( GLenum type, const GLuint *color );
-
-   void (GLAPIENTRYP SecondaryColorP3ui)( GLenum type, GLuint color );
-   void (GLAPIENTRYP SecondaryColorP3uiv)( GLenum type, const GLuint *color );
-
-   void (GLAPIENTRYP VertexAttribP1ui)( GLuint index, GLenum type,
-					GLboolean normalized, GLuint value);
-   void (GLAPIENTRYP VertexAttribP2ui)( GLuint index, GLenum type,
-					GLboolean normalized, GLuint value);
-   void (GLAPIENTRYP VertexAttribP3ui)( GLuint index, GLenum type,
-					GLboolean normalized, GLuint value);
-   void (GLAPIENTRYP VertexAttribP4ui)( GLuint index, GLenum type,
-					GLboolean normalized, GLuint value);
-   void (GLAPIENTRYP VertexAttribP1uiv)( GLuint index, GLenum type,
-					GLboolean normalized,
-					 const GLuint *value);
-   void (GLAPIENTRYP VertexAttribP2uiv)( GLuint index, GLenum type,
-					GLboolean normalized,
-					 const GLuint *value);
-   void (GLAPIENTRYP VertexAttribP3uiv)( GLuint index, GLenum type,
-					GLboolean normalized,
-					 const GLuint *value);
-   void (GLAPIENTRYP VertexAttribP4uiv)( GLuint index, GLenum type,
-					 GLboolean normalized,
-					 const GLuint *value);
-
    /*@}*/
 
    void (GLAPIENTRYP Rectf)( GLfloat, GLfloat, GLfloat, GLfloat );
@@ -1152,7 +1045,6 @@ typedef struct {
    void (GLAPIENTRYP DrawElementsInstancedBaseVertex)(GLenum mode, GLsizei count,
                                             GLenum type, const GLvoid *indices,
                                             GLsizei primcount, GLint basevertex);
-   void (GLAPIENTRYP DrawTransformFeedback)(GLenum mode, GLuint name);
    /*@}*/
 
    /**

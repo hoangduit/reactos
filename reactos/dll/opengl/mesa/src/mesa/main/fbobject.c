@@ -461,15 +461,8 @@ _mesa_validate_framebuffer(struct gl_context *ctx, struct gl_framebuffer *fb)
             fb->_Status = GL_FRAMEBUFFER_UNSUPPORTED;
             return;
 
-         default:
-            switch (rb->Format) {
-            /* XXX This list is likely incomplete. */
-            case MESA_FORMAT_RGB9_E5_FLOAT:
-               fb->_Status = GL_FRAMEBUFFER_UNSUPPORTED;
-               return;
-            default:;
-               /* render buffer format is supported by software rendering */
-            }
+         default:;
+            /* render buffer format is supported by software rendering */
          }
       }
    }
@@ -609,11 +602,6 @@ test_attachment_completeness(const struct gl_context *ctx, GLenum format,
          if (baseFormat == GL_DEPTH_COMPONENT) {
             /* OK */
          }
-         else if (ctx->Extensions.EXT_packed_depth_stencil &&
-                  ctx->Extensions.ARB_depth_texture &&
-                  baseFormat == GL_DEPTH_STENCIL_EXT) {
-            /* OK */
-         }
          else {
             att->Complete = GL_FALSE;
             att_incomplete("bad depth format");
@@ -621,13 +609,7 @@ test_attachment_completeness(const struct gl_context *ctx, GLenum format,
          }
       }
       else {
-         ASSERT(format == GL_STENCIL);
-         if (ctx->Extensions.EXT_packed_depth_stencil &&
-             ctx->Extensions.ARB_depth_texture &&
-             baseFormat == GL_DEPTH_STENCIL_EXT) {
-            /* OK */
-         }
-         else {
+         {
             /* no such thing as stencil-only textures */
             att_incomplete("illegal stencil texture");
             att->Complete = GL_FALSE;
@@ -1234,10 +1216,6 @@ _mesa_base_fbo_format(struct gl_context *ctx, GLenum internalFormat)
    case GL_INTENSITY32F_ARB:
       return ctx->Extensions.ARB_texture_float &&
              ctx->Extensions.ARB_framebuffer_object ? GL_INTENSITY : 0;
-   case GL_RGB9_E5:
-      return ctx->Extensions.EXT_texture_shared_exponent ? GL_RGB : 0;
-   case GL_R11F_G11F_B10F:
-      return ctx->Extensions.EXT_packed_float ? GL_RGB : 0;
 
    case GL_RGBA8UI_EXT:
    case GL_RGBA16UI_EXT:
@@ -1304,8 +1282,6 @@ _mesa_base_fbo_format(struct gl_context *ctx, GLenum internalFormat)
       return ctx->Extensions.EXT_texture_integer &&
              ctx->Extensions.ARB_framebuffer_object ? GL_LUMINANCE_ALPHA : 0;
 
-   case GL_RGB10_A2UI:
-      return ctx->Extensions.ARB_texture_rgb10_a2ui ? GL_RGBA : 0;
    default:
       return 0;
    }
@@ -2177,17 +2153,6 @@ _mesa_FramebufferTexture3DEXT(GLenum target, GLenum attachment,
 
 
 void GLAPIENTRY
-_mesa_FramebufferTextureLayerEXT(GLenum target, GLenum attachment,
-                                 GLuint texture, GLint level, GLint layer)
-{
-   GET_CURRENT_CONTEXT(ctx);
-
-   framebuffer_texture(ctx, "Layer", target, attachment, 0, texture,
-                       level, layer);
-}
-
-
-void GLAPIENTRY
 _mesa_FramebufferRenderbufferEXT(GLenum target, GLenum attachment,
                                  GLenum renderbufferTarget,
                                  GLuint renderbuffer)
@@ -2866,26 +2831,3 @@ _mesa_BlitFramebufferEXT(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
 }
 #endif /* FEATURE_EXT_framebuffer_blit */
 
-
-#if FEATURE_ARB_geometry_shader4
-void GLAPIENTRY
-_mesa_FramebufferTextureARB(GLenum target, GLenum attachment,
-                            GLuint texture, GLint level)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   _mesa_error(ctx, GL_INVALID_OPERATION,
-               "glFramebufferTextureARB "
-               "not implemented!");
-}
-
-
-void GLAPIENTRY
-_mesa_FramebufferTextureFaceARB(GLenum target, GLenum attachment,
-                                GLuint texture, GLint level, GLenum face)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   _mesa_error(ctx, GL_INVALID_OPERATION,
-               "glFramebufferTextureFaceARB "
-               "not implemented!");
-}
-#endif /* FEATURE_ARB_geometry_shader4 */

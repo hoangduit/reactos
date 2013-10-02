@@ -35,9 +35,6 @@
 #include "api_exec.h"
 #include "api_loopback.h"
 #include "api_validate.h"
-#if FEATURE_ATI_fragment_shader
-#include "atifragshader.h"
-#endif
 #include "config.h"
 #include "mfeatures.h"
 #include "bufferobj.h"
@@ -57,10 +54,7 @@
 #include "macros.h"
 #include "pack.h"
 #include "pbo.h"
-#include "queryobj.h"
-#include "samplerobj.h"
 #include "shaderapi.h"
-#include "syncobj.h"
 #include "teximage.h"
 #include "texstorage.h"
 #include "mtypes.h"
@@ -70,9 +64,6 @@
 #endif
 #if FEATURE_NV_vertex_program || FEATURE_NV_fragment_program
 #include "nvprogram.h"
-#endif
-#if FEATURE_EXT_transform_feedback
-#include "transformfeedback.h"
 #endif
 
 #include "math/m_matrix.h"
@@ -218,7 +209,6 @@ typedef enum
    OPCODE_CLEAR_BUFFER_FI,
    OPCODE_CLIP_PLANE,
    OPCODE_COLOR_MASK,
-   OPCODE_COLOR_MASK_INDEXED,
    OPCODE_COLOR_MATERIAL,
    OPCODE_COLOR_TABLE,
    OPCODE_COLOR_TABLE_PARAMETER_FV,
@@ -243,11 +233,9 @@ typedef enum
    OPCODE_DEPTH_MASK,
    OPCODE_DEPTH_RANGE,
    OPCODE_DISABLE,
-   OPCODE_DISABLE_INDEXED,
    OPCODE_DRAW_BUFFER,
    OPCODE_DRAW_PIXELS,
    OPCODE_ENABLE,
-   OPCODE_ENABLE_INDEXED,
    OPCODE_EVALMESH1,
    OPCODE_EVALMESH2,
    OPCODE_FOG,
@@ -344,16 +332,10 @@ typedef enum
    /* GL_ARB_vertex/fragment_program */
    OPCODE_PROGRAM_STRING_ARB,
    OPCODE_PROGRAM_ENV_PARAMETER_ARB,
-   /* GL_ARB_occlusion_query */
-   OPCODE_BEGIN_QUERY_ARB,
-   OPCODE_END_QUERY_ARB,
    /* GL_ARB_draw_buffers */
    OPCODE_DRAW_BUFFERS_ARB,
    /* GL_ATI_fragment_shader */
    OPCODE_TEX_BUMP_PARAMETER_ATI,
-   /* GL_ATI_fragment_shader */
-   OPCODE_BIND_FRAGMENT_SHADER_ATI,
-   OPCODE_SET_FRAGMENT_SHADER_CONSTANTS_ATI,
    /* OpenGL 2.0 */
    OPCODE_STENCIL_FUNC_SEPARATE,
    OPCODE_STENCIL_OP_SEPARATE,
@@ -423,17 +405,6 @@ typedef enum
    OPCODE_EVAL_P1,
    OPCODE_EVAL_P2,
 
-   /* GL_EXT_provoking_vertex */
-   OPCODE_PROVOKING_VERTEX,
-
-   /* GL_EXT_transform_feedback */
-   OPCODE_BEGIN_TRANSFORM_FEEDBACK,
-   OPCODE_END_TRANSFORM_FEEDBACK,
-   OPCODE_BIND_TRANSFORM_FEEDBACK,
-   OPCODE_PAUSE_TRANSFORM_FEEDBACK,
-   OPCODE_RESUME_TRANSFORM_FEEDBACK,
-   OPCODE_DRAW_TRANSFORM_FEEDBACK,
-
    /* GL_EXT_texture_integer */
    OPCODE_CLEARCOLOR_I,
    OPCODE_CLEARCOLOR_UI,
@@ -444,30 +415,8 @@ typedef enum
    OPCODE_ACTIVE_PROGRAM_EXT,
    OPCODE_USE_SHADER_PROGRAM_EXT,
 
-   /* GL_ARB_instanced_arrays */
-   OPCODE_VERTEX_ATTRIB_DIVISOR,
-
    /* GL_NV_texture_barrier */
    OPCODE_TEXTURE_BARRIER_NV,
-
-   /* GL_ARB_sampler_object */
-   OPCODE_BIND_SAMPLER,
-   OPCODE_SAMPLER_PARAMETERIV,
-   OPCODE_SAMPLER_PARAMETERFV,
-   OPCODE_SAMPLER_PARAMETERIIV,
-   OPCODE_SAMPLER_PARAMETERUIV,
-
-   /* GL_ARB_geometry_shader4 */
-   OPCODE_PROGRAM_PARAMETERI,
-   OPCODE_FRAMEBUFFER_TEXTURE,
-   OPCODE_FRAMEBUFFER_TEXTURE_FACE,
-
-   /* GL_ARB_sync */
-   OPCODE_WAIT_SYNC,
-
-   /* GL_NV_conditional_render */
-   OPCODE_BEGIN_CONDITIONAL_RENDER,
-   OPCODE_END_CONDITIONAL_RENDER,
 
    /* The following three are meta instructions */
    OPCODE_ERROR,                /* raise compiled-in error */
@@ -1669,27 +1618,6 @@ save_ColorMask(GLboolean red, GLboolean green,
 
 
 static void GLAPIENTRY
-save_ColorMaskIndexed(GLuint buf, GLboolean red, GLboolean green,
-                      GLboolean blue, GLboolean alpha)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_COLOR_MASK_INDEXED, 5);
-   if (n) {
-      n[1].ui = buf;
-      n[2].b = red;
-      n[3].b = green;
-      n[4].b = blue;
-      n[5].b = alpha;
-   }
-   if (ctx->ExecuteFlag) {
-      /*CALL_ColorMaskIndexedEXT(ctx->Exec, (buf, red, green, blue, alpha));*/
-   }
-}
-
-
-static void GLAPIENTRY
 save_ColorMaterial(GLenum face, GLenum mode)
 {
    GET_CURRENT_CONTEXT(ctx);
@@ -2246,23 +2174,6 @@ save_Disable(GLenum cap)
 
 
 static void GLAPIENTRY
-save_DisableIndexed(GLuint index, GLenum cap)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_DISABLE_INDEXED, 2);
-   if (n) {
-      n[1].ui = index;
-      n[2].e = cap;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_DisableIndexedEXT(ctx->Exec, (index, cap));
-   }
-}
-
-
-static void GLAPIENTRY
 save_DrawBuffer(GLenum mode)
 {
    GET_CURRENT_CONTEXT(ctx);
@@ -2315,24 +2226,6 @@ save_Enable(GLenum cap)
    }
    if (ctx->ExecuteFlag) {
       CALL_Enable(ctx->Exec, (cap));
-   }
-}
-
-
-
-static void GLAPIENTRY
-save_EnableIndexed(GLuint index, GLenum cap)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_ENABLE_INDEXED, 2);
-   if (n) {
-      n[1].ui = index;
-      n[2].e = cap;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_EnableIndexedEXT(ctx->Exec, (index, cap));
    }
 }
 
@@ -5277,43 +5170,6 @@ save_ProgramStringARB(GLenum target, GLenum format, GLsizei len,
 #endif /* FEATURE_ARB_vertex_program || FEATURE_ARB_fragment_program */
 
 
-#if FEATURE_queryobj
-
-static void GLAPIENTRY
-save_BeginQueryARB(GLenum target, GLuint id)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_BEGIN_QUERY_ARB, 2);
-   if (n) {
-      n[1].e = target;
-      n[2].ui = id;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BeginQueryARB(ctx->Exec, (target, id));
-   }
-}
-
-
-static void GLAPIENTRY
-save_EndQueryARB(GLenum target)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_END_QUERY_ARB, 1);
-   if (n) {
-      n[1].e = target;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_EndQueryARB(ctx->Exec, (target));
-   }
-}
-
-#endif /* FEATURE_queryobj */
-
-
 static void GLAPIENTRY
 save_DrawBuffersARB(GLsizei count, const GLenum * buffers)
 {
@@ -5364,42 +5220,6 @@ save_TexBumpParameterivATI(GLenum pname, const GLint *param)
    p[3] = INT_TO_FLOAT(param[3]);
    save_TexBumpParameterfvATI(pname, p);
 }
-
-#if FEATURE_ATI_fragment_shader
-static void GLAPIENTRY
-save_BindFragmentShaderATI(GLuint id)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-
-   n = alloc_instruction(ctx, OPCODE_BIND_FRAGMENT_SHADER_ATI, 1);
-   if (n) {
-      n[1].ui = id;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BindFragmentShaderATI(ctx->Exec, (id));
-   }
-}
-
-static void GLAPIENTRY
-save_SetFragmentShaderConstantATI(GLuint dst, const GLfloat *value)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-
-   n = alloc_instruction(ctx, OPCODE_SET_FRAGMENT_SHADER_CONSTANTS_ATI, 5);
-   if (n) {
-      n[1].ui = dst;
-      n[2].f = value[0];
-      n[3].f = value[1];
-      n[4].f = value[2];
-      n[5].f = value[3];
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_SetFragmentShaderConstantATI(ctx->Exec, (dst, value));
-   }
-}
-#endif
 
 static void GLAPIENTRY
 save_Attr1fNV(GLenum attr, GLfloat x)
@@ -6266,108 +6086,6 @@ save_BlitFramebufferEXT(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
 #endif
 
 
-/** GL_EXT_provoking_vertex */
-static void GLAPIENTRY
-save_ProvokingVertexEXT(GLenum mode)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_PROVOKING_VERTEX, 1);
-   if (n) {
-      n[1].e = mode;
-   }
-   if (ctx->ExecuteFlag) {
-      /*CALL_ProvokingVertexEXT(ctx->Exec, (mode));*/
-      _mesa_ProvokingVertexEXT(mode);
-   }
-}
-
-
-/** GL_EXT_transform_feedback */
-static void GLAPIENTRY
-save_BeginTransformFeedback(GLenum mode)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_BEGIN_TRANSFORM_FEEDBACK, 1);
-   if (n) {
-      n[1].e = mode;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BeginTransformFeedbackEXT(ctx->Exec, (mode));
-   }
-}
-
-
-/** GL_EXT_transform_feedback */
-static void GLAPIENTRY
-save_EndTransformFeedback(void)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   (void) alloc_instruction(ctx, OPCODE_END_TRANSFORM_FEEDBACK, 0);
-   if (ctx->ExecuteFlag) {
-      CALL_EndTransformFeedbackEXT(ctx->Exec, ());
-   }
-}
-
-static void GLAPIENTRY
-save_BindTransformFeedback(GLenum target, GLuint name)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_BIND_TRANSFORM_FEEDBACK, 2);
-   if (n) {
-      n[1].e = target;
-      n[2].ui = name;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BindTransformFeedback(ctx->Exec, (target, name));
-   }
-}
-
-static void GLAPIENTRY
-save_PauseTransformFeedback(void)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   (void) alloc_instruction(ctx, OPCODE_PAUSE_TRANSFORM_FEEDBACK, 0);
-   if (ctx->ExecuteFlag) {
-      CALL_PauseTransformFeedback(ctx->Exec, ());
-   }
-}
-
-static void GLAPIENTRY
-save_ResumeTransformFeedback(void)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   (void) alloc_instruction(ctx, OPCODE_RESUME_TRANSFORM_FEEDBACK, 0);
-   if (ctx->ExecuteFlag) {
-      CALL_ResumeTransformFeedback(ctx->Exec, ());
-   }
-}
-
-static void GLAPIENTRY
-save_DrawTransformFeedback(GLenum mode, GLuint name)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_DRAW_TRANSFORM_FEEDBACK, 2);
-   if (n) {
-      n[1].e = mode;
-      n[2].ui = name;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_DrawTransformFeedback(ctx->Exec, (mode, name));
-   }
-}
-
-
 /* aka UseProgram() */
 static void GLAPIENTRY
 save_UseProgramObjectARB(GLhandleARB program)
@@ -7143,24 +6861,6 @@ exec_GetTexParameterIuiv(GLenum target, GLenum pname, GLuint *params)
 }
 
 
-/* GL_ARB_instanced_arrays */
-static void GLAPIENTRY
-save_VertexAttribDivisor(GLuint index, GLuint divisor)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_VERTEX_ATTRIB_DIVISOR, 2);
-   if (n) {
-      n[1].ui = index;
-      n[2].ui = divisor;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_VertexAttribDivisorARB(ctx->Exec, (index, divisor));
-   }
-}
-
-
 /* GL_NV_texture_barrier */
 static void GLAPIENTRY
 save_TextureBarrierNV(void)
@@ -7172,246 +6872,6 @@ save_TextureBarrierNV(void)
       CALL_TextureBarrierNV(ctx->Exec, ());
    }
 }
-
-
-/* GL_ARB_sampler_objects */
-static void GLAPIENTRY
-save_BindSampler(GLuint unit, GLuint sampler)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_BIND_SAMPLER, 2);
-   if (n) {
-      n[1].ui = unit;
-      n[2].ui = sampler;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BindSampler(ctx->Exec, (unit, sampler));
-   }
-}
-
-static void GLAPIENTRY
-save_SamplerParameteriv(GLuint sampler, GLenum pname, const GLint *params)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_SAMPLER_PARAMETERIV, 6);
-   if (n) {
-      n[1].ui = sampler;
-      n[2].e = pname;
-      n[3].i = params[0];
-      if (pname == GL_TEXTURE_BORDER_COLOR) {
-         n[4].i = params[1];
-         n[5].i = params[2];
-         n[6].i = params[3];
-      }
-      else {
-         n[4].i = n[5].i = n[6].i = 0;
-      }
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_SamplerParameteriv(ctx->Exec, (sampler, pname, params));
-   }
-}
-
-static void GLAPIENTRY
-save_SamplerParameteri(GLuint sampler, GLenum pname, GLint param)
-{
-   save_SamplerParameteriv(sampler, pname, &param);
-}
-
-static void GLAPIENTRY
-save_SamplerParameterfv(GLuint sampler, GLenum pname, const GLfloat *params)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_SAMPLER_PARAMETERFV, 6);
-   if (n) {
-      n[1].ui = sampler;
-      n[2].e = pname;
-      n[3].f = params[0];
-      if (pname == GL_TEXTURE_BORDER_COLOR) {
-         n[4].f = params[1];
-         n[5].f = params[2];
-         n[6].f = params[3];
-      }
-      else {
-         n[4].f = n[5].f = n[6].f = 0.0F;
-      }
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_SamplerParameterfv(ctx->Exec, (sampler, pname, params));
-   }
-}
-
-static void GLAPIENTRY
-save_SamplerParameterf(GLuint sampler, GLenum pname, GLfloat param)
-{
-   save_SamplerParameterfv(sampler, pname, &param);
-}
-
-static void GLAPIENTRY
-save_SamplerParameterIiv(GLuint sampler, GLenum pname, const GLint *params)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_SAMPLER_PARAMETERIIV, 6);
-   if (n) {
-      n[1].ui = sampler;
-      n[2].e = pname;
-      n[3].i = params[0];
-      if (pname == GL_TEXTURE_BORDER_COLOR) {
-         n[4].i = params[1];
-         n[5].i = params[2];
-         n[6].i = params[3];
-      }
-      else {
-         n[4].i = n[5].i = n[6].i = 0;
-      }
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_SamplerParameterIiv(ctx->Exec, (sampler, pname, params));
-   }
-}
-
-static void GLAPIENTRY
-save_SamplerParameterIuiv(GLuint sampler, GLenum pname, const GLuint *params)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_SAMPLER_PARAMETERUIV, 6);
-   if (n) {
-      n[1].ui = sampler;
-      n[2].e = pname;
-      n[3].ui = params[0];
-      if (pname == GL_TEXTURE_BORDER_COLOR) {
-         n[4].ui = params[1];
-         n[5].ui = params[2];
-         n[6].ui = params[3];
-      }
-      else {
-         n[4].ui = n[5].ui = n[6].ui = 0;
-      }
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_SamplerParameterIuiv(ctx->Exec, (sampler, pname, params));
-   }
-}
-
-/* GL_ARB_geometry_shader4 */
-static void GLAPIENTRY
-save_ProgramParameteri(GLuint program, GLenum pname, GLint value)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_PROGRAM_PARAMETERI, 3);
-   if (n) {
-      n[1].ui = program;
-      n[2].e = pname;
-      n[3].i = value;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_ProgramParameteriARB(ctx->Exec, (program, pname, value));
-   }
-}
-
-static void GLAPIENTRY
-save_FramebufferTexture(GLenum target, GLenum attachment,
-                        GLuint texture, GLint level)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_FRAMEBUFFER_TEXTURE, 4);
-   if (n) {
-      n[1].e = target;
-      n[2].e = attachment;
-      n[3].ui = texture;
-      n[4].i = level;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_FramebufferTextureARB(ctx->Exec, (target, attachment, texture, level));
-   }
-}
-
-static void GLAPIENTRY
-save_FramebufferTextureFace(GLenum target, GLenum attachment,
-                            GLuint texture, GLint level, GLenum face)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_FRAMEBUFFER_TEXTURE_FACE, 5);
-   if (n) {
-      n[1].e = target;
-      n[2].e = attachment;
-      n[3].ui = texture;
-      n[4].i = level;
-      n[5].e = face;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_FramebufferTextureFaceARB(ctx->Exec, (target, attachment, texture,
-                                                 level, face));
-   }
-}
-
-
-
-static void GLAPIENTRY
-save_WaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
-{
-   Node *n;
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_WAIT_SYNC, 4);
-   if (n) {
-      union uint64_pair p;
-      p.uint64 = timeout;
-      n[1].data = sync;
-      n[2].e = flags;
-      n[3].ui = p.uint32[0];
-      n[4].ui = p.uint32[1];
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_WaitSync(ctx->Exec, (sync, flags, timeout));
-   }
-}
-
-
-/** GL_NV_conditional_render */
-static void GLAPIENTRY
-save_BeginConditionalRender(GLuint queryId, GLenum mode)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   Node *n;
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   n = alloc_instruction(ctx, OPCODE_BEGIN_CONDITIONAL_RENDER, 2);
-   if (n) {
-      n[1].i = queryId;
-      n[2].e = mode;
-   }
-   if (ctx->ExecuteFlag) {
-      CALL_BeginConditionalRenderNV(ctx->Exec, (queryId, mode));
-   }
-}
-
-static void GLAPIENTRY
-save_EndConditionalRender(void)
-{
-   GET_CURRENT_CONTEXT(ctx);
-   ASSERT_OUTSIDE_SAVE_BEGIN_END_AND_FLUSH(ctx);
-   alloc_instruction(ctx, OPCODE_END_CONDITIONAL_RENDER, 0);
-   if (ctx->ExecuteFlag) {
-      CALL_EndConditionalRenderNV(ctx->Exec, ());
-   }
-}
-
 
 /**
  * Save an error-generating command into display list.
@@ -7642,10 +7102,6 @@ execute_list(struct gl_context *ctx, GLuint list)
          case OPCODE_COLOR_MASK:
             CALL_ColorMask(ctx->Exec, (n[1].b, n[2].b, n[3].b, n[4].b));
             break;
-         case OPCODE_COLOR_MASK_INDEXED:
-            CALL_ColorMaskIndexedEXT(ctx->Exec, (n[1].ui, n[2].b, n[3].b,
-                                                 n[4].b, n[5].b));
-            break;
          case OPCODE_COLOR_MATERIAL:
             CALL_ColorMaterial(ctx->Exec, (n[1].e, n[2].e));
             break;
@@ -7788,9 +7244,6 @@ execute_list(struct gl_context *ctx, GLuint list)
          case OPCODE_DISABLE:
             CALL_Disable(ctx->Exec, (n[1].e));
             break;
-         case OPCODE_DISABLE_INDEXED:
-            CALL_DisableIndexedEXT(ctx->Exec, (n[1].ui, n[2].e));
-            break;
          case OPCODE_DRAW_BUFFER:
             CALL_DrawBuffer(ctx->Exec, (n[1].e));
             break;
@@ -7805,9 +7258,6 @@ execute_list(struct gl_context *ctx, GLuint list)
             break;
          case OPCODE_ENABLE:
             CALL_Enable(ctx->Exec, (n[1].e));
-            break;
-         case OPCODE_ENABLE_INDEXED:
-            CALL_EnableIndexedEXT(ctx->Exec, (n[1].ui, n[2].e));
             break;
          case OPCODE_EVALMESH1:
             CALL_EvalMesh1(ctx->Exec, (n[1].e, n[2].i, n[3].i));
@@ -8036,9 +7486,6 @@ execute_list(struct gl_context *ctx, GLuint list)
             break;
          case OPCODE_SHADE_MODEL:
             CALL_ShadeModel(ctx->Exec, (n[1].e));
-            break;
-         case OPCODE_PROVOKING_VERTEX:
-            CALL_ProvokingVertexEXT(ctx->Exec, (n[1].e));
             break;
          case OPCODE_STENCIL_FUNC:
             CALL_StencilFunc(ctx->Exec, (n[1].e, n[2].i, n[3].ui));
@@ -8284,14 +7731,6 @@ execute_list(struct gl_context *ctx, GLuint list)
                                                       n[6].f));
             break;
 #endif
-#if FEATURE_queryobj
-         case OPCODE_BEGIN_QUERY_ARB:
-            CALL_BeginQueryARB(ctx->Exec, (n[1].e, n[2].ui));
-            break;
-         case OPCODE_END_QUERY_ARB:
-            CALL_EndQueryARB(ctx->Exec, (n[1].e));
-            break;
-#endif
          case OPCODE_DRAW_BUFFERS_ARB:
             {
                GLenum buffers[MAX_DRAW_BUFFERS];
@@ -8445,21 +7884,6 @@ execute_list(struct gl_context *ctx, GLuint list)
                CALL_TexBumpParameterfvATI(ctx->Exec, (pname, values));
             }
             break;
-#if FEATURE_ATI_fragment_shader
-         case OPCODE_BIND_FRAGMENT_SHADER_ATI:
-            CALL_BindFragmentShaderATI(ctx->Exec, (n[1].i));
-            break;
-         case OPCODE_SET_FRAGMENT_SHADER_CONSTANTS_ATI:
-            {
-               GLfloat values[4];
-               GLuint i, dst = n[1].ui;
-
-               for (i = 0; i < 4; i++)
-                  values[i] = n[1 + i].f;
-               CALL_SetFragmentShaderConstantATI(ctx->Exec, (dst, values));
-            }
-            break;
-#endif
          case OPCODE_ATTR_1F_NV:
             CALL_VertexAttrib1fNV(ctx->Exec, (n[1].e, n[2].f));
             break;
@@ -8581,109 +8005,8 @@ execute_list(struct gl_context *ctx, GLuint list)
             }
             break;
 
-         case OPCODE_VERTEX_ATTRIB_DIVISOR:
-            /* GL_ARB_instanced_arrays */
-            CALL_VertexAttribDivisorARB(ctx->Exec, (n[1].ui, n[2].ui));
-            break;
-
          case OPCODE_TEXTURE_BARRIER_NV:
             CALL_TextureBarrierNV(ctx->Exec, ());
-            break;
-
-         /* GL_EXT/ARB_transform_feedback */
-         case OPCODE_BEGIN_TRANSFORM_FEEDBACK:
-            CALL_BeginTransformFeedbackEXT(ctx->Exec, (n[1].e));
-            break;
-         case OPCODE_END_TRANSFORM_FEEDBACK:
-            CALL_EndTransformFeedbackEXT(ctx->Exec, ());
-            break;
-         case OPCODE_BIND_TRANSFORM_FEEDBACK:
-            CALL_BindTransformFeedback(ctx->Exec, (n[1].e, n[2].ui));
-            break;
-         case OPCODE_PAUSE_TRANSFORM_FEEDBACK:
-            CALL_PauseTransformFeedback(ctx->Exec, ());
-            break;
-         case OPCODE_RESUME_TRANSFORM_FEEDBACK:
-            CALL_ResumeTransformFeedback(ctx->Exec, ());
-            break;
-         case OPCODE_DRAW_TRANSFORM_FEEDBACK:
-            CALL_DrawTransformFeedback(ctx->Exec, (n[1].e, n[2].ui));
-            break;
-
-
-         case OPCODE_BIND_SAMPLER:
-            CALL_BindSampler(ctx->Exec, (n[1].ui, n[2].ui));
-            break;
-         case OPCODE_SAMPLER_PARAMETERIV:
-            {
-               GLint params[4];
-               params[0] = n[3].i;
-               params[1] = n[4].i;
-               params[2] = n[5].i;
-               params[3] = n[6].i;
-               CALL_SamplerParameteriv(ctx->Exec, (n[1].ui, n[2].e, params));
-            }
-            break;
-         case OPCODE_SAMPLER_PARAMETERFV:
-            {
-               GLfloat params[4];
-               params[0] = n[3].f;
-               params[1] = n[4].f;
-               params[2] = n[5].f;
-               params[3] = n[6].f;
-               CALL_SamplerParameterfv(ctx->Exec, (n[1].ui, n[2].e, params));
-            }
-            break;
-         case OPCODE_SAMPLER_PARAMETERIIV:
-            {
-               GLint params[4];
-               params[0] = n[3].i;
-               params[1] = n[4].i;
-               params[2] = n[5].i;
-               params[3] = n[6].i;
-               CALL_SamplerParameterIiv(ctx->Exec, (n[1].ui, n[2].e, params));
-            }
-            break;
-         case OPCODE_SAMPLER_PARAMETERUIV:
-            {
-               GLuint params[4];
-               params[0] = n[3].ui;
-               params[1] = n[4].ui;
-               params[2] = n[5].ui;
-               params[3] = n[6].ui;
-               CALL_SamplerParameterIuiv(ctx->Exec, (n[1].ui, n[2].e, params));
-            }
-            break;
-
-         /* GL_ARB_geometry_shader4 */
-         case OPCODE_PROGRAM_PARAMETERI:
-            CALL_ProgramParameteriARB(ctx->Exec, (n[1].ui, n[2].e, n[3].i));
-            break;
-         case OPCODE_FRAMEBUFFER_TEXTURE:
-            CALL_FramebufferTextureARB(ctx->Exec, (n[1].e, n[2].e,
-                                                   n[3].ui, n[4].i));
-            break;
-         case OPCODE_FRAMEBUFFER_TEXTURE_FACE:
-            CALL_FramebufferTextureFaceARB(ctx->Exec, (n[1].e, n[2].e,
-                                                       n[3].ui, n[4].i, n[5].e));
-            break;
-
-         /* GL_ARB_sync */
-         case OPCODE_WAIT_SYNC:
-            {
-               union uint64_pair p;
-               p.uint32[0] = n[3].ui;
-               p.uint32[1] = n[4].ui;
-               CALL_WaitSync(ctx->Exec, (n[1].data, n[2].bf, p.uint64));
-            }
-            break;
-
-         /* GL_NV_conditional_render */
-         case OPCODE_BEGIN_CONDITIONAL_RENDER:
-            CALL_BeginConditionalRenderNV(ctx->Exec, (n[1].i, n[2].e));
-            break;
-         case OPCODE_END_CONDITIONAL_RENDER:
-            CALL_EndConditionalRenderNV(ctx->Exec, ());
             break;
 
          case OPCODE_CONTINUE:
@@ -9743,7 +9066,6 @@ _mesa_create_save_table(void)
    SET_ClearStencil(table, save_ClearStencil);
    SET_ClipPlane(table, save_ClipPlane);
    SET_ColorMask(table, save_ColorMask);
-   SET_ColorMaskIndexedEXT(table, save_ColorMaskIndexed);
    SET_ColorMaterial(table, save_ColorMaterial);
    SET_CopyPixels(table, save_CopyPixels);
    SET_CullFace(table, save_CullFace);
@@ -9752,11 +9074,9 @@ _mesa_create_save_table(void)
    SET_DepthMask(table, save_DepthMask);
    SET_DepthRange(table, save_DepthRange);
    SET_Disable(table, save_Disable);
-   SET_DisableIndexedEXT(table, save_DisableIndexed);
    SET_DrawBuffer(table, save_DrawBuffer);
    SET_DrawPixels(table, save_DrawPixels);
    SET_Enable(table, save_Enable);
-   SET_EnableIndexedEXT(table, save_EnableIndexed);
    SET_EndList(table, _mesa_EndList);
    SET_EvalMesh1(table, save_EvalMesh1);
    SET_EvalMesh2(table, save_EvalMesh2);
@@ -10111,12 +9431,6 @@ _mesa_create_save_table(void)
    SET_TexBumpParameterivATI(table, save_TexBumpParameterivATI);
    SET_TexBumpParameterfvATI(table, save_TexBumpParameterfvATI);
 
-   /* 245. GL_ATI_fragment_shader */
-#if FEATURE_ATI_fragment_shader
-   SET_BindFragmentShaderATI(table, save_BindFragmentShaderATI);
-   SET_SetFragmentShaderConstantATI(table, save_SetFragmentShaderConstantATI);
-#endif
-
    /* 282. GL_NV_fragment_program */
 #if FEATURE_NV_fragment_program
    SET_ProgramNamedParameter4fNV(table, save_ProgramNamedParameter4fNV);
@@ -10253,12 +9567,6 @@ _mesa_create_save_table(void)
    SET_MapBufferARB(table, _mesa_MapBufferARB);
    SET_UnmapBufferARB(table, _mesa_UnmapBufferARB);
 
-#if FEATURE_queryobj
-   _mesa_init_queryobj_dispatch(table); /* glGetQuery, etc */
-   SET_BeginQueryARB(table, save_BeginQueryARB);
-   SET_EndQueryARB(table, save_EndQueryARB);
-#endif
-
    SET_DrawBuffersARB(table, save_DrawBuffersARB);
 
 #if FEATURE_EXT_framebuffer_blit
@@ -10318,9 +9626,6 @@ _mesa_create_save_table(void)
    /* ARB 59. GL_ARB_copy_buffer */
    SET_CopyBufferSubData(table, _mesa_CopyBufferSubData); /* no dlist save */
 
-   /* 364. GL_EXT_provoking_vertex */
-   SET_ProvokingVertexEXT(table, save_ProvokingVertexEXT);
-
    /* 371. GL_APPLE_object_purgeable */
 #if FEATURE_APPLE_object_purgeable
    SET_ObjectPurgeableAPPLE(table, _mesa_ObjectPurgeableAPPLE);
@@ -10369,55 +9674,14 @@ _mesa_create_save_table(void)
    (void) save_Uniform4uiv;
 #endif
 
-#if FEATURE_EXT_transform_feedback
-   /* These are not compiled into display lists: */
-   SET_BindBufferBaseEXT(table, _mesa_BindBufferBase);
-   SET_BindBufferOffsetEXT(table, _mesa_BindBufferOffsetEXT);
-   SET_BindBufferRangeEXT(table, _mesa_BindBufferRange);
-   SET_TransformFeedbackVaryingsEXT(table, _mesa_TransformFeedbackVaryings);
-   /* These are: */
-   SET_BeginTransformFeedbackEXT(table, save_BeginTransformFeedback);
-   SET_EndTransformFeedbackEXT(table, save_EndTransformFeedback);
-   SET_BindTransformFeedback(table, save_BindTransformFeedback);
-   SET_PauseTransformFeedback(table, save_PauseTransformFeedback);
-   SET_ResumeTransformFeedback(table, save_ResumeTransformFeedback);
-   SET_DrawTransformFeedback(table, save_DrawTransformFeedback);
-#endif
-
-   /* GL_ARB_instanced_arrays */
-   SET_VertexAttribDivisorARB(table, save_VertexAttribDivisor);
-
    /* GL_NV_texture_barrier */
    SET_TextureBarrierNV(table, save_TextureBarrierNV);
-
-   /* GL_ARB_sampler_objects */
-   _mesa_init_sampler_object_dispatch(table); /* plug in Gen/Get/etc functions */
-   SET_BindSampler(table, save_BindSampler);
-   SET_SamplerParameteri(table, save_SamplerParameteri);
-   SET_SamplerParameterf(table, save_SamplerParameterf);
-   SET_SamplerParameteriv(table, save_SamplerParameteriv);
-   SET_SamplerParameterfv(table, save_SamplerParameterfv);
-   SET_SamplerParameterIiv(table, save_SamplerParameterIiv);
-   SET_SamplerParameterIuiv(table, save_SamplerParameterIuiv);
 
    /* GL_ARB_draw_buffer_blend */
    SET_BlendFunciARB(table, save_BlendFunci);
    SET_BlendFuncSeparateiARB(table, save_BlendFuncSeparatei);
    SET_BlendEquationiARB(table, save_BlendEquationi);
    SET_BlendEquationSeparateiARB(table, save_BlendEquationSeparatei);
-
-   /* GL_ARB_geometry_shader4 */
-   SET_ProgramParameteriARB(table, save_ProgramParameteri);
-   SET_FramebufferTextureARB(table, save_FramebufferTexture);
-   SET_FramebufferTextureFaceARB(table, save_FramebufferTextureFace);
-
-   /* GL_NV_conditional_render */
-   SET_BeginConditionalRenderNV(table, save_BeginConditionalRender);
-   SET_EndConditionalRenderNV(table, save_EndConditionalRender);
-
-   /* GL_ARB_sync */
-   _mesa_init_sync_dispatch(table);
-   SET_WaitSync(table, save_WaitSync);
 
    /* GL_ARB_texture_storage (no dlist support) */
    SET_TexStorage1D(table, _mesa_TexStorage1D);
@@ -10659,11 +9923,6 @@ print_list(struct gl_context *ctx, GLuint list)
             break;
          case OPCODE_EVAL_P2:
             printf("EVAL_P2 %d %d\n", n[1].i, n[2].i);
-            break;
-
-         case OPCODE_PROVOKING_VERTEX:
-            printf("ProvokingVertex %s\n",
-                         _mesa_lookup_enum_by_nr(n[1].ui));
             break;
 
             /*
