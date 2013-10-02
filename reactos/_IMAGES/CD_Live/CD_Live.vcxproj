@@ -76,6 +76,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\dhcpcsvc\$(OutDir)DHCPCSVC.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\dnsapi\$(OutDir)DNSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\fmifs\$(OutDir)FMIFS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\icmp\$(OutDir)ICMP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ieframe\$(OutDir)IEFRAME.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\imagehlp\$(OutDir)IMAGEHLP.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
@@ -92,6 +93,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\olesvr32\$(OutDir)OLESVR32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\olethk32\$(OutDir)OLETHK32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
@@ -202,6 +204,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\dhcpcsvc\$(OutDir)DHCPCSVC.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\dnsapi\$(OutDir)DNSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\fmifs\$(OutDir)FMIFS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\icmp\$(OutDir)ICMP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ieframe\$(OutDir)IEFRAME.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\imagehlp\$(OutDir)IMAGEHLP.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
@@ -218,6 +221,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\olesvr32\$(OutDir)OLESVR32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\olethk32\$(OutDir)OLETHK32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
@@ -347,6 +351,9 @@ GOTO:EOF</Command>
     <ProjectReference Include="..\..\dll\win32\fmifs\fmifs.vcxproj">
       <Project>{85baa556-0afb-4274-ac4d-6b9b99711ad6}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\ieframe\ieframe.vcxproj">
+      <Project>{fa959eae-93e3-46a4-bf9f-d00023d346bb}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\imagehlp\imagehlp.vcxproj">
       <Project>{e88681c0-e921-444a-850a-131209fc2813}</Project>
     </ProjectReference>
@@ -409,6 +416,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\setupapi\setupapi.vcxproj">
       <Project>{158ab90e-1a96-4c64-8211-dd43c55eeb7e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\shdocvw\shdocvw.vcxproj">
+      <Project>{859a8376-5104-47e8-88ff-cba8f9269f1d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\urlmon\urlmon.vcxproj">
       <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>

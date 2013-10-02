@@ -57,6 +57,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <AdditionalOptions>"$(OutDir)\ieframe_stubs.c"</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -76,6 +77,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -118,6 +120,9 @@
     <ClCompile Include="webbrowser.c" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\include\psdk\stdole2\stdole2.vcxproj">
+      <Project>{9f7632e9-7a31-427f-a935-ab3229baaf34}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
       <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
     </ProjectReference>
@@ -166,9 +171,6 @@
     <ProjectReference Include="..\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\stdole2.tlb\stdole2.tlb.vcxproj">
-      <Project>{e8ad5228-7832-40ad-accb-38c22fa536d2}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\urlmon\urlmon.vcxproj">
       <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
     </ProjectReference>
@@ -178,12 +180,14 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -t -o "%(Filename).tlb" "%(FullPath)"
+copy "$(SolutionDir)\include\psdk\stdole2\$(OutDir)\stdole2.tlb" .
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -I "$(SolutionDir)\include\psdk" -m32 --win32 -t -o "%(Filename).tlb" "%(FullPath)"
 cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -t -o "%(Filename).tlb" "%(FullPath)"
+copy "$(SolutionDir)\include\psdk\stdole2\$(OutDir)\stdole2.tlb" .
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe" -I "$(SolutionDir)\include\psdk" -m32 --win32 -t -o "%(Filename).tlb" "%(FullPath)"
 cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
@@ -195,8 +199,8 @@ cd ..\..\..</Command>
     <ResourceCompile Include="ieframe.rc">
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
       <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

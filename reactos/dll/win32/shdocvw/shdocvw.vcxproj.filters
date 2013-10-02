@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="shdocvw.spec" />
     <None Include="shdocvw_v1.rgs">
       <Filter>Resource Files</Filter>
     </None>
@@ -40,8 +39,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="shdocvw_v1.idl">
+    <CustomBuild Include="shdocvw.spec" />
+    <CustomBuild Include="shdocvw_v1.idl">
       <Filter>Source Files</Filter>
-    </Midl>
+    </CustomBuild>
   </ItemGroup>
 </Project>
