@@ -121,8 +121,6 @@ void
 _mesa_free_shader_state(struct gl_context *ctx)
 {
    _mesa_reference_shader_program(ctx, &ctx->Shader.CurrentVertexProgram, NULL);
-   _mesa_reference_shader_program(ctx, &ctx->Shader.CurrentGeometryProgram,
-				  NULL);
    _mesa_reference_shader_program(ctx, &ctx->Shader.CurrentFragmentProgram,
 				  NULL);
    _mesa_reference_shader_program(ctx, &ctx->Shader._CurrentFragmentProgram,
@@ -233,34 +231,10 @@ validate_shader_target(const struct gl_context *ctx, GLenum type)
    case GL_VERTEX_SHADER:
       return ctx->Extensions.ARB_vertex_shader;
 #endif
-#if FEATURE_ARB_geometry_shader4
-   case GL_GEOMETRY_SHADER_ARB:
-      return ctx->Extensions.ARB_geometry_shader4;
-#endif
    default:
       return false;
    }
 }
-
-
-/**
- * Find the length of the longest transform feedback varying name
- * which was specified with glTransformFeedbackVaryings().
- */
-static GLint
-longest_feedback_varying_name(const struct gl_shader_program *shProg)
-{
-   GLuint i;
-   GLint max = 0;
-   for (i = 0; i < shProg->TransformFeedback.NumVarying; i++) {
-      GLint len = strlen(shProg->TransformFeedback.VaryingNames[i]);
-      if (len > max)
-         max = len;
-   }
-   return max;
-}
-
-
 
 static GLboolean
 is_program(struct gl_context *ctx, GLuint name)
@@ -578,28 +552,6 @@ get_programiv(struct gl_context *ctx, GLuint program, GLenum pname, GLint *param
    case GL_PROGRAM_BINARY_LENGTH_OES:
       *params = 0;
       break;
-#if FEATURE_EXT_transform_feedback
-   case GL_TRANSFORM_FEEDBACK_VARYINGS:
-      *params = shProg->TransformFeedback.NumVarying;
-      break;
-   case GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH:
-      *params = longest_feedback_varying_name(shProg) + 1;
-      break;
-   case GL_TRANSFORM_FEEDBACK_BUFFER_MODE:
-      *params = shProg->TransformFeedback.BufferMode;
-      break;
-#endif
-#if FEATURE_ARB_geometry_shader4
-   case GL_GEOMETRY_VERTICES_OUT_ARB:
-      *params = shProg->Geom.VerticesOut;
-      break;
-   case GL_GEOMETRY_INPUT_TYPE_ARB:
-      *params = shProg->Geom.InputType;
-      break;
-   case GL_GEOMETRY_OUTPUT_TYPE_ARB:
-      *params = shProg->Geom.OutputType;
-      break;
-#endif
    default:
       _mesa_error(ctx, GL_INVALID_ENUM, "glGetProgramiv(pname)");
       return;
@@ -742,21 +694,10 @@ static void
 link_program(struct gl_context *ctx, GLuint program)
 {
    struct gl_shader_program *shProg;
-   struct gl_transform_feedback_object *obj =
-      ctx->TransformFeedback.CurrentObject;
 
    shProg = _mesa_lookup_shader_program_err(ctx, program, "glLinkProgram");
    if (!shProg)
       return;
-
-   if (obj->Active
-       && (shProg == ctx->Shader.CurrentVertexProgram
-	   || shProg == ctx->Shader.CurrentGeometryProgram
-	   || shProg == ctx->Shader.CurrentFragmentProgram)) {
-      _mesa_error(ctx, GL_INVALID_OPERATION,
-                  "glLinkProgram(transform feedback active)");
-      return;
-   }
 
    FLUSH_VERTICES(ctx, _NEW_PROGRAM);
 
@@ -797,9 +738,6 @@ print_shader_info(const struct gl_shader_program *shProg)
       case GL_FRAGMENT_SHADER:
          s = "fragment";
          break;
-      case GL_GEOMETRY_SHADER:
-         s = "geometry";
-         break;
       default:
          s = "";
       }
@@ -813,9 +751,6 @@ print_shader_info(const struct gl_shader_program *shProg)
    if (shProg->_LinkedShaders[MESA_SHADER_FRAGMENT])
       printf("  frag prog %u\n",
 	     shProg->_LinkedShaders[MESA_SHADER_FRAGMENT]->Program->Id);
-   if (shProg->_LinkedShaders[MESA_SHADER_GEOMETRY])
-      printf("  geom prog %u\n",
-	     shProg->_LinkedShaders[MESA_SHADER_GEOMETRY]->Program->Id);
 }
 
 
@@ -855,15 +790,6 @@ use_shader_program(struct gl_context *ctx, GLenum type,
       }
       break;
 #endif
-#if FEATURE_ARB_geometry_shader4
-   case GL_GEOMETRY_SHADER_ARB:
-      target = &ctx->Shader.CurrentGeometryProgram;
-      if ((shProg == NULL)
-	  || (shProg->_LinkedShaders[MESA_SHADER_GEOMETRY] == NULL)) {
-	 shProg = NULL;
-      }
-      break;
-#endif
 #if FEATURE_ARB_fragment_shader
    case GL_FRAGMENT_SHADER:
       target = &ctx->Shader.CurrentFragmentProgram;
@@ -887,11 +813,6 @@ use_shader_program(struct gl_context *ctx, GLenum type,
       switch (type) {
 #if FEATURE_ARB_vertex_shader
       case GL_VERTEX_SHADER:
-	 /* Empty for now. */
-	 break;
-#endif
-#if FEATURE_ARB_geometry_shader4
-      case GL_GEOMETRY_SHADER_ARB:
 	 /* Empty for now. */
 	 break;
 #endif
@@ -920,7 +841,6 @@ void
 _mesa_use_program(struct gl_context *ctx, struct gl_shader_program *shProg)
 {
    use_shader_program(ctx, GL_VERTEX_SHADER, shProg);
-   use_shader_program(ctx, GL_GEOMETRY_SHADER_ARB, shProg);
    use_shader_program(ctx, GL_FRAGMENT_SHADER, shProg);
    _mesa_active_program(ctx, shProg, "glUseProgram");
 
@@ -1399,16 +1319,8 @@ _mesa_UseProgramObjectARB(GLhandleARB program)
 {
    GET_CURRENT_CONTEXT(ctx);
    struct gl_shader_program *shProg;
-   struct gl_transform_feedback_object *obj =
-      ctx->TransformFeedback.CurrentObject;
 
    ASSERT_OUTSIDE_BEGIN_END(ctx);
-
-   if (obj->Active && !obj->Paused) {
-      _mesa_error(ctx, GL_INVALID_OPERATION,
-                  "glUseProgram(transform feedback active)");
-      return;
-   }
 
    if (program) {
       shProg = _mesa_lookup_shader_program_err(ctx, program, "glUseProgram");
@@ -1518,71 +1430,6 @@ _mesa_ShaderBinary(GLint n, const GLuint* shaders, GLenum binaryformat,
 #endif /* FEATURE_ES2 */
 
 
-#if FEATURE_ARB_geometry_shader4
-
-void GLAPIENTRY
-_mesa_ProgramParameteriARB(GLuint program, GLenum pname, GLint value)
-{
-   struct gl_shader_program *shProg;
-   GET_CURRENT_CONTEXT(ctx);
-
-   ASSERT_OUTSIDE_BEGIN_END(ctx);
-
-   shProg = _mesa_lookup_shader_program_err(ctx, program,
-                                            "glProgramParameteri");
-   if (!shProg)
-      return;
-
-   switch (pname) {
-   case GL_GEOMETRY_VERTICES_OUT_ARB:
-      if (value < 1 ||
-          (unsigned) value > ctx->Const.MaxGeometryOutputVertices) {
-         _mesa_error(ctx, GL_INVALID_VALUE,
-                     "glProgramParameteri(GL_GEOMETRY_VERTICES_OUT_ARB=%d",
-                     value);
-         return;
-      }
-      shProg->Geom.VerticesOut = value;
-      break;
-   case GL_GEOMETRY_INPUT_TYPE_ARB:
-      switch (value) {
-      case GL_POINTS:
-      case GL_LINES:
-      case GL_LINES_ADJACENCY_ARB:
-      case GL_TRIANGLES:
-      case GL_TRIANGLES_ADJACENCY_ARB:
-         shProg->Geom.InputType = value;
-         break;
-      default:
-         _mesa_error(ctx, GL_INVALID_VALUE,
-                     "glProgramParameteri(geometry input type = %s",
-                     _mesa_lookup_enum_by_nr(value));
-         return;
-      }
-      break;
-   case GL_GEOMETRY_OUTPUT_TYPE_ARB:
-      switch (value) {
-      case GL_POINTS:
-      case GL_LINE_STRIP:
-      case GL_TRIANGLE_STRIP:
-         shProg->Geom.OutputType = value;
-         break;
-      default:
-         _mesa_error(ctx, GL_INVALID_VALUE,
-                     "glProgramParameteri(geometry output type = %s",
-                     _mesa_lookup_enum_by_nr(value));
-         return;
-      }
-      break;
-   default:
-      _mesa_error(ctx, GL_INVALID_ENUM, "glProgramParameteriARB(pname=%s)",
-                  _mesa_lookup_enum_by_nr(pname));
-      break;
-   }
-}
-
-#endif
-
 void
 _mesa_use_shader_program(struct gl_context *ctx, GLenum type,
 			 struct gl_shader_program *shProg)
@@ -1603,13 +1450,6 @@ _mesa_UseShaderProgramEXT(GLenum type, GLuint program)
 
    if (!validate_shader_target(ctx, type)) {
       _mesa_error(ctx, GL_INVALID_ENUM, "glUseShaderProgramEXT(type)");
-      return;
-   }
-
-   if (ctx->TransformFeedback.CurrentObject->Active &&
-       !ctx->TransformFeedback.CurrentObject->Paused) {
-      _mesa_error(ctx, GL_INVALID_OPERATION,
-                  "glUseShaderProgramEXT(transform feedback is active)");
       return;
    }
 
@@ -1729,10 +1569,6 @@ _mesa_init_shader_dispatch(struct _glapi_table *exec)
    SET_BindAttribLocationARB(exec, _mesa_BindAttribLocationARB);
    SET_GetActiveAttribARB(exec, _mesa_GetActiveAttribARB);
    SET_GetAttribLocationARB(exec, _mesa_GetAttribLocationARB);
-#endif
-
-#if FEATURE_ARB_geometry_shader4
-   SET_ProgramParameteriARB(exec, _mesa_ProgramParameteriARB);
 #endif
 
    SET_UseShaderProgramEXT(exec, _mesa_UseShaderProgramEXT);

@@ -27,7 +27,6 @@
 
 #include "main/glheader.h"
 #include "main/bufferobj.h"
-#include "main/condrender.h"
 #include "main/context.h"
 #include "main/imports.h"
 #include "main/mtypes.h"
@@ -85,29 +84,6 @@ static void free_space(struct gl_context *ctx)
    }						\
 } while (0)
 
-
-/**
- * Convert array of BGRA/GLubyte[4] values to RGBA/float[4]
- * \param ptr  input/ubyte array
- * \param fptr  output/float array
- */
-static void
-convert_bgra_to_float(const struct gl_client_array *input,
-                      const GLubyte *ptr, GLfloat *fptr,
-                      GLuint count )
-{
-   GLuint i;
-   assert(input->Normalized);
-   assert(input->Size == 4);
-   for (i = 0; i < count; i++) {
-      const GLubyte *in = (GLubyte *) ptr;  /* in is in BGRA order */
-      *fptr++ = UBYTE_TO_FLOAT(in[2]);  /* red */
-      *fptr++ = UBYTE_TO_FLOAT(in[1]);  /* green */
-      *fptr++ = UBYTE_TO_FLOAT(in[0]);  /* blue */
-      *fptr++ = UBYTE_TO_FLOAT(in[3]);  /* alpha */
-      ptr += input->StrideB;
-   }
-}
 
 static void
 convert_half_to_float(const struct gl_client_array *input,
@@ -186,13 +162,7 @@ static void _tnl_import_array( struct gl_context *ctx,
 	 CONVERT(GLbyte, BYTE_TO_FLOAT); 
 	 break;
       case GL_UNSIGNED_BYTE: 
-         if (input->Format == GL_BGRA) {
-            /* See GL_EXT_vertex_array_bgra */
-            convert_bgra_to_float(input, ptr, fptr, count);
-         }
-         else {
-            CONVERT(GLubyte, UBYTE_TO_FLOAT); 
-         }
+         CONVERT(GLubyte, UBYTE_TO_FLOAT); 
 	 break;
       case GL_SHORT: 
 	 CONVERT(GLshort, SHORT_TO_FLOAT); 
@@ -414,8 +384,7 @@ void _tnl_vbo_draw_prims(struct gl_context *ctx,
 			 const struct _mesa_index_buffer *ib,
 			 GLboolean index_bounds_valid,
 			 GLuint min_index,
-			 GLuint max_index,
-			 struct gl_transform_feedback_object *tfb_vertcount)
+			 GLuint max_index)
 {
    if (!index_bounds_valid)
       vbo_get_minmax_index(ctx, prim, ib, &min_index, &max_index);
@@ -443,9 +412,6 @@ void _tnl_draw_prims( struct gl_context *ctx,
 
    /* Mesa core state should have been validated already */
    assert(ctx->NewState == 0x0);
-
-   if (!_mesa_check_conditional_render(ctx))
-      return; /* don't draw */
 
    for (i = 1; i < nr_prims; i++)
       max_basevertex = MAX2(max_basevertex, prim[i].basevertex);

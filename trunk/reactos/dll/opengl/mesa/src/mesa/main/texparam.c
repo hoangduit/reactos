@@ -160,45 +160,6 @@ get_texobj(struct gl_context *ctx, GLenum target, GLboolean get)
 
 
 /**
- * Convert GL_RED/GREEN/BLUE/ALPHA/ZERO/ONE to SWIZZLE_X/Y/Z/W/ZERO/ONE.
- * \return -1 if error.
- */
-static GLint
-comp_to_swizzle(GLenum comp)
-{
-   switch (comp) {
-   case GL_RED:
-      return SWIZZLE_X;
-   case GL_GREEN:
-      return SWIZZLE_Y;
-   case GL_BLUE:
-      return SWIZZLE_Z;
-   case GL_ALPHA:
-      return SWIZZLE_W;
-   case GL_ZERO:
-      return SWIZZLE_ZERO;
-   case GL_ONE:
-      return SWIZZLE_ONE;
-   default:
-      return -1;
-   }
-}
-
-
-static void
-set_swizzle_component(GLuint *swizzle, GLuint comp, GLuint swz)
-{
-   ASSERT(comp < 4);
-   ASSERT(swz <= SWIZZLE_NIL);
-   {
-      GLuint mask = 0x7 << (3 * comp);
-      GLuint s = (*swizzle & ~mask) | (swz << (3 * comp));
-      *swizzle = s;
-   }
-}
-
-
-/**
  * This is called just prior to changing any texture object state which
  * will not effect texture completeness.
  */
@@ -339,64 +300,6 @@ set_tex_parameteri(struct gl_context *ctx,
       }
       return GL_FALSE;
 
-   case GL_TEXTURE_COMPARE_MODE_ARB:
-      if (ctx->Extensions.ARB_shadow) {
-         if (texObj->Sampler.CompareMode == params[0])
-            return GL_FALSE;
-         if (params[0] == GL_NONE ||
-             params[0] == GL_COMPARE_R_TO_TEXTURE_ARB) {
-            flush(ctx);
-            texObj->Sampler.CompareMode = params[0];
-            return GL_TRUE;
-         }
-         goto invalid_param;
-      }
-      goto invalid_pname;
-
-   case GL_TEXTURE_COMPARE_FUNC_ARB:
-      if (ctx->Extensions.ARB_shadow) {
-         if (texObj->Sampler.CompareFunc == params[0])
-            return GL_FALSE;
-         switch (params[0]) {
-         case GL_LEQUAL:
-         case GL_GEQUAL:
-            flush(ctx);
-            texObj->Sampler.CompareFunc = params[0];
-            return GL_TRUE;
-         case GL_EQUAL:
-         case GL_NOTEQUAL:
-         case GL_LESS:
-         case GL_GREATER:
-         case GL_ALWAYS:
-         case GL_NEVER:
-            if (ctx->Extensions.EXT_shadow_funcs) {
-               flush(ctx);
-               texObj->Sampler.CompareFunc = params[0];
-               return GL_TRUE;
-            }
-            /* fall-through */
-         default:
-            goto invalid_param;
-         }
-      }
-      goto invalid_pname;
-
-   case GL_DEPTH_TEXTURE_MODE_ARB:
-      if (ctx->Extensions.ARB_depth_texture) {
-         if (texObj->Sampler.DepthMode == params[0])
-            return GL_FALSE;
-         if (params[0] == GL_LUMINANCE ||
-             params[0] == GL_INTENSITY ||
-             params[0] == GL_ALPHA ||
-             (ctx->Extensions.ARB_texture_rg && params[0] == GL_RED)) {
-            flush(ctx);
-            texObj->Sampler.DepthMode = params[0];
-            return GL_TRUE;
-         }
-         goto invalid_param;
-      }
-      goto invalid_pname;
-
 #if FEATURE_OES_draw_texture
    case GL_TEXTURE_CROP_RECT_OES:
       texObj->CropRect[0] = params[0];
@@ -405,74 +308,6 @@ set_tex_parameteri(struct gl_context *ctx,
       texObj->CropRect[3] = params[3];
       return GL_TRUE;
 #endif
-
-   case GL_TEXTURE_SWIZZLE_R_EXT:
-   case GL_TEXTURE_SWIZZLE_G_EXT:
-   case GL_TEXTURE_SWIZZLE_B_EXT:
-   case GL_TEXTURE_SWIZZLE_A_EXT:
-      if (ctx->Extensions.EXT_texture_swizzle) {
-         const GLuint comp = pname - GL_TEXTURE_SWIZZLE_R_EXT;
-         const GLint swz = comp_to_swizzle(params[0]);
-         if (swz < 0) {
-            _mesa_error(ctx, GL_INVALID_OPERATION,
-                        "glTexParameter(swizzle 0x%x)", params[0]);
-            return GL_FALSE;
-         }
-         ASSERT(comp < 4);
-
-         flush(ctx);
-         texObj->Swizzle[comp] = params[0];
-         set_swizzle_component(&texObj->_Swizzle, comp, swz);
-         return GL_TRUE;
-      }
-      goto invalid_pname;
-
-   case GL_TEXTURE_SWIZZLE_RGBA_EXT:
-      if (ctx->Extensions.EXT_texture_swizzle) {
-         GLuint comp;
-         flush(ctx);
-         for (comp = 0; comp < 4; comp++) {
-            const GLint swz = comp_to_swizzle(params[comp]);
-            if (swz >= 0) {
-               texObj->Swizzle[comp] = params[comp];
-               set_swizzle_component(&texObj->_Swizzle, comp, swz);
-            }
-            else {
-               _mesa_error(ctx, GL_INVALID_OPERATION,
-                           "glTexParameter(swizzle 0x%x)", params[comp]);
-               return GL_FALSE;
-            }
-         }
-         return GL_TRUE;
-      }
-      goto invalid_pname;
-
-   case GL_TEXTURE_SRGB_DECODE_EXT:
-      if (ctx->Extensions.EXT_texture_sRGB_decode) {
-	 GLenum decode = params[0];
-	 if (decode == GL_DECODE_EXT || decode == GL_SKIP_DECODE_EXT) {
-	    if (texObj->Sampler.sRGBDecode != decode) {
-	       flush(ctx);
-	       texObj->Sampler.sRGBDecode = decode;
-	    }
-	    return GL_TRUE;
-	 }
-      }
-      goto invalid_pname;
-
-   case GL_TEXTURE_CUBE_MAP_SEAMLESS:
-      if (ctx->Extensions.AMD_seamless_cubemap_per_texture) {
-         GLenum param = params[0];
-         if (param != GL_TRUE && param != GL_FALSE) {
-            goto invalid_param;
-         }
-         if (param != texObj->Sampler.CubeMapSeamless) {
-            flush(ctx);
-            texObj->Sampler.CubeMapSeamless = param;
-         }
-         return GL_TRUE;
-      }
-      goto invalid_pname;
 
    default:
       goto invalid_pname;
@@ -541,20 +376,6 @@ set_tex_parameterf(struct gl_context *ctx,
       }
       return GL_FALSE;
 
-   case GL_TEXTURE_COMPARE_FAIL_VALUE_ARB:
-      if (ctx->Extensions.ARB_shadow_ambient) {
-         if (texObj->Sampler.CompareFailValue != params[0]) {
-            flush(ctx);
-            texObj->Sampler.CompareFailValue = CLAMP(params[0], 0.0F, 1.0F);
-            return GL_TRUE;
-         }
-      }
-      else {
-         _mesa_error(ctx, GL_INVALID_ENUM,
-                    "glTexParameter(pname=GL_TEXTURE_COMPARE_FAIL_VALUE_ARB)");
-      }
-      return GL_FALSE;
-
    case GL_TEXTURE_LOD_BIAS:
       /* NOTE: this is really part of OpenGL 1.4, not EXT_texture_lod_bias */
       if (texObj->Sampler.LodBias != params[0]) {
@@ -611,7 +432,6 @@ _mesa_TexParameterf(GLenum target, GLenum pname, GLfloat param)
    case GL_TEXTURE_COMPARE_MODE_ARB:
    case GL_TEXTURE_COMPARE_FUNC_ARB:
    case GL_DEPTH_TEXTURE_MODE_ARB:
-   case GL_TEXTURE_SRGB_DECODE_EXT:
    case GL_TEXTURE_CUBE_MAP_SEAMLESS:
       {
          /* convert float param to int */
@@ -672,7 +492,6 @@ _mesa_TexParameterfv(GLenum target, GLenum pname, const GLfloat *params)
    case GL_TEXTURE_COMPARE_MODE_ARB:
    case GL_TEXTURE_COMPARE_FUNC_ARB:
    case GL_DEPTH_TEXTURE_MODE_ARB:
-   case GL_TEXTURE_SRGB_DECODE_EXT:
    case GL_TEXTURE_CUBE_MAP_SEAMLESS:
       {
          /* convert float param to int */
@@ -1004,22 +823,11 @@ _mesa_GetTexLevelParameteriv( GLenum target, GLint level,
             *params = 0;
          }
          break;
-      case GL_TEXTURE_DEPTH_SIZE_ARB:
-         if (!ctx->Extensions.ARB_depth_texture)
-            goto invalid_pname;
-         *params = _mesa_get_format_bits(texFormat, pname);
-         break;
       case GL_TEXTURE_STENCIL_SIZE_EXT:
          if (!ctx->Extensions.EXT_packed_depth_stencil &&
              !ctx->Extensions.ARB_framebuffer_object)
             goto invalid_pname;
          *params = _mesa_get_format_bits(texFormat, pname);
-         break;
-      case GL_TEXTURE_SHARED_SIZE:
-         if (ctx->VersionMajor < 3 &&
-             !ctx->Extensions.EXT_texture_shared_exponent)
-            goto invalid_pname;
-         *params = texFormat == MESA_FORMAT_RGB9_E5_FLOAT ? 5 : 0;
          break;
 
       /* GL_ARB_texture_compression */
@@ -1136,28 +944,8 @@ _mesa_GetTexParameterfv( GLenum target, GLenum pname, GLfloat *params )
             goto invalid_pname;
          *params = obj->Sampler.MaxAnisotropy;
          break;
-      case GL_TEXTURE_COMPARE_FAIL_VALUE_ARB:
-         if (!ctx->Extensions.ARB_shadow_ambient)
-            goto invalid_pname;
-         *params = obj->Sampler.CompareFailValue;
-         break;
       case GL_GENERATE_MIPMAP_SGIS:
 	 *params = (GLfloat) obj->GenerateMipmap;
-         break;
-      case GL_TEXTURE_COMPARE_MODE_ARB:
-         if (!ctx->Extensions.ARB_shadow)
-            goto invalid_pname;
-         *params = (GLfloat) obj->Sampler.CompareMode;
-         break;
-      case GL_TEXTURE_COMPARE_FUNC_ARB:
-         if (!ctx->Extensions.ARB_shadow)
-            goto invalid_pname;
-         *params = (GLfloat) obj->Sampler.CompareFunc;
-         break;
-      case GL_DEPTH_TEXTURE_MODE_ARB:
-         if (!ctx->Extensions.ARB_depth_texture)
-            goto invalid_pname;
-         *params = (GLfloat) obj->Sampler.DepthMode;
          break;
       case GL_TEXTURE_LOD_BIAS:
          *params = obj->Sampler.LodBias;
@@ -1170,33 +958,6 @@ _mesa_GetTexParameterfv( GLenum target, GLenum pname, GLfloat *params )
          params[3] = obj->CropRect[3];
          break;
 #endif
-
-      case GL_TEXTURE_SWIZZLE_R_EXT:
-      case GL_TEXTURE_SWIZZLE_G_EXT:
-      case GL_TEXTURE_SWIZZLE_B_EXT:
-      case GL_TEXTURE_SWIZZLE_A_EXT:
-         if (!ctx->Extensions.EXT_texture_swizzle)
-            goto invalid_pname;
-         *params = (GLfloat) obj->Swizzle[pname - GL_TEXTURE_SWIZZLE_R_EXT];
-         break;
-
-      case GL_TEXTURE_SWIZZLE_RGBA_EXT:
-         if (!ctx->Extensions.EXT_texture_swizzle) {
-            goto invalid_pname;
-         }
-         else {
-            GLuint comp;
-            for (comp = 0; comp < 4; comp++) {
-               params[comp] = (GLfloat) obj->Swizzle[comp];
-            }
-         }
-         break;
-
-      case GL_TEXTURE_CUBE_MAP_SEAMLESS:
-         if (!ctx->Extensions.AMD_seamless_cubemap_per_texture)
-            goto invalid_pname;
-         *params = (GLfloat) obj->Sampler.CubeMapSeamless;
-         break;
 
       case GL_TEXTURE_IMMUTABLE_FORMAT:
          if (!ctx->Extensions.ARB_texture_storage)
@@ -1282,28 +1043,8 @@ _mesa_GetTexParameteriv( GLenum target, GLenum pname, GLint *params )
             goto invalid_pname;
          *params = (GLint) obj->Sampler.MaxAnisotropy;
          break;
-      case GL_TEXTURE_COMPARE_FAIL_VALUE_ARB:
-         if (!ctx->Extensions.ARB_shadow_ambient)
-            goto invalid_pname;
-         *params = (GLint) FLOAT_TO_INT(obj->Sampler.CompareFailValue);
-         break;
       case GL_GENERATE_MIPMAP_SGIS:
 	 *params = (GLint) obj->GenerateMipmap;
-         break;
-      case GL_TEXTURE_COMPARE_MODE_ARB:
-         if (!ctx->Extensions.ARB_shadow)
-            goto invalid_pname;
-         *params = (GLint) obj->Sampler.CompareMode;
-         break;
-      case GL_TEXTURE_COMPARE_FUNC_ARB:
-         if (!ctx->Extensions.ARB_shadow)
-            goto invalid_pname;
-         *params = (GLint) obj->Sampler.CompareFunc;
-         break;
-      case GL_DEPTH_TEXTURE_MODE_ARB:
-         if (!ctx->Extensions.ARB_depth_texture)
-            goto invalid_pname;
-         *params = (GLint) obj->Sampler.DepthMode;
          break;
       case GL_TEXTURE_LOD_BIAS:
          *params = (GLint) obj->Sampler.LodBias;
@@ -1316,26 +1057,6 @@ _mesa_GetTexParameteriv( GLenum target, GLenum pname, GLint *params )
          params[3] = obj->CropRect[3];
          break;
 #endif
-      case GL_TEXTURE_SWIZZLE_R_EXT:
-      case GL_TEXTURE_SWIZZLE_G_EXT:
-      case GL_TEXTURE_SWIZZLE_B_EXT:
-      case GL_TEXTURE_SWIZZLE_A_EXT:
-         if (!ctx->Extensions.EXT_texture_swizzle)
-            goto invalid_pname;
-         *params = obj->Swizzle[pname - GL_TEXTURE_SWIZZLE_R_EXT];
-         break;
-
-      case GL_TEXTURE_SWIZZLE_RGBA_EXT:
-         if (!ctx->Extensions.EXT_texture_swizzle)
-            goto invalid_pname;
-         COPY_4V(params, obj->Swizzle);
-         break;
-
-      case GL_TEXTURE_CUBE_MAP_SEAMLESS:
-         if (!ctx->Extensions.AMD_seamless_cubemap_per_texture)
-            goto invalid_pname;
-         *params = (GLint) obj->Sampler.CubeMapSeamless;
-         break;
 
       case GL_TEXTURE_IMMUTABLE_FORMAT:
          if (!ctx->Extensions.ARB_texture_storage)

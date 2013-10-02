@@ -142,17 +142,6 @@ _mesa_initialize_texture_object( struct gl_texture_object *obj,
    obj->Sampler.MaxLod = 1000.0;
    obj->Sampler.LodBias = 0.0;
    obj->Sampler.MaxAnisotropy = 1.0;
-   obj->Sampler.CompareMode = GL_NONE;         /* ARB_shadow */
-   obj->Sampler.CompareFunc = GL_LEQUAL;       /* ARB_shadow */
-   obj->Sampler.CompareFailValue = 0.0F;       /* ARB_shadow_ambient */
-   obj->Sampler.DepthMode = GL_LUMINANCE;      /* ARB_depth_texture */
-   obj->Sampler.CubeMapSeamless = GL_FALSE;
-   obj->Swizzle[0] = GL_RED;
-   obj->Swizzle[1] = GL_GREEN;
-   obj->Swizzle[2] = GL_BLUE;
-   obj->Swizzle[3] = GL_ALPHA;
-   obj->_Swizzle = SWIZZLE_NOOP;
-   obj->Sampler.sRGBDecode = GL_DECODE_EXT;
 }
 
 
@@ -253,18 +242,10 @@ _mesa_copy_texture_object( struct gl_texture_object *dest,
    dest->BaseLevel = src->BaseLevel;
    dest->MaxLevel = src->MaxLevel;
    dest->Sampler.MaxAnisotropy = src->Sampler.MaxAnisotropy;
-   dest->Sampler.CompareMode = src->Sampler.CompareMode;
-   dest->Sampler.CompareFunc = src->Sampler.CompareFunc;
-   dest->Sampler.CompareFailValue = src->Sampler.CompareFailValue;
-   dest->Sampler.CubeMapSeamless = src->Sampler.CubeMapSeamless;
-   dest->Sampler.DepthMode = src->Sampler.DepthMode;
-   dest->Sampler.sRGBDecode = src->Sampler.sRGBDecode;
    dest->_MaxLevel = src->_MaxLevel;
    dest->_MaxLambda = src->_MaxLambda;
    dest->GenerateMipmap = src->GenerateMipmap;
    dest->_Complete = src->_Complete;
-   COPY_4V(dest->Swizzle, src->Swizzle);
-   dest->_Swizzle = src->_Swizzle;
 
    dest->RequiredTextureImageUnits = src->RequiredTextureImageUnits;
 }

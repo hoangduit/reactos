@@ -204,24 +204,6 @@ _mesa_choose_tex_format( struct gl_context *ctx, GLint internalFormat,
          ; /* fallthrough */
    }
 
-   if (ctx->Extensions.ARB_depth_texture) {
-      switch (internalFormat) {
-         case GL_DEPTH_COMPONENT:
-         case GL_DEPTH_COMPONENT24:
-         case GL_DEPTH_COMPONENT32:
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_Z32);
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_X8_Z24);
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_S8_Z24);
-	    break;
-         case GL_DEPTH_COMPONENT16:
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_Z16);
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_X8_Z24);
-	    RETURN_IF_SUPPORTED(MESA_FORMAT_S8_Z24);
-         default:
-            ; /* fallthrough */
-      }
-   }
-
    switch (internalFormat) {
       case GL_COMPRESSED_ALPHA_ARB:
 	 RETURN_IF_SUPPORTED(MESA_FORMAT_A8);
@@ -388,26 +370,6 @@ _mesa_choose_tex_format( struct gl_context *ctx, GLint internalFormat,
 	    RETURN_IF_SUPPORTED(MESA_FORMAT_RGBA_FLOAT32);
 	    RETURN_IF_SUPPORTED(MESA_FORMAT_RGBA_FLOAT16);
 	    break;
-         default:
-            ; /* fallthrough */
-      }
-   }
-
-   if (ctx->Extensions.EXT_texture_shared_exponent) {
-      switch (internalFormat) {
-         case GL_RGB9_E5:
-            ASSERT(ctx->TextureFormatSupported[MESA_FORMAT_RGB9_E5_FLOAT]);
-            return MESA_FORMAT_RGB9_E5_FLOAT;
-         default:
-            ; /* fallthrough */
-      }
-   }
-
-   if (ctx->Extensions.EXT_packed_float) {
-      switch (internalFormat) {
-         case GL_R11F_G11F_B10F:
-            ASSERT(ctx->TextureFormatSupported[MESA_FORMAT_R11_G11_B10_FLOAT]);
-            return MESA_FORMAT_R11_G11_B10_FLOAT;
          default:
             ; /* fallthrough */
       }
@@ -873,15 +835,6 @@ _mesa_choose_tex_format( struct gl_context *ctx, GLint internalFormat,
       }
    }
 
-   if (ctx->Extensions.ARB_texture_rgb10_a2ui) {
-      switch (internalFormat) {
-      case GL_RGB10_A2UI:
-         RETURN_IF_SUPPORTED(MESA_FORMAT_ARGB2101010_UINT);
-         break;
-      default:
-         break;
-      }
-   }
    /* GL_BGRA can be an internal format *only* in OpenGL ES (1.x or 2.0).
     */
    if (ctx->API != API_OPENGL) {
@@ -937,16 +890,6 @@ _mesa_choose_tex_format( struct gl_context *ctx, GLint internalFormat,
       switch (internalFormat) {
          case GL_COMPRESSED_LUMINANCE_ALPHA_3DC_ATI:
             RETURN_IF_SUPPORTED(MESA_FORMAT_LA_LATC2);
-            break;
-         default:
-            ; /* fallthrough */
-      }
-   }
-
-   if (ctx->Extensions.OES_compressed_ETC1_RGB8_texture) {
-      switch (internalFormat) {
-         case GL_ETC1_RGB8_OES:
-            RETURN_IF_SUPPORTED(MESA_FORMAT_ETC1_RGB8);
             break;
          default:
             ; /* fallthrough */
