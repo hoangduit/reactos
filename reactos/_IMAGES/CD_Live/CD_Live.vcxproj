@@ -68,6 +68,7 @@ call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
 cd ..
 call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\browseui\$(OutDir)BROWSEUI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\comctl32\$(OutDir)COMCTL32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\cryptui\$(OutDir)CRYPTUI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\dbghelp\$(OutDir)DBGHELP.DLL" .
@@ -196,6 +197,7 @@ call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
 cd ..
 call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\browseui\$(OutDir)BROWSEUI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\comctl32\$(OutDir)COMCTL32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\cryptui\$(OutDir)CRYPTUI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\dbghelp\$(OutDir)DBGHELP.DLL" .
@@ -323,6 +325,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\advpack\advpack.vcxproj">
       <Project>{d16a108a-704a-4f5d-97d5-c1b5e6b5d583}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\browseui\browseui.vcxproj">
+      <Project>{a3eba2ce-4d8d-42cd-8a0f-f33a150f8031}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\comctl32\comctl32.vcxproj">
       <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
