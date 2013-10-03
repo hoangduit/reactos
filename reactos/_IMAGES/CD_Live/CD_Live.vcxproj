@@ -148,6 +148,276 @@ IF NOT EXIST "%~1" ECHO ********** FILE NOT FOUND: %~1 **********
 GOTO:EOF</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\DUMMY.ZZZ</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\DUMMY.ZZZ</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd "$(OutDir)"
+mkdir root
+cd root
+call :copy_to_CD "$(SolutionDir)boot\freeldr\bootsect\$(OutDir)isoboot.bin" .
+mkdir Loader
+cd loader
+call :copy_to_CD "$(SolutionDir)boot\freeldr\freeldr\$(OutDir)freeldr.sys" setupldr.sys
+cd ..
+call :copy_to_CD "$(SolutionDir)boot\bootdata\livecd.ini" FREELDR.INI
+mkdir Profiles
+cd Profiles
+echo We would write profile files here.
+cd ..
+mkdir reactos
+cd reactos
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\$(OutDir)EXPLORER.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\explorer-cfg-template.xml" .
+mkdir system32
+cd system32
+call :copy_to_CD "$(SolutionDir)ntkrnlmp\$(OutDir)NTKRNLMP.EXE" .
+call :copy_to_CD "$(SolutionDir)ntoskrnl\$(OutDir)NTOSKRNL.EXE" .
+call :copy_to_CD "$(SolutionDir)HAL\$(OutDir)HAL.DLL" .
+call :copy_to_CD "$(SolutionDir)Drivers\Base\BootVid\$(OutDir)BootVid.DLL" .
+call :copy_to_CD "$(SolutionDir)Drivers\Base\KDCOM\$(OutDir)KDCOM.DLL" .
+call :copy_to_CD "$(SolutionDir)base\applications\ATACTL\$(OutDir)ATACTL.EXE" .
+call :copy_to_CD "$(SolutionDir)base\applications\cacls\$(OutDir)CACLS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\applications\sc\$(OutDir)sc.EXE" .
+REM "call :copy_to_CD $(SolutionDir)base\applications\CALC\$(OutDir)CALC.EXE" .
+call :copy_to_CD "$(SolutionDir)media\nls\*.nls" .
+mkdir drivers
+cd drivers
+call :copy_to_CD "$(SolutionDir)drivers\filesystems\CDFS\$(OutDir)CDFS.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\bus\PCI\$(OutDir)PCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbuhci\$(OutDir)USBUHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbd\$(OutDir)USBD.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbccgp\$(OutDir)USBCCGP.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbehci\$(OutDir)USBEHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbhub\$(OutDir)USBHUB.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\bus\acpi\$(OutDir)ACPI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbohci\$(OutDir)USBOHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\ide\uniata\$(OutDir)UNIATA.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\scsiport\$(OutDir)SCSIPORT.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\port\buslogic\$(OutDir)BUSLOGIC.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbstor\$(OutDir)USBSTOR.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\class2\$(OutDir)CLASS2.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\cdrom\$(OutDir)CDROM.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\disk\$(OutDir)DISK.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\ramdisk\$(OutDir)RAMDISK.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\base\nmidebug\$(OutDir)NMIDEBUG.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\filesystems\mup\$(OutDir)MUP.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\network\ndis\$(OutDir)NDIS.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\battery\battc\$(OutDir)BATTC.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
+cd ..
+call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\browseui\$(OutDir)BROWSEUI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\comctl32\$(OutDir)COMCTL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\cryptui\$(OutDir)CRYPTUI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dbghelp\$(OutDir)DBGHELP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\devmgr\$(OutDir)DEVMGR.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dhcpcsvc\$(OutDir)DHCPCSVC.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dnsapi\$(OutDir)DNSAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\fmifs\$(OutDir)FMIFS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\icmp\$(OutDir)ICMP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ieframe\$(OutDir)IEFRAME.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\imagehlp\$(OutDir)IMAGEHLP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\kernel32\$(OutDir)KERNEL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\lsasrv\$(OutDir)LSASRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mlang\$(OutDir)MLANG.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mpr\$(OutDir)MPR.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\msimg32\$(OutDir)MSIMG32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\msvcrt\$(OutDir)MSVCRT.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\newdev\$(OutDir)NEWDEV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ole32\$(OutDir)OLE32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\oleaut32\$(OutDir)OLEAUT32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olecli32\$(OutDir)OLECLI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olesvr32\$(OutDir)OLESVR32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olethk32\$(OutDir)OLETHK32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shell32\$(OutDir)SHELL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shlwapi\$(OutDir)SHLWAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\setupapi\$(OutDir)SETUPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\url\$(OutDir)URL.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\urlmon\$(OutDir)URLMON.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\userenv\$(OutDir)USERENV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\usp10\$(OutDir)USP10.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\uxtheme\$(OutDir)UXTHEME.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\version\$(OutDir)VERSION.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\windowscodecs\$(OutDir)WINDOWSCODECS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wininet\$(OutDir)WININET.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\winmm\$(OutDir)WINMM.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\winspool\$(OutDir)WINSPOOL.DRV" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wintrust\$(OutDir)WINTRUST.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ws2help\$(OutDir)WS2HELP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ws2_32\$(OutDir)WS2_32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\crypt32\$(OutDir)CRYPT32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\advpack\$(OutDir)ADVPACK.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\comdlg32\$(OutDir)COMDLG32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\lz32\$(OutDir)LZ32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wldap32\$(OutDir)WLDAP32.DLL" .
+call :copy_to_CD "$(SolutionDir)base\applications\atactl\$(OutDir)ATACTL.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\autochk\$(OutDir)AUTOCHK.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\smss\$(OutDir)SMSS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\winlogon\$(OutDir)WINLOGON.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\userinit\$(OutDir)USERINIT.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\services\$(OutDir)SERVICES.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\cmd\$(OutDir)CMD.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHOOK.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAMEBUF.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
+call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
+mkdir config
+cd "$(SolutionDir)boot\bootdata"
+"$(SolutionDir)tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
+echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
+"$(SolutionDir)tools\cdmake\$(OutDir)cdmake.exe" -j -b "$(SolutionDir)boot\freeldr\bootsect\$(OutDir)isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"
+GOTO:EOF
+:copy_to_CD
+echo %~1
+copy "%~1" "%~2" 1&gt;nul
+IF NOT EXIST "%~1" ECHO ********** FILE NOT FOUND: %~1 **********
+GOTO:EOF</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd "$(OutDir)"
+mkdir root
+cd root
+call :copy_to_CD "$(SolutionDir)boot\freeldr\bootsect\$(OutDir)isoboot.bin" .
+mkdir Loader
+cd loader
+call :copy_to_CD "$(SolutionDir)boot\freeldr\freeldr\$(OutDir)freeldr.sys" setupldr.sys
+cd ..
+call :copy_to_CD "$(SolutionDir)boot\bootdata\livecd.ini" FREELDR.INI
+mkdir Profiles
+cd Profiles
+echo We would write profile files here.
+cd ..
+mkdir reactos
+cd reactos
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\$(OutDir)EXPLORER.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\explorer-cfg-template.xml" .
+mkdir system32
+cd system32
+call :copy_to_CD "$(SolutionDir)ntkrnlmp\$(OutDir)NTKRNLMP.EXE" .
+call :copy_to_CD "$(SolutionDir)ntoskrnl\$(OutDir)NTOSKRNL.EXE" .
+call :copy_to_CD "$(SolutionDir)HAL\$(OutDir)HAL.DLL" .
+call :copy_to_CD "$(SolutionDir)Drivers\Base\BootVid\$(OutDir)BootVid.DLL" .
+call :copy_to_CD "$(SolutionDir)Drivers\Base\KDCOM\$(OutDir)KDCOM.DLL" .
+call :copy_to_CD "$(SolutionDir)base\applications\ATACTL\$(OutDir)ATACTL.EXE" .
+call :copy_to_CD "$(SolutionDir)base\applications\cacls\$(OutDir)CACLS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\applications\sc\$(OutDir)sc.EXE" .
+REM "call :copy_to_CD $(SolutionDir)base\applications\CALC\$(OutDir)CALC.EXE" .
+call :copy_to_CD "$(SolutionDir)media\nls\*.nls" .
+mkdir drivers
+cd drivers
+call :copy_to_CD "$(SolutionDir)drivers\filesystems\CDFS\$(OutDir)CDFS.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\bus\PCI\$(OutDir)PCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbuhci\$(OutDir)USBUHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbd\$(OutDir)USBD.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbccgp\$(OutDir)USBCCGP.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbehci\$(OutDir)USBEHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbhub\$(OutDir)USBHUB.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\bus\acpi\$(OutDir)ACPI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbohci\$(OutDir)USBOHCI.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\ide\uniata\$(OutDir)UNIATA.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\scsiport\$(OutDir)SCSIPORT.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\port\buslogic\$(OutDir)BUSLOGIC.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\usb\usbstor\$(OutDir)USBSTOR.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\class2\$(OutDir)CLASS2.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\cdrom\$(OutDir)CDROM.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\disk\$(OutDir)DISK.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\storage\class\ramdisk\$(OutDir)RAMDISK.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\base\nmidebug\$(OutDir)NMIDEBUG.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\filesystems\mup\$(OutDir)MUP.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\network\ndis\$(OutDir)NDIS.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\battery\battc\$(OutDir)BATTC.SYS" .
+call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
+cd ..
+call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\browseui\$(OutDir)BROWSEUI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\comctl32\$(OutDir)COMCTL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\cryptui\$(OutDir)CRYPTUI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dbghelp\$(OutDir)DBGHELP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\devmgr\$(OutDir)DEVMGR.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dhcpcsvc\$(OutDir)DHCPCSVC.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\dnsapi\$(OutDir)DNSAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\fmifs\$(OutDir)FMIFS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\icmp\$(OutDir)ICMP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ieframe\$(OutDir)IEFRAME.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\imagehlp\$(OutDir)IMAGEHLP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\kernel32\$(OutDir)KERNEL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\lsasrv\$(OutDir)LSASRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mlang\$(OutDir)MLANG.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mpr\$(OutDir)MPR.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\msimg32\$(OutDir)MSIMG32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\msvcrt\$(OutDir)MSVCRT.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\newdev\$(OutDir)NEWDEV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ole32\$(OutDir)OLE32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\oleaut32\$(OutDir)OLEAUT32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olecli32\$(OutDir)OLECLI32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olesvr32\$(OutDir)OLESVR32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\olethk32\$(OutDir)OLETHK32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shell32\$(OutDir)SHELL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shlwapi\$(OutDir)SHLWAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\setupapi\$(OutDir)SETUPAPI.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\url\$(OutDir)URL.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\urlmon\$(OutDir)URLMON.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\userenv\$(OutDir)USERENV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\usp10\$(OutDir)USP10.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\uxtheme\$(OutDir)UXTHEME.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\version\$(OutDir)VERSION.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\windowscodecs\$(OutDir)WINDOWSCODECS.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wininet\$(OutDir)WININET.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\winmm\$(OutDir)WINMM.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\winspool\$(OutDir)WINSPOOL.DRV" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wintrust\$(OutDir)WINTRUST.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ws2help\$(OutDir)WS2HELP.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\ws2_32\$(OutDir)WS2_32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\crypt32\$(OutDir)CRYPT32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\advpack\$(OutDir)ADVPACK.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\comdlg32\$(OutDir)COMDLG32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\lz32\$(OutDir)LZ32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\wldap32\$(OutDir)WLDAP32.DLL" .
+call :copy_to_CD "$(SolutionDir)base\applications\atactl\$(OutDir)ATACTL.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\autochk\$(OutDir)AUTOCHK.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\lsass\$(OutDir)LSASS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\smss\$(OutDir)SMSS.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\winlogon\$(OutDir)WINLOGON.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\userinit\$(OutDir)USERINIT.EXE" .
+call :copy_to_CD "$(SolutionDir)base\system\services\$(OutDir)SERVICES.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\cmd\$(OutDir)CMD.EXE" .
+call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHOOK.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAMEBUF.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
+call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
+mkdir config
+cd "$(SolutionDir)boot\bootdata"
+"$(SolutionDir)tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
+echo Creating ReactOS CD Live, writing Master-Boot-Rectord (MBR) in the process:
+"$(SolutionDir)tools\cdmake\$(OutDir)cdmake.exe" -j -b "$(SolutionDir)boot\freeldr\bootsect\$(OutDir)isoboot.bin" "$(TargetDir)\root"  ReactOSLive "$(TargetDir)\ReactOS_CD_Live.iso"
+GOTO:EOF
+:copy_to_CD
+echo %~1
+copy "%~1" "%~2" 1&gt;nul
+IF NOT EXIST "%~1" ECHO ********** FILE NOT FOUND: %~1 **********
+GOTO:EOF</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +696,12 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\ntoskrnl\ntoskrnl.vcxproj">
       <Project>{2406d983-79b4-4596-86c8-8c2cdbcba77b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\subsystems\win32\csrsrv\csrsrv.vcxproj">
+      <Project>{d2048eb3-0946-4686-9d16-e6d6a44bd6c5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\subsystems\win32\csrss\csrss.vcxproj">
+      <Project>{0dfea72f-bd64-45ba-b9ca-ca55f06ee2c8}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\cdmake\cdmake.vcxproj">
       <Project>{d77c7601-c61b-4135-b2dd-06a11eff79d0}</Project>
