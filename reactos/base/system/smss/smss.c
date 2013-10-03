@@ -385,13 +385,47 @@ SmpExecuteInitialCommand(IN ULONG MuSessionId,
 
 NTSTATUS
 NTAPI
-SmpTerminate(IN PULONG_PTR Parameters,
+MySmpTerminate(IN PULONG_PTR Parameters,
              IN ULONG ParameterMask,
-             IN ULONG ParameterCount)
+             IN ULONG ParameterCount,
+			 char *file,
+			int line)
 {
     NTSTATUS Status;
     BOOLEAN Old;
     ULONG Response;
+
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;		
+
+		char buffer[512];
+		wchar_t wbuffer[512];
+
+		unsigned int i  = 0;
+
+		while (file[i]);
+		{
+			buffer[i] = file[i];
+			++i;
+		}
+		
+		sprintf(&buffer[i], ": %d", line);
+
+		i = 0;
+		do
+		wbuffer[i] = buffer[i];
+		while (buffer[i++]);	
+
+		RtlInitUnicodeString(&MyString, wbuffer);
+
+		ZwDisplayString(&MyString);
+
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+		NtDelayExecution(TRUE, &MyDelay);
+	}
 
     /* Give the shutdown privilege to the thread */
     if (RtlAdjustPrivilege(SE_SHUTDOWN_PRIVILEGE, TRUE, TRUE, &Old) ==
@@ -466,6 +500,8 @@ _main(IN INT argc,
                                      ProcessBasePriority,
                                      (PVOID)&SetBasePriority,
                                      sizeof(SetBasePriority));
+
+
     ASSERT(NT_SUCCESS(Status));
 
     /* Save the debug flag if it was passed */

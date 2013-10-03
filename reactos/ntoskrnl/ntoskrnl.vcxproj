@@ -1151,6 +1151,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <AdditionalDependencies>
       </AdditionalDependencies>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>/DLL %(AdditionalOptions)</AdditionalOptions>
+      <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent />
     <PreBuildEvent />
@@ -1214,6 +1216,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <AdditionalDependencies>
       </AdditionalDependencies>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalOptions>/DLL %(AdditionalOptions)</AdditionalOptions>
+      <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent />
     <PreBuildEvent />

@@ -112,11 +112,15 @@ extern BOOLEAN SmpDebug;
 
 NTSTATUS
 NTAPI
-SmpTerminate(
+MySmpTerminate(
     IN PULONG_PTR Parameters,
     IN ULONG ParameterMask,
-    IN ULONG ParameterCount
+    IN ULONG ParameterCount,
+	char *,
+	int	
 );
+
+#define SmpTerminate(a, b, c) MySmpTerminate(a, b, c, __FILE__, __LINE__)
 
 NTSTATUS
 NTAPI
