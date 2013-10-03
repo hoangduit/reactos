@@ -1505,20 +1505,7 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
             continue;
         }
 
-		{
-			//LARGE_INTEGER MyDelay;
 
-			UNICODE_STRING MyString;
-			//MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
-
-			RtlInitUnicodeString(&MyString, L"\nSmpInitializeKnownDllsInternal: ");
-
-			ZwDisplayString(&MyString);
-
-			ZwDisplayString(&RegEntry->Name);
-
-			//NtDelayExecution(TRUE, &MyDelay);
-		}
 
 		/* Open the actual file */
         InitializeObjectAttributes(&ObjectAttributes,
@@ -1553,7 +1540,22 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
         else
         if (!(ImageCharacteristics & IMAGE_FILE_DLL))
         {
-            /* An invalid known DLL entry will also kill SMSS */
+			{
+				//LARGE_INTEGER MyDelay;
+
+				UNICODE_STRING MyString;
+				//MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+				RtlInitUnicodeString(&MyString, L"\nSmpInitializeKnownDllsInternal: ");
+
+				ZwDisplayString(&MyString);
+
+				ZwDisplayString(&RegEntry->Name);
+
+				//NtDelayExecution(TRUE, &MyDelay);
+			}
+
+			/* An invalid known DLL entry will also kill SMSS */
             RtlInitUnicodeString(&ErrorResponse,
                                  L"Non-DLL file included in KnownDLL list.");
             ErrorParameters[0] = (ULONG)&ErrorResponse;
