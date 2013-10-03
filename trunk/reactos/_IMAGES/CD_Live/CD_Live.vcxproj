@@ -272,6 +272,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win32\csrss\$(OutDir)CSRSS.EXE" .
 mkdir config
 cd "$(SolutionDir)boot\bootdata"
 "$(SolutionDir)tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
@@ -407,6 +408,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win32\csrss\$(OutDir)CSRSS.EXE" .
 mkdir config
 cd "$(SolutionDir)boot\bootdata"
 "$(SolutionDir)tools\mkhive\build\x86_32\$(Configuration)\mkhive.exe" "$(TargetDir)\root\reactos\system32\config" hivecls.inf hivedef.inf hivesft.inf hivesys.inf livecd.inf hiveinst.inf
