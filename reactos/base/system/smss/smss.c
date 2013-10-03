@@ -502,13 +502,14 @@ _main(IN INT argc,
                                      sizeof(SetBasePriority));
 
 
-    ASSERT(NT_SUCCESS(Status));
+	ASSERT(NT_SUCCESS(Status));
 
-    /* Save the debug flag if it was passed */
-    if (DebugFlag) SmpDebug = DebugFlag != 0;
 
-    /* Build the hard error parameters */
-    Parameters[0] = (ULONG_PTR)&DbgString;
+	/* Save the debug flag if it was passed */
+	if (DebugFlag) SmpDebug = DebugFlag != 0;
+
+	/* Build the hard error parameters */
+	Parameters[0] = (ULONG_PTR)&DbgString;
     Parameters[1] = Parameters[2] = Parameters[3] = 0;
 
     /* Enter SEH so we can terminate correctly if anything goes wrong */
@@ -516,6 +517,7 @@ _main(IN INT argc,
     {
         /* Initialize SMSS */
         Status = SmpInit(&InitialCommand, Handles);
+
         if (!NT_SUCCESS(Status))
         {
             DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
@@ -537,6 +539,7 @@ _main(IN INT argc,
             /* SMSS should launch ntsd with a few parameters at this point */
             DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
         }
+
 
         /* Execute the initial command (Winlogon.exe) */
         Status = SmpExecuteInitialCommand(0, &InitialCommand, &Handles[1], NULL);

@@ -1505,6 +1505,19 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
             continue;
         }
 
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = (-1 * 1000000LL * 10LL)/4; // 1/4 second
+
+			RtlInitUnicodeString(&MyString, L"\n");
+
+			ZwDisplayString(&RegEntry->Name);
+			ZwDisplayString(&MyString);
+
+			 NtDelayExecution(TRUE, &MyDelay);
+		}
 
 
 		/* Open the actual file */
@@ -1528,8 +1541,9 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
                                                RegEntry,
                                                &ImageCharacteristics);
         if (!NT_SUCCESS(Status))
-        {
-            /* Checksum failed, so don't even try going further -- kill SMSS */
+		{
+
+			/* Checksum failed, so don't even try going further -- kill SMSS */
             RtlInitUnicodeString(&ErrorResponse,
                                  L"Verification of a KnownDLL failed.");
             ErrorParameters[0] = (ULONG)&ErrorResponse;
@@ -1540,21 +1554,6 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
         else
         if (!(ImageCharacteristics & IMAGE_FILE_DLL))
         {
-			{
-				//LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-				//MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
-
-				RtlInitUnicodeString(&MyString, L"\nSmpInitializeKnownDllsInternal: ");
-
-				ZwDisplayString(&MyString);
-
-				ZwDisplayString(&RegEntry->Name);
-
-				//NtDelayExecution(TRUE, &MyDelay);
-			}
-
 			/* An invalid known DLL entry will also kill SMSS */
             RtlInitUnicodeString(&ErrorResponse,
                                  L"Non-DLL file included in KnownDLL list.");
@@ -1612,15 +1611,6 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
 
 Quickie:
 
-	{
-		// Delay a little while so that we may see what is on thes screen:
-		LARGE_INTEGER MyDelay;
-
-		MyDelay.QuadPart = -25LL * 1000000LL * 10LL; // 25 seconds relative to now
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 	/* Close both handles and free the NT path buffer */
 	if (DirHandle)
 	{
@@ -2352,19 +2342,50 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
         RtlFreeHeap(RtlGetProcessHeap(), 0, RegEntry);
     }
 
-    /* Now do any pending file rename operations... */
-    if (!MiniNTBoot) SmpProcessFileRenames();
+	/* Now do any pending file rename operations... */
+	if (!MiniNTBoot) SmpProcessFileRenames();
 
-    /* And initialize known DLLs... */
-    Status = SmpInitializeKnownDlls();
-    if (!NT_SUCCESS(Status))
-    {
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+		RtlInitUnicodeString(&MyString, L"\nAbout to initialize Known Dlls...\n\n");
+
+		ZwDisplayString(&MyString);
+
+		// NtDelayExecution(TRUE, &MyDelay);
+	}
+
+
+	/* And initialize known DLLs... */
+	Status = SmpInitializeKnownDlls();
+	if (!NT_SUCCESS(Status))
+	{
         /* Fail if that didn't work */
         DPRINT1("SMSS: Unable to initialize KnownDll configuration - Status == %lx\n",
                 Status);
         SMSS_CHECKPOINT(SmpInitializeKnownDlls, Status);
         return Status;
     }
+
+		
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+
+		RtlInitUnicodeString(&MyString, L"\nInitialized Known Dlls...");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
 
     /* Loop every page file */
     Head = &SmpPagingFileList;
@@ -2397,6 +2418,7 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
         SMSS_CHECKPOINT(SmpCreateDynamicEnvironmentVariables, Status);
         return Status;
     }
+
 
     /* And finally load all the subsytems for our first session! */
     Status = SmpLoadSubSystemsForMuSession(&MuSessionId,
