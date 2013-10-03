@@ -50,11 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="csrsrv.spec" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="csrsrv.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="csrsrv.spec" />
   </ItemGroup>
 </Project>
