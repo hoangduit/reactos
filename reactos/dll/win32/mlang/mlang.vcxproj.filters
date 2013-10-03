@@ -31,11 +31,8 @@
     <None Include="mlang.rgs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="mlang.spec" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="mlang_classes.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
+    <CustomBuild Include="mlang.spec" />
   </ItemGroup>
 </Project>

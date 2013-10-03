@@ -54,9 +54,14 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\include\reactos;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;_SHLWAPI_;_WIN32_WINNT=0x600;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>"$(OutDir)\shlwapi_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
@@ -76,6 +81,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\include\reactos;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;_SHLWAPI_;_WIN32_WINNT=0x600;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>"$(OutDir)\shlwapi_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -229,8 +236,38 @@
     <None Include="shlwapi_ros.diff" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\comdlg32\comdlg32.vcxproj">
       <Project>{4aea1da9-737c-4c2c-8232-4cad4e7ad902}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\gdi32\gdi32.vcxproj">
+      <Project>{031ea1c5-fbbf-47c8-a00d-c78cf7a763ac}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
+      <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
+      <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\oleaut32\oleaut32.vcxproj">
+      <Project>{3a111f0e-8e72-4b4a-9a4f-7ca65819abc0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\shell32\shell32.vcxproj">
+      <Project>{c62c6602-95c7-4b96-bbb2-644911d8f895}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
+      <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
+      <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\uuid\uuid.vcxproj">
+      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
     </ProjectReference>
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
@@ -238,17 +275,29 @@
     <ProjectReference Include="..\comctl32\comctl32.vcxproj">
       <Project>{1ce9b05e-e313-4cd4-9b51-d17484292e37}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\comdlg32\comdlg32.vcxproj">
+      <Project>{51ae56d6-e2ef-4da9-adec-9b4ae7002baa}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\mlang\mlang.vcxproj">
+      <Project>{4079c197-5b08-46b6-863a-bf198ad0f323}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\mpr\mpr.vcxproj">
+      <Project>{88d37bba-5d24-462a-964e-a88357ff985e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ole32\ole32.vcxproj">
       <Project>{dc1f70c4-f793-4c58-8814-af2ca0819fd7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\oleaut32\oleaut32.vcxproj">
-      <Project>{578bf447-74b7-42bc-a889-e8f8157eb28c}</Project>
+    <ProjectReference Include="..\urlmon\urlmon.vcxproj">
+      <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\shell32\shell32.vcxproj">
-      <Project>{96bbc7de-9752-404c-b6cd-37be6e8b0565}</Project>
+    <ProjectReference Include="..\userenv\userenv.vcxproj">
+      <Project>{fd2f864e-a5cf-4b06-a16c-04b72fc7412d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\version\version.vcxproj">
       <Project>{9ae41259-6534-4d9f-be18-ec9ff7f4e752}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\wininet\wininet.vcxproj">
+      <Project>{a5ac8218-9496-4566-91fb-2034f4cf2fae}</Project>
     </ProjectReference>
     <ProjectReference Include="..\winmm\winmm.vcxproj">
       <Project>{b632d964-df35-4cce-afbe-7c3b26cef0cb}</Project>

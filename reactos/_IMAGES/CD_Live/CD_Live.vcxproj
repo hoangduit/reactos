@@ -83,6 +83,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\kernel32\$(OutDir)KERNEL32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\lsasrv\$(OutDir)LSASRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mlang\$(OutDir)MLANG.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\mpr\$(OutDir)MPR.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\msimg32\$(OutDir)MSIMG32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\msvcrt\$(OutDir)MSVCRT.DLL" .
@@ -96,6 +97,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\shell32\$(OutDir)SHELL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shlwapi\$(OutDir)SHLWAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
@@ -215,6 +217,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\imm32\$(OutDir)IMM32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\iphlpapi\$(OutDir)IPHLPAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\kernel32\$(OutDir)KERNEL32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\lsasrv\$(OutDir)LSASRV.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\mlang\$(OutDir)MLANG.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\mpr\$(OutDir)MPR.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\msimg32\$(OutDir)MSIMG32.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\msvcrt\$(OutDir)MSVCRT.DLL" .
@@ -228,6 +231,7 @@ call :copy_to_CD "$(SolutionDir)dll\win32\rpcrt4\$(OutDir)RPCRT4.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\samsrv\$(OutDir)SAMSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\shdocvw\$(OutDir)SHDOCVW.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\shell32\$(OutDir)SHELL32.DLL" .
+call :copy_to_CD "$(SolutionDir)dll\win32\shlwapi\$(OutDir)SHLWAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\propsys\$(OutDir)PROPSYS.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\psapi\$(OutDir)PSAPI.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\secur32\$(OutDir)SECUR32.DLL" .
@@ -383,6 +387,9 @@ GOTO:EOF</Command>
     <ProjectReference Include="..\..\dll\win32\lz32\lz32.vcxproj">
       <Project>{f7f26447-c004-42b9-b4da-20c2fb05d3c1}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\mlang\mlang.vcxproj">
+      <Project>{4079c197-5b08-46b6-863a-bf198ad0f323}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\mpr\mpr.vcxproj">
       <Project>{88d37bba-5d24-462a-964e-a88357ff985e}</Project>
     </ProjectReference>
@@ -433,6 +440,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\shell32\shell32.vcxproj">
       <Project>{96bbc7de-9752-404c-b6cd-37be6e8b0565}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dll\win32\shlwapi\shlwapi.vcxproj">
+      <Project>{7626c8b3-a1d6-4f8b-a435-9c84aeded246}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\urlmon\urlmon.vcxproj">
       <Project>{ee3294af-49c4-4518-9f74-644513a7751b}</Project>
