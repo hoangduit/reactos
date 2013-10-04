@@ -61,7 +61,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -140,7 +140,12 @@
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="browseui.rc" />
+    <ResourceCompile Include="browseui.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\psdk\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\psdk\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <ResourceCompile Include="lang\bg-BG.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -233,6 +238,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
       <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\cpprt\cpprt.vcxproj">
+      <Project>{bcd742a8-5f65-425e-b857-6a874b87df98}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\sdk\msvcrtex\msvcrtex.vcxproj">
       <Project>{a50d9140-a72f-44e4-93ec-adf581b67e52}</Project>
