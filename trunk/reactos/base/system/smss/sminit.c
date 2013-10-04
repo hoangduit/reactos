@@ -1513,10 +1513,10 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
 
 			RtlInitUnicodeString(&MyString, L"\n");
 
-			ZwDisplayString(&RegEntry->Name);
+			ZwDisplayString(&RegEntry->Value);
 			ZwDisplayString(&MyString);
 
-			 NtDelayExecution(TRUE, &MyDelay);
+			 //NtDelayExecution(TRUE, &MyDelay);
 		}
 
 
@@ -2350,13 +2350,13 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 		LARGE_INTEGER MyDelay;
 
 		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
 
-		RtlInitUnicodeString(&MyString, L"\nAbout to initialize Known Dlls...\n\n");
+		RtlInitUnicodeString(&MyString, L"Initialize Known Dlls: Begin...\n");
 
 		ZwDisplayString(&MyString);
 
-		// NtDelayExecution(TRUE, &MyDelay);
+		 //NtDelayExecution(TRUE, &MyDelay);
 	}
 
 
@@ -2377,13 +2377,13 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 		LARGE_INTEGER MyDelay;
 
 		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
 
-		RtlInitUnicodeString(&MyString, L"\nInitialized Known Dlls...");
+		RtlInitUnicodeString(&MyString, L"\nInitialize Known Dlls: Complete.\n");
 
 		ZwDisplayString(&MyString);
 
-		NtDelayExecution(TRUE, &MyDelay);
+		//NtDelayExecution(TRUE, &MyDelay);
 	}
 
 
@@ -2414,16 +2414,44 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
     Status = SmpCreateDynamicEnvironmentVariables();
     if (!NT_SUCCESS(Status))
     {
-        /* Handle failure */
-        SMSS_CHECKPOINT(SmpCreateDynamicEnvironmentVariables, Status);
-        return Status;
-    }
+		/* Handle failure */
+		SMSS_CHECKPOINT(SmpCreateDynamicEnvironmentVariables, Status);
+		return Status;
+	}
 
+	{
 
-    /* And finally load all the subsytems for our first session! */
-    Status = SmpLoadSubSystemsForMuSession(&MuSessionId,
-                                           &SmpWindowsSubSysProcessId,
-                                           InitialCommand);
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"Load all the subsytems for our first session: Begin...\n");
+
+		ZwDisplayString(&MyString);
+
+		// NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	/* And finally load all the subsytems for our first session! */
+	Status = SmpLoadSubSystemsForMuSession(&MuSessionId,
+		&SmpWindowsSubSysProcessId,
+		InitialCommand);
+
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"Load all the subsytems for our first session: Complete!\n");
+
+		ZwDisplayString(&MyString);
+
+		// NtDelayExecution(TRUE, &MyDelay);
+	}
+
     ASSERT(MuSessionId == 0);
     if (!NT_SUCCESS(Status)) SMSS_CHECKPOINT(SmpLoadSubSystemsForMuSession, Status);
     return Status;

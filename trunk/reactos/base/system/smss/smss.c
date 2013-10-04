@@ -513,13 +513,55 @@ _main(IN INT argc,
     Parameters[1] = Parameters[2] = Parameters[3] = 0;
 
     /* Enter SEH so we can terminate correctly if anything goes wrong */
-    _SEH2_TRY
-    {
-        /* Initialize SMSS */
-        Status = SmpInit(&InitialCommand, Handles);
+	_SEH2_TRY
+	{
+		{
 
-        if (!NT_SUCCESS(Status))
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+			RtlInitUnicodeString(&MyString, L"SmpInit: Begin...\n");
+
+			ZwDisplayString(&MyString);
+
+			// NtDelayExecution(TRUE, &MyDelay);
+		}
+
+		/* Initialize SMSS */
+		Status = SmpInit(&InitialCommand, Handles);
+
+		{
+
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+			RtlInitUnicodeString(&MyString, L"SmpInit: Complete!\n");
+
+			ZwDisplayString(&MyString);
+
+			// NtDelayExecution(TRUE, &MyDelay);
+		}
+
+		if (!NT_SUCCESS(Status))
         {
+					{
+
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+			RtlInitUnicodeString(&MyString, L"SmpInit: Failure!\n");
+
+			ZwDisplayString(&MyString);
+
+			 NtDelayExecution(TRUE, &MyDelay);
+		}
+
             DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
             RtlInitUnicodeString(&DbgString, L"Session Manager Initialization");
             Parameters[1] = Status;
@@ -539,6 +581,20 @@ _main(IN INT argc,
             /* SMSS should launch ntsd with a few parameters at this point */
             DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
         }
+
+				{
+
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+
+			RtlInitUnicodeString(&MyString, L"Execute the initial command (Winlogon.exe): Begin...\n");
+
+			ZwDisplayString(&MyString);
+
+			// NtDelayExecution(TRUE, &MyDelay);
+		}
 
 
         /* Execute the initial command (Winlogon.exe) */
