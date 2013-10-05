@@ -2438,6 +2438,7 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 		&SmpWindowsSubSysProcessId,
 		InitialCommand);
 
+	if (NT_SUCCESS(Status))
 	{
 
 		LARGE_INTEGER MyDelay;
@@ -2450,6 +2451,20 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 		ZwDisplayString(&MyString);
 
 		// NtDelayExecution(TRUE, &MyDelay);
+	}
+	else		
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: Failure!\n");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
 	}
 
     ASSERT(MuSessionId == 0);
@@ -2572,9 +2587,23 @@ SmpInit(IN PUNICODE_STRING InitialCommand,
         /* Autochk should've run now. Set the event and save the CSRSS handle */
         *ProcessHandle = SmpWindowsSubSysProcess;
         NtSetEvent(EventHandle, 0);
-        NtClose(EventHandle);
-    }
+		NtClose(EventHandle);
+	}
+	else
+	{
 
-    /* All done */
-    return Status;
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"SmpLoadDataFromRegistry: Failure!\n");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	/* All done */
+	return Status;
 }

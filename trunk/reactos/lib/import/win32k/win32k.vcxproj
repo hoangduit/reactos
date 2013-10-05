@@ -82,11 +82,11 @@
   <ItemGroup>
     <CustomBuild Include="..\..\..\win32ss\win32k.spec">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at --ms --implib -l="$(OutDir)\stupid.asm" -d="$(OutDir)%(FileName).def" "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at --ms --implib -l="$(OutDir)\stupid.asm" -d="$(OutDir)%(FileName).def" -n="%(FileName).sys" "%(FullPath)"
 CD "$(OutDir)"
 ML /Cp /Fo stupid.obj /c /Ta stupid.asm
 LIB /MACHINE:X86 /DEF:%(Filename).DEF stupid.obj</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at --ms --implib -l="$(OutDir)\stupid.asm" -d="$(OutDir)%(FileName).def" "%(FullPath)"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at --ms --implib -l="$(OutDir)\stupid.asm" -d="$(OutDir)%(FileName).def" -n="%(FileName).sys" "%(FullPath)"
 CD "$(OutDir)"
 ML /Cp /Fo stupid.obj /c /Ta stupid.asm
 LIB /MACHINE:X86 /DEF:%(Filename).DEF stupid.obj</Command>
