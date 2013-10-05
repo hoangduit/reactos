@@ -271,6 +271,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win\basesrv\$(OutDir)BASESRV.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrss\$(OutDir)CSRSS.EXE" .
 mkdir config
@@ -407,6 +408,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
+call :copy_to_CD "$(SolutionDir)subsystems\win\basesrv\$(OutDir)BASESRV.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrss\$(OutDir)CSRSS.EXE" .
 mkdir config
@@ -704,6 +706,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\subsystems\win32\csrss\csrss.vcxproj">
       <Project>{0dfea72f-bd64-45ba-b9ca-ca55f06ee2c8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\subsystems\win\basesrv\basesrv.vcxproj">
+      <Project>{c3c7bc6f-8cf8-46ac-bc67-0f14ec7f1068}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\cdmake\cdmake.vcxproj">
       <Project>{d77c7601-c61b-4135-b2dd-06a11eff79d0}</Project>
