@@ -28,7 +28,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basesrv.spec" />
     <None Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -44,5 +43,14 @@
     <ClCompile Include="sndsntry.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="nls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vdm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="basesrv.spec" />
   </ItemGroup>
 </Project>

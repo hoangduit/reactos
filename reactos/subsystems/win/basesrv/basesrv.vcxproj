@@ -55,12 +55,18 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;BASESRV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;CMAKE_INTDIR="Debug";basesrv_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\lib\sdk\crt\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\subsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMain@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,17 +92,47 @@
     <ClInclude Include="basesrv.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="basesrv.rc" />
+    <ResourceCompile Include="basesrv.rc">
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreStandardIncludePath>
+      <IgnoreStandardIncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basesrv.spec" />
+    <CustomBuild Include="basesrv.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
     <None Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dosdev.c" />
     <ClCompile Include="init.c" />
+    <ClCompile Include="nls.c" />
     <ClCompile Include="proc.c" />
     <ClCompile Include="sndsntry.c" />
+    <ClCompile Include="vdm.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\dll\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\include\reactos\mc\mc.vcxproj">
+      <Project>{8b41e8f9-abeb-4510-90d6-e56065b0d3ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\tools\spec2def\spec2def.vcxproj">
+      <Project>{1b4132e5-82f0-4bdc-b88d-0be01072132c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32\csrsrv\csrsrv.vcxproj">
+      <Project>{d2048eb3-0946-4686-9d16-e6d6a44bd6c5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
