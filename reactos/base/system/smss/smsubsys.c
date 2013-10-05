@@ -530,10 +530,24 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
         /* Execute each one and move on */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
         SmpExecuteCommand(&RegEntry->Name, 0, NULL, 0);
-        NextEntry = NextEntry->Flink;
-    }
+		NextEntry = NextEntry->Flink;
+	}
 
-    /* Now process the subsystems */
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: About to process SmpSubSystemList...\n");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	/* Now process the subsystems */
     NextEntry = SmpSubSystemList.Flink;
     while (NextEntry != &SmpSubSystemList)
     {
@@ -570,6 +584,20 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                     }
                     AttachedSessionId = *MuSessionId;
 
+					{
+
+						LARGE_INTEGER MyDelay;
+
+						UNICODE_STRING MyString;
+						MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+						RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: About to start Win32k.sys...\n");
+
+						ZwDisplayString(&MyString);
+
+						NtDelayExecution(TRUE, &MyDelay);
+					}
+
                     /*
                      * Start Win32k.sys on this session. Use a hardcoded value
                      * instead of the Kmode one...
@@ -583,6 +611,19 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                     SmpReleasePrivilege(State);
                     if (!NT_SUCCESS(Status))
                     {
+							{
+
+						LARGE_INTEGER MyDelay;
+
+						UNICODE_STRING MyString;
+						MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+						RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: Load of WIN32K failed!!!\n");
+
+						ZwDisplayString(&MyString);
+
+						NtDelayExecution(TRUE, &MyDelay);
+					}
                         DPRINT1("SMSS: Load of WIN32K failed.\n");
                         return Status;
                     }
@@ -592,12 +633,45 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
 
         /* Next entry */
         NextEntry = NextEntry->Flink;
-    }
+	}
 
-    /* Now parse the required subsystem list */
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: About to process SmpSubSystemsToLoad...\n");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	/* Now parse the required subsystem list */
     NextEntry = SmpSubSystemsToLoad.Flink;
     while (NextEntry != &SmpSubSystemsToLoad)
-    {
+	{
+
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+			ZwDisplayString(&RegEntry->Name);
+			RtlInitUnicodeString(&MyString, L"\n");
+			ZwDisplayString(&MyString);
+
+			ZwDisplayString(&RegEntry->Value);
+			RtlInitUnicodeString(&MyString, L"\n");
+			ZwDisplayString(&MyString);
+
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
+
         /* Get each entry and check if it's the internal debug or not */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
         if (_wcsicmp(RegEntry->Name.Buffer, L"Debug") == 0)
@@ -623,10 +697,24 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
         }
 
         /* Move to the next entry */
-        NextEntry = NextEntry->Flink;
-    }
+		NextEntry = NextEntry->Flink;
+	}
 
-    /* Process the "Execute" list now */
+	{
+
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: About to process SmpExecuteList...\n");
+
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	/* Process the "Execute" list now */
     NextEntry = SmpExecuteList.Blink;
     if (NextEntry != &SmpExecuteList)
     {

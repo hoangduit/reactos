@@ -547,42 +547,28 @@ _main(IN INT argc,
 		}
 
 		if (!NT_SUCCESS(Status))
-        {
-					{
-
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-			RtlInitUnicodeString(&MyString, L"SmpInit: Failure!\n");
-
-			ZwDisplayString(&MyString);
-
-			 NtDelayExecution(TRUE, &MyDelay);
+		{
+			DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
+			RtlInitUnicodeString(&DbgString, L"Session Manager Initialization");
+			Parameters[1] = Status;
+			_SEH2_LEAVE;
 		}
 
-            DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
-            RtlInitUnicodeString(&DbgString, L"Session Manager Initialization");
-            Parameters[1] = Status;
-            _SEH2_LEAVE;
-        }
+		/* Get the global flags */
+		Status = NtQuerySystemInformation(SystemFlagsInformation,
+			&Flags,
+			sizeof(Flags),
+			NULL);
+		ASSERT(NT_SUCCESS(Status));
 
-        /* Get the global flags */
-        Status = NtQuerySystemInformation(SystemFlagsInformation,
-                                          &Flags,
-                                          sizeof(Flags),
-                                          NULL);
-        ASSERT(NT_SUCCESS(Status));
+		/* Before executing the initial command check if the debug flag is on */
+		if (Flags & (FLG_DEBUG_INITIAL_COMMAND | FLG_DEBUG_INITIAL_COMMAND_EX))
+		{
+			/* SMSS should launch ntsd with a few parameters at this point */
+			DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
+		}
 
-        /* Before executing the initial command check if the debug flag is on */
-        if (Flags & (FLG_DEBUG_INITIAL_COMMAND | FLG_DEBUG_INITIAL_COMMAND_EX))
-        {
-            /* SMSS should launch ntsd with a few parameters at this point */
-            DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
-        }
-
-				{
+		{
 
 			LARGE_INTEGER MyDelay;
 
