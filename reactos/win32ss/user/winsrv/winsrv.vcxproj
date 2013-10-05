@@ -87,13 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
+    <None Include="consrv.cmake" />
+    <None Include="consrv_new.cmake" />
+    <None Include="usersrv.cmake" />
     <None Include="winsrv.spec" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="harderror.c" />
-    <ClCompile Include="init.c" />
-    <ClCompile Include="register.c" />
-    <ClCompile Include="shutdown.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="lang\bg-BG.rc" />
@@ -120,6 +117,9 @@
     <ResourceCompile Include="lang\zh-TW.rc" />
     <ResourceCompile Include="rsrc.rc" />
     <ResourceCompile Include="winsrv.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="init.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -31,20 +31,9 @@
   <ItemGroup>
     <None Include="CMakeLists.txt" />
     <None Include="winsrv.spec" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="harderror.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="init.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="register.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shutdown.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <None Include="consrv.cmake" />
+    <None Include="consrv_new.cmake" />
+    <None Include="usersrv.cmake" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="rsrc.rc">
@@ -119,5 +108,10 @@
     <ResourceCompile Include="lang\zh-TW.rc">
       <Filter>lang</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
