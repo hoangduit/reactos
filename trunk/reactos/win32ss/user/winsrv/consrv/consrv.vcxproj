@@ -55,6 +55,8 @@
       <AdditionalIncludeDirectories>.\;$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\lib\sdk\crt\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\subsys;$(SolutionDir)\win32ss\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions />
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -62,6 +64,9 @@
       </AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
     </Link>
+    <Lib>
+      <AdditionalOptions />
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

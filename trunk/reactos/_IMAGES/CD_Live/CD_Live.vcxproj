@@ -134,6 +134,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAME
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\user\winsrv\$(OutDir)WINSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
 mkdir config
 cd "$(SolutionDir)boot\bootdata"
@@ -407,6 +408,7 @@ call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAME
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\user\winsrv\$(OutDir)WINSRV.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\gdi\gdi32\$(OutDir)GDI32.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win\basesrv\$(OutDir)BASESRV.DLL" .
 call :copy_to_CD "$(SolutionDir)subsystems\win32\csrsrv\$(OutDir)CSRSRV.DLL" .
@@ -730,6 +732,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\user\user32\user32.vcxproj">
       <Project>{4dccd8be-f0cb-436f-8a18-6dd1677ae56f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ss\user\winsrv\winsrv.vcxproj">
+      <Project>{c51237c6-8ca3-430b-886f-d7aab59009aa}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\win32k\win32k.vcxproj">
       <Project>{677f726d-0072-4a20-978e-b2917132677e}</Project>
