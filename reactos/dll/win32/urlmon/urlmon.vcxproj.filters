@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="CMakeLists.txt" />
+    <CustomBuild Include="urlmon_urlmon.idl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="axinstall.c">
@@ -89,10 +92,5 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="urlmon.spec" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="urlmon_urlmon.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
   </ItemGroup>
 </Project>

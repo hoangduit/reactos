@@ -18,6 +18,6 @@
     <Text Include="..\..\..\dll\win32\iphlpapi\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\dll\win32\iphlpapi\iphlpapi.spec" />
+    <CustomBuild Include="..\..\..\dll\win32\iphlpapi\iphlpapi.spec" />
   </ItemGroup>
 </Project>

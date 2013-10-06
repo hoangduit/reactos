@@ -18,9 +18,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="olethk32.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,5 +26,8 @@
     <ResourceCompile Include="version.rc">
       <Filter>Header Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="olethk32.spec" />
   </ItemGroup>
 </Project>

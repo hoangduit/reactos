@@ -2450,7 +2450,7 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
 
 		ZwDisplayString(&MyString);
 
-		// NtDelayExecution(TRUE, &MyDelay);
+		NtDelayExecution(TRUE, &MyDelay);
 	}
 	else		
 	{

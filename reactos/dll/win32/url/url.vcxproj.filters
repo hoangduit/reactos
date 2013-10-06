@@ -18,11 +18,11 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="url.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="url_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="url.spec" />
   </ItemGroup>
 </Project>

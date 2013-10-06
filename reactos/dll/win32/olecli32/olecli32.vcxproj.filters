@@ -18,11 +18,11 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="olecli32.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="olecli_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="olecli32.spec" />
   </ItemGroup>
 </Project>

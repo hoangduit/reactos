@@ -86,10 +86,6 @@
     <CustomBuild Include="epm.idl">
       <Filter>Source Files</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="msvc.S">
-      <Filter>Source Files</Filter>
-    </None>
+    <CustomBuild Include="msvc.S" />
   </ItemGroup>
 </Project>
