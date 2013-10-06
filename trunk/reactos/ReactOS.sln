@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2012 for Windows Desktop
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "base", "base", "{09AB9252-3665-4988-9DE5-6EF8E2FA0541}"
 	ProjectSection(SolutionItems) = preProject
 		base\CMakeLists.txt = base\CMakeLists.txt
@@ -4092,9 +4092,11 @@ Global
 		{63AC3A9E-B7DD-4A59-88C2-D14721AE3544}.Release|x86_64.ActiveCfg = Release|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Debug|ARM.ActiveCfg = Debug|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Debug|x86_32.ActiveCfg = Debug|Win32
+		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Debug|x86_32.Build.0 = Debug|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Debug|x86_64.ActiveCfg = Debug|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Release|ARM.ActiveCfg = Release|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Release|x86_32.ActiveCfg = Release|Win32
+		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Release|x86_32.Build.0 = Release|Win32
 		{61093CE5-9B58-4B2F-9BD4-A4B0E7DFF9EA}.Release|x86_64.ActiveCfg = Release|Win32
 		{B781C320-3C9C-4C1D-BD9E-25712C37508C}.Debug|ARM.ActiveCfg = Debug|Win32
 		{B781C320-3C9C-4C1D-BD9E-25712C37508C}.Debug|x86_32.ActiveCfg = Debug|Win32
