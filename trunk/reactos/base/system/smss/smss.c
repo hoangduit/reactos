@@ -573,15 +573,14 @@ _main(IN INT argc,
 			LARGE_INTEGER MyDelay;
 
 			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
 
 			RtlInitUnicodeString(&MyString, L"Execute the initial command (Winlogon.exe): Begin...\n");
 
 			ZwDisplayString(&MyString);
 
-			// NtDelayExecution(TRUE, &MyDelay);
+			NtDelayExecution(TRUE, &MyDelay);
 		}
-
 
         /* Execute the initial command (Winlogon.exe) */
         Status = SmpExecuteInitialCommand(0, &InitialCommand, &Handles[1], NULL);

@@ -18,6 +18,6 @@
     <Text Include="..\..\..\dll\win32\ws2_32\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\dll\win32\ws2_32\ws2_32.spec" />
+    <CustomBuild Include="..\..\..\dll\win32\ws2_32\ws2_32.spec" />
   </ItemGroup>
 </Project>
