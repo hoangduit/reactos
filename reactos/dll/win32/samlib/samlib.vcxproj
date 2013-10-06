@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{48123ECC-6750-4B2D-9DB4-0FF1AC77A389}</ProjectGuid>
-    <RootNamespace>netapi32</RootNamespace>
+    <ProjectGuid>{76702321-11A5-41D2-8D59-EB19E840158D}</ProjectGuid>
+    <RootNamespace>samlib</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -50,20 +50,22 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalOptions>"$(OutDir)\netapi32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_i.c" "$(OutDir)\sam_p.c" </AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
-      <SubSystem>Windows</SubSystem>
-      <AdditionalOptions>"$(OutDir)\netapi32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_i.obj" "$(OutDir)\sam_p.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -72,10 +74,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>"$(OutDir)\netapi32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_i.c" "$(OutDir)\sam_p.c" </AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -84,60 +86,43 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
-      <SubSystem>Windows</SubSystem>
-      <AdditionalOptions>"$(OutDir)\netapi32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_i.obj" "$(OutDir)\sam_p.obj" %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="access.c" />
-    <ClCompile Include="apibuf.c" />
-    <ClCompile Include="browsr.c" />
-    <ClCompile Include="ds.c" />
-    <ClCompile Include="group.c" />
-    <ClCompile Include="local_group.c" />
-    <ClCompile Include="misc.c" />
-    <ClCompile Include="nbcmdqueue.c" />
-    <ClCompile Include="nbnamecache.c" />
-    <ClCompile Include="nbt.c" />
-    <ClCompile Include="netapi32.c" />
-    <ClCompile Include="netbios.c" />
-    <ClCompile Include="share.c" />
-    <ClCompile Include="user.c" />
-    <ClCompile Include="wksta.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="nbcmdqueue.h" />
-    <ClInclude Include="nbnamecache.h" />
-    <ClInclude Include="netapi32.h" />
-    <ClInclude Include="netbios.h" />
-  </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="netapi32.spec">
+    <ClCompile Include="dllmain.c" />
+    <ClCompile Include="samlib.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="precomp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="samlib.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="samlib.spec">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
-      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\iphlpapi\iphlpapi.vcxproj">
-      <Project>{f2b298f2-db74-45ba-891e-2d54696585f9}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
       <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\msvcrt\msvcrt.vcxproj">
       <Project>{89509daa-bfa9-4ca8-b066-127df19b4d86}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\lib\import\ws2_32\ws2_32.vcxproj">
-      <Project>{483dd715-8bc9-47af-a05d-7e906e5f0884}</Project>
+    <ProjectReference Include="..\..\..\lib\import\rpcrt4\rpcrt4.vcxproj">
+      <Project>{e67e3ad8-6887-4a05-ad49-e19754b34ade}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
@@ -145,9 +130,26 @@
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\secur32\secur32.vcxproj">
-      <Project>{8e222163-9810-412f-8521-5d9bfb4015ec}</Project>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\include\reactos\idl\sam.idl">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..\..</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
+mkdir $(OutDir)
+cd $(OutDir)
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -p -o "%(Filename)_p.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+cd ..\..\..</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).h</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
