@@ -283,18 +283,20 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
                                  MuSessionId,
                                  Flags | SMP_DEFERRED_FLAG,
                                  &ProcessInformation);
+
         if (!NT_SUCCESS(Status))
-        {
+		{
+
             /* Handle failures */
             DPRINT1("SMSS: SmpLoadSubSystem - SmpExecuteImage Failed with  Status %lx\n",
                     Status);
             goto Quickie2;
-        }
-    }
+		}		
+	}
 
-    /* Fill out the handle and client ID in the subsystem structure now */
-    NewSubsystem->ProcessHandle = ProcessInformation.ProcessHandle;
-    NewSubsystem->ClientId = ProcessInformation.ClientId;
+	/* Fill out the handle and client ID in the subsystem structure now */
+	NewSubsystem->ProcessHandle = ProcessInformation.ProcessHandle;
+	NewSubsystem->ClientId = ProcessInformation.ClientId;
 
     /* Check if we launched a native image or a subsystem-backed image */
     if (ProcessInformation.ImageInformation.SubSystemType == IMAGE_SUBSYSTEM_NATIVE)
@@ -394,8 +396,22 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         }
     }
 
+	
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L"Before NtResumeThread!\n");
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
     /* Okay, everything looks good to go, initialize this subsystem now! */
     Status = NtResumeThread(ProcessInformation.ThreadHandle, NULL);
+
     if (!NT_SUCCESS(Status))
     {
         /* That didn't work -- back out of everything */
@@ -403,9 +419,34 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         goto Quickie;
     }
 
+		
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L"After NtResumeThread!\n");
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
     /* Check if this was the subsystem for a different session */
     if (MuSessionId)
-    {
+	{
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+			RtlInitUnicodeString(&MyString, L"MuSessionId\n");
+			ZwDisplayString(&MyString);
+
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
         /* Wait up to 60 seconds for it to initialize */
         Timeout.QuadPart = -600000000;
         Status = NtWaitForSingleObject(NewSubsystem->Event, FALSE, &Timeout);
@@ -429,13 +470,26 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         }
     }
     else
-    {
-        /* This a session 0 subsystem, just wait for it to initialize */
-        NtWaitForSingleObject(NewSubsystem->Event, FALSE, NULL);
-    }
+	{
+		/* This a session 0 subsystem, just wait for it to initialize */
+		NtWaitForSingleObject(NewSubsystem->Event, FALSE, NULL);
+	}
 
-    /* Subsystem is created, resumed, and initialized. Close handles and exit */
-    NtClose(ProcessInformation.ThreadHandle);
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L" Subsystem is created, resumed, and initialized. Close handles and exit\n");
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+
+	/* Subsystem is created, resumed, and initialized. Close handles and exit */
+	NtClose(ProcessInformation.ThreadHandle);
     Status = STATUS_SUCCESS;
     goto Quickie2;
 
@@ -533,20 +587,6 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
 		NextEntry = NextEntry->Flink;
 	}
 
-	{
-
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: About to process SmpSubSystemList...\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 	/* Now process the subsystems */
     NextEntry = SmpSubSystemList.Flink;
     while (NextEntry != &SmpSubSystemList)
@@ -610,20 +650,20 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                     RtlFreeHeap(RtlGetProcessHeap(), 0, NtPath.Buffer);
                     SmpReleasePrivilege(State);
                     if (!NT_SUCCESS(Status))
-                    {
-							{
+					{
+						{
 
-						LARGE_INTEGER MyDelay;
+							LARGE_INTEGER MyDelay;
 
-						UNICODE_STRING MyString;
-						MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+							UNICODE_STRING MyString;
+							MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
 
-						RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: Load of WIN32K failed!!!\n");
+							RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: Load of WIN32K failed!!!\n");
 
-						ZwDisplayString(&MyString);
+							ZwDisplayString(&MyString);
 
-						NtDelayExecution(TRUE, &MyDelay);
-					}
+							NtDelayExecution(TRUE, &MyDelay);
+						}
                         DPRINT1("SMSS: Load of WIN32K failed.\n");
                         return Status;
                     }
@@ -692,6 +732,7 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                                        ProcessId,
                                        SMP_SUBSYSTEM_FLAG);
         }
+
         if (!NT_SUCCESS(Status))
         {
             DbgPrint("SMSS: Subsystem execute failed (%wZ)\n", &RegEntry->Value);
