@@ -30,15 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="winsrv.spec" />
-    <None Include="consrv.cmake" />
-    <None Include="consrv_new.cmake" />
-    <None Include="usersrv.cmake" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="rsrc.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
     <ResourceCompile Include="winsrv.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
@@ -113,5 +106,8 @@
     <ClCompile Include="init.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="winsrv.spec" />
   </ItemGroup>
 </Project>

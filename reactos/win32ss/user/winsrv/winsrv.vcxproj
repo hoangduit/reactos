@@ -12,20 +12,21 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C51237C6-8CA3-430B-886F-D7AAB59009AA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
     <RootNamespace>winsrv</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -39,28 +40,30 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>build\x86_32\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>build\x86_32\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>build\x86_32\$(Configuration)\</IntDir>
+    <OutDir>build\x86_32\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;_DLL;__USE_CRTIMP;__REACTOS__;DBG=1;_SEH_ENABLE_TRACE;_WINKD_=1;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_X86_;__i386__;USE_COMPILER_EXCEPTIONS;_USE_32BIT_TIME_T;WIN32;_WINDOWS;inline=__inline;__STDC__=1;LANGUAGE_EN_US;_WIN32_WINNT=0x600;CMAKE_INTDIR="Debug";winsrv_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <AdditionalIncludeDirectories>.\;$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32\$(Configuration);$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\lib\sdk\crt\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos\subsys;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <EntryPointSymbol>DllMain@12</EntryPointSymbol>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,39 +90,148 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="consrv.cmake" />
-    <None Include="consrv_new.cmake" />
-    <None Include="usersrv.cmake" />
-    <None Include="winsrv.spec" />
+    <CustomBuild Include="winsrv.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe"  -d="$(OutDir)%(FileName).def" -s="$(OutDir)\%(FileName)_stubs.c" --kill-at --ms -a=i386 -n="$(TargetFileName)" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="lang\bg-BG.rc" />
-    <ResourceCompile Include="lang\cs-CZ.rc" />
-    <ResourceCompile Include="lang\de-DE.rc" />
-    <ResourceCompile Include="lang\el-GR.rc" />
-    <ResourceCompile Include="lang\en-US.rc" />
-    <ResourceCompile Include="lang\es-ES.rc" />
-    <ResourceCompile Include="lang\fr-FR.rc" />
-    <ResourceCompile Include="lang\he-IL.rc" />
-    <ResourceCompile Include="lang\id-ID.rc" />
-    <ResourceCompile Include="lang\it-IT.rc" />
-    <ResourceCompile Include="lang\ja-JP.rc" />
-    <ResourceCompile Include="lang\no-NO.rc" />
-    <ResourceCompile Include="lang\pl-PL.rc" />
-    <ResourceCompile Include="lang\pt-BR.rc" />
-    <ResourceCompile Include="lang\ro-RO.rc" />
-    <ResourceCompile Include="lang\ru-RU.rc" />
-    <ResourceCompile Include="lang\sk-SK.rc" />
-    <ResourceCompile Include="lang\sv-SE.rc" />
-    <ResourceCompile Include="lang\tr-TR.rc" />
-    <ResourceCompile Include="lang\uk-UA.rc" />
-    <ResourceCompile Include="lang\zh-CN.rc" />
-    <ResourceCompile Include="lang\zh-TW.rc" />
-    <ResourceCompile Include="rsrc.rc" />
-    <ResourceCompile Include="winsrv.rc" />
+    <ResourceCompile Include="lang\bg-BG.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\cs-CZ.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\de-DE.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\el-GR.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\en-US.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\es-ES.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\fr-FR.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\he-IL.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\id-ID.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\it-IT.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ja-JP.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\no-NO.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pl-PL.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\pt-BR.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ro-RO.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\ru-RU.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sk-SK.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\sv-SE.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\tr-TR.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\uk-UA.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-CN.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="lang\zh-TW.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
+    <ResourceCompile Include="winsrv.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="init.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\dll\ntdll\ntdll.vcxproj">
+      <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dll\win32\advapi32\advapi32.vcxproj">
+      <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\include\reactos\mc\mc.vcxproj">
+      <Project>{8b41e8f9-abeb-4510-90d6-e56065b0d3ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\gdi32\gdi32.vcxproj">
+      <Project>{031ea1c5-fbbf-47c8-a00d-c78cf7a763ac}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
+      <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\import\user32\user32.vcxproj">
+      <Project>{a928e148-0f92-43fe-9ca4-a41d5ed6a5bd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\sdk\crt\libcntpr\libcntpr.vcxproj">
+      <Project>{271006d5-01b2-4f33-8699-9909a41e0707}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\subsystems\win32\csrsrv\csrsrv.vcxproj">
+      <Project>{d2048eb3-0946-4686-9d16-e6d6a44bd6c5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ksys\win32ksys.vcxproj">
+      <Project>{676ab8c2-85d2-428a-bbbf-3869cc177cde}</Project>
+    </ProjectReference>
+    <ProjectReference Include="consrv\consrv.vcxproj">
+      <Project>{61093ce5-9b58-4b2f-9bd4-a4b0e7dff9ea}</Project>
+    </ProjectReference>
+    <ProjectReference Include="usersrv\usersrv.vcxproj">
+      <Project>{b781c320-3c9c-4c1d-bd9e-25712c37508c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
