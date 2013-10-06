@@ -84,11 +84,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="api.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="winsrv.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="CMakeLists.txt" />
     <CustomBuild Include="winsrv.spec">
       <FileType>Document</FileType>

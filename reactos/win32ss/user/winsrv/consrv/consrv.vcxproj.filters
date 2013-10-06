@@ -116,9 +116,6 @@
     <ClInclude Include="coninput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="conio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="conoutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>

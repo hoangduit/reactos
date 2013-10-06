@@ -128,7 +128,6 @@
     <ClInclude Include="alias.h" />
     <ClInclude Include="api.h" />
     <ClInclude Include="coninput.h" />
-    <ClInclude Include="conio.h" />
     <ClInclude Include="conoutput.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="consrv.h" />
