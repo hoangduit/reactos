@@ -10,6 +10,8 @@
 /* INCLUDES *******************************************************************/
 
 #define NTOS_MODE_USER
+#include <ndk/exfuncs.h> // -JCJ
+#include <ndk/kefuncs.h> // -JCJ
 #include <ndk/psfuncs.h>
 #include <ndk/rtlfuncs.h>
 
@@ -57,8 +59,22 @@ _main(int argc,
                                      ProcessUserModeIOPL,
                                      NULL,
                                      0);
-    if (!NT_SUCCESS(Status))
-    {
+
+
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L"We're inside CSRSS.EXE!!!!\n");
+		ZwDisplayString(&MyString);
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+
+	if (!NT_SUCCESS(Status))
+	{
         /* Raise a hard error */
         DPRINT1("CSRSS: Could not raise IOPL, Status: 0x%08lx\n", Status);
 #if 0

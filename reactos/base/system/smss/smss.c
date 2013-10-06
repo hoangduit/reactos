@@ -256,10 +256,25 @@ SmpExecuteCommand(IN PUNICODE_STRING CommandLine,
                                   Flags);
     }
     else if (Flags & SMP_INVALID_PATH)
-    {
-        /* An invalid image was specified, fail */
-        DPRINT1("SMSS: Image file (%wZ) not found\n", &FileName);
-        Status = STATUS_OBJECT_NAME_NOT_FOUND;
+	{
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
+
+			RtlInitUnicodeString(&MyString, L"Invalid Path");
+			ZwDisplayString(&MyString);
+
+			ZwDisplayString(&FileName);
+			RtlInitUnicodeString(&MyString, L"!!!\n");
+			ZwDisplayString(&MyString);
+
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+		/* An invalid image was specified, fail */
+		DPRINT1("SMSS: Image file (%wZ) not found\n", &FileName);
+		Status = STATUS_OBJECT_NAME_NOT_FOUND;
     }
     else
     {
