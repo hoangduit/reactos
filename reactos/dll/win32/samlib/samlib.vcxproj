@@ -52,16 +52,19 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_i.c" "$(OutDir)\sam_p.c" </AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_c.c"</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
-      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_i.obj" "$(OutDir)\sam_p.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_c.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMain</EntryPointSymbol>
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
@@ -75,9 +78,10 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\build\x86_32</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OutDir);$(SolutionDir)\include;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_i.c" "$(OutDir)\sam_p.c" </AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.c" "$(OutDir)\sam_c.c"</AdditionalOptions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,7 +90,8 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
-      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_i.obj" "$(OutDir)\sam_p.obj" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(OutDir)\samlib_stubs.obj" "$(OutDir)\sam_c.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMain</EntryPointSymbol>
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
@@ -115,6 +120,9 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\3rdparty\libwine\wine.vcxproj">
+      <Project>{bf01f164-42e4-43ab-a82a-e1b566b1bc03}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\kernel32\kernel32.vcxproj">
       <Project>{6892430e-8078-40f5-84e8-2cb773b83027}</Project>
     </ProjectReference>
@@ -123,6 +131,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\import\rpcrt4\rpcrt4.vcxproj">
       <Project>{e67e3ad8-6887-4a05-ad49-e19754b34ade}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\lib\pseh\pseh.vcxproj">
+      <Project>{d8d28946-96ed-4a34-b1e6-03f918784cb2}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\ntdll\ntdll.vcxproj">
       <Project>{34b7e2de-45ab-43b1-8dd4-42967f6c9692}</Project>
@@ -136,14 +147,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
 cd ..\..\..</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REM We change diretories like this because WIDL.EXE is broken and refuses to honor relative paths for generation of .c file.
 mkdir $(OutDir)
 cd $(OutDir)
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename)_c.h" -p -o "%(Filename)_p.c" "%(FullPath)"
-"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -u -o "%(Filename)_i.c" "%(FullPath)"
+"$(SolutionDir)\tools\widl\$(OutDir)\widl.exe"  -m32 --win32 -h -I . -I "$(SolutionDir)\include\dxsdk" -I "$(SolutionDir)\include\reactos" -I "$(SolutionDir)\include\psdk" -I "$(SolutionDir)\include\reactos\idl" -H "%(Filename).h" -c -Oif -o "%(Filename)_c.c" "%(FullPath)"
 cd ..\..\..</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIDL.EXE is compiling %(FullPath)</Message>
