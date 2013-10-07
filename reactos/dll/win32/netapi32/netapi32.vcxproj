@@ -55,6 +55,8 @@
       <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalOptions>"$(OutDir)\netapi32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -63,6 +65,7 @@
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>"$(OutDir)\netapi32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMain</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,6 +79,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\wine;$(SolutionDir)\include\reactos\libs</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINESRC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>"$(OutDir)\netapi32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,6 +90,7 @@
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>"$(OutDir)\netapi32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
+      <EntryPointSymbol>DllMain</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -144,6 +149,9 @@
     </ProjectReference>
     <ProjectReference Include="..\advapi32\advapi32.vcxproj">
       <Project>{c25fa985-9124-4bcb-856b-070d333e33d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\samlib\samlib.vcxproj">
+      <Project>{76702321-11a5-41d2-8d59-eb19e840158d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\secur32\secur32.vcxproj">
       <Project>{8e222163-9810-412f-8521-5d9bfb4015ec}</Project>
