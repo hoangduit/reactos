@@ -16,6 +16,9 @@
 
 /* DATA ***********************************************************************/
 
+// Debug Flag
+ULONG CsrDebug = 0; // 0xFFFFFFFF;
+
 HANDLE CsrHeap = NULL;
 HANDLE CsrObjectDirectory = NULL;
 UNICODE_STRING CsrDirectoryName;
@@ -25,7 +28,6 @@ PCSR_THREAD CsrSbApiRequestThreadPtr;
 HANDLE CsrSmApiPort = NULL;
 HANDLE hSbApiPort = NULL;
 HANDLE CsrApiPort = NULL;
-ULONG CsrDebug = 0; // 0xFFFFFFFF;
 ULONG CsrMaxApiRequestThreads;
 ULONG CsrTotalPerProcessDataLength;
 ULONG SessionId;
@@ -550,19 +552,7 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
     CsrObjectDirectory = NULL;
     CsrMaxApiRequestThreads = 16;
 
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrParseServerCommandLine\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	/* Save our Session ID, and create a Directory for it */
+    /* Save our Session ID, and create a Directory for it */
     SessionId = NtCurrentPeb()->SessionId;
     Status = CsrCreateSessionObjectDirectory(SessionId);
     if (!NT_SUCCESS(Status))
@@ -684,33 +674,6 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
 
             /* Add a null char if it was valid */
             if (NT_SUCCESS(Status)) ServerString[-1] = ANSI_NULL;
-
-			{
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-
-				WCHAR MyBuffer[1024];
-
-				unsigned int i = 0;
-
-				do
-				MyBuffer[i] = ParameterValue[i];
-				while (ParameterValue[i++]);
-
-				MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"About to load: ");
-				ZwDisplayString(&MyString);
-
-				RtlInitUnicodeString(&MyString, MyBuffer);
-				ZwDisplayString(&MyString);
-				RtlInitUnicodeString(&MyString, L"\n");
-				ZwDisplayString(&MyString);
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
 
             /* Load it */
             if (CsrDebug & 1) DPRINT1("CSRSS: Loading ServerDll=%s:%s\n", ParameterValue, EntryPoint);
@@ -1001,29 +964,14 @@ CsrServerInitialization(IN ULONG ArgumentCount,
 {
     NTSTATUS Status = STATUS_SUCCESS;
 
-		
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:NtQuerySystemInformation\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
     /* Cache System Basic Information so we don't always request it */
     Status = NtQuerySystemInformation(SystemBasicInformation,
                                       &CsrNtSysInfo,
                                       sizeof(SYSTEM_BASIC_INFORMATION),
                                       NULL);
-
-
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: NtQuerySystemInformation failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: NtQuerySystemInformation failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
@@ -1035,170 +983,64 @@ CsrServerInitialization(IN ULONG ArgumentCount,
     Status = CsrSetProcessSecurity();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrSetProcessSecurity failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrSetProcessSecurity failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-		
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrInitializeNtSessionList\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* Set up Session Support */
     Status = CsrInitializeNtSessionList();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrInitializeSessions failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrInitializeSessions failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-			
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrInitializeProcessStructure\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* Set up Process Support and allocate the CSR Root Process */
     Status = CsrInitializeProcessStructure();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrInitializeProcessStructure failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrInitializeProcessStructure failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-		{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrParseServerCommandLine\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* Parse the command line */
     Status = CsrParseServerCommandLine(ArgumentCount, Arguments);
     if (!NT_SUCCESS(Status))
     {
-			{
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-
-				MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"CsrParseServerCommandLine: FAILED!");
-				ZwDisplayString(&MyString);
-
-				RtlInitUnicodeString(&MyString, L"\n");
-				ZwDisplayString(&MyString);
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
-        DPRINT1("CSRSRV:%s: CsrParseServerCommandLine failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrParseServerCommandLine failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrInitCsrRootProcess\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 
     /* Finish to initialize the CSR Root Process */
     Status = CsrInitCsrRootProcess();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrInitCsrRootProcess failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrInitCsrRootProcess failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-				{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrInitCsrRootProcess\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 
     /* Now initialize our API Port */
     Status = CsrApiPortInitialize();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrApiPortInitialize failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrApiPortInitialize failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-		{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:CsrSbApiPortInitialize\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 
     /* Initialize the API Port for SM communication */
     Status = CsrSbApiPortInitialize();
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: CsrSbApiPortInitialize failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: CsrSbApiPortInitialize failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
-
-			{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization:SmConnectToSm\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* We're all set! Connect to SM! */
     Status = SmConnectToSm(&CsrSbApiPortName,
@@ -1207,7 +1049,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
                            &CsrSmApiPort);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: SmConnectToSm failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: SmConnectToSm failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
@@ -1216,7 +1058,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
     Status = NtSetDefaultHardErrorPort(CsrApiPort);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("CSRSRV:%s: NtSetDefaultHardErrorPort failed (Status=%08lx)\n",
+        DPRINT1("CSRSRV:%s: NtSetDefaultHardErrorPort failed (Status=0x%08lx)\n",
                 __FUNCTION__, Status);
         return Status;
     }
