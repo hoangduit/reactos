@@ -166,9 +166,6 @@
     <ClInclude Include="cdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="filedlg31.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="filedlgbrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -213,5 +210,10 @@
     <Image Include="res\bitmaps\fontpics.bmp">
       <Filter>res\bitmaps</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="comdlg32_classes.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
   </ItemGroup>
 </Project>

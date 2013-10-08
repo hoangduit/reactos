@@ -52,7 +52,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);.\;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -75,7 +75,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__REACTOS__;__WINESRC__;_WINE;inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\psdk\$(OutDir);.\;$(SolutionDir)\include\reactos\wine</AdditionalIncludeDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <AdditionalOptions>"$(OutDir)\comdlg32_stubs.c" %(AdditionalOptions)</AdditionalOptions>
@@ -385,7 +385,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cdlg.h" />
-    <ClInclude Include="filedlg31.h" />
     <ClInclude Include="filedlgbrowser.h" />
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +444,12 @@
     <Image Include="res\icons\pd32_landscape.ico" />
     <Image Include="res\icons\pd32_nocollate.ico" />
     <Image Include="res\icons\pd32_portrait.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="comdlg32_classes.idl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Midl>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
