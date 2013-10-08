@@ -396,19 +396,6 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         }
     }
 
-	
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"Before NtResumeThread!\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
     /* Okay, everything looks good to go, initialize this subsystem now! */
     Status = NtResumeThread(ProcessInformation.ThreadHandle, NULL);
 
@@ -418,19 +405,6 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         DPRINT1("SMSS: SmpLoadSubSystem - NtResumeThread failed Status %lx\n", Status);
         goto Quickie;
     }
-
-		
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"After NtResumeThread!\n");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* Check if this was the subsystem for a different session */
     if (MuSessionId)

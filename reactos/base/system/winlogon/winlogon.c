@@ -308,9 +308,9 @@ WinMain(IN HINSTANCE hInstance,
     ULONG HardErrorResponse;
     MSG Msg;
 
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-    UNREFERENCED_PARAMETER(nShowCmd);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(nShowCmd);
 
     hAppInstance = hInstance;
 

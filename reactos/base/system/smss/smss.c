@@ -519,7 +519,6 @@ _main(IN INT argc,
 
 	ASSERT(NT_SUCCESS(Status));
 
-
 	/* Save the debug flag if it was passed */
 	if (DebugFlag) SmpDebug = DebugFlag != 0;
 
@@ -537,7 +536,7 @@ _main(IN INT argc,
 			UNICODE_STRING MyString;
 			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
 
-			RtlInitUnicodeString(&MyString, L"SmpInit: Begin...\n");
+			RtlInitUnicodeString(&MyString, L"_main: Before SmpInit...\n");
 
 			ZwDisplayString(&MyString);
 
@@ -554,11 +553,11 @@ _main(IN INT argc,
 			UNICODE_STRING MyString;
 			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
 
-			RtlInitUnicodeString(&MyString, L"SmpInit: Complete!\n");
+			RtlInitUnicodeString(&MyString, L"_main: After SmpInit.\n");
 
 			ZwDisplayString(&MyString);
 
-			// NtDelayExecution(TRUE, &MyDelay);
+			NtDelayExecution(TRUE, &MyDelay);
 		}
 
 		if (!NT_SUCCESS(Status))
@@ -590,7 +589,7 @@ _main(IN INT argc,
 			UNICODE_STRING MyString;
 			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
 
-			RtlInitUnicodeString(&MyString, L"Execute the initial command (Winlogon.exe): Begin...\n");
+			RtlInitUnicodeString(&MyString, L"_main: Before SmpExecuteInitialCommand...\n");
 
 			ZwDisplayString(&MyString);
 
@@ -609,7 +608,21 @@ _main(IN INT argc,
             _SEH2_LEAVE;
         }
 
-        /*  Check if we're already attached to a session */
+		{
+
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
+
+			RtlInitUnicodeString(&MyString, L"_main: After SmpExecuteInitialCommand...\n");
+
+			ZwDisplayString(&MyString);
+
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
+		/*  Check if we're already attached to a session */
         Status = SmpAcquirePrivilege(SE_LOAD_DRIVER_PRIVILEGE, &State);
         if (AttachedSessionId != -1)
         {

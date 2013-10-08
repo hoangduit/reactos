@@ -245,6 +245,7 @@ static BOOL
 TryToStartShell(
     IN LPCWSTR Shell)
 {
+
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
     WCHAR ExpandedShell[MAX_PATH];
