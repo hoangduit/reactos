@@ -13,6 +13,7 @@
 #include <main/framebuffer.h>
 #include <main/renderbuffer.h>
 #include <main/shared.h>
+#include <main/viewport.h>
 #include <swrast/s_context.h>
 #include <swrast/s_renderbuffer.h>
 #include <swrast_setup/swrast_setup.h>
@@ -21,7 +22,6 @@
 #include <tnl/tnl.h>
 #include <drivers/common/driverfuncs.h>
 #include <drivers/common/meta.h>
-#include <glapi/glapitable.h>
 
 #include <wine/debug.h>
 WINE_DEFAULT_DEBUG_CHANNEL(opengl32);
@@ -479,8 +479,7 @@ BOOL sw_SetPixelFormat(HDC hdc, struct wgl_dc_data* dc_data, INT format)
         pixel_formats[fb->format_index].accum_bits,
         pixel_formats[fb->format_index].accum_bits,
         pixel_formats[fb->format_index].alpha_bits ? 
-            pixel_formats[fb->format_index].accum_bits : 0,
-        1 /* One sampling level */);
+            pixel_formats[fb->format_index].accum_bits : 0);
     
     if(!fb->gl_visual)
     {
@@ -536,7 +535,6 @@ DHGLRC sw_CreateContext(struct wgl_dc_data* dc_data)
     
     /* Initialize the context */
     if(!_mesa_initialize_context(&sw_ctx->mesa,
-                                 API_OPENGL,
                                  fb->gl_visual,
                                  NULL,
                                  &mesa_drv_functions,
@@ -758,6 +756,15 @@ BOOL sw_SetContext(struct wgl_dc_data* dc_data, DHGLRC dhglrc)
         ERR("_mesa_make_current filaed!\n");
         return FALSE;
     }
+    
+    /* Set the viewport if this is the first time we initialize this context */
+    if(sw_ctx->mesa.Viewport.X == 0 && 
+       sw_ctx->mesa.Viewport.Y == 0 &&
+       sw_ctx->mesa.Viewport.Width == 0 &&
+       sw_ctx->mesa.Viewport.Height == 0)
+    {
+        _mesa_set_viewport(&sw_ctx->mesa, 0, 0, width, height);
+    }
 
     /* update the framebuffer size */
     _mesa_resize_framebuffer(&sw_ctx->mesa, fb->gl_buffer, width, height);
@@ -806,40 +813,4 @@ BOOL sw_SwapBuffers(HDC hdc, struct wgl_dc_data* dc_data)
         fb->backbuffer.Buffer,
         &fb->bmi,
         DIB_RGB_COLORS) != 0);
-}
-
-/* mesa threading glue */
-void* _glapi_Context = NULL;
-struct _glapi_table *_glapi_Dispatch = NULL;
-
-void* _glapi_get_context()
-{
-    return IntGetCurrentICDPrivate();
-}
-
-struct _glapi_table *
-_glapi_get_dispatch(void)
-{
-    return (struct _glapi_table *)IntGetCurrentDispatchTable();
-}
-
-void _glapi_set_dispatch(struct _glapi_table * table)
-{
-    IntSetCurrentDispatchTable((const GLDISPATCHTABLE*)table);
-}
-
-unsigned int
-_glapi_get_dispatch_table_size(void)
-{
-    return OPENGL_VERSION_110_ENTRIES;
-}
-
-void
-_glapi_set_context(void *context)
-{
-    /* 
-     * It happens that mesa changes the context, most notably on context deletion.
-     * Use the space reserved to the ICD for this.
-     */
-    IntSetCurrentICDPrivate(context);
 }
