@@ -132,6 +132,7 @@ call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHO
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAMEBUF.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\videoprt\$(OutDir)VIDEOPRT.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\winsrv\$(OutDir)WINSRV.DLL" .
@@ -269,6 +270,7 @@ call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHO
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAMEBUF.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
+call :copy_to_CD "$(SolutionDir)win32ss\videoprt\$(OutDir)VIDEOPRT.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\winsrv\$(OutDir)WINSRV.DLL" .
@@ -727,6 +729,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\drivers\font\ftfd\ftfd.vcxproj">
       <Project>{5bc4f113-eb78-4513-b68c-d4ab4f52c58c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\win32ss\drivers\videoprt\videoprt.vcxproj">
+      <Project>{14cd8677-66a1-4b9d-93ab-9cdfd0aace0d}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\win32ss\gdi\gdi32\gdi32.vcxproj">
       <Project>{6c6cf48c-a81c-4f7e-b882-f30dd4e59e78}</Project>
