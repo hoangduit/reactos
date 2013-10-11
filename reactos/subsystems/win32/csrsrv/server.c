@@ -139,62 +139,27 @@ CsrLoadServerDll(IN PCHAR DllString,
     if (!NT_SUCCESS(Status)) return Status;
 
     /* If we are loading ourselves, don't actually load us */
-    if (ServerId != CSRSRV_SERVERDLL_INDEX)
-    {
-        /* Load the DLL */
-				{
-				LARGE_INTEGER MyDelay;
+	if (ServerId != CSRSRV_SERVERDLL_INDEX)
+	{
 
-				UNICODE_STRING MyString;
-
-
-				MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"CsrLoadServerDll: Before LdrLoadDll...\n");
-				ZwDisplayString(&MyString);
-
-			
-
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-        Status = LdrLoadDll(NULL, 0, &TempString, &hServerDll);
-				{
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-
-
-				MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"CsrLoadServerDll: After LdrLoadDll...\n");
-				ZwDisplayString(&MyString);
-
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-        if (!NT_SUCCESS(Status))
-        {
-			
-	
+		if (!NT_SUCCESS(Status))
+		{
 			/* Setup error parameters */
-            Parameters[0] = (ULONG_PTR)&TempString;
-            Parameters[1] = (ULONG_PTR)&ErrorString;
-            RtlInitUnicodeString(&ErrorString, L"Default Load Path");
+			Parameters[0] = (ULONG_PTR)&TempString;
+			Parameters[1] = (ULONG_PTR)&ErrorString;
+			RtlInitUnicodeString(&ErrorString, L"Default Load Path");
 
-            /* Send a hard error */
-            NtRaiseHardError(Status,
-                             2,
-                             3,
-                             Parameters,
-                             OptionOk,
-                             &Response);
-        }
+			/* Send a hard error */
+			NtRaiseHardError(Status,
+				2,
+				3,
+				Parameters,
+				OptionOk,
+				&Response);
+		}
 
-        /* Get rid of the string */
-        RtlFreeUnicodeString(&TempString);
+		/* Get rid of the string */
+		RtlFreeUnicodeString(&TempString);
         if (!NT_SUCCESS(Status)) return Status;
     }
 

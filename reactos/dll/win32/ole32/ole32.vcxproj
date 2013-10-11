@@ -68,6 +68,7 @@
       <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" "$(OutDir)\ole32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <BaseAddress>0x773c0000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,6 +96,7 @@
       <AdditionalOptions>"$(OutDir)\ole32_unknwn_p.obj" "$(OutDir)\irot_c.obj" "$(OutDir)\ole32_oleidl_p.obj" "$(OutDir)\dcom_i.obj" "$(OutDir)\dcom_p.obj" "$(OutDir)\ole32_objidl_p.obj"  "$(OutDir)\proxy.dlldata.obj" "$(OutDir)\ole32_stubs.obj" %(AdditionalOptions)</AdditionalOptions>
       <EntryPointSymbol>DllMainCRTStartup@12</EntryPointSymbol>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <BaseAddress>0x773c0000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
