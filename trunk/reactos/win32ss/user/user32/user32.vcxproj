@@ -63,6 +63,7 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <EntryPointSymbol>DllMain@12</EntryPointSymbol>
+      <BaseAddress>0x77a00000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,6 +85,7 @@
       <AdditionalDependencies />
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <BaseAddress>0x77a00000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

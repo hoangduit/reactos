@@ -70,6 +70,7 @@
       <AdditionalDependencies />
       <AdditionalOptions>"$(OutDir)\iphlpapi_stubs.obj"</AdditionalOptions>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <BaseAddress>0x778f0000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,6 +101,7 @@
       <AdditionalDependencies />
       <AdditionalOptions>"$(OutDir)\iphlpapi_stubs.obj"</AdditionalOptions>
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <BaseAddress>0x778f0000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

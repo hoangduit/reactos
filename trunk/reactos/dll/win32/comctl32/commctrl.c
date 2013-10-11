@@ -188,6 +188,7 @@ static BOOL create_manifest(BOOL install)
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
+	return TRUE;
     TRACE("%p,%x,%p\n", hinstDLL, fdwReason, lpvReserved);
 
     switch (fdwReason) {

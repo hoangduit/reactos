@@ -671,24 +671,6 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
 		/* Get each entry and check if it's the internal debug or not */
 		RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
 
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-			ZwDisplayString(&RegEntry->Name);
-			RtlInitUnicodeString(&MyString, L"\n");
-			ZwDisplayString(&MyString);
-
-			ZwDisplayString(&RegEntry->Value);
-			RtlInitUnicodeString(&MyString, L"\n");
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-
 
 		if (_wcsicmp(RegEntry->Name.Buffer, L"Debug") == 0)
         {

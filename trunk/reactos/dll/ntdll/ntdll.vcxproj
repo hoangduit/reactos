@@ -139,6 +139,7 @@
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <BaseAddress>0x77f00000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -197,6 +198,7 @@
       <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <BaseAddress>0x77f00000</BaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
