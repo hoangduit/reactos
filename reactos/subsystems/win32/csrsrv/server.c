@@ -141,6 +141,8 @@ CsrLoadServerDll(IN PCHAR DllString,
     /* If we are loading ourselves, don't actually load us */
 	if (ServerId != CSRSRV_SERVERDLL_INDEX)
 	{
+		/* Load the DLL */
+		Status = LdrLoadDll(NULL, 0, &TempString, &hServerDll);
 
 		if (!NT_SUCCESS(Status))
 		{

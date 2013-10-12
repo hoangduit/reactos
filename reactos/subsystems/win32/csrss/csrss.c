@@ -74,8 +74,32 @@ _main(int argc,
 #endif
     }
 
-    /* Initialize CSR through CSRSRV */
-    Status = CsrServerInitialization(argc, argv);
+	/* Initialize CSR through CSRSRV */
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L"CsrServerInitialization: before\n");
+		ZwDisplayString(&MyString);
+
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
+	Status = CsrServerInitialization(argc, argv);
+	{
+		LARGE_INTEGER MyDelay;
+
+		UNICODE_STRING MyString;
+		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
+
+		RtlInitUnicodeString(&MyString, L"CsrServerInitialization: after\n");
+		ZwDisplayString(&MyString);
+
+
+		NtDelayExecution(TRUE, &MyDelay);
+	}
     if (!NT_SUCCESS(Status))
     {
         /* Kill us */

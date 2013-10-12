@@ -188,7 +188,8 @@ static BOOL create_manifest(BOOL install)
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-	return TRUE;
+	// JCJ - We need to check to see if we are getting into DllMain here.
+
     TRACE("%p,%x,%p\n", hinstDLL, fdwReason, lpvReserved);
 
     switch (fdwReason) {
