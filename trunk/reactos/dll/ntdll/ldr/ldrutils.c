@@ -606,21 +606,6 @@ LdrpCreateDllSection(IN PUNICODE_STRING FullName,
         /* Give the DLL name */
         HardErrorParameters[0] = (ULONG_PTR)FullName;
 
-						{
-					LARGE_INTEGER MyDelay;
-
-					UNICODE_STRING MyString;
-
-					MyDelay.QuadPart = -5LL * 1000000LL * 10LL; // 5 seconds relative to now	
-
-
-					RtlInitUnicodeString(&MyString, L"ZwRaiseHardError:If mapping failed, raise a hard error.\n");
-					ZwDisplayString(&MyString);
-
-
-					NtDelayExecution(TRUE, &MyDelay);
-				}
-
         /* Raise the error */
         ZwRaiseHardError(STATUS_INVALID_IMAGE_FORMAT,
                          1,
@@ -1056,20 +1041,6 @@ LdrpMapDll(IN PWSTR SearchPath OPTIONAL,
 
     // FIXME: AppCompat stuff is missing
 
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now	
-
-		RtlInitUnicodeString(&MyString, DllName);		
-		ZwDisplayString(&MyString);
-		RtlInitUnicodeString (&MyString, L"\n");
-		ZwDisplayString(&MyString);
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 	if (ShowSnaps)
     {
         DPRINT1("LDR: LdrpMapDll: Image Name %ws, Search Path %ws\n",
@@ -1180,21 +1151,6 @@ LdrpMapDll(IN PWSTR SearchPath OPTIONAL,
                 HardErrorParameters[0] = (ULONG_PTR)&HardErrorDllName;
                 HardErrorParameters[1] = (ULONG_PTR)&HardErrorDllPath;
 
-								{
-					LARGE_INTEGER MyDelay;
-
-					UNICODE_STRING MyString;
-
-					MyDelay.QuadPart = -5LL * 1000000LL * 10LL; // 5 seconds relative to now	
-
-
-					RtlInitUnicodeString(&MyString, L"NtRaiseHardError: /* We couldn't resolve the name, is this a static load?.\n");
-					ZwDisplayString(&MyString);
-
-
-					NtDelayExecution(TRUE, &MyDelay);
-				}
-	
                 /* Raise the hard error */
                 NtRaiseHardError(STATUS_DLL_NOT_FOUND,
                                  2,
@@ -1303,25 +1259,6 @@ LdrpMapDll(IN PWSTR SearchPath OPTIONAL,
             /* Reset the entrypoint, save our Dll Name */
             LdrEntry->EntryPoint = 0;
             HardErrorParameters[0] = (ULONG_PTR)&FullDllName;
-
-										{
-					LARGE_INTEGER MyDelay;
-
-					UNICODE_STRING MyString;
-
-					MyDelay.QuadPart = -5LL * 1000000LL * 10LL; // 5 seconds relative to now	
-
-
-					RtlInitUnicodeString(&MyString, L"ZwRaiseHardError:STATUS_IMAGE_MACHINE_TYPE_MISMATCH.\n");
-					ZwDisplayString(&MyString);
-
-					ZwDisplayString(&IllegalDll);
-					RtlInitUnicodeString(&MyString, L"\n");
-					ZwDisplayString(&MyString);
-					ZwDisplayString(&OverlapDll);
-
-					NtDelayExecution(TRUE, &MyDelay);
-				}
 
             /* Raise the error */
             HardErrorStatus = ZwRaiseHardError(STATUS_IMAGE_MACHINE_TYPE_MISMATCH,
@@ -1472,25 +1409,6 @@ LdrpMapDll(IN PWSTR SearchPath OPTIONAL,
                 /* Setup for hard error */
                 HardErrorParameters[0] = (ULONG_PTR)&IllegalDll;
 				HardErrorParameters[1] = (ULONG_PTR)&OverlapDll;
-
-				{
-					LARGE_INTEGER MyDelay;
-
-					UNICODE_STRING MyString;
-
-					MyDelay.QuadPart = -5LL * 1000000LL * 10LL; // 5 seconds relative to now	
-
-
-					RtlInitUnicodeString(&MyString, L"ZwRaiseHardError: Known DLLs are not allowed to be relocated.\n");
-					ZwDisplayString(&MyString);
-
-					ZwDisplayString(&IllegalDll);
-					RtlInitUnicodeString(&MyString, L"\n");
-					ZwDisplayString(&MyString);
-					ZwDisplayString(&OverlapDll);
-
-					NtDelayExecution(TRUE, &MyDelay);
-				}
 
 				/* Raise the error */
                 ZwRaiseHardError(STATUS_ILLEGAL_DLL_RELOCATION,
@@ -2579,6 +2497,22 @@ LdrpLoadDll(IN BOOLEAN Redirected,
                                &LdrEntry))
 	{
 		/* Map it */
+
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now	
+
+			RtlInitUnicodeString (&MyString, L"LdrpMapDll: ");
+			ZwDisplayString(&MyString);
+			ZwDisplayString(DllName);
+			RtlInitUnicodeString(&MyString, L"...before\n");
+			ZwDisplayString(&MyString);
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
 		Status = LdrpMapDll(DllPath,
 			DllPath,
 			NameBuffer,
@@ -2586,6 +2520,23 @@ LdrpLoadDll(IN BOOLEAN Redirected,
                             FALSE,
                             Redirected,
 							&LdrEntry);
+
+		
+		{
+			LARGE_INTEGER MyDelay;
+
+			UNICODE_STRING MyString;
+
+			MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now	
+
+			RtlInitUnicodeString (&MyString, L"LdrpMapDll: ");
+			ZwDisplayString(&MyString);
+			ZwDisplayString(DllName);
+			RtlInitUnicodeString(&MyString, L"...after\n");
+			ZwDisplayString(&MyString);
+			NtDelayExecution(TRUE, &MyDelay);
+		}
+
 
 		if (!NT_SUCCESS(Status)) 
 			goto Quickie;
@@ -2611,19 +2562,44 @@ LdrpLoadDll(IN BOOLEAN Redirected,
             /* Check if this is a .NET Image */
             if (!(LdrEntry->Flags & LDRP_COR_IMAGE))
             {
-				
 
-                /* Walk the Import Descriptor */
+				{
+					LARGE_INTEGER MyDelay;
+
+					UNICODE_STRING MyString;
+
+					MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now	
+
+					RtlInitUnicodeString (&MyString, L"LdrpWalkImportDescriptor: ");
+					ZwDisplayString(&MyString);
+					ZwDisplayString(DllName);
+					RtlInitUnicodeString(&MyString, L"...before\n");
+					ZwDisplayString(&MyString);
+					NtDelayExecution(TRUE, &MyDelay);
+				}
+				/* Walk the Import Descriptor */
                 Status = LdrpWalkImportDescriptor(DllPath, LdrEntry);
 
-		     }
+				{
+					LARGE_INTEGER MyDelay;
+
+					UNICODE_STRING MyString;
+
+					MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now	
+
+					RtlInitUnicodeString (&MyString, L"LdrpWalkImportDescriptor: ");
+					ZwDisplayString(&MyString);
+					ZwDisplayString(DllName);
+					RtlInitUnicodeString(&MyString, L"...after\n");
+					ZwDisplayString(&MyString);
+					NtDelayExecution(TRUE, &MyDelay);
+				}
+			}
 
             /* Update load count, unless it's locked */
             if (LdrEntry->LoadCount != 0xFFFF) LdrEntry->LoadCount++;
 
-            LdrpUpdateLoadCount2(LdrEntry, LDRP_UPDATE_REFCOUNT);
-
-			
+            LdrpUpdateLoadCount2(LdrEntry, LDRP_UPDATE_REFCOUNT);			
 
             /* Check if we failed */
             if (!NT_SUCCESS(Status))
@@ -2674,35 +2650,28 @@ LdrpLoadDll(IN BOOLEAN Redirected,
 		
 			{
 				LARGE_INTEGER MyDelay;
-
 				UNICODE_STRING MyString;
-
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 seconds relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"   LdrpRunInitializeRoutines: Before.\n");
-				ZwDisplayString(&MyString);
-
-
+				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 seconds relative to now
+				RtlInitUnicodeString(&MyString, L"LdrpRunInitializeRoutines: before...");
+					ZwDisplayString(&MyString);
+					ZwDisplayString(DllName);
+					RtlInitUnicodeString(&MyString, L"\n");
+					ZwDisplayString(&MyString);
 				NtDelayExecution(TRUE, &MyDelay);
 			}
 
             /* Run the init routine */
             Status = LdrpRunInitializeRoutines(NULL);
 
-			
 			{
 				LARGE_INTEGER MyDelay;
-
 				UNICODE_STRING MyString;
-
 				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 seconds relative to now	
-
-
-				RtlInitUnicodeString(&MyString, L"   LdrpRunInitializeRoutines: After.\n");
+				RtlInitUnicodeString(&MyString, L"LdrpRunInitializeRoutines: after...");
 				ZwDisplayString(&MyString);
-
-
+				ZwDisplayString(DllName);
+				RtlInitUnicodeString(&MyString, L"\n");
+				ZwDisplayString(&MyString);
 				NtDelayExecution(TRUE, &MyDelay);
 			}
 
