@@ -20,10 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="beepmidi.spec" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="CMakeLists.txt" />
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="beepmidi.spec" />
   </ItemGroup>
 </Project>
