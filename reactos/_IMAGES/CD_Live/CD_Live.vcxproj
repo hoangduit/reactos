@@ -204,6 +204,7 @@ call :copy_to_CD "$(SolutionDir)drivers\filesystems\mup\$(OutDir)MUP.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\network\ndis\$(OutDir)NDIS.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\battery\battc\$(OutDir)BATTC.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\videoprt\$(OutDir)VIDEOPRT.SYS" .
 cd ..
 call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
@@ -271,7 +272,6 @@ call :copy_to_CD "$(SolutionDir)base\shell\explorer\notifyhook\$(OutDir)NOTIFYHO
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\font\ftfd\$(OutDir)FTFD.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\framebuf\$(OutDir)FRAMEBUF.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\drivers\displays\vga\$(OutDir)VGADDI.DLL" .
-call :copy_to_CD "$(SolutionDir)win32ss\videoprt\$(OutDir)VIDEOPRT.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\win32k\$(OutDir)WIN32K.SYS" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\user32\$(OutDir)USER32.DLL" .
 call :copy_to_CD "$(SolutionDir)win32ss\user\winsrv\$(OutDir)WINSRV.DLL" .
@@ -344,6 +344,7 @@ call :copy_to_CD "$(SolutionDir)drivers\filesystems\mup\$(OutDir)MUP.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\network\ndis\$(OutDir)NDIS.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\battery\battc\$(OutDir)BATTC.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\sac\$(OutDir)SACDRV.SYS" .
+call :copy_to_CD "$(SolutionDir)win32ss\drivers\videoprt\$(OutDir)VIDEOPRT.SYS" .
 cd ..
 call :copy_to_CD "$(SolutionDir)dll\ntdll\$(OutDir)NTDLL.DLL" .
 call :copy_to_CD "$(SolutionDir)dll\win32\advapi32\$(OutDir)ADVAPI32.DLL" .
