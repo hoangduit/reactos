@@ -181,6 +181,7 @@ REM "call :copy_to_CD $(SolutionDir)base\applications\CALC\$(OutDir)CALC.EXE" .
 call :copy_to_CD "$(SolutionDir)media\nls\*.nls" .
 mkdir drivers
 cd drivers
+call :copy_to_CD "$(SolutionDir)drivers\base\beep\$(OutDir)BEEP.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\filesystems\CDFS\$(OutDir)CDFS.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\bus\PCI\$(OutDir)PCI.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\usb\usbuhci\$(OutDir)USBUHCI.SYS" .
@@ -320,6 +321,7 @@ REM "call :copy_to_CD $(SolutionDir)base\applications\CALC\$(OutDir)CALC.EXE" .
 call :copy_to_CD "$(SolutionDir)media\nls\*.nls" .
 mkdir drivers
 cd drivers
+call :copy_to_CD "$(SolutionDir)drivers\base\beep\$(OutDir)BEEP.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\filesystems\CDFS\$(OutDir)CDFS.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\bus\PCI\$(OutDir)PCI.SYS" .
 call :copy_to_CD "$(SolutionDir)drivers\usb\usbuhci\$(OutDir)USBUHCI.SYS" .
@@ -630,6 +632,9 @@ GOTO:EOF</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\dll\win32\ws2_32\ws2_32.vcxproj">
       <Project>{d0222fd4-713f-45da-8a93-81618baa662f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\drivers\base\beep\beep.vcxproj">
+      <Project>{9372c11e-deec-4606-961f-f8b2a98e764b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\drivers\base\bootvid\bootvid.vcxproj">
       <Project>{39162ac2-e17b-4301-b1cb-19ebcd13b22b}</Project>
