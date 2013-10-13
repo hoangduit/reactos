@@ -606,7 +606,10 @@
     </ClCompile>
     <ClCompile Include="po\poshtdwn.c" />
     <ClCompile Include="po\povolume.c" />
-    <ClCompile Include="po\power.c" />
+    <ClCompile Include="po\power.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ps\amd64\psctx.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -974,8 +977,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ntoskrnl.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\include\reactos\mc\build\x86_32\$(Configuration);..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\include\reactos\mc\build\x86_32\$(Configuration);..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\include\reactos\mc\$(OutDir);$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\include\reactos\mc\$(OutDir);$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1129,7 +1132,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\include;..\include\reactos;..\include\psdk;..\include\ddk;..\include\ndk;..\include\crt;..\include\crt\msc;..\include\reactos\libs;..\include\reactos\drivers;..\include\reactos\mc\build\x86_32\$(Configuration)\;..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\drivers;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;DBG;_WINKD_=1</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1193,7 +1196,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\include;..\include;..\include\reactos;..\include\psdk;..\include\ddk;..\include\ndk;..\include\crt;..\include\crt\msc;..\include\reactos\libs;..\include\reactos\drivers;..\include\reactos\mc\build\x86_32\$(Configuration)\;..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\drivers;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_WINKD_=1</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
