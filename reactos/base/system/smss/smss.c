@@ -174,7 +174,7 @@ SmpInvokeAutoChk(IN PUNICODE_STRING FileName,
     {
         /* It wasn't, so create an error message to print on the screen */
         sprintf_nt(MessageBuffer,
-                   "%wZ program not found - skipping AUTOCHECK\n",
+                   "%wZ program not found - skipping AUTOCHECK\r\n",
                    FileName);
         RtlInitAnsiString(&MessageString, MessageBuffer);
         if (NT_SUCCESS(RtlAnsiStringToUnicodeString(&Destination,
@@ -226,42 +226,14 @@ SmpExecuteCommand(IN PUNICODE_STRING CommandLine,
     /* There's no longer a debugging subsystem */
     if (Flags & SMP_DEBUG_FLAG) return STATUS_SUCCESS;
 
-	/* Parse the command line to see what execution flags are requested */
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"SmpParseCommandLine: before\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
+    /* Parse the command line to see what execution flags are requested */
     Status = SmpParseCommandLine(CommandLine,
                                  &Flags,
                                  &FileName,
-								 &Directory,
-								 &Arguments);
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"SmpParseCommandLine: after\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	if (!NT_SUCCESS(Status))
-	{
+                                 &Directory,
+                                 &Arguments);
+    if (!NT_SUCCESS(Status))
+    {
         /* Fail if we couldn't do that */
         DPRINT1("SMSS: SmpParseCommandLine( %wZ ) failed - Status == %lx\n",
                 CommandLine, Status);
@@ -275,83 +247,29 @@ SmpExecuteCommand(IN PUNICODE_STRING CommandLine,
         Status = SmpInvokeAutoChk(&FileName, &Directory, &Arguments, Flags);
     }
     else if (Flags & SMP_SUBSYSTEM_FLAG)
-	{
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpLoadSubSystem: before\n");
-			ZwDisplayString(&MyString);
-			ZwDisplayString(CommandLine);
-			RtlInitUnicodeString(&MyString, L"\n");
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-		Status = SmpLoadSubSystem(&FileName,
+    {
+        Status = SmpLoadSubSystem(&FileName,
                                   &Directory,
                                   CommandLine,
                                   MuSessionId,
                                   ProcessId,
-								  Flags);
-
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpLoadSubSystem: after\n");
-			ZwDisplayString(&MyString);
-
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
+                                  Flags);
     }
     else if (Flags & SMP_INVALID_PATH)
-	{
-		/* An invalid image was specified, fail */
-		DPRINT1("SMSS: Image file (%wZ) not found\n", &FileName);
-		Status = STATUS_OBJECT_NAME_NOT_FOUND;
+    {
+        /* An invalid image was specified, fail */
+        DPRINT1("SMSS: Image file (%wZ) not found\n", &FileName);
+        Status = STATUS_OBJECT_NAME_NOT_FOUND;
     }
     else
-	{
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpExecuteImage: before\n");
-			ZwDisplayString(&MyString);
-
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-		/* An actual image name was present -- execute it */
-		Status = SmpExecuteImage(&FileName,
-			&Directory,
-			CommandLine,
-			MuSessionId,
-			Flags,
-			NULL);
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpExecuteImage: before\n");
-			ZwDisplayString(&MyString);
-
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
+    {
+        /* An actual image name was present -- execute it */
+        Status = SmpExecuteImage(&FileName,
+                                 &Directory,
+                                 CommandLine,
+                                 MuSessionId,
+                                 Flags,
+                                 NULL);
     }
 
     /* Free all the token parameters */
@@ -467,47 +385,13 @@ SmpExecuteInitialCommand(IN ULONG MuSessionId,
 
 NTSTATUS
 NTAPI
-MySmpTerminate(IN PULONG_PTR Parameters,
+SmpTerminate(IN PULONG_PTR Parameters,
              IN ULONG ParameterMask,
-             IN ULONG ParameterCount,
-			 char *file,
-			int line)
+             IN ULONG ParameterCount)
 {
     NTSTATUS Status;
     BOOLEAN Old;
     ULONG Response;
-
-	{
-
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;		
-
-		char buffer[512];
-		wchar_t wbuffer[512];
-
-		unsigned int i  = 0;
-
-		while (file[i]);
-		{
-			buffer[i] = file[i];
-			++i;
-		}
-		
-		sprintf(&buffer[i], ": %d", line);
-
-		i = 0;
-		do
-		wbuffer[i] = buffer[i];
-		while (buffer[i++]);	
-
-		RtlInitUnicodeString(&MyString, wbuffer);
-
-		ZwDisplayString(&MyString);
-
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 seconds relative to now
-		NtDelayExecution(TRUE, &MyDelay);
-	}
 
     /* Give the shutdown privilege to the thread */
     if (RtlAdjustPrivilege(SE_SHUTDOWN_PRIVILEGE, TRUE, TRUE, &Old) ==
@@ -582,104 +466,45 @@ _main(IN INT argc,
                                      ProcessBasePriority,
                                      (PVOID)&SetBasePriority,
                                      sizeof(SetBasePriority));
+    ASSERT(NT_SUCCESS(Status));
 
+    /* Save the debug flag if it was passed */
+    if (DebugFlag) SmpDebug = DebugFlag != 0;
 
-	ASSERT(NT_SUCCESS(Status));
-
-	/* Save the debug flag if it was passed */
-	if (DebugFlag) SmpDebug = DebugFlag != 0;
-
-	/* Build the hard error parameters */
-	Parameters[0] = (ULONG_PTR)&DbgString;
+    /* Build the hard error parameters */
+    Parameters[0] = (ULONG_PTR)&DbgString;
     Parameters[1] = Parameters[2] = Parameters[3] = 0;
 
     /* Enter SEH so we can terminate correctly if anything goes wrong */
-	_SEH2_TRY
-	{
-		{
-			LARGE_INTEGER MyDelay;
+    _SEH2_TRY
+    {
+        /* Initialize SMSS */
+        Status = SmpInit(&InitialCommand, Handles);
+        if (!NT_SUCCESS(Status))
+        {
+            DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
+            RtlInitUnicodeString(&DbgString, L"Session Manager Initialization");
+            Parameters[1] = Status;
+            _SEH2_LEAVE;
+        }
 
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
+        /* Get the global flags */
+        Status = NtQuerySystemInformation(SystemFlagsInformation,
+                                          &Flags,
+                                          sizeof(Flags),
+                                          NULL);
+        ASSERT(NT_SUCCESS(Status));
 
-			RtlInitUnicodeString(&MyString, L"_main: Before SmpInit...\n");
-
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-		/* Initialize SMSS */
-		Status = SmpInit(&InitialCommand, Handles);
-
-		{
-
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-			RtlInitUnicodeString(&MyString, L"_main: After SmpInit.\n");
-
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-		if (!NT_SUCCESS(Status))
-		{
-			DPRINT1("SMSS: SmpInit return failure - Status == %x\n", Status);
-			RtlInitUnicodeString(&DbgString, L"Session Manager Initialization");
-			Parameters[1] = Status;
-			_SEH2_LEAVE;
-		}
-
-		/* Get the global flags */
-		Status = NtQuerySystemInformation(SystemFlagsInformation,
-			&Flags,
-			sizeof(Flags),
-			NULL);
-		ASSERT(NT_SUCCESS(Status));
-
-		/* Before executing the initial command check if the debug flag is on */
-		if (Flags & (FLG_DEBUG_INITIAL_COMMAND | FLG_DEBUG_INITIAL_COMMAND_EX))
-		{
-			/* SMSS should launch ntsd with a few parameters at this point */
-			DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
-		}
-
-		{
-
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
-
-			RtlInitUnicodeString(&MyString, L"_main: Before SmpExecuteInitialCommand...\n");
-
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
+        /* Before executing the initial command check if the debug flag is on */
+        if (Flags & (FLG_DEBUG_INITIAL_COMMAND | FLG_DEBUG_INITIAL_COMMAND_EX))
+        {
+            /* SMSS should launch ntsd with a few parameters at this point */
+            DPRINT1("Global Flags Set to SMSS Debugging: Not yet supported\n");
+        }
 
         /* Execute the initial command (Winlogon.exe) */
         Status = SmpExecuteInitialCommand(0, &InitialCommand, &Handles[1], NULL);
-
-		{
-
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now
-
-			RtlInitUnicodeString(&MyString, L"_main: After SmpExecuteInitialCommand...\n");
-
-			ZwDisplayString(&MyString);
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}        
-		
-		if (!NT_SUCCESS(Status))
+        if (!NT_SUCCESS(Status))
         {
             /* Fail and raise a hard error */
             DPRINT1("SMSS: Execute Initial Command failed\n");
@@ -689,8 +514,7 @@ _main(IN INT argc,
             _SEH2_LEAVE;
         }
 
-
-		/*  Check if we're already attached to a session */
+        /*  Check if we're already attached to a session */
         Status = SmpAcquirePrivilege(SE_LOAD_DRIVER_PRIVILEGE, &State);
         if (AttachedSessionId != -1)
         {

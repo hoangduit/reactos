@@ -2,7 +2,7 @@
  * PROJECT:         ReactOS kernel-mode tests
  * LICENSE:         GPLv2+ - See COPYING in the top level directory
  * PURPOSE:         Kernel-Mode Test Suite Loader Resource File
- * PROGRAMMER:      Thomas Faber <thfabba@gmx.de>
+ * PROGRAMMER:      Thomas Faber <thomas.faber@reactos.org>
  */
 
 #include <windef.h>
@@ -12,4 +12,4 @@
 #define REACTOS_STR_ORIGINAL_FILENAME   "kmtest.exe\0"
 #include <reactos/version.rc>
 
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST DISCARDABLE PURE "kmtest/kmtest.exe.manifest"
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "kmtest/kmtest.exe.manifest"

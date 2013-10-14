@@ -28,3 +28,6 @@ list(APPEND SOURCE
 )
 
 add_library(mesa_swrast STATIC ${SOURCE})
+if(NOT MSVC)
+    allow_warnings(mesa_swrast)
+endif()

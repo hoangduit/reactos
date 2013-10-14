@@ -2,9 +2,6 @@
  *
  * Copyright 2008 Google (Lei Zhang)
  *
- * This file contains the (internal) driver registration functions,
- * driver enumeration APIs and DirectDraw creation functions.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -43,7 +40,7 @@
 #define __WINE_DDRAW_H /* ROS HACK */
 #include <qedit.h>
 
-HRESULT MediaDet_create(IUnknown *pUnkOuter, LPVOID *ppObj);
-HRESULT SampleGrabber_create(IUnknown *pUnkOuter, LPVOID *ppObj);
+HRESULT MediaDet_create(IUnknown *pUnkOuter, LPVOID *ppObj) DECLSPEC_HIDDEN;
+HRESULT SampleGrabber_create(IUnknown *pUnkOuter, LPVOID *ppObj) DECLSPEC_HIDDEN;
 
 #endif /* __QEDIT_PRIVATE_INCLUDED__ */
