@@ -5,7 +5,7 @@ REM PURPOSE:         Visual Studio's executes this file to generate a live CD.
 REM PROGRAMMERS:     J. C. Jones
 
 XCOPY /E /I /Y "root" "%outdir%root"
-
+GOTO :make_CD
 cd "%outdir%"
 
 mkdir root
@@ -28,8 +28,8 @@ cd ..
 
 mkdir reactos
 cd reactos
-call :copy_to_CD "%solutiondir%base\shell\explorer\%outdir%EXPLORER.EXE" .
-call :copy_to_CD "%solutiondir%base\shell\explorer\explorer-cfg-template.xml" .
+REM call :copy_to_CD "%solutiondir%base\shell\explorer\%outdir%EXPLORER.EXE" .
+REM call :copy_to_CD "%solutiondir%base\shell\explorer\explorer-cfg-template.xml" .
 
 mkdir system32
 cd system32
@@ -132,7 +132,7 @@ call :copy_to_CD "%solutiondir%dll\win32\wldap32\%outdir%WLDAP32.DLL" .
 call :copy_to_CD "%solutiondir%base\applications\atactl\%outdir%ATACTL.EXE" .
 call :copy_to_CD "%solutiondir%base\system\autochk\%outdir%AUTOCHK.EXE" .
 call :copy_to_CD "%solutiondir%base\system\lsass\%outdir%LSASS.EXE" .
-call :copy_to_CD "%solutiondir%base\system\smss\%outdir%SMSS.EXE" .
+REM call :copy_to_CD "%solutiondir%base\system\smss\%outdir%SMSS.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\winlogon\%outdir%WINLOGON.EXE" .
 call :copy_to_CD "%solutiondir%base\system\userinit\%outdir%USERINIT.EXE" .
 call :copy_to_CD "%solutiondir%base\system\services\%outdir%SERVICES.EXE" .
