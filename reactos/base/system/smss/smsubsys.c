@@ -275,20 +275,7 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         ProcessInformation.ImageInformation.SubSystemType = CreateProcess->Out.SubsystemType;
     }
     else
-	{
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpExecuteImage: CSRSS: before\n");
-			ZwDisplayString(&MyString);
-
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
+    {
         /* This must be CSRSS itself, so just launch it and that's it */
         Status = SmpExecuteImage(FileName,
                                  Directory,
@@ -296,34 +283,18 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
                                  MuSessionId,
                                  Flags | SMP_DEFERRED_FLAG,
                                  &ProcessInformation);
-
-
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-			RtlInitUnicodeString(&MyString, L"SmpExecuteImage: CSRSS: after\n");
-			ZwDisplayString(&MyString);
-
-
-			NtDelayExecution(TRUE, &MyDelay);
-		}
-
-		if (!NT_SUCCESS(Status))
-		{
-
+        if (!NT_SUCCESS(Status))
+        {
             /* Handle failures */
             DPRINT1("SMSS: SmpLoadSubSystem - SmpExecuteImage Failed with  Status %lx\n",
                     Status);
             goto Quickie2;
-		}		
-	}
+        }
+    }
 
-	/* Fill out the handle and client ID in the subsystem structure now */
-	NewSubsystem->ProcessHandle = ProcessInformation.ProcessHandle;
-	NewSubsystem->ClientId = ProcessInformation.ClientId;
+    /* Fill out the handle and client ID in the subsystem structure now */
+    NewSubsystem->ProcessHandle = ProcessInformation.ProcessHandle;
+    NewSubsystem->ClientId = ProcessInformation.ClientId;
 
     /* Check if we launched a native image or a subsystem-backed image */
     if (ProcessInformation.ImageInformation.SubSystemType == IMAGE_SUBSYSTEM_NATIVE)
@@ -425,7 +396,6 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
 
     /* Okay, everything looks good to go, initialize this subsystem now! */
     Status = NtResumeThread(ProcessInformation.ThreadHandle, NULL);
-
     if (!NT_SUCCESS(Status))
     {
         /* That didn't work -- back out of everything */
@@ -435,8 +405,8 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
 
     /* Check if this was the subsystem for a different session */
     if (MuSessionId)
-	{
-	        /* Wait up to 60 seconds for it to initialize */
+    {
+        /* Wait up to 60 seconds for it to initialize */
         Timeout.QuadPart = -600000000;
         Status = NtWaitForSingleObject(NewSubsystem->Event, FALSE, &Timeout);
 
@@ -459,13 +429,13 @@ SmpLoadSubSystem(IN PUNICODE_STRING FileName,
         }
     }
     else
-	{
-		/* This a session 0 subsystem, just wait for it to initialize */
-		NtWaitForSingleObject(NewSubsystem->Event, FALSE, NULL);
-	}
+    {
+        /* This a session 0 subsystem, just wait for it to initialize */
+        NtWaitForSingleObject(NewSubsystem->Event, FALSE, NULL);
+    }
 
-	/* Subsystem is created, resumed, and initialized. Close handles and exit */
-	NtClose(ProcessInformation.ThreadHandle);
+    /* Subsystem is created, resumed, and initialized. Close handles and exit */
+    NtClose(ProcessInformation.ThreadHandle);
     Status = STATUS_SUCCESS;
     goto Quickie2;
 
@@ -560,10 +530,10 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
         /* Execute each one and move on */
         RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
         SmpExecuteCommand(&RegEntry->Name, 0, NULL, 0);
-		NextEntry = NextEntry->Flink;
-	}
+        NextEntry = NextEntry->Flink;
+    }
 
-	/* Now process the subsystems */
+    /* Now process the subsystems */
     NextEntry = SmpSubSystemList.Flink;
     while (NextEntry != &SmpSubSystemList)
     {
@@ -600,7 +570,7 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                     }
                     AttachedSessionId = *MuSessionId;
 
-					/*
+                    /*
                      * Start Win32k.sys on this session. Use a hardcoded value
                      * instead of the Kmode one...
                      */
@@ -612,7 +582,7 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
                     RtlFreeHeap(RtlGetProcessHeap(), 0, NtPath.Buffer);
                     SmpReleasePrivilege(State);
                     if (!NT_SUCCESS(Status))
-					{
+                    {
                         DPRINT1("SMSS: Load of WIN32K failed.\n");
                         return Status;
                     }
@@ -622,18 +592,15 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
 
         /* Next entry */
         NextEntry = NextEntry->Flink;
-	}
+    }
 
-	/* Now parse the required subsystem list */
+    /* Now parse the required subsystem list */
     NextEntry = SmpSubSystemsToLoad.Flink;
     while (NextEntry != &SmpSubSystemsToLoad)
-	{
-
-		/* Get each entry and check if it's the internal debug or not */
-		RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
-
-
-		if (_wcsicmp(RegEntry->Name.Buffer, L"Debug") == 0)
+    {
+        /* Get each entry and check if it's the internal debug or not */
+        RegEntry = CONTAINING_RECORD(NextEntry, SMP_REGISTRY_VALUE, Entry);
+        if (_wcsicmp(RegEntry->Name.Buffer, L"Debug") == 0)
         {
             /* Load the internal debug system */
             Status = SmpExecuteCommand(&RegEntry->Value,
@@ -644,41 +611,11 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
         else
         {
             /* Load the required subsystem */
-
-			{
-
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-				RtlInitUnicodeString(&MyString, L"SmpExecuteCommand: before\n");
-
-				ZwDisplayString(&MyString);
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
-			Status = SmpExecuteCommand(&RegEntry->Value,
-				*MuSessionId,
-				ProcessId,
-				SMP_SUBSYSTEM_FLAG);
-
-			{
-
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-				RtlInitUnicodeString(&MyString, L"SmpExecuteCommand: after\n");
-
-				ZwDisplayString(&MyString);
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-		}
-
+            Status = SmpExecuteCommand(&RegEntry->Value,
+                                       *MuSessionId,
+                                       ProcessId,
+                                       SMP_SUBSYSTEM_FLAG);
+        }
         if (!NT_SUCCESS(Status))
         {
             DbgPrint("SMSS: Subsystem execute failed (%wZ)\n", &RegEntry->Value);
@@ -686,10 +623,10 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
         }
 
         /* Move to the next entry */
-		NextEntry = NextEntry->Flink;
-	}
+        NextEntry = NextEntry->Flink;
+    }
 
-	/* Process the "Execute" list now */
+    /* Process the "Execute" list now */
     NextEntry = SmpExecuteList.Blink;
     if (NextEntry != &SmpExecuteList)
     {
@@ -737,4 +674,3 @@ SmpLoadSubSystemsForMuSession(IN PULONG MuSessionId,
     /* Return status */
     return Status;
 }
-

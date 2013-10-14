@@ -1505,22 +1505,7 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
             continue;
         }
 
-		{
-			LARGE_INTEGER MyDelay;
-
-			UNICODE_STRING MyString;
-			MyDelay.QuadPart = (-1 * 1000000LL * 10LL)/4; // 1/4 second
-
-			RtlInitUnicodeString(&MyString, L"\n");
-
-			ZwDisplayString(&RegEntry->Value);
-			ZwDisplayString(&MyString);
-
-			 //NtDelayExecution(TRUE, &MyDelay);
-		}
-
-
-		/* Open the actual file */
+        /* Open the actual file */
         InitializeObjectAttributes(&ObjectAttributes,
                                    &RegEntry->Value,
                                    OBJ_CASE_INSENSITIVE,
@@ -1541,9 +1526,8 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
                                                RegEntry,
                                                &ImageCharacteristics);
         if (!NT_SUCCESS(Status))
-		{
-
-			/* Checksum failed, so don't even try going further -- kill SMSS */
+        {
+            /* Checksum failed, so don't even try going further -- kill SMSS */
             RtlInitUnicodeString(&ErrorResponse,
                                  L"Verification of a KnownDLL failed.");
             ErrorParameters[0] = (ULONG)&ErrorResponse;
@@ -1554,7 +1538,7 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
         else
         if (!(ImageCharacteristics & IMAGE_FILE_DLL))
         {
-			/* An invalid known DLL entry will also kill SMSS */
+            /* An invalid known DLL entry will also kill SMSS */
             RtlInitUnicodeString(&ErrorResponse,
                                  L"Non-DLL file included in KnownDLL list.");
             ErrorParameters[0] = (ULONG)&ErrorResponse;
@@ -1607,14 +1591,13 @@ SmpInitializeKnownDllsInternal(IN PUNICODE_STRING Directory,
 
         /* Go to the next entry */
         NextEntry = NextEntry->Flink;
-	}
+    }
 
 Quickie:
-
-	/* Close both handles and free the NT path buffer */
-	if (DirHandle)
-	{
-		Status1 = NtClose(DirHandle);
+    /* Close both handles and free the NT path buffer */
+    if (DirHandle)
+    {
+        Status1 = NtClose(DirHandle);
         ASSERT(NT_SUCCESS(Status1));
     }
     if (DirFileHandle)
@@ -1634,11 +1617,10 @@ SmpInitializeKnownDlls(VOID)
     PSMP_REGISTRY_VALUE RegEntry;
     UNICODE_STRING DestinationString;
     PLIST_ENTRY Head, NextEntry;
-	
+
     /* Call the internal function */
     RtlInitUnicodeString(&DestinationString, L"\\KnownDlls");
     Status = SmpInitializeKnownDllsInternal(&DestinationString, &SmpKnownDllPath);
-
 
     /* Wipe out the list regardless of success */
     Head = &SmpKnownDllsList;
@@ -2338,47 +2320,20 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
         RtlFreeHeap(RtlGetProcessHeap(), 0, RegEntry);
     }
 
-	/* Now do any pending file rename operations... */
-	if (!MiniNTBoot) SmpProcessFileRenames();
+    /* Now do any pending file rename operations... */
+    if (!MiniNTBoot) SmpProcessFileRenames();
 
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpInitializeKnownDlls: before\n");
-
-		ZwDisplayString(&MyString);
-
-		 NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	/* And initialize known DLLs... */
-	Status = SmpInitializeKnownDlls();
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpInitializeKnownDlls: after.\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	if (!NT_SUCCESS(Status))
-	{
+    /* And initialize known DLLs... */
+    Status = SmpInitializeKnownDlls();
+    if (!NT_SUCCESS(Status))
+    {
         /* Fail if that didn't work */
         DPRINT1("SMSS: Unable to initialize KnownDll configuration - Status == %lx\n",
                 Status);
         SMSS_CHECKPOINT(SmpInitializeKnownDlls, Status);
         return Status;
     }
-	
+
     /* Loop every page file */
     Head = &SmpPagingFileList;
     while (!IsListEmpty(Head))
@@ -2406,41 +2361,15 @@ SmpLoadDataFromRegistry(OUT PUNICODE_STRING InitialCommand)
     Status = SmpCreateDynamicEnvironmentVariables();
     if (!NT_SUCCESS(Status))
     {
-		/* Handle failure */
-		SMSS_CHECKPOINT(SmpCreateDynamicEnvironmentVariables, Status);
-		return Status;
-	}
-	{
+        /* Handle failure */
+        SMSS_CHECKPOINT(SmpCreateDynamicEnvironmentVariables, Status);
+        return Status;
+    }
 
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: before\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-	/* And finally load all the subsytems for our first session! */
-	Status = SmpLoadSubSystemsForMuSession(&MuSessionId,
-		&SmpWindowsSubSysProcessId,
-		InitialCommand);
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpLoadSubSystemsForMuSession: after\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
+    /* And finally load all the subsytems for our first session! */
+    Status = SmpLoadSubSystemsForMuSession(&MuSessionId,
+                                           &SmpWindowsSubSysProcessId,
+                                           InitialCommand);
     ASSERT(MuSessionId == 0);
     if (!NT_SUCCESS(Status)) SMSS_CHECKPOINT(SmpLoadSubSystemsForMuSession, Status);
     return Status;
@@ -2554,44 +2483,16 @@ SmpInit(IN PUNICODE_STRING InitialCommand,
         ASSERT(NT_SUCCESS(Status2));
     }
 
-	/* Now initialize everything else based on the registry parameters */
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpLoadDataFromRegistry: Before\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	Status = SmpLoadDataFromRegistry(InitialCommand);
-		
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now
-
-		RtlInitUnicodeString(&MyString, L"SmpLoadDataFromRegistry: After\n");
-
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
-	if (NT_SUCCESS(Status))
+    /* Now initialize everything else based on the registry parameters */
+    Status = SmpLoadDataFromRegistry(InitialCommand);
+    if (NT_SUCCESS(Status))
     {
         /* Autochk should've run now. Set the event and save the CSRSS handle */
         *ProcessHandle = SmpWindowsSubSysProcess;
         NtSetEvent(EventHandle, 0);
-		NtClose(EventHandle);
-	}
+        NtClose(EventHandle);
+    }
 
-	/* All done */
-	return Status;
+    /* All done */
+    return Status;
 }

@@ -15,6 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\DUMMY.TXT" />
+    <CustomBuild Include="GENERATE.BAT" />
   </ItemGroup>
 </Project>
