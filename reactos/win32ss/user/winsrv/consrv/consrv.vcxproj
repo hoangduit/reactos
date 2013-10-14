@@ -110,6 +110,7 @@
     <ClCompile Include="conoutput.c" />
     <ClCompile Include="console.c" />
     <ClCompile Include="frontendctl.c" />
+    <ClCompile Include="frontends\gui\fullscreen.c" />
     <ClCompile Include="frontends\gui\graphics.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)\%(FileName)_duplicate.obj</ObjectFileName>
@@ -145,6 +146,7 @@
     <ClInclude Include="include\conio.h" />
     <ClInclude Include="include\console.h" />
     <ClInclude Include="include\settings.h" />
+    <ClInclude Include="include\term.h" />
     <ClInclude Include="lineinput.h" />
     <ClInclude Include="procinit.h" />
     <ClInclude Include="resource.h" />

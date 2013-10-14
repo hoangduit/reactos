@@ -105,6 +105,9 @@
     <ClCompile Include="condrv\dummyfrontend.c">
       <Filter>condrv</Filter>
     </ClCompile>
+    <ClCompile Include="frontends\gui\fullscreen.c">
+      <Filter>frontends\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="alias.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="frontends\gui\resource.h">
       <Filter>frontends\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\term.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
