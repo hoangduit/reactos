@@ -808,36 +808,10 @@ LdrpRunInitializeRoutines(IN PCONTEXT Context OPTIONAL)
                 DPRINT1("%wZ - Calling entry point at %p for DLL_PROCESS_ATTACH\n",
                         &LdrEntry->BaseDllName, EntryPoint);
             }
-
-			{
-				LARGE_INTEGER MyDelay;
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now
-				RtlInitUnicodeString(&MyString, L"LdrpCallInitRoutine: ");
-				ZwDisplayString(&MyString);
-				ZwDisplayString( &LdrEntry->BaseDllName);
-				RtlInitUnicodeString(&MyString, L"...before\n");
-				ZwDisplayString(&MyString);
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
             DllStatus = LdrpCallInitRoutine(EntryPoint,
-				LdrEntry->DllBase,
-				DLL_PROCESS_ATTACH,
-				Context);
-
-			{
-				LARGE_INTEGER MyDelay;
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL/4; // 1/4 seconds relative to now
-				RtlInitUnicodeString(&MyString, L"LdrpCallInitRoutine: ");
-				ZwDisplayString(&MyString);
-				ZwDisplayString( &LdrEntry->BaseDllName);
-				RtlInitUnicodeString(&MyString, L"...after\n");
-				ZwDisplayString(&MyString);
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
+                                         LdrEntry->DllBase,
+                                         DLL_PROCESS_ATTACH,
+                                         Context);
 
             /* Deactivate the ActCtx */
             RtlDeactivateActivationContextUnsafeFast(&ActCtx);
