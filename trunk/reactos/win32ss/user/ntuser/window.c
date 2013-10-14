@@ -426,6 +426,8 @@ static LRESULT co_UserFreeWindow(PWND Window,
    PWND Child;
    PMENU_OBJECT Menu;
    BOOLEAN BelongsToThreadData;
+   PLIST_ENTRY ListEntry;
+   PPROPERTY Property;
 
    ASSERT(Window);
 
@@ -553,6 +555,14 @@ static LRESULT co_UserFreeWindow(PWND Window,
 #endif
 
    IntUnlinkWindow(Window);
+
+   ListEntry = Window->PropListHead.Flink;
+   while (ListEntry != &Window->PropListHead)
+   {
+       Property = CONTAINING_RECORD(ListEntry, PROPERTY, PropListEntry);
+       ListEntry = ListEntry->Flink;
+       IntRemoveProp(Window, Property->Atom);
+   }
 
    UserReferenceObject(Window);
    UserDeleteObject(Window->head.h, TYPE_WINDOW);
@@ -1762,6 +1772,15 @@ PWND FASTCALL IntCreateWindow(CREATESTRUCTW* Cs,
        pWnd->HideAccel = pWnd->spwndParent->HideAccel;
    }
 
+   if (Class->hIcon && !Class->hIconSm)
+   {
+      Class->hIconSmIntern = co_IntCopyImage( Class->hIcon, IMAGE_ICON,
+                                              UserGetSystemMetrics( SM_CXSMICON ),
+                                              UserGetSystemMetrics( SM_CYSMICON ), 0 );
+      TRACE("IntCreateWindow hIconSmIntern %p\n",Class->hIconSmIntern);
+      Class->CSF_flags |= CSF_CACHEDSMICON;
+   }
+
    if (pWnd->pcls->CSF_flags & CSF_SERVERSIDEPROC)
       pWnd->state |= WNDS_SERVERSIDEWINDOWPROC;
 
@@ -2221,6 +2240,13 @@ co_UserCreateWindowEx(CREATESTRUCTW* Cs,
           IntLinkHwnd(Window, HWND_BOTTOM);
       else
           IntLinkHwnd(Window, hwndInsertAfter);
+   }
+
+   // Remove flags that are retro.
+   if (!(Window->state2 & WNDS2_WIN31COMPAT)) // FIXME: support version flags.
+   {
+      if (Class->style & CS_PARENTDC && !(ParentWindow->style & WS_CLIPCHILDREN))
+         Window->style &= ~(WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
    }
 
    if ((Window->style & (WS_CHILD | WS_POPUP)) == WS_CHILD)

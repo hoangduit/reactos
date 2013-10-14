@@ -144,9 +144,9 @@ WinLdrInitializePhase1(PLOADER_PARAMETER_BLOCK LoaderBlock,
         PARC_DISK_SIGNATURE_EX ArcDiskSig;
 
         /* Allocate the ARC structure */
-        ArcDiskSig = HeapAllocate(FrLdrDefaultHeap,
-                                  sizeof(ARC_DISK_SIGNATURE_EX),
-                                  'giSD');
+        ArcDiskSig = FrLdrHeapAllocate(FrLdrDefaultHeap,
+                                       sizeof(ARC_DISK_SIGNATURE_EX),
+                                       'giSD');
 
         /* Copy the data over */
         ArcDiskSig->DiskSignature.Signature = reactos_arc_disk_info[i].Signature;
@@ -325,24 +325,9 @@ WinLdrLoadBootDrivers(PLOADER_PARAMETER_BLOCK LoaderBlock,
 
         // If loading failed - cry loudly
         //FIXME: Maybe remove it from the list and try to continue?
-		if (!Status)
-		{
-			UiMessageBox("Can't load boot driver!");
-			{
-
-				char text[1024];
-				unsigned int i = 0;
-
-				while (i < sizeof(text))
-				{
-					text[i] = BootDriver->FilePath.Buffer[i];
-					if (text[i++] == 0)
-						break;
-				}
-
-				UiMessageBox(text);
-			}
-	
+        if (!Status)
+        {
+            UiMessageBox("Can't load boot driver!");
             return FALSE;
         }
 
