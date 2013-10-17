@@ -4,8 +4,19 @@ REM FILE:            GENERATE.BAT
 REM PURPOSE:         Visual Studio's executes this file to generate a live CD.
 REM PROGRAMMERS:     J. C. Jones
 
+REM The following XCOPY command has the purpose of pulling a virgin LiveCD.ISO from https://www.reactos.org/getbuilds and extracting it in
+REM the current directory so that its root directory is named "root". Then, we copy our own generated projects over the virgin projects.
+REM Then we use the cdmake.exe command to generate our ReactOS_CD_Live.iso.
+REM Finally, we execute our ReactOS_CD_Live.iso using VirtualBox or similar.
+REM If the execution of ReactOS_CD_Live.iso within VirtualBox (or similar) results in any visible errors, we systematically determine
+REM which of our own projects is the culprit. As you can see below, there are several of our own projects whose copy command is
+REM preceded by a "REM" statement. These projects are known culprits. By remove the "REM" prefix on a copy command you can see how that
+REM file ruins the boot process of ReactOS. Sometimes you might get a blank gray screen. Sometimes you will get a blank blue screen.
+REM Sometimes the screen will be black. And sometimes the shell (icons/etc.) will be messed up. Sometimes and application, such as CALC.EXE,
+REM will refuse to run. The objective is to clean up each of our defective projects to get a clean ReactOS boot.
+
 XCOPY /E /I /Y "root" "%outdir%root"
-GOTO :make_CD
+
 cd "%outdir%"
 
 mkdir root
@@ -73,10 +84,11 @@ call :copy_to_CD "%solutiondir%drivers\battery\battc\%outdir%BATTC.SYS" .
 call :copy_to_CD "%solutiondir%drivers\sac\%outdir%SACDRV.SYS" .
 REM call :copy_to_CD "%solutiondir%win32ss\drivers\videoprt\%outdir%VIDEOPRT.SYS" .
 
+
 cd ..
 
 REM call :copy_to_CD "%solutiondir%dll\ntdll\%outdir%NTDLL.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\advapi32\%outdir%ADVAPI32.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\advapi32\%outdir%ADVAPI32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\browseui\%outdir%BROWSEUI.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\comctl32\%outdir%COMCTL32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\cryptui\%outdir%CRYPTUI.DLL" .
@@ -103,16 +115,16 @@ call :copy_to_CD "%solutiondir%dll\win32\olecli32\%outdir%OLECLI32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\olesvr32\%outdir%OLESVR32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\olethk32\%outdir%OLETHK32.DLL" .
 REM call :copy_to_CD "%solutiondir%dll\win32\rpcrt4\%outdir%RPCRT4.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\samsrv\%outdir%SAMSRV.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\shdocvw\%outdir%SHDOCVW.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\shell32\%outdir%SHELL32.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\samsrv\%outdir%SAMSRV.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\shdocvw\%outdir%SHDOCVW.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\shell32\%outdir%SHELL32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\shlwapi\%outdir%SHLWAPI.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\propsys\%outdir%PROPSYS.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\psapi\%outdir%PSAPI.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\secur32\%outdir%SECUR32.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\setupapi\%outdir%SETUPAPI.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\url\%outdir%URL.DLL" .
-call :copy_to_CD "%solutiondir%dll\win32\urlmon\%outdir%URLMON.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\setupapi\%outdir%SETUPAPI.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\url\%outdir%URL.DLL" .
+REM call :copy_to_CD "%solutiondir%dll\win32\urlmon\%outdir%URLMON.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\userenv\%outdir%USERENV.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\usp10\%outdir%USP10.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\uxtheme\%outdir%UXTHEME.DLL" .
@@ -131,11 +143,11 @@ call :copy_to_CD "%solutiondir%dll\win32\lz32\%outdir%LZ32.DLL" .
 call :copy_to_CD "%solutiondir%dll\win32\wldap32\%outdir%WLDAP32.DLL" .
 call :copy_to_CD "%solutiondir%base\applications\atactl\%outdir%ATACTL.EXE" .
 call :copy_to_CD "%solutiondir%base\system\autochk\%outdir%AUTOCHK.EXE" .
-call :copy_to_CD "%solutiondir%base\system\lsass\%outdir%LSASS.EXE" .
+REM call :copy_to_CD "%solutiondir%base\system\lsass\%outdir%LSASS.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\smss\%outdir%SMSS.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\winlogon\%outdir%WINLOGON.EXE" .
-call :copy_to_CD "%solutiondir%base\system\userinit\%outdir%USERINIT.EXE" .
-call :copy_to_CD "%solutiondir%base\system\services\%outdir%SERVICES.EXE" .
+REM call :copy_to_CD "%solutiondir%base\system\userinit\%outdir%USERINIT.EXE" .
+REM call :copy_to_CD "%solutiondir%base\system\services\%outdir%SERVICES.EXE" .
 call :copy_to_CD "%solutiondir%base\shell\cmd\%outdir%CMD.EXE" .
 call :copy_to_CD "%solutiondir%base\shell\explorer\notifyhook\%outdir%NOTIFYHOOK.DLL" .
 call :copy_to_CD "%solutiondir%win32ss\drivers\font\ftfd\%outdir%FTFD.DLL" .
@@ -148,6 +160,8 @@ call :copy_to_CD "%solutiondir%win32ss\gdi\gdi32\%outdir%GDI32.DLL" .
 REM call :copy_to_CD "%solutiondir%subsystems\win\basesrv\%outdir%BASESRV.DLL" .
 REM call :copy_to_CD "%solutiondir%subsystems\win32\csrsrv\%outdir%CSRSRV.DLL" .
 REM call :copy_to_CD "%solutiondir%subsystems\win32\csrss\%outdir%CSRSS.EXE" .
+
+GOTO :make_CD
 
 mkdir config
 cd "%solutiondir%boot\bootdata"
