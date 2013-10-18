@@ -68,8 +68,6 @@
     <Link>
       <SubSystem>Native</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <Driver>Driver</Driver>
       <EntryPointSymbol>DriverEntry@8</EntryPointSymbol>
@@ -80,6 +78,8 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <ModuleDefinitionFile>$(OutDir)\$(ProjectName).def</ModuleDefinitionFile>
+      <AdditionalDependencies />
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\</AdditionalIncludeDirectories>
@@ -127,7 +127,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />
-    <None Include="videoprt.spec" />
+    <CustomBuild Include="videoprt.spec">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)\tools\spec2def\build\x86_32\$(Configuration)\spec2def.exe" -a=i386 --kill-at -n="$(TargetFileName)" --ms -d="$(OutDir)%(FileName).def" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\%(Filename).def</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\%(Filename).def</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="videoprt.h" />
