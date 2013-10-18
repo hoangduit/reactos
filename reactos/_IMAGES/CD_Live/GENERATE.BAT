@@ -4,18 +4,24 @@ REM FILE:            GENERATE.BAT
 REM PURPOSE:         Visual Studio's executes this file to generate a live CD.
 REM PROGRAMMERS:     J. C. Jones
 
-REM The following XCOPY command has the purpose of pulling a virgin LiveCD.ISO from https://www.reactos.org/getbuilds and extracting it in
-REM the current directory so that its root directory is named "root". Then, we copy our own generated projects over the virgin projects.
-REM Then we use the cdmake.exe command to generate our ReactOS_CD_Live.iso.
+REM The following XCOPY command has the purpose of copying an extracted virgin LiveCD.ISO, obtained from https://www.reactos.org/getbuilds, from
+REM the directory "root" in the project directory (where the .vcxproj file is located) to the directory "root" in the build ouptut directory (where
+REM the .OBJ's/etc. would normally be located for this project). Then, when we do a build, our generated projects overwrite the virgin projects.
+REM Then we use the cdmake.exe command to generate our ReactOS_CD_Live.iso from all the .EXE's / .DLL's, etc. under "root" in the output directory.
 REM Finally, we execute our ReactOS_CD_Live.iso using VirtualBox or similar.
 REM If the execution of ReactOS_CD_Live.iso within VirtualBox (or similar) results in any visible errors, we systematically determine
 REM which of our own projects is the culprit. As you can see below, there are several of our own projects whose copy command is
-REM preceded by a "REM" statement. These projects are known culprits. By remove the "REM" prefix on a copy command you can see how that
-REM file ruins the boot process of ReactOS. Sometimes you might get a blank gray screen. Sometimes you will get a blank blue screen.
-REM Sometimes the screen will be black. And sometimes the shell (icons/etc.) will be messed up. Sometimes and application, such as CALC.EXE,
-REM will refuse to run. The objective is to clean up each of our defective projects to get a clean ReactOS boot.
+REM preceded by a "REM" statement. These projects are known culprits. By removing the "REM" prefix on a copy command you can see how that
+REM file ruins the boot process of ReactOS. Sometimes you will get a blank gray screen. Sometimes you will get a blank blue screen.
+REM Sometimes the screen will be black. And sometimes the shell (icons/etc.) will be messed up. Sometimes an application, such as CALC.EXE,
+REM will refuse to run. The objective is to clean up each of our defective projects to get a clean boot.
 
 XCOPY /E /I /Y "root" "%outdir%root"
+
+REM XCOPY /E /I /Y "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\Remote Debugger\x86" "%outdir%root"
+REM DEL "%outdir%root\msvsmon.exe.config"
+REM DEL "%outdir%root\DebuggerProxy.dll.manifest"
+REM DEL "%outdir%root\Microsoft.VisualStudio.Activities.dll"
 
 cd "%outdir%"
 
@@ -45,7 +51,8 @@ REM call :copy_to_CD "%solutiondir%base\shell\explorer\explorer-cfg-template.xml
 mkdir system32
 cd system32
 
-REM call :copy_to_CD "%solutiondir%ntoskrnl\%outdir%NTOSKRNL.EXE" .
+call :copy_to_CD "%solutiondir%ntoskrnl\%outdir%NTOSKRNL.EXE" .
+goto :make_CD
 call :copy_to_CD "%solutiondir%ntkrnlmp\%outdir%NTKRNLMP.EXE" .
 call :copy_to_CD "%solutiondir%HAL\%outdir%HAL.DLL" .
 call :copy_to_CD "%solutiondir%Drivers\Base\BootVid\%outdir%BootVid.DLL" .
@@ -83,7 +90,6 @@ call :copy_to_CD "%solutiondir%drivers\network\ndis\%outdir%NDIS.SYS" .
 call :copy_to_CD "%solutiondir%drivers\battery\battc\%outdir%BATTC.SYS" .
 call :copy_to_CD "%solutiondir%drivers\sac\%outdir%SACDRV.SYS" .
 call :copy_to_CD "%solutiondir%win32ss\drivers\videoprt\%outdir%VIDEOPRT.SYS" .
-
 
 cd ..
 

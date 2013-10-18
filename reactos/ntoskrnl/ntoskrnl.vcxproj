@@ -1134,7 +1134,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.\include;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\drivers;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;DBG;_WINKD_=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;DBG;_WINKD_=1</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>
@@ -1202,7 +1202,7 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>.\include;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\psdk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs;$(SolutionDir)\include\reactos\drivers;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\;$(SolutionDir)\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;$(SolutionDir)\lib\cmlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_WINKD_=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__NTOSKRNL__;_NTOSKRNL_;_NTSYSTEM_;_IN_KERNEL_;NTDDI_VERSION=0x05020400;WINVER=0x502;_WIN32_IE=0x600;_WIN32_WINNT=0x502;_WIN32_WINDOWS=0x502;_SETUPAPI_VER=0x502;_M_IX86;_WINKD_=1</PreprocessorDefinitions>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
