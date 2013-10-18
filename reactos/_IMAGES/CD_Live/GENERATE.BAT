@@ -82,7 +82,7 @@ call :copy_to_CD "%solutiondir%drivers\filesystems\mup\%outdir%MUP.SYS" .
 call :copy_to_CD "%solutiondir%drivers\network\ndis\%outdir%NDIS.SYS" .
 call :copy_to_CD "%solutiondir%drivers\battery\battc\%outdir%BATTC.SYS" .
 call :copy_to_CD "%solutiondir%drivers\sac\%outdir%SACDRV.SYS" .
-REM call :copy_to_CD "%solutiondir%win32ss\drivers\videoprt\%outdir%VIDEOPRT.SYS" .
+call :copy_to_CD "%solutiondir%win32ss\drivers\videoprt\%outdir%VIDEOPRT.SYS" .
 
 
 cd ..
@@ -148,7 +148,7 @@ REM call :copy_to_CD "%solutiondir%base\system\smss\%outdir%SMSS.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\winlogon\%outdir%WINLOGON.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\userinit\%outdir%USERINIT.EXE" .
 REM call :copy_to_CD "%solutiondir%base\system\services\%outdir%SERVICES.EXE" .
-call :copy_to_CD "%solutiondir%base\shell\cmd\%outdir%CMD.EXE" .
+REM call :copy_to_CD "%solutiondir%base\shell\cmd\%outdir%CMD.EXE" .
 call :copy_to_CD "%solutiondir%base\shell\explorer\notifyhook\%outdir%NOTIFYHOOK.DLL" .
 call :copy_to_CD "%solutiondir%win32ss\drivers\font\ftfd\%outdir%FTFD.DLL" .
 call :copy_to_CD "%solutiondir%win32ss\drivers\displays\framebuf\%outdir%FRAMEBUF.DLL" .
