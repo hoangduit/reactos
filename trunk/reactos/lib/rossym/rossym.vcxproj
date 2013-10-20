@@ -139,9 +139,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\include\ddk;..\..\include\psdk;..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\include;..\..\include\reactos;..\..\include\ndk;..\..\include\crt;..\..\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\ddk;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,9 +162,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\include\ddk;..\..\include\psdk;..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS;..\..\include;..\..\include\reactos;..\..\include\ndk;..\..\include\crt;..\..\include\crt\msc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\ddk;$(SolutionDir)\include\psdk;$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS;$(SolutionDir)\include;$(SolutionDir)\include\reactos;$(SolutionDir)\include\ndk;$(SolutionDir)\include\crt;$(SolutionDir)\include\crt\msc</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
