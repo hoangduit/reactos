@@ -1196,7 +1196,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;NO_RTL_INLINES;_NTSYSTEM_;_NTDLLBUILD_;_LIBCNT_;__CRT__NO_INLINE;CRTDLL;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\include;..\..\..\..\include\crt;..\..\..\..\include\psdk;..\..\..\..\include\crt\msc;..\..\..\..\include\ndk;..\..\..\..\include\ddk;..\..\..\..\include\reactos;..\include;..\..\..\..\include\reactos\libs;..\..\include\internal\mingw-w64;..\..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;..\include;$(SolutionDir)\include\reactos\libs;..\..\include\internal\mingw-w64;$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -1220,7 +1220,7 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;NO_RTL_INLINES;_NTSYSTEM_;_NTDLLBUILD_;_LIBCNT_;__CRT__NO_INLINE;CRTDLL;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\include;..\..\..\..\include\crt;..\..\..\..\include\psdk;..\..\..\..\include\crt\msc;..\..\..\..\include\ndk;..\..\..\..\include\ddk;..\..\..\..\include\reactos;..\include;..\..\..\..\include\reactos\libs;..\..\include\internal\mingw-w64;..\..\..\..\include\reactos\mc\build\x86_32\$(Configuration)\ReactOS</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;$(SolutionDir)\include;$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\ndk;$(SolutionDir)\include\ddk;$(SolutionDir)\include\reactos;..\include;$(SolutionDir)\include\reactos\libs;..\..\include\internal\mingw-w64;$(SolutionDir)\include\reactos\mc\$(OutDir)\ReactOS</AdditionalIncludeDirectories>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <BufferSecurityCheck>false</BufferSecurityCheck>

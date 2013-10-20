@@ -59,7 +59,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>..\..\include\crt;..\..\include\psdk;..\..\include\crt\msc;..\..\include\reactos\libs\pseh</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs\pseh</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <ExceptionHandling />
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -83,7 +83,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <AdditionalIncludeDirectories>..\..\include\crt;..\..\include\psdk;..\..\include\crt\msc;..\..\include\reactos\libs\pseh</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\crt;$(SolutionDir)\include\psdk;$(SolutionDir)\include\crt\msc;$(SolutionDir)\include\reactos\libs\pseh</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <ExceptionHandling />
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -173,9 +173,6 @@ ml /nologo /Cp /Fo "$(OutDir)\%(FileName).obj" /c /Ta  "$(OutDir)\%(Filename).tm
   <ItemGroup>
     <ProjectReference Include="..\..\include\psdk\psdk.vcxproj">
       <Project>{a6eb60e2-8414-4c0c-aa83-ae854151d868}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\sdk\crt\chkstk\chkstk.vcxproj">
-      <Project>{7fe60e96-c5d5-463f-98d0-d60736f8a797}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

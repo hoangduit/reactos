@@ -1146,6 +1146,9 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OmitDefaultLibName>true</OmitDefaultLibName>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <ExceptionHandling />
+      <AdditionalOptions> /EHs-c- %(AdditionalOptions)</AdditionalOptions>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -1211,6 +1214,8 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
       <PrecompiledHeaderFile>ntoskrnl.h</PrecompiledHeaderFile>
       <OmitDefaultLibName>true</OmitDefaultLibName>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <ExceptionHandling />
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
