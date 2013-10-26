@@ -315,6 +315,9 @@ ml /nologo /Cp /Fo "$(OutDir)%(FileName).obj" /c /Ta  "$(OutDir)%(Filename).tmp"
     <ProjectReference Include="..\..\lib\sdk\crt\libcntpr\libcntpr.vcxproj">
       <Project>{271006d5-01b2-4f33-8699-9909a41e0707}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\lib\sdk\uuid\uuid.vcxproj">
+      <Project>{7a796dc8-497c-4692-ba33-af80ed9ca47f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ntdllsys\ntdllsys.vcxproj">
       <Project>{13a235fb-7d0a-4f8d-b7dd-6f0bb0a93b60}</Project>
     </ProjectReference>
