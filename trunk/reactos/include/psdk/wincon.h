@@ -618,6 +618,22 @@ WriteConsoleInputW(
 
 BOOL
 WINAPI
+WriteConsoleInputVDMA(
+  _In_ HANDLE hConsoleInput,
+  _In_reads_(nLength) CONST INPUT_RECORD *lpBuffer,
+  _In_ DWORD nLength,
+  _Out_ LPDWORD lpNumberOfEventsWritten);
+
+BOOL
+WINAPI
+WriteConsoleInputVDMW(
+  _In_ HANDLE hConsoleInput,
+  _In_reads_(nLength) CONST INPUT_RECORD *lpBuffer,
+  _In_ DWORD nLength,
+  _Out_ LPDWORD lpNumberOfEventsWritten);
+
+BOOL
+WINAPI
 WriteConsoleOutputA(
   _In_ HANDLE hConsoleOutput,
   _In_reads_(dwBufferSize.X * dwBufferSize.Y) CONST CHAR_INFO *lpBuffer,
@@ -679,6 +695,7 @@ WriteConsoleOutputCharacterW(
 #define SetConsoleTitle SetConsoleTitleW
 #define WriteConsole WriteConsoleW
 #define WriteConsoleInput WriteConsoleInputW
+#define WriteConsoleInputVDM WriteConsoleInputVDMW
 #define WriteConsoleOutput WriteConsoleOutputW
 #define FillConsoleOutputCharacter FillConsoleOutputCharacterW
 #define WriteConsoleOutputCharacter WriteConsoleOutputCharacterW
@@ -699,6 +716,7 @@ WriteConsoleOutputCharacterW(
 #define SetConsoleTitle SetConsoleTitleA
 #define WriteConsole WriteConsoleA
 #define WriteConsoleInput WriteConsoleInputA
+#define WriteConsoleInputVDM WriteConsoleInputVDMA
 #define WriteConsoleOutput WriteConsoleOutputA
 #define FillConsoleOutputCharacter FillConsoleOutputCharacterA
 #define WriteConsoleOutputCharacter WriteConsoleOutputCharacterA

@@ -1013,7 +1013,7 @@ EXTERN_C HRESULT WINAPI SHLoadInProc (REFCLSID rclsid)
 
     CoCreateInstance(rclsid, NULL, CLSCTX_INPROC_SERVER, IID_IUnknown, (void **)&ptr);
     if (ptr)
-        return NOERROR;
+        return S_OK;
     return DISP_E_MEMBERNOTFOUND;
 }
 
@@ -1463,7 +1463,11 @@ STDAPI_(BOOL) DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID fImpLoad)
         GetModuleFileNameW(hInstance, swShell32Name, MAX_PATH);
         swShell32Name[MAX_PATH - 1] = '\0';
 
-        InitCommonControlsEx(NULL);
+        /* Initialize comctl32 */
+        INITCOMMONCONTROLSEX InitCtrls;
+        InitCtrls.dwSize = sizeof(INITCOMMONCONTROLSEX);
+        InitCtrls.dwICC = ICC_WIN95_CLASSES | ICC_DATE_CLASSES | ICC_USEREX_CLASSES;
+        InitCommonControlsEx(&InitCtrls);
 
         SIC_Initialize();
         InitChangeNotifications();
