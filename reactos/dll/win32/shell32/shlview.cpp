@@ -2008,7 +2008,7 @@ HRESULT WINAPI CDefView::GetCurrentInfo(LPFOLDERSETTINGS lpfs)
         return E_INVALIDARG;
 
     *lpfs = FolderSettings;
-    return NOERROR;
+    return S_OK;
 }
 
 HRESULT WINAPI CDefView::AddPropertySheetPages(DWORD dwReserved, LPFNADDPROPSHEETPAGE lpfn, LPARAM lparam)
@@ -2089,7 +2089,7 @@ HRESULT WINAPI CDefView::GetItemObject(UINT uItem, REFIID riid, LPVOID *ppvOut)
             if (IsEqualIID(riid, IID_IContextMenu))
             {
                 //*ppvOut = ISvBgCm_Constructor(pSFParent, FALSE);
-                CDefFolderMenu_Create2(NULL, NULL, cidl, (LPCITEMIDLIST*)apidl, pSFParent, NULL, 0, NULL, (IContextMenu**)ppvOut);
+                CDefFolderMenu_Create2(NULL, NULL, 0, NULL, pSFParent, NULL, 0, NULL, (IContextMenu**)ppvOut);
                 if (!ppvOut)
                     hr = E_OUTOFMEMORY;
                 else
@@ -2499,7 +2499,7 @@ HRESULT WINAPI CDefView::QueryContinueDrag(BOOL fEscapePressed, DWORD grfKeyStat
     else if (!(grfKeyState & MK_LBUTTON) && !(grfKeyState & MK_RBUTTON))
         return DRAGDROP_S_DROP;
     else
-        return NOERROR;
+        return S_OK;
 }
 
 HRESULT WINAPI CDefView::GiveFeedback(DWORD dwEffect)

@@ -128,6 +128,7 @@ static MSGMEMORY g_MsgMemory[] =
     { WM_SETTEXT, MMS_SIZE_LPARAMSZ, MMS_FLAG_READ },
     { WM_STYLECHANGED, sizeof(STYLESTRUCT), MMS_FLAG_READ },
     { WM_STYLECHANGING, sizeof(STYLESTRUCT), MMS_FLAG_READWRITE },
+    { WM_SETTINGCHANGE, MMS_SIZE_LPARAMSZ, MMS_FLAG_READWRITE },
     { WM_COPYDATA, MMS_SIZE_SPECIAL, MMS_FLAG_READ },
     { WM_COPYGLOBALDATA, MMS_SIZE_WPARAM, MMS_FLAG_READ },
     { WM_WINDOWPOSCHANGED, sizeof(WINDOWPOS), MMS_FLAG_READ },
@@ -173,7 +174,14 @@ MsgMemorySize(PMSGMEMORY MsgMemoryEntry, WPARAM wParam, LPARAM lParam)
         }
         else if (MMS_SIZE_LPARAMSZ == MsgMemoryEntry->Size)
         {
-            Size = (UINT) ((wcslen((PWSTR) lParam) + 1) * sizeof(WCHAR));
+            // WM_SETTEXT and WM_SETTINGCHANGE can be null!
+            if (!lParam)
+            {
+               TRACE("lParam is NULL!\n");
+               Size = 0;
+            }
+            else
+               Size = (UINT) ((wcslen((PWSTR) lParam) + 1) * sizeof(WCHAR));
         }
         else if (MMS_SIZE_SPECIAL == MsgMemoryEntry->Size)
         {
@@ -435,6 +443,7 @@ CopyMsgToKernelMem(MSG *KernelModeMsg, MSG *UserModeMsg, PMSGMEMORY MsgMemoryEnt
         /* Copy data if required */
         if (0 != (MsgMemoryEntry->Flags & MMS_FLAG_READ))
         {
+            TRACE("Copy Message %d from usermode buffer\n", KernelModeMsg->message);
             Status = MmCopyFromCaller(KernelMem, (PVOID) UserModeMsg->lParam, Size);
             if (! NT_SUCCESS(Status))
             {

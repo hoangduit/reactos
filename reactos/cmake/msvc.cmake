@@ -24,21 +24,30 @@ add_compile_flags("/X /GR- /EHs-c- /GS- /Zl /W3")
 
 # HACK: for VS 11+ we need to explicitly disable SSE, which is off by
 # default for older compilers. See CORE-6507
-if (MSVC_VERSION GREATER 1699 AND ARCH STREQUAL "i386")
+if(MSVC_VERSION GREATER 1699 AND ARCH STREQUAL "i386")
     add_compile_flags("/arch:IA32")
+endif ()
+
+# VS 12+ requires /FS when used in parallel compilations
+if(MSVC_VERSION GREATER 1799 AND NOT MSVC_IDE)
+    add_compile_flags("/FS")
 endif ()
 
 # C++ exception specification ignored... yeah we don't care
 add_compile_flags("/wd4290")
 
 # The following warnings are treated as errors:
+# - TODO: C4013: implicit function declaration
+# - C4022: pointer type mismatch for parameter
+# - TODO: C4028: formal parameter different from declaration
 # - C4047: different level of indirection
-# - C4090: different 'modifier' qualifiers (for C programs only;
+# - TODO: C4090: different 'modifier' qualifiers (for C programs only;
 #          for C++ programs, the compiler error C2440 is issued)
 # - C4098: void function returning a value
+# - C4129: unrecognized escape sequence
+# - TODO: C4133: incompatible types
 # - C4700: uninitialized variable usage
-##add_compile_flags("/we4047 /we4090 /we4098 /we4700")
-add_compile_flags("/we4047 /we4098 /we4700")
+add_compile_flags("/we4022 /we4047 /we4098 /we4129 /we4700")
 
 # Debugging
 #if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -111,7 +120,11 @@ endfunction()
 
 function(set_subsystem MODULE SUBSYSTEM)
     if(NOT CMAKE_C_COMPILER_VERSION VERSION_LESS 17)
-        add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.01")
+        if(ARCH STREQUAL "amd64")
+            add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.02")
+        else()
+            add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.01")
+        endif()
     else()
         add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM}")
     endif()
