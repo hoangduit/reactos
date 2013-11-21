@@ -129,6 +129,9 @@ KiEoiHelper(IN PKTRAP_FRAME TrapFrame)
     /* Check for edited frame */
     if (KiIsFrameEdited(TrapFrame)) KiEditedTrapReturn(TrapFrame);
 
+    /* Check if we have single stepping enabled */
+    if (TrapFrame->EFlags & EFLAGS_TF) KiTrapReturnNoSegments(TrapFrame);
+
     /* Exit the trap to kernel mode */
     KiTrapReturnNoSegmentsRet8(TrapFrame);
 }
@@ -191,6 +194,9 @@ KiServiceExit2(IN PKTRAP_FRAME TrapFrame)
     /* Check for edited frame */
     if (KiIsFrameEdited(TrapFrame)) KiEditedTrapReturn(TrapFrame);
 
+    /* Check if we have single stepping enabled */
+    if (TrapFrame->EFlags & EFLAGS_TF) KiTrapReturnNoSegments(TrapFrame);
+
     /* Exit the trap to kernel mode */
     KiTrapReturnNoSegmentsRet8(TrapFrame);
 }
@@ -230,7 +236,7 @@ KiNpxHandler(IN PKTRAP_FRAME TrapFrame,
              IN PFX_SAVE_AREA SaveArea)
 {
     ULONG Cr0, Mask, Error, ErrorOffset, DataOffset;
-    
+
     /* Check for VDM trap */
     ASSERT((KiVdmTrap(TrapFrame)) == FALSE);
 
@@ -239,7 +245,7 @@ KiNpxHandler(IN PKTRAP_FRAME TrapFrame,
     {
         /* Kernel might've tripped a delayed error */
         SaveArea->Cr0NpxState |= CR0_TS;
-        
+
         /* Only valid if it happened during a restore */
         //if ((PVOID)TrapFrame->Eip == FrRestore)
         {
@@ -1449,7 +1455,16 @@ VOID
 FASTCALL
 KiCallbackReturnHandler(IN PKTRAP_FRAME TrapFrame)
 {
-    UNIMPLEMENTED_DBGBREAK();
+    NTSTATUS Status;
+
+    /* Pass the register parameters to NtCallbackReturn.
+       Result pointer is in ecx, result length in edx, status in eax */
+    Status = NtCallbackReturn((PVOID)TrapFrame->Ecx,
+                              TrapFrame->Edx,
+                              TrapFrame->Eax);
+
+    /* If we got here, something went wrong. Return an error to the caller */
+    KiServiceExit(TrapFrame, Status);
 }
 
 DECLSPEC_NORETURN
@@ -1561,7 +1576,7 @@ KiSystemCall(IN PKTRAP_FRAME TrapFrame,
     /* Decode the system call number */
     Offset = (SystemCallNumber >> SERVICE_TABLE_SHIFT) & SERVICE_TABLE_MASK;
     Id = SystemCallNumber & SERVICE_NUMBER_MASK;
-    
+
     /* Get descriptor table */
     DescriptorTable = (PVOID)((ULONG_PTR)Thread->ServiceTable + Offset);
 

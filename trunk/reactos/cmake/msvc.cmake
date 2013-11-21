@@ -44,10 +44,16 @@ add_compile_flags("/wd4290")
 # - TODO: C4090: different 'modifier' qualifiers (for C programs only;
 #          for C++ programs, the compiler error C2440 is issued)
 # - C4098: void function returning a value
+# - C4113: parameter lists differ
 # - C4129: unrecognized escape sequence
 # - TODO: C4133: incompatible types
+# - C4229: modifiers on data are ignored
 # - C4700: uninitialized variable usage
-add_compile_flags("/we4022 /we4047 /we4098 /we4129 /we4700")
+add_compile_flags("/we4022 /we4047 /we4098 /we4113 /we4129 /we4229 /we4700")
+
+# Enable warnings above the default level, but don't treat them as errors:
+# - C4115: named type definition in parentheses
+add_compile_flags("/w14115")
 
 # Debugging
 #if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -175,7 +181,7 @@ function(generate_import_lib _libname _dllname _spec_file)
     # Generate the asm stub file and the def file for import library
     add_custom_command(
         OUTPUT ${_asm_stubs_file} ${_def_file}
-        COMMAND native-spec2def --ms --kill-at -a=${SPEC2DEF_ARCH} --implib -n=${_dllname} -d=${_def_file} -l=${_asm_stubs_file} ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
+        COMMAND native-spec2def --ms -a=${SPEC2DEF_ARCH} --implib -n=${_dllname} -d=${_def_file} -l=${_asm_stubs_file} ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file} native-spec2def)
 
     if(MSVC_IDE)
@@ -232,7 +238,7 @@ function(spec2def _dllname _spec_file)
     #generate def for the DLL and C stubs file
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_file}.def ${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c
-        COMMAND native-spec2def --ms --kill-at -a=${SPEC2DEF_ARCH} -n=${_dllname} -d=${CMAKE_CURRENT_BINARY_DIR}/${_file}.def -s=${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
+        COMMAND native-spec2def --ms -a=${SPEC2DEF_ARCH} -n=${_dllname} -d=${CMAKE_CURRENT_BINARY_DIR}/${_file}.def -s=${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file} native-spec2def)
 
     if(__add_importlib)
