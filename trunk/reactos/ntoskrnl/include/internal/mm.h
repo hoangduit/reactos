@@ -512,7 +512,7 @@ MmCreateMemoryArea(
     PMEMORY_AREA *Result,
     BOOLEAN FixedAddress,
     ULONG AllocationFlags,
-    PHYSICAL_ADDRESS BoundaryAddressMultiple OPTIONAL
+    ULONG AllocationGranularity
 );
 
 PMEMORY_AREA
@@ -1292,24 +1292,10 @@ MmInitGlobalKernelPageDirectory(VOID);
 
 VOID
 NTAPI
-MmDisableVirtualMapping(
-    struct _EPROCESS *Process,
-    PVOID Address,
-    BOOLEAN* WasDirty,
-    PPFN_NUMBER Page
-);
-
-VOID
-NTAPI
 MmEnableVirtualMapping(
     struct _EPROCESS *Process,
     PVOID Address
 );
-
-VOID
-NTAPI
-MmRawDeleteVirtualMapping(PVOID Address);
-
 
 VOID
 NTAPI
@@ -1798,3 +1784,8 @@ NTAPI
 MmGetSessionById(
     _In_ ULONG SessionId);
 
+_IRQL_requires_max_(APC_LEVEL)
+VOID
+NTAPI
+MmSetSessionLocaleId(
+    _In_ LCID LocaleId);

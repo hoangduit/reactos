@@ -198,7 +198,7 @@ MiMakeProtectionMask(IN ULONG Protect)
         }
 
         /* This actually turns on guard page in this scenario! */
-        ProtectMask |= MM_DECOMMIT;
+        ProtectMask |= MM_GUARDPAGE;
     }
 
     /* Check for nocache option */
@@ -1914,10 +1914,7 @@ MiFlushTbAndCapture(IN PMMVAD FoundVad,
     //
     // Write the new PTE, making sure we are only changing the bits
     //
-    ASSERT(PointerPte->u.Hard.Valid == 1);
-    ASSERT(TempPte.u.Hard.Valid == 1);
-    ASSERT(PointerPte->u.Hard.PageFrameNumber == TempPte.u.Hard.PageFrameNumber);
-    *PointerPte = TempPte;
+    MI_UPDATE_VALID_PTE(PointerPte, TempPte);
 
     //
     // Flush the TLB
@@ -2256,9 +2253,6 @@ MiUnmapViewInSystemSpace(IN PMMSESSION Session,
     ULONG Size;
     PCONTROL_AREA ControlArea;
     PAGED_CODE();
-
-    /* Only global mappings supported for now */
-    ASSERT(Session == &MmSession);
 
     /* Remove this mapping */
     KeAcquireGuardedMutex(Session->SystemSpaceViewLockPointer);
@@ -2783,6 +2777,12 @@ MmMapViewInSessionSpace(IN PVOID Section,
 {
     PAGED_CODE();
 
+    // HACK
+    if (MiIsRosSectionObject(Section))
+    {
+        return MmMapViewInSystemSpace(Section, MappedBase, ViewSize);
+    }
+
     /* Process must be in a session */
     if (PsGetCurrentProcess()->ProcessInSession == FALSE)
     {
@@ -2806,6 +2806,12 @@ NTAPI
 MmUnmapViewInSessionSpace(IN PVOID MappedBase)
 {
     PAGED_CODE();
+
+    // HACK
+    if (!MI_IS_SESSION_ADDRESS(MappedBase))
+    {
+        return MmUnmapViewInSystemSpace(MappedBase);
+    }
 
     /* Process must be in a session */
     if (PsGetCurrentProcess()->ProcessInSession == FALSE)
@@ -2990,6 +2996,7 @@ MmCommitSessionMappedView(IN PVOID MappedBase,
     ASSERT(TempPte.u.Long != 0);
 
     /* Loop all prototype PTEs to be committed */
+    PointerPte = ProtoPte;
     while (PointerPte < LastProtoPte)
     {
         /* Make sure the PTE is already invalid */
