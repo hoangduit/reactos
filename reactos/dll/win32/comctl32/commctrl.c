@@ -119,7 +119,7 @@ static BOOL create_manifest(BOOL install)
     HANDLE hFile;
     BOOL bRet = FALSE;
 
-    hResInfo = FindResourceW(COMCTL32_hModule, L"WINE_MANIFEST", RT_MANIFEST);
+    hResInfo = FindResourceW(COMCTL32_hModule, L"WINE_MANIFEST", (LPWSTR)RT_MANIFEST);
     if (!hResInfo)
         return FALSE;
 
@@ -188,8 +188,6 @@ static BOOL create_manifest(BOOL install)
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-	// JCJ - We need to check to see if we are getting into DllMain here.
-
     TRACE("%p,%x,%p\n", hinstDLL, fdwReason, lpvReserved);
 
     switch (fdwReason) {
