@@ -24,7 +24,7 @@
 
 #include "resource.h"
 
-LANGUAGE LANG_NEUTRAL,SUBLANG_NEUTRAL
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 IDA_WINEMINE ACCELERATORS
 BEGIN
@@ -116,6 +116,9 @@ MINES BITMAP "rc/mines.bmp"
 #endif
 #ifdef LANGUAGE_TR_TR
     #include "lang/tr-TR.rc"
+#endif
+#ifdef LANGUAGE_SQ_AL
+    #include "lang/sq-AL.rc"
 #endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/uk-UA.rc"

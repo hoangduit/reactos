@@ -1,6 +1,4 @@
-/*
- * TRANSLATOR: 2013 - Erdem Ersoy (eersoy93) (erdemersoy@live.com)
- */
+/* TRANSLATOR: 2013 - Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
 
 #pragma once
 
@@ -652,8 +650,8 @@ static MUI_ENTRY trTRDisplayPageEntries[] =
     },
     {   8,
         10,
-         "\x07  Seámek istedißiniz gîrÅntÅ ayarlarçnç yukarç ve aüaßç dÅßmeleriyle",
-         TEXT_STYLE_NORMAL
+        "\x07  Seámek istedißiniz gîrÅntÅ ayarlarçnç yukarç ve aüaßç dÅßmeleriyle",
+        TEXT_STYLE_NORMAL
     },
     {
         8,
@@ -757,7 +755,7 @@ static MUI_ENTRY trTRBootPageEntries[] =
         6,
         14,
         "giriü dÅßmesine basçnçz.",
-        TEXT_STYLE_NORMAL,
+        TEXT_STYLE_NORMAL
     },
     {
         0,
@@ -1626,7 +1624,7 @@ MUI_STRING trTRStrings[] =
     {STRING_CONSOLEFAIL2,
     "Bunun en bilinen nedeni, bir USB dÅßme takçmç kullançlmasçdçr.\r\n"},
     {STRING_CONSOLEFAIL3,
-    "USB dÅßme takçmç, daha tam olarak desteklenmemektedir.\r\n"},
+    "USB dÅßme takçmç, daha tÅmÅyle desteklenmemektedir.\r\n"},
     {STRING_FORMATTINGDISK,
     "Kur, diski biáimlendiriyor."},
     {STRING_CHECKINGDISK,
