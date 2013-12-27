@@ -271,14 +271,12 @@ NTSTATUS
 BuildTokenGroups(IN PSID AccountDomainSid,
                  IN PLUID LogonId,
                  OUT PTOKEN_GROUPS *Groups,
-                 OUT PSID *PrimaryGroupSid,
-                 OUT PSID *OwnerSid)
+                 OUT PSID *PrimaryGroupSid)
 {
     SID_IDENTIFIER_AUTHORITY WorldAuthority = {SECURITY_WORLD_SID_AUTHORITY};
-    SID_IDENTIFIER_AUTHORITY LocalAuthority = {SECURITY_LOCAL_SID_AUTHORITY};
     SID_IDENTIFIER_AUTHORITY SystemAuthority = {SECURITY_NT_AUTHORITY};
     PTOKEN_GROUPS TokenGroups;
-#define MAX_GROUPS 8
+#define MAX_GROUPS 6
     DWORD GroupCount = 0;
     PSID Sid;
     NTSTATUS Status = STATUS_SUCCESS;
@@ -346,41 +344,6 @@ BuildTokenGroups(IN PSID AccountDomainSid,
                                 2,
                                 SECURITY_BUILTIN_DOMAIN_RID,
                                 DOMAIN_ALIAS_RID_USERS,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                &Sid);
-    TokenGroups->Groups[GroupCount].Sid = Sid;
-    TokenGroups->Groups[GroupCount].Attributes =
-        SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY;
-    GroupCount++;
-
-    /* Logon SID */
-    RtlAllocateAndInitializeSid(&SystemAuthority,
-                                SECURITY_LOGON_IDS_RID_COUNT,
-                                SECURITY_LOGON_IDS_RID,
-                                LogonId->HighPart,
-                                LogonId->LowPart,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                &Sid);
-    TokenGroups->Groups[GroupCount].Sid = Sid;
-    TokenGroups->Groups[GroupCount].Attributes =
-        SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY | SE_GROUP_LOGON_ID;
-    GroupCount++;
-    *OwnerSid = Sid;
-
-    /* Member of 'Local users */
-    RtlAllocateAndInitializeSid(&LocalAuthority,
-                                1,
-                                SECURITY_LOCAL_RID,
-                                SECURITY_NULL_RID,
                                 SECURITY_NULL_RID,
                                 SECURITY_NULL_RID,
                                 SECURITY_NULL_RID,
@@ -548,98 +511,12 @@ done:
 
 static
 NTSTATUS
-BuildTokenOwner(PTOKEN_OWNER Owner,
-                PSID OwnerSid)
-{
-    ULONG RidCount;
-    ULONG Size;
-
-    RidCount = *RtlSubAuthorityCountSid(OwnerSid);
-    Size = RtlLengthRequiredSid(RidCount);
-
-    Owner->Owner = DispatchTable.AllocateLsaHeap(Size);
-    if (Owner->Owner == NULL)
-    {
-        return STATUS_INSUFFICIENT_RESOURCES;
-    }
-
-    RtlCopyMemory(Owner->Owner,
-                  OwnerSid,
-                  Size);
-
-    return STATUS_SUCCESS;
-}
-
-
-static
-NTSTATUS
-BuildTokenDefaultDacl(PTOKEN_DEFAULT_DACL DefaultDacl,
-                      PSID OwnerSid)
-{
-    SID_IDENTIFIER_AUTHORITY SystemAuthority = {SECURITY_NT_AUTHORITY};
-    PSID LocalSystemSid = NULL;
-    PACL Dacl = NULL;
-    NTSTATUS Status = STATUS_SUCCESS;
-
-    RtlAllocateAndInitializeSid(&SystemAuthority,
-                                1,
-                                SECURITY_LOCAL_SYSTEM_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                &LocalSystemSid);
-
-    Dacl = DispatchTable.AllocateLsaHeap(1024);
-    if (Dacl == NULL)
-    {
-        Status = STATUS_INSUFFICIENT_RESOURCES;
-        goto done;
-    }
-
-    Status = RtlCreateAcl(Dacl, 1024, ACL_REVISION);
-    if (!NT_SUCCESS(Status))
-        goto done;
-
-    RtlAddAccessAllowedAce(Dacl,
-                           ACL_REVISION,
-                           GENERIC_ALL,
-                           OwnerSid);
-
-    /* SID: S-1-5-18 */
-    RtlAddAccessAllowedAce(Dacl,
-                           ACL_REVISION,
-                           GENERIC_ALL,
-                           LocalSystemSid);
-
-    DefaultDacl->DefaultDacl = Dacl;
-
-done:
-    if (!NT_SUCCESS(Status))
-    {
-        if (Dacl != NULL)
-            DispatchTable.FreeLsaHeap(Dacl);
-    }
-
-    if (LocalSystemSid != NULL)
-        RtlFreeSid(LocalSystemSid);
-
-    return Status;
-}
-
-
-static
-NTSTATUS
 BuildTokenInformationBuffer(PLSA_TOKEN_INFORMATION_V1 *TokenInformation,
                             PRPC_SID AccountDomainSid,
                             ULONG RelativeId,
                             PLUID LogonId)
 {
     PLSA_TOKEN_INFORMATION_V1 Buffer = NULL;
-    PSID OwnerSid = NULL;
     PSID PrimaryGroupSid = NULL;
     ULONG i;
     NTSTATUS Status = STATUS_SUCCESS;
@@ -664,8 +541,7 @@ BuildTokenInformationBuffer(PLSA_TOKEN_INFORMATION_V1 *TokenInformation,
     Status = BuildTokenGroups((PSID)AccountDomainSid,
                               LogonId,
                               &Buffer->Groups,
-                              &PrimaryGroupSid,
-                              &OwnerSid);
+                              &PrimaryGroupSid);
     if (!NT_SUCCESS(Status))
         goto done;
 
@@ -675,16 +551,6 @@ BuildTokenInformationBuffer(PLSA_TOKEN_INFORMATION_V1 *TokenInformation,
         goto done;
 
     Status = BuildTokenPrivileges(&Buffer->Privileges);
-    if (!NT_SUCCESS(Status))
-        goto done;
-
-    Status = BuildTokenOwner(&Buffer->Owner,
-                             OwnerSid);
-    if (!NT_SUCCESS(Status))
-        goto done;
-
-    Status = BuildTokenDefaultDacl(&Buffer->DefaultDacl,
-                                   OwnerSid);
     if (!NT_SUCCESS(Status))
         goto done;
 
@@ -714,9 +580,6 @@ done:
 
             if (Buffer->Privileges != NULL)
                 DispatchTable.FreeLsaHeap(Buffer->Privileges);
-
-            if (Buffer->Owner.Owner != NULL)
-                DispatchTable.FreeLsaHeap(Buffer->Owner.Owner);
 
             if (Buffer->DefaultDacl.DefaultDacl != NULL)
                 DispatchTable.FreeLsaHeap(Buffer->DefaultDacl.DefaultDacl);
