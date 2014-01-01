@@ -257,7 +257,7 @@ BuildTokenUser(OUT PTOKEN_USER User,
     if (User->User.Sid == NULL)
     {
         ERR("Could not create the user SID\n");
-        return STATUS_UNSUCCESSFUL;
+        return STATUS_INSUFFICIENT_RESOURCES;
     }
 
     User->User.Attributes = 0;
@@ -268,15 +268,30 @@ BuildTokenUser(OUT PTOKEN_USER User,
 
 static
 NTSTATUS
-BuildTokenGroups(IN PSID AccountDomainSid,
-                 IN PLUID LogonId,
-                 OUT PTOKEN_GROUPS *Groups,
-                 OUT PSID *PrimaryGroupSid)
+BuildTokenPrimaryGroup(OUT PTOKEN_PRIMARY_GROUP PrimaryGroup,
+                       IN PSID AccountDomainSid,
+                       IN ULONG RelativeId)
 {
-    SID_IDENTIFIER_AUTHORITY WorldAuthority = {SECURITY_WORLD_SID_AUTHORITY};
+    PrimaryGroup->PrimaryGroup = AppendRidToSid(AccountDomainSid,
+                                                RelativeId);
+    if (PrimaryGroup->PrimaryGroup == NULL)
+    {
+        ERR("Could not create the primary group SID\n");
+        return STATUS_INSUFFICIENT_RESOURCES;
+    }
+
+    return STATUS_SUCCESS;
+}
+
+
+static
+NTSTATUS
+BuildTokenGroups(OUT PTOKEN_GROUPS *Groups,
+                 IN PSID AccountDomainSid)
+{
     SID_IDENTIFIER_AUTHORITY SystemAuthority = {SECURITY_NT_AUTHORITY};
     PTOKEN_GROUPS TokenGroups;
-#define MAX_GROUPS 6
+#define MAX_GROUPS 4
     DWORD GroupCount = 0;
     PSID Sid;
     NTSTATUS Status = STATUS_SUCCESS;
@@ -298,25 +313,8 @@ BuildTokenGroups(IN PSID AccountDomainSid,
     TokenGroups->Groups[GroupCount].Sid = Sid;
     TokenGroups->Groups[GroupCount].Attributes =
         SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY;
-    *PrimaryGroupSid = Sid;
     GroupCount++;
 
-    /* Member of 'Everyone' */
-    RtlAllocateAndInitializeSid(&WorldAuthority,
-                                1,
-                                SECURITY_WORLD_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                &Sid);
-    TokenGroups->Groups[GroupCount].Sid = Sid;
-    TokenGroups->Groups[GroupCount].Attributes =
-        SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY;
-    GroupCount++;
 
 #if 1
     /* Member of 'Administrators' */
@@ -356,22 +354,6 @@ BuildTokenGroups(IN PSID AccountDomainSid,
         SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY;
     GroupCount++;
 
-    /* Member of 'Interactive users' */
-    RtlAllocateAndInitializeSid(&SystemAuthority,
-                                1,
-                                SECURITY_INTERACTIVE_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                SECURITY_NULL_RID,
-                                &Sid);
-    TokenGroups->Groups[GroupCount].Sid = Sid;
-    TokenGroups->Groups[GroupCount].Attributes =
-        SE_GROUP_ENABLED | SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_MANDATORY;
-    GroupCount++;
 
     /* Member of 'Authenticated users' */
     RtlAllocateAndInitializeSid(&SystemAuthority,
@@ -398,30 +380,6 @@ BuildTokenGroups(IN PSID AccountDomainSid,
     return Status;
 }
 
-
-static
-NTSTATUS
-BuildTokenPrimaryGroup(PTOKEN_PRIMARY_GROUP PrimaryGroup,
-                       PSID PrimaryGroupSid)
-{
-    ULONG RidCount;
-    ULONG Size;
-
-    RidCount = *RtlSubAuthorityCountSid(PrimaryGroupSid);
-    Size = RtlLengthRequiredSid(RidCount);
-
-    PrimaryGroup->PrimaryGroup = DispatchTable.AllocateLsaHeap(Size);
-    if (PrimaryGroup->PrimaryGroup == NULL)
-    {
-        return STATUS_INSUFFICIENT_RESOURCES;
-    }
-
-    RtlCopyMemory(PrimaryGroup->PrimaryGroup,
-                  PrimaryGroupSid,
-                  Size);
-
-    return STATUS_SUCCESS;
-}
 
 static
 NTSTATUS
@@ -513,11 +471,9 @@ static
 NTSTATUS
 BuildTokenInformationBuffer(PLSA_TOKEN_INFORMATION_V1 *TokenInformation,
                             PRPC_SID AccountDomainSid,
-                            ULONG RelativeId,
-                            PLUID LogonId)
+                            PSAMPR_USER_INFO_BUFFER UserInfo)
 {
     PLSA_TOKEN_INFORMATION_V1 Buffer = NULL;
-    PSID PrimaryGroupSid = NULL;
     ULONG i;
     NTSTATUS Status = STATUS_SUCCESS;
 
@@ -534,19 +490,18 @@ BuildTokenInformationBuffer(PLSA_TOKEN_INFORMATION_V1 *TokenInformation,
 
     Status = BuildTokenUser(&Buffer->User,
                             (PSID)AccountDomainSid,
-                            RelativeId);
-    if (!NT_SUCCESS(Status))
-        goto done;
-
-    Status = BuildTokenGroups((PSID)AccountDomainSid,
-                              LogonId,
-                              &Buffer->Groups,
-                              &PrimaryGroupSid);
+                            UserInfo->All.UserId);
     if (!NT_SUCCESS(Status))
         goto done;
 
     Status = BuildTokenPrimaryGroup(&Buffer->PrimaryGroup,
-                                    PrimaryGroupSid);
+                                    (PSID)AccountDomainSid,
+                                    UserInfo->All.PrimaryGroupId);
+    if (!NT_SUCCESS(Status))
+        goto done;
+
+    Status = BuildTokenGroups(&Buffer->Groups,
+                              (PSID)AccountDomainSid);
     if (!NT_SUCCESS(Status))
         goto done;
 
@@ -1080,8 +1035,7 @@ LsaApLogonUser(IN PLSA_CLIENT_REQUEST ClientRequest,
     /* Build and fill the token information buffer */
     Status = BuildTokenInformationBuffer((PLSA_TOKEN_INFORMATION_V1*)TokenInformation,
                                          AccountDomainSid,
-                                         RelativeIds.Element[0],
-                                         LogonId);
+                                         UserInfo);
     if (!NT_SUCCESS(Status))
     {
         TRACE("BuildTokenInformationBuffer failed (Status %08lx)\n", Status);
