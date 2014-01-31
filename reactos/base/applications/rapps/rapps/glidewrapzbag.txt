@@ -5,7 +5,7 @@ Name = GlidewrapZbag
 Version = 0.84c
 Licence = Freeware
 Description = glidewrapper needed to run Diablo 2 on ReactOS.
-Size = 249.02kB
+Size = 249.02 kB
 Category = 3
 URLSite = http://www.zeckensack.de/glide/
 URLDownload = http://www.zeckensack.de/glide/archive/GlideWrapper084c.exe
@@ -38,6 +38,7 @@ Size = 249,02 ko
 [Section.041f]
 Licence = Ücretsiz
 Description = glidewrapper, ReactOS'ta Şeytan 2'yi çalıştırmak için gereklidir.
+Size = 249,02 KB
 
 [Section.0422]
 Description = glidewrapper необхідний для запуску Diablo2 в ReactOS.

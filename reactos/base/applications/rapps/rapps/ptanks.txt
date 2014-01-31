@@ -14,7 +14,13 @@ CDPath = none
 [Section.0407]
 Description = Das schnellste Artillerie-Spiel, das Sie jemals gespielt haben.
 
+[Section.0418]
+Licence = Versiune de evaluare
+Description = Cel mai rapid joc de artilerie pe care-l veți juca vreodată.
+Size = 2,86 Mo
+
 [Section.041f]
 Name = Küçük Tanklar
 Licence = Kısıtlı
 Description = Bu güne kadar oynadığınız en hızlı topçu oyunu.
+Size = 2,86 MB
