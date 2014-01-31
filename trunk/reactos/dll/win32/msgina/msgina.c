@@ -31,6 +31,8 @@ HINSTANCE hDllInstance;
 extern GINA_UI GinaGraphicalUI;
 extern GINA_UI GinaTextUI;
 static PGINA_UI pGinaUI;
+static SID_IDENTIFIER_AUTHORITY SystemAuthority = {SECURITY_NT_AUTHORITY};
+static PSID AdminSid;
 
 /*
  * @implemented
@@ -162,7 +164,10 @@ GetRegistrySettings(PGINA_CONTEXT pgContext)
 {
     HKEY hKey = NULL;
     LPWSTR lpAutoAdminLogon = NULL;
+    LPWSTR lpDontDisplayLastUserName = NULL;
+    LPWSTR lpShutdownWithoutLogon = NULL;
     DWORD dwDisableCAD = 0;
+    DWORD dwSize;
     LONG rc;
 
     rc = RegOpenKeyExW(HKEY_LOCAL_MACHINE,
@@ -198,11 +203,92 @@ GetRegistrySettings(PGINA_CONTEXT pgContext)
 
     TRACE("bDisableCAD: %s\n", pgContext->bDisableCAD ? "TRUE" : "FALSE");
 
+    pgContext->bShutdownWithoutLogon = TRUE;
+    rc = ReadRegSzKey(hKey,
+                      L"ShutdownWithoutLogon",
+                      &lpShutdownWithoutLogon);
+    if (rc == ERROR_SUCCESS)
+    {
+        if (wcscmp(lpShutdownWithoutLogon, L"0") == 0)
+            pgContext->bShutdownWithoutLogon = FALSE;
+    }
+
+    rc = ReadRegSzKey(hKey,
+                      L"DontDisplayLastUserName",
+                      &lpDontDisplayLastUserName);
+    if (rc == ERROR_SUCCESS)
+    {
+        if (wcscmp(lpDontDisplayLastUserName, L"1") == 0)
+            pgContext->bDontDisplayLastUserName = TRUE;
+    }
+
+    dwSize = 256 * sizeof(WCHAR);
+    rc = RegQueryValueExW(hKey,
+                          L"DefaultUserName",
+                          NULL,
+                          NULL,
+                          (LPBYTE)&pgContext->UserName,
+                          &dwSize);
+
+    dwSize = 256 * sizeof(WCHAR);
+    rc = RegQueryValueExW(hKey,
+                          L"DefaultDomainName",
+                          NULL,
+                          NULL,
+                          (LPBYTE)&pgContext->Domain,
+                          &dwSize);
+
+    if (lpShutdownWithoutLogon != NULL)
+        HeapFree(GetProcessHeap(), 0, lpShutdownWithoutLogon);
+
+    if (lpDontDisplayLastUserName != NULL)
+        HeapFree(GetProcessHeap(), 0, lpDontDisplayLastUserName);
+
     if (lpAutoAdminLogon != NULL)
         HeapFree(GetProcessHeap(), 0, lpAutoAdminLogon);
 
     if (hKey != NULL)
         RegCloseKey(hKey);
+
+    return TRUE;
+}
+
+
+static
+BOOL
+ConnectToLsa(
+    PGINA_CONTEXT pgContext)
+{
+    LSA_STRING LogonProcessName;
+    LSA_STRING PackageName;
+    LSA_OPERATIONAL_MODE SecurityMode = 0;
+    NTSTATUS Status;
+
+    /* Connect to the LSA server */
+    RtlInitAnsiString((PANSI_STRING)&LogonProcessName,
+                      "MSGINA");
+
+    Status = LsaRegisterLogonProcess(&LogonProcessName,
+                                     &pgContext->LsaHandle,
+                                     &SecurityMode);
+    if (!NT_SUCCESS(Status))
+    {
+        ERR("LsaRegisterLogonProcess failed (Status 0x%08lx)\n", Status);
+        return FALSE;
+    }
+
+    /* Get the authentication package */
+    RtlInitAnsiString((PANSI_STRING)&PackageName,
+                      MSV1_0_PACKAGE_NAME);
+
+    Status = LsaLookupAuthenticationPackage(pgContext->LsaHandle,
+                                            &PackageName,
+                                            &pgContext->AuthenticationPackage);
+    if (!NT_SUCCESS(Status))
+    {
+        ERR("LsaLookupAuthenticationPackage failed (Status 0x%08lx)\n", Status);
+        return FALSE;
+    }
 
     return TRUE;
 }
@@ -233,6 +319,13 @@ WlxInitialize(
     if (!GetRegistrySettings(pgContext))
     {
         WARN("GetRegistrySettings() failed\n");
+        LocalFree(pgContext);
+        return FALSE;
+    }
+
+    if (!ConnectToLsa(pgContext))
+    {
+        WARN("ConnectToLsa() failed\n");
         LocalFree(pgContext);
         return FALSE;
     }
@@ -545,6 +638,83 @@ DuplicationString(PWSTR Str)
     return NewStr;
 }
 
+
+BOOL
+DoAdminUnlock(
+    IN PWSTR UserName,
+    IN PWSTR Domain,
+    IN PWSTR Password)
+{
+    HANDLE hToken = NULL;
+    PTOKEN_GROUPS Groups = NULL;
+    BOOL bIsAdmin = FALSE;
+    ULONG Size;
+    ULONG i;
+    NTSTATUS Status;
+
+    TRACE("(%S %S %S)\n", UserName, Domain, Password);
+
+    if (!LogonUserW(UserName,
+                    Domain,
+                    Password,
+                    LOGON32_LOGON_INTERACTIVE,
+                    LOGON32_PROVIDER_DEFAULT,
+                    &hToken))
+    {
+        WARN("LogonUserW() failed\n");
+        return FALSE;
+    }
+
+    Status = NtQueryInformationToken(hToken,
+                                     TokenGroups,
+                                     NULL,
+                                     0,
+                                     &Size);
+    if ((Status != STATUS_SUCCESS) && (Status != STATUS_BUFFER_TOO_SMALL))
+    {
+        TRACE("NtQueryInformationToken() failed (Status 0x%08lx)\n", Status);
+        goto done;
+    }
+
+    Groups = HeapAlloc(GetProcessHeap(), 0, Size);
+    if (Groups == NULL)
+    {
+        TRACE("HeapAlloc() failed\n");
+        goto done;
+    }
+
+    Status = NtQueryInformationToken(hToken,
+                                     TokenGroups,
+                                     Groups,
+                                     Size,
+                                     &Size);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("NtQueryInformationToken() failed (Status 0x%08lx)\n", Status);
+        goto done;
+    }
+
+    for (i = 0; i < Groups->GroupCount; i++)
+    {
+        if (RtlEqualSid(Groups->Groups[i].Sid, AdminSid))
+        {
+            TRACE("Member of Admins group\n");
+            bIsAdmin = TRUE;
+            break;
+        }
+    }
+
+done:
+    if (Groups != NULL)
+        HeapFree(GetProcessHeap(), 0, Groups);
+
+    if (hToken != NULL)
+        CloseHandle(hToken);
+
+    return bIsAdmin;
+}
+
+
 BOOL
 DoLoginTasks(
     IN OUT PGINA_CONTEXT pgContext,
@@ -654,46 +824,6 @@ cleanup:
     return FALSE;
 }
 
-#if 0
-static
-BOOL
-CheckAutoAdminLogon(
-    IN PGINA_CONTEXT pgContext)
-{
-    HKEY WinLogonKey = NULL;
-    LPWSTR AutoLogon = NULL;
-    BOOL result = FALSE;
-    LONG rc;
-
-    if (pgContext->AutoLogonState == AUTOLOGON_DISABLED)
-        return FALSE;
-
-    rc = RegOpenKeyExW(HKEY_LOCAL_MACHINE,
-                       L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\WinLogon",
-                       0,
-                       KEY_QUERY_VALUE,
-                       &WinLogonKey);
-    if (rc != ERROR_SUCCESS)
-        goto cleanup;
-
-    rc = ReadRegSzKey(WinLogonKey,
-                      L"AutoAdminLogon",
-                      &AutoLogon);
-
-    if (rc != ERROR_SUCCESS)
-        goto cleanup;
-
-    if (wcscmp(AutoLogon, L"1") == 0)
-        result = TRUE;
-
-cleanup:
-    if (WinLogonKey != NULL)
-        RegCloseKey(WinLogonKey);
-    HeapFree(GetProcessHeap(), 0, AutoLogon);
-
-    return result;
-}
-#endif
 
 static BOOL
 DoAutoLogon(
@@ -773,7 +903,15 @@ DoAutoLogon(
         result = DoLoginTasks(pgContext, UserName, DomainName, Password);
 
         if (result == TRUE)
+        {
+            pgContext->Password = HeapAlloc(GetProcessHeap(),
+                                            HEAP_ZERO_MEMORY,
+                                            (wcslen(Password) + 1) * sizeof(WCHAR));
+            if (pgContext->Password != NULL)
+                wcscpy(pgContext->Password, Password);
+
             NotifyBootConfigStatus(TRUE);
+        }
     }
 
 cleanup:
@@ -808,7 +946,6 @@ WlxDisplaySASNotice(
         return;
     }
 
-//    if (CheckAutoAdminLogon(pgContext))
     if (pgContext->bAutoAdminLogon == TRUE)
     {
         /* Don't display the window, we want to do an automatic logon */
@@ -931,7 +1068,27 @@ DllMain(
     UNREFERENCED_PARAMETER(lpvReserved);
 
     if (dwReason == DLL_PROCESS_ATTACH)
+    {
         hDllInstance = hinstDLL;
+
+        RtlAllocateAndInitializeSid(&SystemAuthority,
+                                    2,
+                                    SECURITY_BUILTIN_DOMAIN_RID,
+                                    DOMAIN_ALIAS_RID_ADMINS,
+                                    SECURITY_NULL_RID,
+                                    SECURITY_NULL_RID,
+                                    SECURITY_NULL_RID,
+                                    SECURITY_NULL_RID,
+                                    SECURITY_NULL_RID,
+                                    SECURITY_NULL_RID,
+                                    &AdminSid);
+
+    }
+    else if (dwReason == DLL_PROCESS_DETACH)
+    {
+        if (AdminSid != NULL)
+            RtlFreeSid(AdminSid);
+    }
 
     return TRUE;
 }

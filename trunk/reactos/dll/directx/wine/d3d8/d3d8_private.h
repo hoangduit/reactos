@@ -25,12 +25,12 @@
 
 #include <config.h>
 
+#include <assert.h>
+#include <stdarg.h>
+
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
-#include <assert.h>
-#include <stdarg.h>
 
 #define NONAMELESSUNION
 #define NONAMELESSSTRUCT
@@ -42,7 +42,6 @@
 #include <wine/debug.h>
 WINE_DEFAULT_DEBUG_CHANNEL(d3d8);
 
-#include <initguid.h>
 #include <d3d8.h>
 #include <wine/wined3d.h>
 
@@ -193,9 +192,8 @@ struct d3d8_volume
     IUnknown *forwardReference;
 };
 
-HRESULT volume_init(struct d3d8_volume *volume, struct d3d8_device *device, UINT width, UINT height,
-        UINT depth, UINT level, DWORD usage, enum wined3d_format_id format,
-        enum wined3d_pool pool) DECLSPEC_HIDDEN;
+void volume_init(struct d3d8_volume *volume, struct wined3d_volume *wined3d_volume,
+        const struct wined3d_parent_ops **parent_ops) DECLSPEC_HIDDEN;
 
 struct d3d8_swapchain
 {
@@ -222,9 +220,8 @@ struct d3d8_surface
     IUnknown                    *forwardReference;
 };
 
-HRESULT surface_init(struct d3d8_surface *surface, struct d3d8_device *device, UINT width, UINT height,
-        D3DFORMAT format, DWORD flags, DWORD usage, D3DPOOL pool, D3DMULTISAMPLE_TYPE multisample_type,
-        DWORD multisample_quality) DECLSPEC_HIDDEN;
+void surface_init(struct d3d8_surface *surface, struct wined3d_surface *wined3d_surface,
+        struct d3d8_device *device, const struct wined3d_parent_ops **parent_ops) DECLSPEC_HIDDEN;
 struct d3d8_surface *unsafe_impl_from_IDirect3DSurface8(IDirect3DSurface8 *iface) DECLSPEC_HIDDEN;
 
 struct d3d8_vertexbuffer

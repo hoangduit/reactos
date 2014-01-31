@@ -15,6 +15,11 @@
 #include <winuser.h>
 #include <userenv.h>
 #include <winwlx.h>
+#include <ndk/obfuncs.h>
+#include <ndk/rtlfuncs.h>
+#include <ndk/sefuncs.h>
+#include <ntlsa.h>
+#include <ntsecapi.h>
 
 #include <wine/debug.h>
 WINE_DEFAULT_DEBUG_CHANNEL(msgina);
@@ -33,13 +38,18 @@ typedef struct
     PWLX_DISPATCH_VERSION_1_3 pWlxFuncs;
     HANDLE hDllInstance;
     HWND hStatusWindow;
+    HANDLE LsaHandle;
+    ULONG AuthenticationPackage;
     DWORD AutoLogonState;
     BOOL bDisableCAD;
     BOOL bAutoAdminLogon;
+    BOOL bDontDisplayLastUserName;
+    BOOL bShutdownWithoutLogon;
 
     /* Information to be filled during logon */
     WCHAR UserName[256];
     WCHAR Domain[256];
+    LPWSTR Password;
     SYSTEMTIME LogonTime;
     HANDLE UserToken;
     PLUID pAuthenticationId;
@@ -75,6 +85,12 @@ typedef struct _GINA_UI
 } GINA_UI, *PGINA_UI;
 
 /* msgina.c */
+
+BOOL
+DoAdminUnlock(
+    IN PWSTR UserName,
+    IN PWSTR Domain,
+    IN PWSTR Password);
 
 BOOL
 DoLoginTasks(
