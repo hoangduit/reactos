@@ -1,9 +1,9 @@
-set(baseaddress_ntdll                0x77f10000)
-set(baseaddress_kernel32             0x77d80000)
-set(baseaddress_msvcrt               0x77cd0000)
-set(baseaddress_advapi32             0x77c20000)
-set(baseaddress_gdi32                0x77bb0000)
-set(baseaddress_user32               0x77a20000)
+set(baseaddress_ntdll                0x7c920000) # should be above 0x7c920000
+set(baseaddress_kernel32             0x7c800000) # matches w2k3 FRE/CHK @ 0x7c800000
+set(baseaddress_user32               0x77e20000) # not relocatable, avoid conflicts with win
+set(baseaddress_gdi32                0x77d80000)
+set(baseaddress_advapi32             0x77c80000)
+set(baseaddress_msvcrt               0x77b80000)
 set(baseaddress_dhcpcsvc             0x779d0000)
 set(baseaddress_dnsapi               0x77980000)
 set(baseaddress_icmp                 0x77950000)
@@ -283,7 +283,7 @@ set(baseaddress_wmi                  0x707e0000)
 set(baseaddress_ws2_32_new           0x70790000)
 set(baseaddress_wshirda              0x70760000)
 set(baseaddress_wshtcpip             0x70730000)
-set(baseaddress_wsock32              0x70700000)
+set(baseaddress_wsock32              0x78700000)  # FIXME: hackfix for VLC player
 set(baseaddress_wtsapi32             0x706d0000)
 set(baseaddress_wuapi                0x70690000)
 set(baseaddress_xinput1_1            0x70660000)

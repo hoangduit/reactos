@@ -9,11 +9,9 @@
 /* INCLUDES *******************************************************************/
 
 #include "consrv.h"
+
 #include "api.h"
 #include "procinit.h"
-#include "include/conio.h"
-#include "include/console.h"
-#include "console.h"
 
 #define NDEBUG
 #include <debug.h>
@@ -517,7 +515,7 @@ ConSrvDisconnect(PCSR_PROCESS Process)
 
 CSR_SERVER_DLL_INIT(ConServerDllInitialization)
 {
-					    /* Initialize the memory */
+    /* Initialize the memory */
     ConSrvHeap = RtlGetProcessHeap();
 /*
     // We can use our own heap instead of the CSR heap to investigate heap corruptions :)

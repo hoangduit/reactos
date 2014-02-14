@@ -26,6 +26,11 @@
 
 #include "msgina.h"
 
+#include <winreg.h>
+#include <winsvc.h>
+#include <userenv.h>
+#include <ndk/sefuncs.h>
+
 HINSTANCE hDllInstance;
 
 extern GINA_UI GinaGraphicalUI;
@@ -232,7 +237,7 @@ GetRegistrySettings(PGINA_CONTEXT pgContext)
 
     dwSize = 256 * sizeof(WCHAR);
     rc = RegQueryValueExW(hKey,
-                          L"DefaultDomainName",
+                          L"DefaultDomain",
                           NULL,
                           NULL,
                           (LPBYTE)&pgContext->Domain,
@@ -249,46 +254,6 @@ GetRegistrySettings(PGINA_CONTEXT pgContext)
 
     if (hKey != NULL)
         RegCloseKey(hKey);
-
-    return TRUE;
-}
-
-
-static
-BOOL
-ConnectToLsa(
-    PGINA_CONTEXT pgContext)
-{
-    LSA_STRING LogonProcessName;
-    LSA_STRING PackageName;
-    LSA_OPERATIONAL_MODE SecurityMode = 0;
-    NTSTATUS Status;
-
-    /* Connect to the LSA server */
-    RtlInitAnsiString((PANSI_STRING)&LogonProcessName,
-                      "MSGINA");
-
-    Status = LsaRegisterLogonProcess(&LogonProcessName,
-                                     &pgContext->LsaHandle,
-                                     &SecurityMode);
-    if (!NT_SUCCESS(Status))
-    {
-        ERR("LsaRegisterLogonProcess failed (Status 0x%08lx)\n", Status);
-        return FALSE;
-    }
-
-    /* Get the authentication package */
-    RtlInitAnsiString((PANSI_STRING)&PackageName,
-                      MSV1_0_PACKAGE_NAME);
-
-    Status = LsaLookupAuthenticationPackage(pgContext->LsaHandle,
-                                            &PackageName,
-                                            &pgContext->AuthenticationPackage);
-    if (!NT_SUCCESS(Status))
-    {
-        ERR("LsaLookupAuthenticationPackage failed (Status 0x%08lx)\n", Status);
-        return FALSE;
-    }
 
     return TRUE;
 }
@@ -319,13 +284,6 @@ WlxInitialize(
     if (!GetRegistrySettings(pgContext))
     {
         WARN("GetRegistrySettings() failed\n");
-        LocalFree(pgContext);
-        return FALSE;
-    }
-
-    if (!ConnectToLsa(pgContext))
-    {
-        WARN("ConnectToLsa() failed\n");
         LocalFree(pgContext);
         return FALSE;
     }
@@ -641,6 +599,7 @@ DuplicationString(PWSTR Str)
 
 BOOL
 DoAdminUnlock(
+    IN PGINA_CONTEXT pgContext,
     IN PWSTR UserName,
     IN PWSTR Domain,
     IN PWSTR Password)
@@ -654,12 +613,15 @@ DoAdminUnlock(
 
     TRACE("(%S %S %S)\n", UserName, Domain, Password);
 
-    if (!LogonUserW(UserName,
-                    Domain,
-                    Password,
-                    LOGON32_LOGON_INTERACTIVE,
-                    LOGON32_PROVIDER_DEFAULT,
-                    &hToken))
+    if (!ConnectToLsa(pgContext))
+        return FALSE;
+
+    if (!MyLogonUser(pgContext->LsaHandle,
+                     pgContext->AuthenticationPackage,
+                     UserName,
+                     Domain,
+                     Password,
+                     &pgContext->UserToken))
     {
         WARN("LogonUserW() failed\n");
         return FALSE;
@@ -730,10 +692,15 @@ DoLoginTasks(
     DWORD dwLength;
     BOOL bResult;
 
-    if (!LogonUserW(UserName, Domain, Password,
-        LOGON32_LOGON_INTERACTIVE,
-        LOGON32_PROVIDER_DEFAULT,
-        &pgContext->UserToken))
+    if (!ConnectToLsa(pgContext))
+        return FALSE;
+
+    if (!MyLogonUser(pgContext->LsaHandle,
+                     pgContext->AuthenticationPackage,
+                     UserName,
+                     Domain,
+                     Password,
+                     &pgContext->UserToken))
     {
         WARN("LogonUserW() failed\n");
         goto cleanup;
@@ -834,7 +801,7 @@ DoAutoLogon(
     LPWSTR AutoCount = NULL;
     LPWSTR IgnoreShiftOverride = NULL;
     LPWSTR UserName = NULL;
-    LPWSTR DomainName = NULL;
+    LPWSTR Domain = NULL;
     LPWSTR Password = NULL;
     BOOL result = FALSE;
     LONG rc;
@@ -893,22 +860,19 @@ DoAutoLogon(
         rc = ReadRegSzKey(WinLogonKey, L"DefaultUserName", &UserName);
         if (rc != ERROR_SUCCESS)
             goto cleanup;
-        rc = ReadRegSzKey(WinLogonKey, L"DefaultDomainName", &DomainName);
+        rc = ReadRegSzKey(WinLogonKey, L"DefaultDomain", &Domain);
         if (rc != ERROR_SUCCESS && rc != ERROR_FILE_NOT_FOUND)
             goto cleanup;
         rc = ReadRegSzKey(WinLogonKey, L"DefaultPassword", &Password);
         if (rc != ERROR_SUCCESS)
             goto cleanup;
 
-        result = DoLoginTasks(pgContext, UserName, DomainName, Password);
+        result = DoLoginTasks(pgContext, UserName, Domain, Password);
 
         if (result == TRUE)
         {
-            pgContext->Password = HeapAlloc(GetProcessHeap(),
-                                            HEAP_ZERO_MEMORY,
-                                            (wcslen(Password) + 1) * sizeof(WCHAR));
-            if (pgContext->Password != NULL)
-                wcscpy(pgContext->Password, Password);
+            ZeroMemory(pgContext->Password, 256 * sizeof(WCHAR));
+            wcscpy(pgContext->Password, Password);
 
             NotifyBootConfigStatus(TRUE);
         }
@@ -921,7 +885,7 @@ cleanup:
     HeapFree(GetProcessHeap(), 0, AutoCount);
     HeapFree(GetProcessHeap(), 0, IgnoreShiftOverride);
     HeapFree(GetProcessHeap(), 0, UserName);
-    HeapFree(GetProcessHeap(), 0, DomainName);
+    HeapFree(GetProcessHeap(), 0, Domain);
     HeapFree(GetProcessHeap(), 0, Password);
     TRACE("DoAutoLogon(): AutoLogonState = %lu, returning %d\n",
         pgContext->AutoLogonState, result);
