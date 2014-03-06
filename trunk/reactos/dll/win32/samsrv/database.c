@@ -6,7 +6,12 @@
  * COPYRIGHT:   Copyright 2012 Eric Kohl
  */
 
+/* INCLUDES ****************************************************************/
+
 #include "samsrv.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(samsrv);
+
 
 /* GLOBALS *****************************************************************/
 

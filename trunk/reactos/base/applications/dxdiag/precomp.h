@@ -5,7 +5,7 @@
 #define DIRECTSOUND_VERSION 0x0800
 #define D3D_OVERLOADS
 
-#include <stdarg.h>
+#include <stdio.h>
 
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
@@ -14,13 +14,17 @@
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
+#include <winsvc.h>
 #include <wingdi.h>
 #include <winnls.h>
+#include <winver.h>
 #include <winuser.h>
+#include <mmsystem.h>
 #include <setupapi.h>
 #include <ddraw.h>
 #include <initguid.h>
 #include <devguid.h>
+#include <mmreg.h>
 
 #include "resource.h"
 
@@ -69,5 +73,4 @@ BOOL GetCatFileFromDriverPath(LPWSTR szFileName, LPWSTR szCatFileName);
 BOOL GetRegValue(HKEY hBaseKey, LPWSTR SubKey, LPWSTR ValueName, DWORD Type, LPWSTR Result, DWORD Size);
 VOID InsertTabCtrlItem(HWND hDlgCtrl, INT Position, LPWSTR uId);
 VOID EnumerateDrivers(PVOID Context, HDEVINFO hList, PSP_DEVINFO_DATA pInfoData);
-
-#endif /* PRECOMP_H__ */
+#endif

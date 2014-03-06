@@ -22,7 +22,15 @@
 **		http://www.mega-nerd.com/SRC/procedure.html
 */
 
-#include "precomp.h"
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"config.h"
+
+#include	"samplerate.h"
+#include	"float_cast.h"
+#include	"common.h"
 
 static int psrc_set_converter (SRC_PRIVATE	*psrc, int converter_type) ;
 

@@ -9,8 +9,6 @@
 
 #include <precomp.h>
 
-#include <stdlib.h>
-
 static const WCHAR szMapWndClass[] = L"FontMapWnd";
 static const WCHAR szLrgCellWndClass[] = L"LrgCellWnd";
 

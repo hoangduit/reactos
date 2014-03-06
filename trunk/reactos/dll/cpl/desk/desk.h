@@ -1,28 +1,30 @@
-#ifndef _DESK_H
-#define _DESK_H
-
-#include <stdarg.h>
+#define COBJMACROS
 
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
-#define COBJMACROS
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
 #include <wingdi.h>
 #include <winuser.h>
 #include <wincon.h>
+#include <shellapi.h>
 #include <commdlg.h>
 #include <cpl.h>
 #include <tchar.h>
 #include <setupapi.h>
+#include <assert.h>
+#include <shlwapi.h>
 #include <shlobj.h>
 #include <regstr.h>
+#include <cplext.h>
 #include <dll/desk/deskcplx.h>
-#include <strsafe.h>
+#include <cfgmgr32.h>
+#include <uxtheme.h>
+#include <uxundoc.h>
+#include <vssym32.h>
 
 #include "appearance.h"
 #include "preview.h"
@@ -129,4 +131,3 @@ RegLoadMUIStringW(IN HKEY hKey,
                   IN DWORD Flags,
                   IN LPCWSTR pszDirectory  OPTIONAL);
 
-#endif /* _DESK_H */

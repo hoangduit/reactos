@@ -11,9 +11,6 @@
 
 #include <precomp.h>
 
-#include <stdio.h>
-#include <d3dhal.h>
-
 /* DATA **********************************************************************/
 
 HANDLE ghDirectDraw;

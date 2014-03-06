@@ -20,4 +20,5 @@ add_importlibs(slayer
     kernel32
     ntdll)
 
+add_pch(slayer precomp.h)
 add_cd_file(TARGET slayer DESTINATION reactos/system32 FOR all)

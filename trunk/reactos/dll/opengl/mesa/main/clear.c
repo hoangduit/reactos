@@ -22,12 +22,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file clear.c
  * glClearColor, glClearIndex, glClear() functions.
  */
 
-#include <precomp.h>
+
+
+#include "glheader.h"
+#include "clear.h"
+#include "context.h"
+#include "colormac.h"
+#include "enums.h"
+#include "macros.h"
+#include "mtypes.h"
+#include "state.h"
+
+
 
 #if _HAVE_FULL_GL
 void GLAPIENTRY

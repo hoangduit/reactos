@@ -9,8 +9,6 @@
 
 #include "precomp.h"
 
-#include <windowsx.h>
-
 static BOOL pCreateToolbar(PMAIN_WND_INFO Info);
 
 static const TCHAR szMainWndClass[] = TEXT("DevMgmtWndClass");

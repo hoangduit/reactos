@@ -27,7 +27,17 @@
  * Antialiased Triangle rasterizers
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/colormac.h"
+#include "main/macros.h"
+#include "main/imports.h"
+#include "main/state.h"
+#include "s_aatriangle.h"
+#include "s_context.h"
+#include "s_span.h"
+
 
 /*
  * Compute coefficients of a plane using the X,Y coords of the v0, v1, v2

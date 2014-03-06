@@ -22,6 +22,8 @@
 
 #define TABLE_DEFAULT_SIZE 256
 
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
+
 typedef struct _TABLE_SLOT
 {
     LPWSTR pString;

@@ -6,10 +6,7 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
-
-#define YDEBUG
-#include <debug.h>
+#include "priv.h"
 
 VOID
 MMixerPrintTopology(
@@ -1289,3 +1286,8 @@ MMixerCreateTopology(
     /* done */
     return MM_STATUS_SUCCESS;
 }
+
+
+
+
+

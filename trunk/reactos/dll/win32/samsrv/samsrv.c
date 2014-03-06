@@ -17,9 +17,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* INCLUDES *****************************************************************/
+
 #include "samsrv.h"
 
-#include <samsrv/samsrv.h>
+WINE_DEFAULT_DEBUG_CHANNEL(samsrv);
+
 
 /* GLOBALS *******************************************************************/
 
@@ -138,14 +141,6 @@ SampInitializeRegistry(VOID)
     SampInitializeSAM();
 
     return STATUS_SUCCESS;
-}
-
-
-VOID
-NTAPI
-SamIFreeVoid(PVOID Ptr)
-{
-    MIDL_user_free(Ptr);
 }
 
 

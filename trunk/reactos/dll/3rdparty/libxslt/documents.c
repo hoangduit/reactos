@@ -6,7 +6,24 @@
  * daniel@veillard.com
  */
 
-#include "precomp.h"
+#define IN_LIBXSLT
+#include "libxslt.h"
+
+#include <string.h>
+
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/hash.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#include "xslt.h"
+#include "xsltInternals.h"
+#include "xsltutils.h"
+#include "documents.h"
+#include "transform.h"
+#include "imports.h"
+#include "keys.h"
+#include "security.h"
 
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include <libxml/xinclude.h>

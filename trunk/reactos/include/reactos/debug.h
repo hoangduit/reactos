@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS kernel
- * FILE:            include/reactos/debug.h
+ * FILE:            include/internal/debug.h
  * PURPOSE:         Useful debugging macros
  * PROGRAMMERS:     David Welch (welch@mcmail.com)
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -12,13 +12,8 @@
  * to disable debugging macros.
  */
 
-#pragma once
-
-#include <builddir.h>
-
-#if !defined(__RELFILE__)
-#define __RELFILE__ __FILE__
-#endif
+#ifndef __INTERNAL_DEBUG
+#define __INTERNAL_DEBUG
 
 /* Define DbgPrint/DbgPrintEx/RtlAssert unless the NDK is used */
 #if !defined(_RTLFUNCS_H) && !defined(_NTDDK_)
@@ -68,7 +63,7 @@ RtlAssert(
 
 #ifndef assert
 #if DBG && !defined(NASSERT)
-#define assert(x) if (!(x)) { RtlAssert((PVOID)#x, (PVOID)__RELFILE__, __LINE__, ""); }
+#define assert(x) if (!(x)) { RtlAssert((PVOID)#x, (PVOID)__FILE__, __LINE__, ""); }
 #else
 #define assert(x) ((VOID) 0)
 #endif
@@ -76,7 +71,7 @@ RtlAssert(
 
 #ifndef ASSERT
 #if DBG && !defined(NASSERT)
-#define ASSERT(x) if (!(x)) { RtlAssert((PVOID)#x, (PVOID)__RELFILE__, __LINE__, ""); }
+#define ASSERT(x) if (!(x)) { RtlAssert((PVOID)#x, (PVOID)__FILE__, __LINE__, ""); }
 #else
 #define ASSERT(x) ((VOID) 0)
 #endif
@@ -84,14 +79,14 @@ RtlAssert(
 
 #ifndef ASSERTMSG
 #if DBG && !defined(NASSERT)
-#define ASSERTMSG(m, x) if (!(x)) { RtlAssert((PVOID)#x, __RELFILE__, __LINE__, m); }
+#define ASSERTMSG(m, x) if (!(x)) { RtlAssert((PVOID)#x, __FILE__, __LINE__, m); }
 #else
 #define ASSERTMSG(m, x) ((VOID) 0)
 #endif
 #endif
 
 /* For internal purposes only */
-#define __NOTICE(level, fmt, ...)   DbgPrint(#level ":  %s at %s:%d " fmt, __FUNCTION__, __RELFILE__, __LINE__, ##__VA_ARGS__)
+#define __NOTICE(level, fmt, ...)   DbgPrint(#level ":  %s at %s:%d " fmt, __FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__)
 
 /* Print stuff only on Debug Builds*/
 #define DPFLTR_DEFAULT_ID -1
@@ -99,16 +94,16 @@ RtlAssert(
 
     /* These are always printed */
     #define DPRINT1(fmt, ...) do { \
-        if (DbgPrint("(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__))  \
-            DbgPrint("(%s:%d) DbgPrint() failed!\n", __RELFILE__, __LINE__); \
+        if (DbgPrint("(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__))  \
+            DbgPrint("(%s:%d) DbgPrint() failed!\n", __FILE__, __LINE__); \
     } while (0)
 
     /* These are printed only if NDEBUG is NOT defined */
     #ifndef NDEBUG
 
         #define DPRINT(fmt, ...) do { \
-            if (DbgPrint("(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__))  \
-                DbgPrint("(%s:%d) DbgPrint() failed!\n", __RELFILE__, __LINE__); \
+            if (DbgPrint("(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__))  \
+                DbgPrint("(%s:%d) DbgPrint() failed!\n", __FILE__, __LINE__); \
         } while (0)
 
     #else
@@ -119,15 +114,15 @@ RtlAssert(
 
     #define UNIMPLEMENTED         __NOTICE(WARNING, "is UNIMPLEMENTED!\n");
 
-    #define ERR_(ch, fmt, ...)    DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_ERROR_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define WARN_(ch, fmt, ...)   DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_WARNING_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define TRACE_(ch, fmt, ...)  DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_TRACE_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define INFO_(ch, fmt, ...)   DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_INFO_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
+    #define ERR_(ch, fmt, ...)    DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_ERROR_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define WARN_(ch, fmt, ...)   DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_WARNING_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define TRACE_(ch, fmt, ...)  DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_TRACE_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define INFO_(ch, fmt, ...)   DbgPrintEx(DPFLTR_##ch##_ID, DPFLTR_INFO_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
 
-    #define ERR__(ch, fmt, ...)    DbgPrintEx(ch, DPFLTR_ERROR_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define WARN__(ch, fmt, ...)   DbgPrintEx(ch, DPFLTR_WARNING_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define TRACE__(ch, fmt, ...)  DbgPrintEx(ch, DPFLTR_TRACE_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
-    #define INFO__(ch, fmt, ...)   DbgPrintEx(ch, DPFLTR_INFO_LEVEL, "(%s:%d) " fmt, __RELFILE__, __LINE__, ##__VA_ARGS__)
+    #define ERR__(ch, fmt, ...)    DbgPrintEx(ch, DPFLTR_ERROR_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define WARN__(ch, fmt, ...)   DbgPrintEx(ch, DPFLTR_WARNING_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define TRACE__(ch, fmt, ...)  DbgPrintEx(ch, DPFLTR_TRACE_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
+    #define INFO__(ch, fmt, ...)   DbgPrintEx(ch, DPFLTR_INFO_LEVEL, "(%s:%d) " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
 
 #else /* not DBG */
 
@@ -239,10 +234,14 @@ do {                                                        \
 #define __STRING__(x) __STRING2__(x)
 #define __STRLINE__ __STRING__(__LINE__)
 
-#if !defined(_MSC_VER) && !defined(__pragma)
-#define __pragma(x) _Pragma(#x)
+#define __TOKENPASTE2__(x, y) x ## y
+#define __TOKENPASTE__(x, y) __TOKENPASTE2__(x, y)
+
+#ifdef _MSC_VER
+#define _WARN(msg) __pragma(message("WARNING! Line " __STRLINE__ ": " msg))
+#else
+#define _WARN1(_func1, _func2, _msg) void __attribute__((warning (_msg))) _func1(void); void __attribute__((used)) _func2(void) { _func1(); }
+#define _WARN(_msg) _WARN1(__TOKENPASTE__(__warn_func1__, __LINE__), __TOKENPASTE__(__warn_func2__, __LINE__), _msg)
 #endif
 
-#define _WARN(msg) __pragma(message("WARNING! Line " __STRLINE__ ": " msg))
-
-/* EOF */
+#endif /* __INTERNAL_DEBUG */

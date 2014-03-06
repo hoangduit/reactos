@@ -6,7 +6,6 @@
  * DEFINES:     DBG     - Enable debug output
  *              NASSERT - Disable assertions
  */
-
 #ifndef __DEBUG_H
 #define __DEBUG_H
 
@@ -63,3 +62,5 @@ extern DWORD DebugTraceLevel;
 #define CP CHECKPOINT
 
 #endif /* __DEBUG_H */
+
+/* EOF */

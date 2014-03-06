@@ -7,6 +7,7 @@
  */
 
 #include "precomp.h"
+//#include <d3d.h>
 
 BOOL D3D7Test(HWND hWnd)
 {

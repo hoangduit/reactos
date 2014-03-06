@@ -573,7 +573,7 @@ static void dialog_choose_font(void)
     cf.lStructSize = sizeof(cf);
     cf.hwndOwner = hMainWnd;
     cf.lpLogFont = &lf;
-    cf.Flags = CF_SCREENFONTS | CF_NOSCRIPTSEL | CF_INITTOLOGFONTSTRUCT | CF_EFFECTS | CF_NOVERTFONTS;
+    cf.Flags = CF_SCREENFONTS | CF_NOSCRIPTSEL | CF_INITTOLOGFONTSTRUCT | CF_EFFECTS;
 
     ZeroMemory(&fmt, sizeof(fmt));
     fmt.cbSize = sizeof(fmt);
@@ -615,8 +615,6 @@ static int CALLBACK enum_font_proc(const LOGFONTW *lpelfe, const TEXTMETRICW *lp
                             DWORD FontType, LPARAM lParam)
 {
     HWND hListWnd = (HWND) lParam;
-
-    if (lpelfe->lfFaceName[0] == '@') return 1;  /* ignore vertical fonts */
 
     if(SendMessageW(hListWnd, CB_FINDSTRINGEXACT, -1, (LPARAM)lpelfe->lfFaceName) == CB_ERR)
     {
@@ -1151,7 +1149,7 @@ static void dialog_viewproperties(void)
 static void HandleCommandLine(LPWSTR cmdline)
 {
     WCHAR delimiter;
-    BOOL opt_print = FALSE;
+    int opt_print = 0;
 
     /* skip white space */
     while (*cmdline == ' ') cmdline++;
@@ -1175,7 +1173,7 @@ static void HandleCommandLine(LPWSTR cmdline)
                 {
                 case 'P':
                 case 'p':
-                    opt_print = TRUE;
+                    opt_print = 1;
                     cmdline += 2;
                     continue;
                 }
@@ -2013,7 +2011,7 @@ static LRESULT OnNotify( HWND hWnd, LPARAM lParam)
                 on_fontlist_modified(endEdit->szText);
             } else if (pHdr->hwndFrom == hwndSizeList)
             {
-                on_sizelist_modified(hwndSizeList,endEdit->szText);
+                on_sizelist_modified(hwndFontList,endEdit->szText);
             }
         }
         return 0;

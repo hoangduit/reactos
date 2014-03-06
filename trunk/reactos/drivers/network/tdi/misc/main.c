@@ -2,7 +2,6 @@
  * DESCRIPTION: Entry point for TDI.SYS
  * (c) Captain Obvious
  */
-
 #include "precomp.h"
 
 extern LONG CteTimeIncrement;
@@ -17,5 +16,7 @@ DriverEntry(IN PDRIVER_OBJECT DriverObject,
 
     return STATUS_SUCCESS;
 }
+
+
 
 /* EOF */

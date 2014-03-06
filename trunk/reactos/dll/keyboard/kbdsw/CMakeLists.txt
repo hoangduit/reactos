@@ -5,7 +5,7 @@ spec2def(kbdsw.dll kbdsw.spec)
 
 add_library(kbdsw SHARED kbdsw.c kbdsw.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdsw.def)
 
-set_module_type(kbdsw kbdlayout)
+set_entrypoint(kbdsw 0)
 
 add_dependencies(kbdsw psdk)
 

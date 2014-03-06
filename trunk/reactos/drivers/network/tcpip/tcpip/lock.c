@@ -6,7 +6,6 @@
  * PROGRAMMERS: Art Yerkes
  * REVISIONS:
  */
-
 #include "precomp.h"
 
 KIRQL TcpipGetCurrentIrql() { return KeGetCurrentIrql(); }
@@ -44,3 +43,4 @@ VOID TcpipAcquireFastMutex( PFAST_MUTEX Mutex ) {
 VOID TcpipReleaseFastMutex( PFAST_MUTEX Mutex ) {
     ExReleaseFastMutex( Mutex );
 }
+

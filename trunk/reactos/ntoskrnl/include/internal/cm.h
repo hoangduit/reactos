@@ -49,7 +49,7 @@
 #define CM_KCB_INVALID_SIGNATURE                        '4FmC'
 
 //
-// CM_KEY_CONTROL_BLOCK ExtFlags
+// CM_KEY_CONTROL_BLOCK Flags
 //
 #define CM_KCB_NO_SUBKEY                                0x01
 #define CM_KCB_SUBKEY_ONE                               0x02
@@ -253,7 +253,8 @@ typedef struct _CM_NAME_CONTROL_BLOCK
 typedef struct _CM_KEY_CONTROL_BLOCK
 {
     ULONG Signature;
-    ULONG RefCount;
+    USHORT RefCount;
+    USHORT Flags;
     struct
     {
         ULONG ExtFlags:8;
@@ -294,13 +295,6 @@ typedef struct _CM_KEY_CONTROL_BLOCK
     USHORT KcbMaxNameLen;
     USHORT KcbMaxValueNameLen;
     ULONG KcbMaxValueDataLen;
-    struct
-    {
-         ULONG KcbUserFlags : 4;
-         ULONG KcbVirtControlFlags : 4;
-         ULONG KcbDebug : 8;
-         ULONG Flags : 16;
-    };
     ULONG InDelayClose;
 } CM_KEY_CONTROL_BLOCK, *PCM_KEY_CONTROL_BLOCK;
 

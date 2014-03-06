@@ -11,17 +11,24 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <consrv.h>
+#define COBJMACROS
+
+#include "consrv.h"
+#include "include/conio.h"
+#include "include/console.h"
+#include "include/settings.h"
+#include "conoutput.h"
+#include "guiterm.h"
+#include "guisettings.h"
+#include "resource.h"
 
 #include <windowsx.h>
-#define COBJMACROS
+
+#include <shlwapi.h>
 #include <shlobj.h>
 
 #define NDEBUG
 #include <debug.h>
-
-#include "guiterm.h"
-#include "resource.h"
 
 /* GUI Console Window Class name */
 #define GUI_CONSOLE_WINDOW_CLASS L"ConsoleWindowClass"

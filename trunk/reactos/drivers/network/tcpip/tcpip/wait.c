@@ -6,7 +6,6 @@
  * PROGRAMMERS: Art Yerkes
  * REVISIONS:
  */
-
 #include "precomp.h"
 
 NTSTATUS TcpipWaitForSingleObject( PVOID Object,

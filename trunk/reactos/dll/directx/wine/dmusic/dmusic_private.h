@@ -22,27 +22,28 @@
 #ifndef __WINE_DMUSIC_PRIVATE_H
 #define __WINE_DMUSIC_PRIVATE_H
 
-#include <config.h>
+//#include <stdarg.h>
 
-#include <stdarg.h>
-
+#define COBJMACROS
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
 
-#define COBJMACROS
-
-#include <windef.h>
-#include <winbase.h>
-#include <objbase.h>
-#include <dmusici.h>
-#include <dmusics.h>
+//#include "windef.h"
+//#include "winbase.h"
+//#include "winnt.h"
+//#include "wingdi.h"
+//#include "winuser.h"
 
 #include <wine/debug.h>
 #include <wine/list.h>
 #include <wine/unicode.h>
+#include <winreg.h>
+#include <objbase.h>
 
-WINE_DEFAULT_DEBUG_CHANNEL(dmusic);
+#include <dmusici.h>
+#include <dmusicf.h>
+#include <dmusics.h>
 
 /*****************************************************************************
  * Interfaces

@@ -1,8 +1,19 @@
-/* DO NOT USE THE PRECOMPILED HEADER FOR THIS FILE! */
+/*
+ * PROJECT:         ReactOS PCI Bus Driver
+ * LICENSE:         BSD - See COPYING.ARM in the top level directory
+ * FILE:            drivers/bus/pci/guid.c
+ * PURPOSE:         GUID Data
+ * PROGRAMMERS:     ReactOS Portable Systems Group
+ */
 
-#include <wdm.h>
-#include <initguid.h>
-#include <ntddk.h>
-#include <wdmguid.h>
+/* INCLUDES *******************************************************************/
 
-/* NO CODE HERE, THIS IS JUST REQUIRED FOR THE GUID DEFINITIONS */
+#include <pci.h>
+#define NDEBUG
+#include <debug.h>
+
+/* GLOBALS ********************************************************************/
+
+/* FUNCTIONS ******************************************************************/
+
+/* EOF */

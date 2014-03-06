@@ -4,7 +4,6 @@
  * FILE:        include/upcall.h
  * PURPOSE:     Upcall function defintions
  */
-
 #ifndef __UPCALL_H
 #define __UPCALL_H
 
@@ -101,3 +100,5 @@ WPUSetEvent(
     OUT LPINT lpErrno);
 
 #endif /* __UPCALL_H */
+
+/* EOF */

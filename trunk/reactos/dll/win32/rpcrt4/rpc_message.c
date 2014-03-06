@@ -20,9 +20,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define _INC_WINDOWS
 
+#include <stdarg.h>
+//#include <stdio.h>
+//#include <string.h>
+
+#include <windef.h>
+#include <winbase.h>
+//#include "winerror.h"
 #include <winuser.h>
+
+#include <rpc.h>
+//#include "rpcndr.h"
+//#include "rpcdcep.h"
+
+#include <wine/debug.h>
+
+#include "rpc_binding.h"
+//#include "rpc_defs.h"
+#include "rpc_message.h"
+#include "ncastatus.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(rpc);
 
@@ -324,7 +342,7 @@ RpcPktHdr *RPCRT4_BuildHttpHeader(ULONG DataRepresentation,
         (payload) += sizeof(UUID); \
     } while (0)
 
-RpcPktHdr *RPCRT4_BuildHttpConnectHeader(int out_pipe,
+RpcPktHdr *RPCRT4_BuildHttpConnectHeader(unsigned short flags, int out_pipe,
                                          const UUID *connection_uuid,
                                          const UUID *pipe_uuid,
                                          const UUID *association_uuid)
@@ -337,7 +355,7 @@ RpcPktHdr *RPCRT4_BuildHttpConnectHeader(int out_pipe,
   if (!out_pipe)
     size += 8 + 4 + sizeof(UUID);
 
-  header = RPCRT4_BuildHttpHeader(NDR_LOCAL_DATA_REPRESENTATION, 0,
+  header = RPCRT4_BuildHttpHeader(NDR_LOCAL_DATA_REPRESENTATION, flags,
                                   out_pipe ? 4 : 6, size);
   if (!header) return NULL;
   payload = (char *)(&header->http+1);
@@ -1859,7 +1877,7 @@ RPC_STATUS WINAPI I_RpcReceive(PRPC_MESSAGE pMsg)
 
 fail:
   RPCRT4_FreeHeader(hdr);
-  RPCRT4_ReleaseConnection(conn);
+  RPCRT4_DestroyConnection(conn);
   pMsg->ReservedForRuntime = NULL;
   return status;
 }

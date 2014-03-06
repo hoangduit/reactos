@@ -348,9 +348,6 @@ ConDrvConsoleProcessCtrlEvent(IN PCONSOLE Console,
 
 /* coninput.c */
 VOID NTAPI ConioProcessKey(PCONSOLE Console, MSG* msg);
-NTSTATUS FASTCALL ConioAddInputEvent(PCONSOLE Console,
-                                     PINPUT_RECORD InputEvent,
-                                     BOOLEAN AppendToEnd);
 NTSTATUS FASTCALL ConioProcessInputEvent(PCONSOLE Console,
                                          PINPUT_RECORD InputEvent);
 

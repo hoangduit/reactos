@@ -9,9 +9,6 @@
 /* INCLUDES ******************************************************************/
 
 #include <hal.h>
-
-#include <ntdddisk.h>
-
 #define NDEBUG
 #include <debug.h>
 

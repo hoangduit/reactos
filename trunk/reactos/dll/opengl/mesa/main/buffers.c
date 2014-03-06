@@ -22,14 +22,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file buffers.c
  * glReadBuffer, DrawBuffer functions.
  */
 
-#include <precomp.h>
+
+
+#include "glheader.h"
+#include "buffers.h"
+#include "colormac.h"
+#include "context.h"
+#include "enums.h"
+#include "mtypes.h"
+
 
 #define BAD_MASK ~0u
+
 
 /**
  * Return bitmask of BUFFER_BIT_* flags indicating which color buffers are

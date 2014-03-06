@@ -13,6 +13,7 @@
 #define NDEBUG
 #include <debug.h>
 
+
 /* FUNCTIONS *****************************************************************/
 
 NTSTATUS NTAPI

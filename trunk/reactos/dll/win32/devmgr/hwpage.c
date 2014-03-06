@@ -24,7 +24,6 @@
  * UPDATE HISTORY:
  *      04-04-2004  Created
  */
-
 #include "precomp.h"
 
 #define NDEBUG

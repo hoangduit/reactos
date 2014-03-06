@@ -1,13 +1,11 @@
-
-include_directories(${REACTOS_SOURCE_DIR}/drivers/storage/class)
+include_directories(..)
 
 list(APPEND SOURCE
     cdrom.c
     data.c
     ioctl.c
     mmc.c
-    sec.c
-    cdrom.h)
+    sec.c)
 
 add_library(cdrom_new SHARED ${SOURCE})
 
@@ -23,4 +21,3 @@ endif()
 
 set_module_type(cdrom_new kernelmodedriver)
 add_importlibs(cdrom_new classpnp ntoskrnl hal)
-add_pch(cdrom_new cdrom.h SOURCE)

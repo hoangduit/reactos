@@ -10,7 +10,6 @@
 
 #include "ndissys.h"
 
-#include <afilter.h>
 
 /*
  * @unimplemented

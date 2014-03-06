@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ntddk.h>
+
 //
 // OHCI Operational Registers
 //
@@ -345,3 +347,4 @@ C_ASSERT(sizeof(OHCI_ISO_TD) == 48);
 #define OHCI_ITD_SET_FRAME_COUNT(x)             (((x) - 1) << 24)
 #define OHCI_ITD_GET_CONDITION_CODE(x)          ((x) >> 28)
 #define OHCI_ITD_NO_CONDITION_CODE              0xf0000000
+

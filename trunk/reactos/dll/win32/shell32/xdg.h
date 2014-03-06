@@ -13,7 +13,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-
 #ifndef __XDG_H__
 #define __XDG_H__
 
@@ -49,4 +48,4 @@ HRESULT TRASH_EnumItems(LPITEMIDLIST **pidls, int *count);
 void TRASH_DisposeElement(TRASH_ELEMENT *element);
 
 
-#endif /* __XDG_H__ */
+#endif /* ndef __XDG_H__ */

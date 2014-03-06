@@ -22,9 +22,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "wined3d_private.h"
+#include <config.h>
+#include <wine/port.h>
 
-#include <winreg.h>
+//#include "initguid.h"
+#include "wined3d_private.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d);
 WINE_DECLARE_DEBUG_CHANNEL(winediag);
@@ -85,6 +87,7 @@ struct wined3d_settings wined3d_settings =
     FALSE,          /* 3D support enabled by default. */
 };
 
+/* Do not call while under the GL lock. */
 struct wined3d * CDECL wined3d_create(UINT version, DWORD flags)
 {
     struct wined3d *object;
@@ -156,8 +159,8 @@ static BOOL wined3d_dll_init(HINSTANCE hInstDLL)
     wc.cbClsExtra           = 0;
     wc.cbWndExtra           = 0;
     wc.hInstance            = hInstDLL;
-    wc.hIcon                = LoadIconA(NULL, (const char *)IDI_WINLOGO);
-    wc.hCursor              = LoadCursorA(NULL, (const char *)IDC_ARROW);
+    wc.hIcon                = LoadIconA(NULL, (LPCSTR)IDI_WINLOGO);
+    wc.hCursor              = LoadCursorA(NULL, (LPCSTR)IDC_ARROW);
     wc.hbrBackground        = NULL;
     wc.lpszMenuName         = NULL;
     wc.lpszClassName        = WINED3D_OPENGL_WINDOW_CLASS_NAME;
@@ -504,17 +507,18 @@ void wined3d_unregister_window(HWND window)
 }
 
 /* At process attach */
-BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, void *reserved)
+BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpv)
 {
-    switch (reason)
+    TRACE("WineD3D DLLMain Reason=%u\n", fdwReason);
+
+    switch (fdwReason)
     {
         case DLL_PROCESS_ATTACH:
-            return wined3d_dll_init(inst);
+            return wined3d_dll_init(hInstDLL);
 
         case DLL_PROCESS_DETACH:
-            if (!reserved)
-                return wined3d_dll_destroy(inst);
-            break;
+            if (lpv) break;
+            return wined3d_dll_destroy(hInstDLL);
 
         case DLL_THREAD_DETACH:
             if (!context_set_current(NULL))

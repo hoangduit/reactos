@@ -6,6 +6,7 @@
  * PROGRAMMERS:     Dmitry Chapyshev (dmitry@reactos.org)
  */
 
+#define _WIN32_DCOM // For CoInitializeEx, etc...
 #include "rapps.h"
 
 SETTINGS_INFO NewSettingsInfo;
@@ -113,9 +114,7 @@ SettingsDlgProc(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam)
                     if (dwAttr != INVALID_FILE_ATTRIBUTES &&
                         (dwAttr & FILE_ATTRIBUTE_DIRECTORY))
                     {
-                        StringCbCopyW(NewSettingsInfo.szDownloadDir,
-                                      sizeof(NewSettingsInfo.szDownloadDir),
-                                      szDir);
+                        wcscpy(NewSettingsInfo.szDownloadDir, szDir);
                     }
                     else
                     {

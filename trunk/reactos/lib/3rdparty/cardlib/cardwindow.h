@@ -5,6 +5,9 @@
 #define MAXCARDSTACKS	32
 #define MAXDROPZONES	8
 
+#include "dropzone.h"
+//#include "cardlib.h"
+
 class CardRegion;
 class CardButton;
 
@@ -113,4 +116,5 @@ static LRESULT CALLBACK CardWndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM 
 
 };
 
-#endif /* CARDBOARD_INCLUDED */
+
+#endif

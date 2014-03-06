@@ -21,8 +21,6 @@
 #include <freeldr.h>
 #include <debug.h>
 
-#define TAG_UI_TEXT 'xTiU'
-
 DBG_DEFAULT_CHANNEL(UI);
 
 ULONG    UiScreenWidth;                                        // Screen Width
@@ -344,15 +342,9 @@ VOID UiInfoBox(PCSTR MessageText)
     UiDrawCenteredText(Left, Top, Right, Bottom, MessageText, ATTR(UiTextColor, UiMenuBgColor));
 }
 
-VOID UiMessageBox(PCSTR Format, ...)
+VOID UiMessageBox(PCSTR MessageText)
 {
-    CHAR Buffer[256];
-    va_list ap;
-
-    va_start(ap, Format);
-    vsnprintf(Buffer, sizeof(Buffer) - sizeof(CHAR), Format, ap);
-    UiVtbl.MessageBox(Buffer);
-    va_end(ap);
+    UiVtbl.MessageBox(MessageText);
 }
 
 VOID UiMessageBoxCritical(PCSTR MessageText)
@@ -409,7 +401,7 @@ VOID UiShowMessageBoxesInSection(PCSTR SectionName)
             //if (MessageBoxTextSize > 0)
             {
                 // Allocate enough memory to hold the text
-                MessageBoxText = FrLdrTempAlloc(MessageBoxTextSize, TAG_UI_TEXT);
+                MessageBoxText = MmHeapAlloc(MessageBoxTextSize);
 
                 if (MessageBoxText)
                 {
@@ -423,7 +415,7 @@ VOID UiShowMessageBoxesInSection(PCSTR SectionName)
                     UiMessageBox(MessageBoxText);
 
                     // Free the memory
-                    FrLdrTempFree(MessageBoxText, TAG_UI_TEXT);
+                    MmHeapFree(MessageBoxText);
                 }
             }
         }

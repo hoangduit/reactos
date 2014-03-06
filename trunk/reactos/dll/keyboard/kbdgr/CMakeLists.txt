@@ -5,7 +5,7 @@ spec2def(kbdgr.dll kbdgr.spec)
 
 add_library(kbdgr SHARED kbdgr.c kbdgr.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdgr.def)
 
-set_module_type(kbdgr kbdlayout)
+set_entrypoint(kbdgr 0)
 
 add_dependencies(kbdgr psdk)
 

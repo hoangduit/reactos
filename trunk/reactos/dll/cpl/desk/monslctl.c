@@ -1,3 +1,4 @@
+
 #include "desk.h"
 
 static const TCHAR szMonitorSelWndClass[] = TEXT("MONITORSELWNDCLASS");

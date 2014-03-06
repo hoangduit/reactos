@@ -19,9 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
-
 #define _USE_MATH_DEFINES
+#include "precomp.h"
 #include <math.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);

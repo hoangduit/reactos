@@ -9,9 +9,7 @@
  */
 
 #include "usbuhci.h"
-
-#define NDEBUG
-#include <debug.h>
+#include "hardware.h"
 
 class CUSBQueue : public IUHCIQueue
 {

@@ -16,6 +16,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+#include <config.h>
+//#include "wine/port.h"
+
+#include <stdarg.h>
+
 #ifdef HAVE_APPLICATIONSERVICES_APPLICATIONSERVICES_H
 #define GetCurrentProcess GetCurrentProcess_Mac
 #define GetCurrentThread GetCurrentThread_Mac
@@ -73,7 +82,19 @@
 #undef DPRINTF
 #endif
 
-#include "wincodecs_private.h"
+#define COBJMACROS
+
+#include <windef.h>
+#include <winbase.h>
+#include <objbase.h>
+//#include "wincodec.h"
+
+//#include "wincodecs_private.h"
+
+#include <wine/debug.h>
+//#include "wine/library.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wincodecs);
 
 #if defined(HAVE_APPLICATIONSERVICES_APPLICATIONSERVICES_H) && \
     MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4

@@ -6,7 +6,9 @@
  * COPYRIGHT:   Copyright 2009 Christoph von Wittich
  */
 
-#include "precomp.h"
+/* INCLUDES ****************************************************************/
+
+#include <wlansvc_s.h>
 
 #define NDEBUG
 #include <debug.h>

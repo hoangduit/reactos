@@ -11,8 +11,6 @@
 
 #include "serenum.h"
 
-#include <debug.h>
-
 static NTSTATUS
 DeviceIoControl(
 	IN PDEVICE_OBJECT DeviceObject,

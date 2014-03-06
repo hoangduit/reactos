@@ -27,7 +27,21 @@
  *      + 32 A <=> W message mapping
  */
 
+
+//#include <ctype.h>
+#include <stdarg.h>
+//#include <stdlib.h>
+//#include <string.h>
+//#include <errno.h>
+#include <assert.h>
+
+#include <windef.h>
+#include <winbase.h>
+#include <winnls.h>
+//#include "mmsystem.h"
 #include "winemm.h"
+
+#include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(mmio);
 

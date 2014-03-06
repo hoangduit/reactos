@@ -1,5 +1,8 @@
 #pragma once
 
+#include <ntddk.h>
+#include <ks.h>
+
 #if !defined(DEFINE_ABSTRACT_UNKNOWN)
 
 #define DEFINE_ABSTRACT_UNKNOWN()                               \

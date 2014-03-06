@@ -10,8 +10,6 @@
 
 #include "cmbatt.h"
 
-#include <debug.h>
-
 /* GLOBALS ********************************************************************/
 
 ULONG CmBattDebug;

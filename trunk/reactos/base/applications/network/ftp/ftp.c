@@ -1,3 +1,6 @@
+#define L_SET SEEK_SET
+#define L_INCR SEEK_CUR
+#define caddr_t void *
 /*
  * Copyright (c) 1985, 1989 Regents of the University of California.
  * All rights reserved.
@@ -15,17 +18,11 @@
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "precomp.h"
-
-#include <signal.h>
-
-#define L_SET SEEK_SET
-#define L_INCR SEEK_CUR
-#define caddr_t void *
-
 #ifndef lint
 static char sccsid[] = "@(#)ftp.c	5.28 (Berkeley) 4/20/89";
 #endif /* not lint */
+
+#include "precomp.h"
 
 #ifndef MAXHOSTNAMELEN
 #define MAXHOSTNAMELEN 64

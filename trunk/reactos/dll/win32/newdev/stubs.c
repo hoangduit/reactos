@@ -20,18 +20,20 @@
 
 #include "newdev_private.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(newdev);
+
 /*
 * @unimplemented
 */
 BOOL WINAPI
 InstallNewDevice(
-    IN HWND hwndParent,
-    IN LPGUID ClassGuid OPTIONAL,
-    OUT PDWORD Reboot)
+	IN HWND hwndParent,
+	IN LPGUID ClassGuid OPTIONAL,
+	OUT PDWORD Reboot)
 {
-    UNIMPLEMENTED;
-    SetLastError(ERROR_GEN_FAILURE);
-    return FALSE;
+	UNIMPLEMENTED;
+	SetLastError(ERROR_GEN_FAILURE);
+	return FALSE;
 }
 
 /*
@@ -39,15 +41,15 @@ InstallNewDevice(
 */
 BOOL WINAPI
 InstallSelectedDriverW(
-    IN HWND hwndParent,
-    IN HDEVINFO DeviceInfoSet,
-    IN LPCWSTR Reserved,
-    IN BOOL Backup,
-    OUT PDWORD pReboot)
+	IN HWND hwndParent,
+	IN HDEVINFO DeviceInfoSet,
+	IN LPCWSTR Reserved,
+	IN BOOL Backup,
+	OUT PDWORD pReboot)
 {
-    UNIMPLEMENTED;
-    SetLastError(ERROR_GEN_FAILURE);
-    return FALSE;
+	UNIMPLEMENTED;
+	SetLastError(ERROR_GEN_FAILURE);
+	return FALSE;
 }
 
 /*

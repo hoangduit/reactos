@@ -1,13 +1,10 @@
-#ifndef _HIDPARSER_H_
-#define _HIDPARSER_H_
 
-#include <wdm.h>
+#pragma once
+#include <ntddk.h>
+#include <assert.h>
 #include <pshpack1.h>
-#define _HIDPI_
-#define _HIDPI_NO_FUNCTION_MACROS_
-#include <hidpddi.h>
-
 #include "hidparser.h"
+#include <ntddkbd.h>
 
  /*
   * Copyright 2007, Haiku, Inc. All Rights Reserved.
@@ -394,5 +391,3 @@ PHID_REPORT
 HidParser_GetReportInCollection(
     IN PVOID Context,
     IN UCHAR ReportType);
-
-#endif /* _HIDPARSER_H_ */

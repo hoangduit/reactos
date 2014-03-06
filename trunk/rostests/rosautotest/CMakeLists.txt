@@ -16,13 +16,12 @@ list(APPEND SOURCE
     CWineTest.cpp
     main.cpp
     shutdown.cpp
-    tools.cpp
-    precomp.h)
+    tools.cpp)
 
 add_executable(rosautotest ${SOURCE})
 
 set_module_type(rosautotest win32cui UNICODE)
 add_importlibs(rosautotest advapi32 shell32 user32 wininet msvcrt kernel32 ntdll)
-add_pch(rosautotest precomp.h SOURCE)
+add_pch(rosautotest precomp.h)
 
 add_cd_file(TARGET rosautotest DESTINATION reactos/system32 FOR all)

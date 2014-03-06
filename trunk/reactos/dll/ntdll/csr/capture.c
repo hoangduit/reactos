@@ -9,7 +9,6 @@
 /* INCLUDES *******************************************************************/
 
 #include <ntdll.h>
-
 #define NDEBUG
 #include <debug.h>
 

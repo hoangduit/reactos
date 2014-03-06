@@ -30,6 +30,8 @@
 
 #include <precomp.h>
 
+#include "../resource.h"
+
 #include "../taskbar/traynotify.h"
 #include "settings.h"
 

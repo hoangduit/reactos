@@ -5,15 +5,13 @@
  * PROGRAMMER:           Magnus Olsen (greatlrd)
  *
  */
-
-#ifndef _LPK_H
-#define _LPK_H
+#define WIN32_NO_STATUS
+#define NTOS_MODE_USER
 
 #include <stdarg.h>
-
-#define WIN32_NO_STATUS
 #include <windef.h>
 #include <winbase.h>
+#include <ndk/rtlfuncs.h>
 
 /* FIXME USP10 api that does not have prototype in any include file */
 VOID WINAPI LpkPresent(VOID);
@@ -68,4 +66,3 @@ DWORD WINAPI LpkPSMTextOut(DWORD x1,DWORD x2,DWORD x3,DWORD x4,DWORD x5,DWORD x6
 DWORD WINAPI LpkUseGDIWidthCache(DWORD x1,DWORD x2,DWORD x3,DWORD x4,DWORD x5);
 DWORD WINAPI ftsWordBreak(DWORD x1,DWORD x2,DWORD x3,DWORD x4,DWORD x5);
 
-#endif /* _LPK_H */

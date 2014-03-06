@@ -15,10 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
+#define COBJMACROS
 
+#include "config.h"
+#include <stdarg.h>
+
+#include "windef.h"
+#include "winbase.h"
+#include "ole2.h"
+#include "rpcproxy.h"
+
+#include <initguid.h>
+#include "scrrun.h"
 #include "scrrun_private.h"
 
-#include <rpcproxy.h>
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(scrrun);
 
 static HINSTANCE scrrun_instance;
 

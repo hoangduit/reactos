@@ -144,7 +144,9 @@ WinLdrInitializePhase1(PLOADER_PARAMETER_BLOCK LoaderBlock,
         PARC_DISK_SIGNATURE_EX ArcDiskSig;
 
         /* Allocate the ARC structure */
-        ArcDiskSig = FrLdrHeapAlloc(sizeof(ARC_DISK_SIGNATURE_EX), 'giSD');
+        ArcDiskSig = FrLdrHeapAllocate(FrLdrDefaultHeap,
+                                       sizeof(ARC_DISK_SIGNATURE_EX),
+                                       'giSD');
 
         /* Copy the data over */
         ArcDiskSig->DiskSignature.Signature = reactos_arc_disk_info[i].Signature;
@@ -325,8 +327,7 @@ WinLdrLoadBootDrivers(PLOADER_PARAMETER_BLOCK LoaderBlock,
         //FIXME: Maybe remove it from the list and try to continue?
         if (!Status)
         {
-            ERR("Can't load boot driver '%wZ'!", &BootDriver->FilePath);
-            UiMessageBox("Can't load boot driver '%wZ'!", &BootDriver->FilePath);
+            UiMessageBox("Can't load boot driver!");
             return FALSE;
         }
 
@@ -750,9 +751,6 @@ LoadAndBootWindowsCommon(
 
     /* "Stop all motors", change videomode */
     MachPrepareForReactOS(Setup);
-
-    /* Cleanup ini file */
-    IniCleanup();
 
     /* Debugging... */
     //DumpMemoryAllocMap();

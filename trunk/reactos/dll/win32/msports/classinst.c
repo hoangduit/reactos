@@ -8,10 +8,8 @@
 
 #include "precomp.h"
 
-#include <wchar.h>
+WINE_DEFAULT_DEBUG_CHANNEL(msports);
 
-#define NTOS_MODE_USER
-#include <ndk/cmtypes.h>
 
 typedef enum _PORT_TYPE
 {

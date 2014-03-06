@@ -1,19 +1,16 @@
-#ifndef _TIMEDATE_H
-#define _TIMEDATE_H
-
-#include <stdarg.h>
-
-#define _INC_WINDOWS
-#define COM_NO_WINDOWS_H
 #define WIN32_NO_STATUS
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winnls.h>
 #include <winreg.h>
 #include <wingdi.h>
 #include <winuser.h>
+#include <windowsx.h>
+#define _INC_WINDOWS
+#include <winsock2.h>
 #include <wchar.h>
+#include <math.h>
 #include <commctrl.h>
 #include <cpl.h>
 
@@ -121,4 +118,4 @@ typedef struct _NMMCCAUTOUPDATE
 BOOL RegisterMonthCalControl(IN HINSTANCE hInstance);
 VOID UnregisterMonthCalControl(IN HINSTANCE hInstance);
 
-#endif /* _TIMEDATE_H */
+/* EOF */

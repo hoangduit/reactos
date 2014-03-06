@@ -183,8 +183,7 @@ WinLdrAllocateDataTableEntry(IN OUT PLIST_ENTRY ModuleListHead,
        BaseDllName, FullDllName, BasePA);
 
     /* Allocate memory for a data table entry, zero-initialize it */
-    DataTableEntry = (PLDR_DATA_TABLE_ENTRY)FrLdrHeapAlloc(sizeof(LDR_DATA_TABLE_ENTRY),
-                                                           TAG_WLDR_DTE);
+    DataTableEntry = (PLDR_DATA_TABLE_ENTRY)MmHeapAlloc(sizeof(LDR_DATA_TABLE_ENTRY));
     if (DataTableEntry == NULL)
         return FALSE;
     RtlZeroMemory(DataTableEntry, sizeof(LDR_DATA_TABLE_ENTRY));
@@ -202,10 +201,10 @@ WinLdrAllocateDataTableEntry(IN OUT PLIST_ENTRY ModuleListHead,
     /* Initialize BaseDllName field (UNICODE_STRING) from the Ansi BaseDllName
        by simple conversion - copying each character */
     Length = (USHORT)(strlen(BaseDllName) * sizeof(WCHAR));
-    Buffer = (PWSTR)FrLdrHeapAlloc(Length, TAG_WLDR_NAME);
+    Buffer = (PWSTR)MmHeapAlloc(Length);
     if (Buffer == NULL)
     {
-        FrLdrHeapFree(DataTableEntry, TAG_WLDR_DTE);
+        MmHeapFree(DataTableEntry);
         return FALSE;
     }
     RtlZeroMemory(Buffer, Length);
@@ -221,10 +220,10 @@ WinLdrAllocateDataTableEntry(IN OUT PLIST_ENTRY ModuleListHead,
     /* Initialize FullDllName field (UNICODE_STRING) from the Ansi FullDllName
        using the same method */
     Length = (USHORT)(strlen(FullDllName) * sizeof(WCHAR));
-    Buffer = (PWSTR)FrLdrHeapAlloc(Length, TAG_WLDR_NAME);
+    Buffer = (PWSTR)MmHeapAlloc(Length);
     if (Buffer == NULL)
     {
-        FrLdrHeapFree(DataTableEntry, TAG_WLDR_DTE);
+        MmHeapFree(DataTableEntry);
         return FALSE;
     }
     RtlZeroMemory(Buffer, Length);

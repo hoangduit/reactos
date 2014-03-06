@@ -23,9 +23,8 @@ list(APPEND SOURCE
     wave/wodMessage.c
     wave/format.c
     wave/header.c
-    wave/streaming.c
-    precomp.h)
+    wave/streaming.c)
 
 add_library(mmebuddy ${SOURCE})
-add_pch(mmebuddy precomp.h SOURCE)
+add_pch(mmebuddy precomp.h)
 add_dependencies(mmebuddy psdk)

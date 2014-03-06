@@ -19,9 +19,6 @@
 
 #pragma once
 
-#define TAG_HW_RESOURCE_LIST 'lRwH'
-#define TAG_HW_DISK_CONTEXT 'cDwH'
-
 #define HAS_OPTION_MENU_CUSTOM_BOOT
 #define HAS_OPTION_MENU_REBOOT
 

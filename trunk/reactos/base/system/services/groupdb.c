@@ -14,6 +14,7 @@
 #define NDEBUG
 #include <debug.h>
 
+
 /* GLOBALS *******************************************************************/
 
 LIST_ENTRY GroupListHead;

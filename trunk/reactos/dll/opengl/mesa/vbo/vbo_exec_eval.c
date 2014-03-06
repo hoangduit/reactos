@@ -25,7 +25,13 @@
  *    Keith Whitwell <keith@tungstengraphics.com>
  */
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/macros.h"
+#include "math/m_eval.h"
+#include "main/dispatch.h"
+#include "vbo_exec.h"
+
 
 static void clear_active_eval1( struct vbo_exec_context *exec, GLuint attr ) 
 {

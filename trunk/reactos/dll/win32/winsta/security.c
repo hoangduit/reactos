@@ -5,7 +5,6 @@
  * PROGRAMMER:      Samuel Serapi?n
  * NOTE:            Not needed, just here for the show.
  */
-
 #include "winsta.h"
 
 VOID

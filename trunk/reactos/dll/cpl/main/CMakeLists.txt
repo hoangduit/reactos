@@ -1,14 +1,10 @@
 
 spec2def(main.cpl main.spec)
 
-list(APPEND SOURCE
+add_library(main SHARED
     keyboard.c
     main.c
     mouse.c
-    main.h)
-
-add_library(main SHARED
-    ${SOURCE}
     main.rc
     ${CMAKE_CURRENT_BINARY_DIR}/main.def)
 
@@ -26,5 +22,5 @@ add_importlibs(main
     gdi32
     kernel32)
 
-add_pch(main main.h SOURCE)
+add_pch(main main.h)
 add_cd_file(TARGET main DESTINATION reactos/system32 FOR all)

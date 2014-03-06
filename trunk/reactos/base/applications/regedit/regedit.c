@@ -20,6 +20,7 @@
 
 #include "regedit.h"
 
+
 static const LPCWSTR usage =
     L"Usage:\n"
     L"    regedit filenames\n"

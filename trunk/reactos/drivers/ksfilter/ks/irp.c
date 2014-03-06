@@ -6,12 +6,8 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
 
-#include <ntifs.h>
-
-#define NDEBUG
-#include <debug.h>
+#include "priv.h"
 
 /*
     @implemented

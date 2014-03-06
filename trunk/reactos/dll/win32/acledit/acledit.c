@@ -33,6 +33,7 @@
 
 HINSTANCE hDllInstance;
 
+
 BOOL WINAPI
 DllMain(
 	HINSTANCE hinstDLL,

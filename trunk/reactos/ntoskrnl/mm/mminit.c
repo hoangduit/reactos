@@ -44,8 +44,10 @@ NTAPI
 MiInitSystemMemoryAreas()
 {
     PVOID BaseAddress;
+    PHYSICAL_ADDRESS BoundaryAddressMultiple;
     PMEMORY_AREA MArea;
     NTSTATUS Status;
+    BoundaryAddressMultiple.QuadPart = 0;
 
     //
     // Create the memory area to define the loader mappings
@@ -59,7 +61,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -74,7 +76,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -89,7 +91,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -104,7 +106,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -119,7 +121,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -134,7 +136,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -149,7 +151,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -165,7 +167,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -180,7 +182,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 #ifndef _M_AMD64
     //
@@ -195,7 +197,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 #endif
     //
@@ -210,7 +212,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
     //
@@ -225,7 +227,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 
 #if defined(_X86_)
@@ -241,7 +243,7 @@ MiInitSystemMemoryAreas()
                                 &MArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(Status == STATUS_SUCCESS);
 #endif
 }
@@ -295,15 +297,12 @@ MiDbgDumpAddressSpace(VOID)
             "Non Paged Pool Expansion PTE Space");
 }
 
-VOID
-NTAPI
-MmMpwThreadMain(PVOID Parameter)
+NTSTATUS NTAPI
+MmMpwThreadMain(PVOID Ignored)
 {
    NTSTATUS Status;
    ULONG PagesWritten;
    LARGE_INTEGER Timeout;
-
-   UNREFERENCED_PARAMETER(Parameter);
 
    Timeout.QuadPart = -50000000;
 
@@ -318,7 +317,7 @@ MmMpwThreadMain(PVOID Parameter)
       {
          DbgPrint("MpwThread: Wait failed\n");
          KeBugCheck(MEMORY_MANAGEMENT);
-         return;
+         return(STATUS_UNSUCCESSFUL);
       }
 
       PagesWritten = 0;
@@ -347,7 +346,7 @@ MmInitMpwThread(VOID)
                                  NULL,
                                  NULL,
                                  &MpwThreadId,
-                                 MmMpwThreadMain,
+                                 (PKSTART_ROUTINE) MmMpwThreadMain,
                                  NULL);
    if (!NT_SUCCESS(Status))
    {
@@ -447,9 +446,6 @@ MmInitSystem(IN ULONG Phase,
                                 MM_READONLY,
                                 PageFrameNumber);
     *MmSharedUserDataPte = TempPte;
-
-    /* Initialize session working set support */
-    MiInitializeSessionWsSupport();
 
     /* Setup session IDs */
     MiInitializeSessionIds();

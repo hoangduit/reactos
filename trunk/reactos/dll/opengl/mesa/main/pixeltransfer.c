@@ -22,12 +22,19 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file pixeltransfer.c
  * Pixel transfer operations (scale, bias, table lookups, etc)
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "colormac.h"
+#include "pixeltransfer.h"
+#include "imports.h"
+#include "mtypes.h"
+
 
 /*
  * Apply scale and bias factors to an array of RGBA pixels.

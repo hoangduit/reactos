@@ -1,3 +1,4 @@
+
 #include "solitaire.h"
 
 #if 1

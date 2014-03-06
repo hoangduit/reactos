@@ -10,17 +10,27 @@
 
 #define TRAP_DEBUG 0
 
+//
+// Unreachable code hint for GCC 4.5.x, older GCC versions, and MSVC
+//
+#ifdef __GNUC__
+#if __GNUC__ * 100 + __GNUC_MINOR__ >= 405
+#define UNREACHABLE __builtin_unreachable()
+#else
+#define UNREACHABLE __builtin_trap()
+#endif
+#elif _MSC_VER
 #define UNREACHABLE __assume(0)
-
-#if _MSC_VER
 #define __builtin_expect(a,b) (a)
+#else
+#define UNREACHABLE
 #endif
 
 //
 // Helper Code
 //
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 KiUserTrap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Anything else but Ring 0 is Ring 3 */
@@ -30,8 +40,8 @@ KiUserTrap(IN PKTRAP_FRAME TrapFrame)
 //
 // Debug Macros
 //
-FORCEINLINE
 VOID
+FORCEINLINE
 KiDumpTrapFrame(IN PKTRAP_FRAME TrapFrame)
 {
     /* Dump the whole thing */
@@ -100,8 +110,8 @@ KiFillTrapFrameDebug(IN PKTRAP_FRAME TrapFrame)
 
 extern BOOLEAN StopChecking;
 
-FORCEINLINE
 VOID
+FORCEINLINE
 KiExitTrapDebugChecks(IN PKTRAP_FRAME TrapFrame,
                       IN BOOLEAN SkipPreviousMode)
 {
@@ -180,8 +190,8 @@ KiExitTrapDebugChecks(IN PKTRAP_FRAME TrapFrame,
     StopChecking = FALSE;
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 KiExitSystemCallDebugChecks(IN ULONG SystemCall,
                             IN PKTRAP_FRAME TrapFrame)
 {
@@ -248,8 +258,8 @@ extern PFAST_SYSTEM_CALL_EXIT KiFastCallExitHandler;
 //
 // Save user mode debug registers and restore kernel values
 //
-FORCEINLINE
 VOID
+FORCEINLINE
 KiHandleDebugRegistersOnTrapEntry(
     IN PKTRAP_FRAME TrapFrame)
 {
@@ -275,8 +285,8 @@ KiHandleDebugRegistersOnTrapEntry(
     __writedr(7, Prcb->ProcessorState.SpecialRegisters.KernelDr7);
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 KiHandleDebugRegistersOnTrapExit(
     PKTRAP_FRAME TrapFrame)
 {
@@ -295,9 +305,9 @@ KiHandleDebugRegistersOnTrapExit(
 //
 // Virtual 8086 Mode Optimized Trap Exit
 //
+VOID
 FORCEINLINE
 DECLSPEC_NORETURN
-VOID
 KiExitV86Trap(IN PKTRAP_FRAME TrapFrame)
 {
     PKTHREAD Thread;
@@ -342,8 +352,8 @@ KiExitV86Trap(IN PKTRAP_FRAME TrapFrame)
 //
 // Virtual 8086 Mode Optimized Trap Entry
 //
-FORCEINLINE
 VOID
+FORCEINLINE
 KiEnterV86Trap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Save exception list */
@@ -361,8 +371,8 @@ KiEnterV86Trap(IN PKTRAP_FRAME TrapFrame)
 //
 // Interrupt Trap Entry
 //
-FORCEINLINE
 VOID
+FORCEINLINE
 KiEnterInterruptTrap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Save exception list and terminate it */
@@ -391,8 +401,8 @@ KiEnterInterruptTrap(IN PKTRAP_FRAME TrapFrame)
 //
 // Generic Trap Entry
 //
-FORCEINLINE
 VOID
+FORCEINLINE
 KiEnterTrap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Save exception list */

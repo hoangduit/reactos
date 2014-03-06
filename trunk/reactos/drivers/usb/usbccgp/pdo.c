@@ -11,11 +11,6 @@
 
 #include "usbccgp.h"
 
-#include <ntddk.h>
-
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 USBCCGP_PdoHandleQueryDeviceText(
     IN PDEVICE_OBJECT DeviceObject,
@@ -757,6 +752,7 @@ USBCCGP_PDOSelectConfiguration(
             // invalid parameter
             //
             DPRINT1("InterfaceInformation InterfaceNumber %x Alternative %x NumberOfPipes %x not found\n", InterfaceInformation->InterfaceNumber, InterfaceInformation->AlternateSetting, InterfaceInformation->NumberOfPipes);
+            ASSERT(FALSE);
             return STATUS_INVALID_PARAMETER;
         }
 

@@ -27,7 +27,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "imports.h"
+#include "context.h"
+#include "image.h"
+#include "enums.h"
+#include "pack.h"
+#include "polygon.h"
+#include "mtypes.h"
+
 
 /**
  * Specify whether to cull front- or back-facing facets.

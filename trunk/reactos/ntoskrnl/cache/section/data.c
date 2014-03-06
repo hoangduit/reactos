@@ -627,6 +627,9 @@ _MiMapViewOfSegment(PMMSUPPORT AddressSpace,
 {
     PMEMORY_AREA MArea;
     NTSTATUS Status;
+    PHYSICAL_ADDRESS BoundaryAddressMultiple;
+
+    BoundaryAddressMultiple.QuadPart = 0;
 
     Status = MmCreateMemoryArea(AddressSpace,
                                 MEMORY_AREA_CACHE,
@@ -636,7 +639,7 @@ _MiMapViewOfSegment(PMMSUPPORT AddressSpace,
                                 &MArea,
                                 FALSE,
                                 AllocationType,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
 
     if (!NT_SUCCESS(Status))
     {

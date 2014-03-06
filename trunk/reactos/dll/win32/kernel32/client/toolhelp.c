@@ -17,6 +17,8 @@
 
 #include <k32.h>
 
+#include <tlhelp32.h>
+
 #define NDEBUG
 #include <debug.h>
 

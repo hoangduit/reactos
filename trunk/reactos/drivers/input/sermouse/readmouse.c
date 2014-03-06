@@ -10,8 +10,6 @@
 
 #include "sermouse.h"
 
-#include <debug.h>
-
 static NTSTATUS
 SermouseDeviceIoControl(
 	IN PDEVICE_OBJECT DeviceObject,

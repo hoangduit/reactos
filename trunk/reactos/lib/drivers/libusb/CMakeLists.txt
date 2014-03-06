@@ -15,9 +15,7 @@ list(APPEND SOURCE
     misc.cpp
     usb_device.cpp
     purecall.cpp
-    libusb.cpp
-    libusb.h)
+    libusb.cpp)
 
 add_library(libusb ${SOURCE})
 add_dependencies(libusb bugcodes)
-add_pch(libusb libusb.h SOURCE)

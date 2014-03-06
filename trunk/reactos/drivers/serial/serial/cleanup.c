@@ -9,8 +9,6 @@
 
 #include "serial.h"
 
-#include <debug.h>
-
 NTSTATUS NTAPI
 SerialCleanup(
 	IN PDEVICE_OBJECT DeviceObject,

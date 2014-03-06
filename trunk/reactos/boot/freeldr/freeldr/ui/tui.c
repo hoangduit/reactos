@@ -19,9 +19,6 @@
 #ifndef _M_ARM
 #include <freeldr.h>
 
-#define TAG_TUI_SCREENBUFFER 'SiuT'
-#define TAG_TAG_TUI_PALETTE 'PiuT'
-
 PVOID    TextVideoBuffer = NULL;
 
 /*
@@ -545,8 +542,7 @@ VOID TuiMessageBox(PCSTR MessageText)
     PVOID    ScreenBuffer;
 
     // Save the screen contents
-    ScreenBuffer = FrLdrTempAlloc(UiScreenWidth * UiScreenHeight * 2,
-                                  TAG_TUI_SCREENBUFFER);
+    ScreenBuffer = MmHeapAlloc(UiScreenWidth * UiScreenHeight * 2);
     TuiSaveScreen(ScreenBuffer);
 
     // Display the message box
@@ -554,7 +550,7 @@ VOID TuiMessageBox(PCSTR MessageText)
 
     // Restore the screen contents
     TuiRestoreScreen(ScreenBuffer);
-    FrLdrTempFree(ScreenBuffer, TAG_TUI_SCREENBUFFER);
+    MmHeapFree(ScreenBuffer);
 }
 
 VOID TuiMessageBoxCritical(PCSTR MessageText)
@@ -762,8 +758,7 @@ VOID TuiFadeInBackdrop(VOID)
 
     if (UiUseSpecialEffects && ! MachVideoIsPaletteFixed())
     {
-        TuiFadePalette = (PPALETTE_ENTRY)FrLdrTempAlloc(sizeof(PALETTE_ENTRY) * 64,
-                                                        TAG_TAG_TUI_PALETTE);
+        TuiFadePalette = (PPALETTE_ENTRY)MmHeapAlloc(sizeof(PALETTE_ENTRY) * 64);
 
         if (TuiFadePalette != NULL)
         {
@@ -778,7 +773,7 @@ VOID TuiFadeInBackdrop(VOID)
     if (UiUseSpecialEffects && ! MachVideoIsPaletteFixed() && TuiFadePalette != NULL)
     {
         VideoFadeIn(TuiFadePalette, 64);
-        FrLdrTempFree(TuiFadePalette, TAG_TAG_TUI_PALETTE);
+        MmHeapFree(TuiFadePalette);
     }
 }
 
@@ -788,8 +783,7 @@ VOID TuiFadeOut(VOID)
 
     if (UiUseSpecialEffects && ! MachVideoIsPaletteFixed())
     {
-        TuiFadePalette = (PPALETTE_ENTRY)FrLdrTempAlloc(sizeof(PALETTE_ENTRY) * 64,
-                                                        TAG_TAG_TUI_PALETTE);
+        TuiFadePalette = (PPALETTE_ENTRY)MmHeapAlloc(sizeof(PALETTE_ENTRY) * 64);
 
         if (TuiFadePalette != NULL)
         {
@@ -807,7 +801,7 @@ VOID TuiFadeOut(VOID)
     if (UiUseSpecialEffects && ! MachVideoIsPaletteFixed() && TuiFadePalette != NULL)
     {
         VideoRestorePaletteState(TuiFadePalette, 64);
-        FrLdrTempFree(TuiFadePalette, TAG_TAG_TUI_PALETTE);
+        MmHeapFree(TuiFadePalette);
     }
 
 }
@@ -832,8 +826,7 @@ BOOLEAN TuiEditBox(PCSTR MessageText, PCHAR EditTextBuffer, ULONG Length)
     PVOID    ScreenBuffer;
 
     // Save the screen contents
-    ScreenBuffer = FrLdrTempAlloc(UiScreenWidth * UiScreenHeight * 2,
-                                  TAG_TUI_SCREENBUFFER);
+    ScreenBuffer = MmHeapAlloc(UiScreenWidth * UiScreenHeight * 2);
     TuiSaveScreen(ScreenBuffer);
 
     // Find the height
@@ -1036,7 +1029,7 @@ BOOLEAN TuiEditBox(PCSTR MessageText, PCHAR EditTextBuffer, ULONG Length)
 
     // Restore the screen contents
     TuiRestoreScreen(ScreenBuffer);
-    FrLdrTempFree(ScreenBuffer, TAG_TUI_SCREENBUFFER);
+    MmHeapFree(ScreenBuffer);
 
     return ReturnCode;
 }

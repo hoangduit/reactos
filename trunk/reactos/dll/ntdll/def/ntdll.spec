@@ -376,7 +376,7 @@
 ;@ stdcall PfxInsertPrefix
 ;@ stdcall PfxRemovePrefix
 ;@ stdcall PropertyLengthAsVariant
-@ stdcall RtlAbortRXact(ptr)
+;@ stdcall RtlAbortRXact
 @ stdcall RtlAbsoluteToSelfRelativeSD(ptr ptr ptr)
 @ stdcall RtlAcquirePebLock()
 @ stdcall RtlAcquirePrivilege(ptr long long ptr)
@@ -394,9 +394,9 @@
 @ stdcall RtlAddAccessDeniedAceEx(ptr long long long ptr)
 @ stdcall RtlAddAccessDeniedObjectAce(ptr long long long ptr ptr ptr)
 @ stdcall RtlAddAce(ptr long long ptr long)
-@ stdcall RtlAddActionToRXact(ptr long ptr long ptr long)
+;@ stdcall RtlAddActionToRXact
 @ stdcall RtlAddAtomToAtomTable(ptr wstr ptr)
-@ stdcall RtlAddAttributeActionToRXact(ptr long ptr ptr ptr long ptr long)
+;@ stdcall RtlAddAttributeActionToRXact
 @ stdcall RtlAddAuditAccessAce(ptr long long ptr long long)
 @ stdcall RtlAddAuditAccessAceEx(ptr long long long ptr long long)
 @ stdcall RtlAddAuditAccessObjectAce(ptr long long long ptr ptr ptr long long)
@@ -423,8 +423,8 @@
 @ stdcall RtlAppendUnicodeStringToString(ptr ptr)
 @ stdcall RtlAppendUnicodeToString(ptr wstr)
 ;@ stdcall RtlApplicationVerifierStop
-@ stdcall RtlApplyRXact(ptr)
-@ stdcall RtlApplyRXactNoFlush(ptr)
+;@ stdcall RtlApplyRXact
+;@ stdcall RtlApplyRXactNoFlush
 @ stdcall RtlAreAllAccessesGranted(long long)
 @ stdcall RtlAreAnyAccessesGranted(long long)
 @ stdcall RtlAreBitsClear(ptr long long)
@@ -435,7 +435,7 @@
 @ stdcall RtlCaptureStackBackTrace(long long ptr ptr)
 ;@ stdcall RtlCaptureStackContext
 @ stdcall RtlCharToInteger(ptr long ptr)
-@ stdcall RtlCheckForOrphanedCriticalSections(ptr)
+;@ stdcall RtlCheckForOrphanedCriticalSections
 ;@ stdcall RtlCheckProcessParameters
 @ stdcall RtlCheckRegistryKey(long ptr)
 @ stdcall RtlClearAllBits(ptr)
@@ -673,7 +673,7 @@
 @ stdcall RtlInitializeGenericTable(ptr ptr ptr ptr ptr)
 @ stdcall RtlInitializeGenericTableAvl(ptr ptr ptr ptr ptr)
 @ stdcall RtlInitializeHandleTable(long long ptr)
-@ stdcall RtlInitializeRXact(ptr long ptr)
+;@ stdcall RtlInitializeRXact
 @ stdcall RtlInitializeRangeList(ptr)
 @ stdcall RtlInitializeResource(ptr)
 @ stdcall RtlInitializeSListHead(ptr)
@@ -846,7 +846,7 @@
 @ stdcall RtlSetLastWin32ErrorAndNtStatusFromNtStatus(long)
 @ stdcall RtlSetMemoryStreamSize(ptr int64)
 @ stdcall RtlSetOwnerSecurityDescriptor(ptr ptr long)
-@ cdecl RtlSetProcessIsCritical(long ptr long)
+@ stdcall RtlSetProcessIsCritical(long ptr long)
 ;@ stdcall RtlSetProperties ; RtlSetProperties
 ;@ stdcall RtlSetPropertyClassId ; 4.0 only
 ;@ stdcall RtlSetPropertyNames ; 4.0 only
@@ -856,7 +856,7 @@
 @ stdcall RtlSetSecurityObject(long ptr ptr ptr ptr)
 @ stdcall RtlSetSecurityObjectEx(long ptr ptr long ptr ptr)
 @ stdcall RtlSetThreadErrorMode(long ptr)
-@ cdecl RtlSetThreadIsCritical(long ptr long)
+@ stdcall RtlSetThreadIsCritical(long ptr long)
 @ stdcall RtlSetThreadPoolStartFunc(ptr ptr)
 @ stdcall RtlSetTimeZoneInformation(ptr)
 ;@ stdcall RtlSetTimer
@@ -868,7 +868,7 @@
 @ stdcall RtlSleepConditionVariableCS(ptr ptr ptr)
 @ stdcall RtlSleepConditionVariableSRW(ptr ptr ptr long)
 @ stdcall RtlSplay(ptr)
-@ stdcall RtlStartRXact(ptr)
+;@ stdcall RtlStartRXact
 @ stdcall RtlStatMemoryStream(ptr ptr long)
 @ stdcall RtlStringFromGUID(ptr ptr)
 @ stdcall RtlSubAuthorityCountSid(ptr)

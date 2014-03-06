@@ -26,7 +26,13 @@
  * Updated for P6 architecture by Gareth Hughes.
  */
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/macros.h"
+#include "main/imports.h"
+
+#include "m_matrix.h"
+#include "m_xform.h"
 
 #include "m_debug.h"
 #include "m_debug_util.h"

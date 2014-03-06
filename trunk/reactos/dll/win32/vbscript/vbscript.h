@@ -16,10 +16,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef _VBSCRIPT_H
-#define _VBSCRIPT_H
-
-#include <assert.h>
 #include <stdarg.h>
 
 #define WIN32_NO_STATUS
@@ -30,17 +26,14 @@
 
 #include <windef.h>
 #include <winbase.h>
-#include <objbase.h>
-#include <oleauto.h>
-#include <objsafe.h>
+#include <ole2.h>
 #include <dispex.h>
 #include <activscp.h>
 
-#include <wine/debug.h>
+#include <vbscript_classes.h>
+
 #include <wine/list.h>
 #include <wine/unicode.h>
-
-WINE_DEFAULT_DEBUG_CHANNEL(vbscript);
 
 typedef struct {
     void **blocks;
@@ -417,9 +410,3 @@ static inline LPWSTR heap_strdupW(LPCWSTR str)
 
     return ret;
 }
-
-#include "parse.h"
-#include "regexp.h"
-#include "vbscript_defs.h"
-
-#endif /* _VBSCRIPT_H */

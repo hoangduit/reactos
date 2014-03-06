@@ -19,10 +19,10 @@ list(APPEND SOURCE
     start.c
     stop.c
     stop_dependencies.c
-    precomp.h)
+    servman.rc)
 
-add_executable(servman ${SOURCE} servman.rc)
+add_executable(servman ${SOURCE})
 set_module_type(servman win32gui UNICODE)
 add_importlibs(servman user32 gdi32 advapi32 version comctl32 shell32 comdlg32 msvcrt kernel32)
-add_pch(servman precomp.h SOURCE)
+add_pch(servman precomp.h)
 add_cd_file(TARGET servman DESTINATION reactos/system32 FOR all)

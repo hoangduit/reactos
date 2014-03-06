@@ -1,6 +1,3 @@
-#ifndef _ROSAUTOTEST_H_
-#define _ROSAUTOTEST_H_
-
 /* General includes */
 #include <iostream>
 #include <memory>
@@ -60,5 +57,3 @@ bool IsNumber(const char* Input);
 string StringOut(const string& String, bool forcePrint = true);
 string UnicodeToAscii(PCWSTR UnicodeString);
 string UnicodeToAscii(const wstring& UnicodeString);
-
-#endif /* _ROSAUTOTEST_H_ */

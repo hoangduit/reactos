@@ -22,10 +22,6 @@
  */
 
 #include <advapi32.h>
-
-#include <ndk/kefuncs.h>
-#include <eventlogrpc_c.h>
-
 WINE_DEFAULT_DEBUG_CHANNEL(advapi);
 
 static RPC_UNICODE_STRING EmptyStringU = { 0, 0, L"" };

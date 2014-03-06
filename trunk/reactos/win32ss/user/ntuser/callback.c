@@ -290,7 +290,7 @@ co_IntCallWindowProc(WNDPROC Proc,
    /* Do not allow the desktop thread to do callback to user mode */
    ASSERT(PsGetCurrentThreadWin32Thread() != gptiDesktopThread);
 
-   if (lParamBufferSize != -1)
+   if (0 < lParamBufferSize)
    {
       ArgumentLength = sizeof(WINDOWPROC_CALLBACK_ARGUMENTS) + lParamBufferSize;
       Arguments = IntCbAllocateMemory(ArgumentLength);
@@ -334,7 +334,7 @@ co_IntCallWindowProc(WNDPROC Proc,
    }
    _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
    {
-      ERR("Failed to copy result from user mode, Message %d lParam size %d!\n", Message, lParamBufferSize);
+      ERR("Failed to copy result from user mode!\n");
       Status = _SEH2_GetExceptionCode();
    }
    _SEH2_END;
@@ -346,7 +346,7 @@ co_IntCallWindowProc(WNDPROC Proc,
    if (!NT_SUCCESS(Status))
    {
      ERR("Call to user mode failed!\n");
-      if (lParamBufferSize != -1)
+      if (0 < lParamBufferSize)
       {
          IntCbFreeMemory(Arguments);
       }
@@ -354,48 +354,11 @@ co_IntCallWindowProc(WNDPROC Proc,
    }
    Result = Arguments->Result;
 
-   if (lParamBufferSize != -1)
+   if (0 < lParamBufferSize)
    {
-      PTHREADINFO pti = PsGetCurrentThreadWin32Thread();
-      // Is this message being processed from inside kernel space?
-      BOOL InSendMessage = (pti->pcti->CTI_flags & CTI_INSENDMESSAGE);
-
-      TRACE("Copy lParam Message %d lParam %d!\n", Message, lParam);
-      switch (Message)
-      {
-          default:
-            TRACE("Don't copy lParam, Message %d Size %d lParam %d!\n", Message, lParamBufferSize, lParam);
-            break;
-          // Write back to user/kernel space. Also see g_MsgMemory.
-          case WM_CREATE:
-          case WM_GETMINMAXINFO:
-          case WM_GETTEXT:
-          case WM_NCCALCSIZE:
-          case WM_NCCREATE:
-          case WM_STYLECHANGING:
-          case WM_WINDOWPOSCHANGING:
-            TRACE("Copy lParam, Message %d Size %d lParam %d!\n", Message, lParamBufferSize, lParam);
-            if (InSendMessage)
-               // Copy into kernel space.
-               RtlMoveMemory((PVOID) lParam,
-                             (PVOID) ((char *) Arguments + sizeof(WINDOWPROC_CALLBACK_ARGUMENTS)),
-                              lParamBufferSize);
-            else
-            {
-             _SEH2_TRY
-             { // Copy into user space.
-               RtlMoveMemory((PVOID) lParam,
-                             (PVOID) ((char *) Arguments + sizeof(WINDOWPROC_CALLBACK_ARGUMENTS)),
-                              lParamBufferSize);
-             }
-             _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
-             {
-                ERR("Failed to copy lParam to user space, Message %d!\n", Message);
-             }
-             _SEH2_END;
-            }
-            break;
-      }
+      RtlMoveMemory((PVOID) lParam,
+                    (PVOID) ((char *) Arguments + sizeof(WINDOWPROC_CALLBACK_ARGUMENTS)),
+                    lParamBufferSize);
       IntCbFreeMemory(Arguments);
    }
 
@@ -435,7 +398,7 @@ co_IntLoadSysMenuTemplate()
       {
         Result = 0;
       }
-      _SEH2_END;
+      _SEH2_END
    }
 
    UserEnterCo();
@@ -695,7 +658,7 @@ co_IntCallHookProc(INT HookId,
    }
 
    ResultPointer = NULL;
-   ResultLength = ArgumentLength;
+   ResultLength = sizeof(LRESULT);
 
    UserLeaveCo();
 
@@ -711,9 +674,9 @@ co_IntCallHookProc(INT HookId,
    {
       _SEH2_TRY
       {
+         ProbeForRead(ResultPointer, sizeof(LRESULT), 1);
          /* Simulate old behaviour: copy into our local buffer */
-         RtlMoveMemory(Argument, ResultPointer, ArgumentLength);
-         Result = Common->Result;
+         Result = *(LRESULT*)ResultPointer;
       }
       _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
       {
@@ -724,7 +687,7 @@ co_IntCallHookProc(INT HookId,
    }
    else
    {
-      ERR("ERROR: Hook %d Code %d ResultPointer 0x%p ResultLength %u\n",HookId,Code,ResultPointer,ResultLength);
+      ERR("ERROR: Hook ResultPointer 0x%p ResultLength %u\n",ResultPointer,ResultLength);
    }
 
    if (!NT_SUCCESS(Status))
@@ -1037,8 +1000,10 @@ co_IntSetWndIcons(VOID)
    PVOID Argument, ResultPointer;
    PSETWNDICONS_CALLBACK_ARGUMENTS Common;
 
-   ResultPointer = NULL;
-   ResultLength = ArgumentLength = sizeof(SETWNDICONS_CALLBACK_ARGUMENTS);
+   ArgumentLength = ResultLength = 0;
+   Argument = ResultPointer = NULL;
+
+   ArgumentLength = sizeof(SETWNDICONS_CALLBACK_ARGUMENTS);
 
    Argument = IntCbAllocateMemory(ArgumentLength);
    if (NULL == Argument)
@@ -1060,7 +1025,6 @@ co_IntSetWndIcons(VOID)
    UserEnterCo();
 
    /* FIXME: Need to setup Registry System Cursor & Icons via Callbacks at init time! */
-   RtlMoveMemory(Common, ResultPointer, ArgumentLength);
    gpsi->hIconSmWindows = Common->hIconSmWindows;
    gpsi->hIconWindows   = Common->hIconWindows;
 

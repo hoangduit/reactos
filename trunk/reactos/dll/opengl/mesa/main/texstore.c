@@ -51,7 +51,20 @@
  * images and sub-images.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "bufferobj.h"
+#include "colormac.h"
+#include "image.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "pack.h"
+#include "imports.h"
+#include "teximage.h"
+#include "texstore.h"
+#include "enums.h"
+
 
 enum {
    ZERO = 4, 

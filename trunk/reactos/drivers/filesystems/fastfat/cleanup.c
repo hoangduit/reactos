@@ -8,20 +8,16 @@
 
 /* INCLUDES *****************************************************************/
 
-#include "vfat.h"
-
 #define NDEBUG
-#include <debug.h>
+#include "vfat.h"
 
 /* FUNCTIONS ****************************************************************/
 
 /*
  * FUNCTION: Cleans up after a file has been closed.
  */
-static
-NTSTATUS
-VfatCleanupFile(
-    PVFAT_IRP_CONTEXT IrpContext)
+static NTSTATUS
+VfatCleanupFile(PVFAT_IRP_CONTEXT IrpContext)
 {
     PVFATFCB pFcb;
     PFILE_OBJECT FileObject = IrpContext->FileObject;
@@ -30,7 +26,7 @@ VfatCleanupFile(
            IrpContext->DeviceExt, FileObject);
 
     /* FIXME: handle file/directory deletion here */
-    pFcb = (PVFATFCB)FileObject->FsContext;
+    pFcb = (PVFATFCB) FileObject->FsContext;
     if (!pFcb)
         return STATUS_SUCCESS;
 
@@ -45,15 +41,15 @@ VfatCleanupFile(
     }
     else
     {
-        if(!ExAcquireResourceExclusiveLite(&pFcb->MainResource,
-                                           (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
+        if(!ExAcquireResourceExclusiveLite (&pFcb->MainResource,
+                                            (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
         {
             return STATUS_PENDING;
         }
-        if(!ExAcquireResourceExclusiveLite(&pFcb->PagingIoResource,
-                                           (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
+        if(!ExAcquireResourceExclusiveLite (&pFcb->PagingIoResource,
+                                            (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
         {
-            ExReleaseResourceLite(&pFcb->MainResource);
+            ExReleaseResourceLite (&pFcb->MainResource);
             return STATUS_PENDING;
         }
 
@@ -84,9 +80,9 @@ VfatCleanupFile(
                 pFcb->FileObject = NULL;
                 CcUninitializeCacheMap(tmpFileObject, NULL, NULL);
                 ObDereferenceObject(tmpFileObject);
-            }
+           }
 
-            CcPurgeCacheSection(FileObject->SectionObjectPointer, NULL, 0, FALSE);
+           CcPurgeCacheSection(FileObject->SectionObjectPointer, NULL, 0, FALSE);
         }
 
         /* Uninitialize the cache (should be done even if caching was never initialized) */
@@ -99,8 +95,8 @@ VfatCleanupFile(
 
         FileObject->Flags |= FO_CLEANUP_COMPLETE;
 
-        ExReleaseResourceLite(&pFcb->PagingIoResource);
-        ExReleaseResourceLite(&pFcb->MainResource);
+        ExReleaseResourceLite (&pFcb->PagingIoResource);
+        ExReleaseResourceLite (&pFcb->MainResource);
     }
 
     return STATUS_SUCCESS;
@@ -109,9 +105,7 @@ VfatCleanupFile(
 /*
  * FUNCTION: Cleans up after a file has been closed.
  */
-NTSTATUS
-VfatCleanup(
-    PVFAT_IRP_CONTEXT IrpContext)
+NTSTATUS VfatCleanup(PVFAT_IRP_CONTEXT IrpContext)
 {
     NTSTATUS Status;
 
@@ -123,15 +117,15 @@ VfatCleanup(
         goto ByeBye;
     }
 
-    if (!ExAcquireResourceExclusiveLite(&IrpContext->DeviceExt->DirResource,
-                                        (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
+    if (!ExAcquireResourceExclusiveLite (&IrpContext->DeviceExt->DirResource,
+                                         (BOOLEAN)(IrpContext->Flags & IRPCONTEXT_CANWAIT)))
     {
-        return VfatQueueRequest(IrpContext);
+        return VfatQueueRequest (IrpContext);
     }
 
     Status = VfatCleanupFile(IrpContext);
 
-    ExReleaseResourceLite(&IrpContext->DeviceExt->DirResource);
+    ExReleaseResourceLite (&IrpContext->DeviceExt->DirResource);
 
     if (Status == STATUS_PENDING)
     {
@@ -142,9 +136,9 @@ ByeBye:
     IrpContext->Irp->IoStatus.Status = Status;
     IrpContext->Irp->IoStatus.Information = 0;
 
-    IoCompleteRequest(IrpContext->Irp, IO_NO_INCREMENT);
+    IoCompleteRequest (IrpContext->Irp, IO_NO_INCREMENT);
     VfatFreeIrpContext(IrpContext);
-    return Status;
+    return (Status);
 }
 
 /* EOF */

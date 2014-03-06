@@ -22,6 +22,11 @@
 
 #include <winreg.h>
 #include <rpcproxy.h>
+#include <hlguids.h>
+
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(hlink);
 
 static HINSTANCE instance;
 

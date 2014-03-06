@@ -40,7 +40,6 @@ TODO:
     Implement Revert
 
 */
-
 #include "precomp.h"
 
 class CTravelEntry :

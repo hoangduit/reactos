@@ -260,7 +260,7 @@ IntNotifyWinEvent(
               ERR("Global Event 0x%x, idObject %d\n", Event, idObject);
               IntCallLowLevelEvent( pEH,
                                     Event,
-                                    pWnd ? UserHMGetHandle(pWnd) : NULL,
+                                    UserHMGetHandle(pWnd),
                                     idObject,
                                     idChild);
            }
@@ -269,7 +269,7 @@ IntNotifyWinEvent(
               ERR("Local Event 0x%x, idObject %d\n", Event, idObject);
               co_IntCallEventProc( UserHMGetHandle(pEH),
                                    Event,
-                                   pWnd ? UserHMGetHandle(pWnd) : NULL,
+                                   UserHMGetHandle(pWnd),
                                    idObject,
                                    idChild,
                                    PtrToUint(NtCurrentTeb()->ClientId.UniqueThread),

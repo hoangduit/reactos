@@ -17,7 +17,12 @@
  *
  */
 
+#include "config.h"
+#include "wine/port.h"
+
 #include "dxgi_private.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(dxgi);
 
 #define WINE_DXGI_TO_STR(x) case x: return #x
 

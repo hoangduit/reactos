@@ -33,7 +33,6 @@
 
 #include "precomp.h"
 
-#include <debug.h>
 
 NTSTATUS NTAPI
 DeviceIoctl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
@@ -268,3 +267,4 @@ DeviceIoctlPassive(PDRIVE_INFO DriveInfo, PIRP Irp)
     StopMotor(DriveInfo->ControllerInfo);
     return;
 }
+

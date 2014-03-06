@@ -2,8 +2,11 @@
 #define LIBUSB_H__
 
 #include <ntddk.h>
+#define NDEBUG
+#include <debug.h>
 #include <hubbusif.h>
 #include <usbbusif.h>
+#include <usbioctl.h>
 
 extern "C"
 {
@@ -14,6 +17,7 @@ extern "C"
 // FIXME: 
 // #include <usbprotocoldefs.h>
 //
+#include <usb.h>
 #include <stdio.h>
 #include <wdmguid.h>
 
@@ -22,6 +26,7 @@ extern "C"
 // the following includes are required to get kcom to compile
 //
 #include <portcls.h>
+#include <dmusicks.h>
 #include <kcom.h>
 
 #include "common_interfaces.h"
@@ -94,4 +99,5 @@ NTSTATUS NTAPI USBLIB_Dispatch(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 
 }
 
-#endif /* LIBUSB_H__ */
+
+#endif

@@ -24,7 +24,6 @@ Used by the address band to dispatch navigation changes to the main browser obje
 TODO:
 
 */
-
 #include "precomp.h"
 
 CBandProxy::CBandProxy()

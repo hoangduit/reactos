@@ -155,6 +155,24 @@ MmGetPageDirectory(VOID)
     return (PULONG)KeArmTranslationTableRegisterGet().AsUlong;
 }
 
+VOID
+NTAPI
+MmDisableVirtualMapping(IN PEPROCESS Process,
+                        IN PVOID Address,
+                        OUT PBOOLEAN WasDirty,
+                        OUT PPFN_NUMBER Page)
+{
+    UNIMPLEMENTED_DBGBREAK();
+}
+
+VOID
+NTAPI
+MmEnableVirtualMapping(IN PEPROCESS Process,
+                       IN PVOID Address)
+{
+    UNIMPLEMENTED_DBGBREAK();
+}
+
 NTSTATUS
 NTAPI
 MmCreateVirtualMappingUnsafe(IN PEPROCESS Process,

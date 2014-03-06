@@ -22,6 +22,7 @@
 
 BOOL ProcessCmdLine(LPWSTR lpCmdLine);
 
+
 /*******************************************************************************
  * Global Variables:
  */

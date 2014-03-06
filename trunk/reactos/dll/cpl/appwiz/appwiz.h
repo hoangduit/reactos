@@ -1,25 +1,19 @@
-#ifndef _APPWIZ_H
-#define _APPWIZ_H
-
-#include <config.h>
-#include <wine/port.h>
-
-#include <stdarg.h>
-
+#define COBJMACROS
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
-#define COBJMACROS
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
 #include <winnls.h>
+#include <shellapi.h>
+#include <cpl.h>
+#include <tchar.h>
 #include <shlobj.h>
 
 #include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(appwiz);
+#include <wine/unicode.h>
 
 #include "resource.h"
 
@@ -85,4 +79,4 @@ static inline WCHAR *heap_strdupAtoW(const char *str)
     return ret;
 }
 
-#endif /* _APPWIZ_H */
+/* EOF */

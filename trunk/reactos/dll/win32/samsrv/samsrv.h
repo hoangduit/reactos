@@ -7,28 +7,32 @@
  * PROGRAMMERS:     Eric Kohl
  */
 
-#ifndef _SAMSRV_PCH_
-#define _SAMSRV_PCH_
-
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <limits.h>
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
+#include <winuser.h>
 #define NTOS_MODE_USER
+#include <ndk/cmfuncs.h>
 #include <ndk/kefuncs.h>
+#include <ndk/obfuncs.h>
 #include <ndk/rtlfuncs.h>
 #include <ddk/ntsam.h>
+#include <ntsecapi.h>
 #include <sddl.h>
+
+#include <samsrv/samsrv.h>
+
 #include <sam_s.h>
 
 #include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(samsrv);
+
+#include "resources.h"
 
 typedef enum _SAM_DB_OBJECT_TYPE
 {
@@ -226,10 +230,6 @@ NTSTATUS
 SampRemoveMemberFromAllAliases(IN PSAM_DB_OBJECT DomainObject,
                                IN PRPC_SID MemberSid);
 
-NTSTATUS
-SampCreateAccountSid(IN PSAM_DB_OBJECT DomainObject,
-                     IN ULONG ulRelativeId,
-                     IN OUT PSID *AccountSid);
 
 /* group.h */
 
@@ -336,10 +336,6 @@ NTSTATUS
 SampCreateGroupSD(OUT PSECURITY_DESCRIPTOR *GroupSd,
                   OUT PULONG Size);
 
-NTSTATUS
-SampCreateUserSD(IN PSID UserSid,
-                 OUT PSECURITY_DESCRIPTOR *UserSd,
-                 OUT PULONG Size);
 
 /* setup.c */
 
@@ -378,9 +374,6 @@ SampSetUserGroupAttributes(IN PSAM_DB_OBJECT DomainObject,
 
 NTSTATUS
 SampRemoveUserFromAllGroups(IN PSAM_DB_OBJECT UserObject);
-
-NTSTATUS
-SampRemoveUserFromAllAliases(IN PSAM_DB_OBJECT UserObject);
 
 NTSTATUS
 SampSetUserPassword(IN PSAM_DB_OBJECT UserObject,
@@ -434,10 +427,4 @@ WINAPI
 SystemFunction007(PUNICODE_STRING string,
                   LPBYTE hash);
 
-NTSTATUS
-WINAPI
-SystemFunction013(const BYTE *in,
-                  const BYTE *key,
-                  LPBYTE out);
-
-#endif /* _SAMSRV_PCH_ */
+/* EOF */

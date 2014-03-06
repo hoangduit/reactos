@@ -197,7 +197,7 @@ CmpInitializeHive(OUT PCMHIVE *RegistryHive,
                           CmpFileRead,
                           CmpFileFlush,
                           Cluster,
-                          FileName);
+                          (PUNICODE_STRING)FileName);
     if (!NT_SUCCESS(Status))
     {
         /* Cleanup allocations and fail */

@@ -316,7 +316,6 @@ NtGdiAngleArc(
   DC *pDC;
   BOOL Ret = FALSE;
   gxf_long worker, worker1;
-  KFLOATING_SAVE FloatSave;
 
   pDC = DC_LockDc (hDC);
   if(!pDC)
@@ -330,9 +329,6 @@ NtGdiAngleArc(
     /* Yes, Windows really returns TRUE in this case */
     return TRUE;
   }
-
-  KeSaveFloatingPointState(&FloatSave);
-
   worker.l  = dwStartAngle;
   worker1.l = dwSweepAngle;
   DC_vPrepareDCsForBlit(pDC, pDC->rosdc.CombinedClip->rclBounds,
@@ -344,9 +340,6 @@ NtGdiAngleArc(
   Ret = IntGdiAngleArc( pDC, x, y, dwRadius, worker.f, worker1.f);
   DC_vFinishBlit(pDC, NULL);
   DC_UnlockDc( pDC );
-
-  KeRestoreFloatingPointState(&FloatSave);
-
   return Ret;
 }
 
@@ -366,7 +359,6 @@ NtGdiArcInternal(
 {
   DC *dc;
   BOOL Ret;
-  KFLOATING_SAVE FloatSave;
 
   dc = DC_LockDc (hDC);
   if(!dc)
@@ -390,8 +382,6 @@ NtGdiArcInternal(
   if (dc->pdcattr->ulDirty_ & (DIRTY_LINE | DC_PEN_DIRTY))
     DC_vUpdateLineBrush(dc);
 
-  KeSaveFloatingPointState(&FloatSave);
-
   Ret = IntGdiArcInternal(
                   arctype,
                   dc,
@@ -404,7 +394,6 @@ NtGdiArcInternal(
                   XEndArc,
                   YEndArc);
 
-  KeRestoreFloatingPointState(&FloatSave);
   DC_vFinishBlit(dc, NULL);
   DC_UnlockDc( dc );
   return Ret;

@@ -142,7 +142,7 @@ NtWaitForMultipleObjects(IN ULONG ObjectCount,
     do
     {
         /* Use the right Executive Handle */
-        if (ObpIsKernelHandle(Handles[i], PreviousMode))
+        if (ObIsKernelHandle(Handles[i], PreviousMode))
         {
             /* Use the System Handle Table and decode */
             HandleTable = ObpKernelHandleTable;

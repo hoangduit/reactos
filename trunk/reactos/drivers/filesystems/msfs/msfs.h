@@ -10,6 +10,7 @@
 #define __DRIVERS_FS_MS_MSFS_H
 
 #include <ntifs.h>
+#include <iotypes.h>
 
 #define DEFAULTAPI NTAPI
 

@@ -7,10 +7,11 @@ list(APPEND SOURCE
     enum.c
     geometry.c
     part.c
-    pnp.c
-    disk.h)
+    pnp.c)
 
-add_library(disk_new SHARED ${SOURCE} disk.rc)
+add_library(disk_new SHARED
+    ${SOURCE}
+    disk.rc)
 
 target_link_libraries(disk_new libcntpr wdmguid)
 if(ARCH STREQUAL "i386")
@@ -23,5 +24,4 @@ endif()
 
 set_module_type(disk_new kernelmodedriver)
 add_importlibs(disk_new classpnp ntoskrnl hal)
-add_pch(disk_new disk.h SOURCE)
 add_cd_file(TARGET disk_new DESTINATION reactos/system32/drivers NO_CAB FOR all)

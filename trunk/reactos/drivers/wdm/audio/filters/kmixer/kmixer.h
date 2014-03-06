@@ -1,7 +1,12 @@
-#ifndef _KMIXER_PCH_
-#define _KMIXER_PCH_
-
+#include <ntddk.h>
 #include <portcls.h>
+#include <ks.h>
+#include <ksmedia.h>
+#include <swenum.h>
+#define YDEBUG
+#include <debug.h>
+
+#include <samplerate.h>
 #include <float_cast.h>
 
 typedef struct
@@ -32,5 +37,3 @@ CreatePin(
 #define KeSaveFloatingPointState(x) ((void)(x), STATUS_SUCCESS)
 #define KeRestoreFloatingPointState(x) ((void)0)
 #endif
-
-#endif /* _KMIXER_PCH_ */

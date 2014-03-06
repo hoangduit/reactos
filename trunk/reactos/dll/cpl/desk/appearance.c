@@ -97,7 +97,7 @@ static INT_PTR
 AppearancePage_OnInit(HWND hwndDlg)
 {
     INT iListIndex;
-    HWND hwndTheme;
+    HWND hwndColor, hwndTheme;
     GLOBALS *g;
     RECT rcPreview;
     HDC hdcScreen;
@@ -142,6 +142,7 @@ AppearancePage_OnInit(HWND hwndDlg)
         SelectObject(g->hdcThemePreview, g->hbmpThemePreview);
         ReleaseDC(NULL, hdcScreen);
 
+        hwndColor = GetDlgItem(hwndDlg, IDC_APPEARANCE_COLORSCHEME);
         hwndTheme = GetDlgItem(hwndDlg, IDC_APPEARANCE_VISUAL_STYLE);
 
         for (pTheme = g->pThemes; pTheme; pTheme = pTheme->NextTheme)

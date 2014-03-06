@@ -6,6 +6,4 @@
  * PROGRAMMERS: Benedikt Freisen
  */
 
-void RegisterWclSizebox();
-
 LRESULT CALLBACK SizeboxWinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);

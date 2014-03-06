@@ -4,8 +4,7 @@ list(APPEND SOURCE
     vgadata.c
     vga.c
     vbemodes.c
-    vbe.c
-    vga.h)
+    vbe.c)
 
 add_library(vga SHARED
     ${SOURCE}
@@ -22,6 +21,6 @@ endif()
 set_module_type(vga kernelmodedriver)
 add_importlibs(vga videoprt)
 
-add_pch(vga vga.h SOURCE)
+add_pch(vga vga.h)
 
 add_cd_file(TARGET vga DESTINATION reactos/system32/drivers FOR all)

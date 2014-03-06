@@ -28,13 +28,12 @@ list(APPEND SOURCE
     toolsband.cpp
     travellog.cpp
     utility.cpp
-    precomp.h)
+    dllinstall.c
+    ${CMAKE_CURRENT_BINARY_DIR}/browseui.def)
 
 add_library(browseui SHARED
     ${SOURCE}
-    dllinstall.c
-    browseui.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/browseui.def)
+    browseui.rc)
 
 set_module_type(browseui win32dll UNICODE)
 
@@ -56,5 +55,5 @@ add_importlibs(browseui
     kernel32
     ntdll)
 
-add_pch(browseui precomp.h SOURCE)
+add_pch(browseui precomp.h)
 add_cd_file(TARGET browseui DESTINATION reactos/system32 FOR all)

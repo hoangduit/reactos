@@ -36,4 +36,4 @@ private:
 	pDropZoneProc DropZoneCallback;
 };
 
-#endif /* DROPZONE_INCLUDED */
+#endif

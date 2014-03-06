@@ -23,11 +23,26 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * Code for glGetTexImage() and glGetCompressedTexImage().
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "bufferobj.h"
+#include "enums.h"
+#include "context.h"
+#include "formats.h"
+#include "format_unpack.h"
+#include "image.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "pack.h"
+#include "texgetimage.h"
+#include "teximage.h"
+
+
 
 /**
  * Can the given type represent negative values?

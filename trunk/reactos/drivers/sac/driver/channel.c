@@ -10,6 +10,8 @@
 
 #include "sacdrv.h"
 
+/* GLOBALS ********************************************************************/
+
 /* FUNCTIONS ******************************************************************/
 
 BOOLEAN
@@ -573,3 +575,4 @@ ChannelClose(IN PSAC_CHANNEL Channel)
     Status = ChannelDereferenceHandles(Channel);
     return Status;
 }
+

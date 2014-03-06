@@ -13,6 +13,9 @@
 #include <reactos/rossym.h>
 #include "rossympriv.h"
 
+#define NDEBUG
+#include <debug.h>
+
 static PVOID
 RosSymAllocMemUM(ULONG_PTR Size)
 {
@@ -38,3 +41,5 @@ RosSymInitUserMode(VOID)
 
   RosSymInit(&KmCallbacks);
 }
+
+/* EOF */

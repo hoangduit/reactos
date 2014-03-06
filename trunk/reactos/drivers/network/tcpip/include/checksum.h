@@ -7,6 +7,7 @@
 
 #pragma once
 
+
 ULONG ChecksumFold(
   ULONG Sum);
 

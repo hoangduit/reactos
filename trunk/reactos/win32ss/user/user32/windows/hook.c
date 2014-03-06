@@ -571,9 +571,8 @@ User32CallHookProcFromKernel(PVOID Arguments, ULONG ArgumentLength)
   WPARAM wParam = 0;
   LPARAM lParam = 0;
   LRESULT Result = 0;
-  BOOL Hit = FALSE, Loaded = FALSE;
+  BOOL Hit = FALSE;
   HMODULE mod = NULL;
-  NTSTATUS Status = STATUS_SUCCESS;
 
   Common = (PHOOKPROC_CALLBACK_ARGUMENTS) Arguments;
 
@@ -588,14 +587,10 @@ User32CallHookProcFromKernel(PVOID Arguments, ULONG ArgumentLength)
         {
            ERR("Failed to load Hook Module.\n");
         }
-        else
-        {
-           Loaded = TRUE; // Free it only when loaded.
-        }
      }
      if (mod)
      {
-        TRACE("Loading Hook Module. %S\n",Common->ModuleName);
+        TRACE("Loading Hook Module.\n");
         Proc = (HOOKPROC)((char *)mod + Common->offPfn);
      }
   }
@@ -639,7 +634,7 @@ User32CallHookProcFromKernel(PVOID Arguments, ULONG ArgumentLength)
             lParam = Common->lParam;
             break;
         default:
-          if (Loaded) FreeLibrary(mod);
+          if (mod) FreeLibrary(mod);
           ERR("HCBT_ not supported = %d\n", Common->Code);
           return ZwCallbackReturn(NULL, 0, STATUS_NOT_SUPPORTED);
       }
@@ -763,18 +758,15 @@ User32CallHookProcFromKernel(PVOID Arguments, ULONG ArgumentLength)
       _SEH2_END;
       break;
     default:
-      if (Loaded) FreeLibrary(mod);
-      ERR("WH_ not supported = %d\n", Common->HookId);
+      if (mod) FreeLibrary(mod);
       return ZwCallbackReturn(NULL, 0, STATUS_NOT_SUPPORTED);
   }
   if (Hit)
   {
      ERR("Hook Exception! Id: %d, Code %d, Proc 0x%x\n",Common->HookId,Common->Code,Proc);
-     Status = STATUS_UNSUCCESSFUL;
   }
-  if (Loaded) FreeLibrary(mod);
-  Common->Result = Result;
-  return ZwCallbackReturn(Arguments, ArgumentLength, Status);
+  if (mod) FreeLibrary(mod);
+  return ZwCallbackReturn(&Result, sizeof(LRESULT), STATUS_SUCCESS);
 }
 
 NTSTATUS WINAPI

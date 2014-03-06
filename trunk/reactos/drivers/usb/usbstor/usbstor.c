@@ -10,10 +10,9 @@
 
 /* INCLUDES ******************************************************************/
 
-#include "usbstor.h"
-
 #define NDEBUG
-#include <debug.h>
+#define INITGUID
+#include "usbstor.h"
 
 /* PUBLIC AND PRIVATE FUNCTIONS **********************************************/
 
@@ -293,3 +292,4 @@ DriverEntry(
 
     return STATUS_SUCCESS;
 }
+

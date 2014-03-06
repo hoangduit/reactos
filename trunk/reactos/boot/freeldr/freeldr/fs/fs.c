@@ -25,9 +25,6 @@
 
 DBG_DEFAULT_CHANNEL(FILESYSTEM);
 
-#define TAG_DEVICE_NAME 'NDsF'
-#define TAG_DEVICE 'vDsF'
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +280,7 @@ LONG ArcOpen(CHAR* Path, OPENMODE OpenMode, ULONG* FileId)
     Length = FileName - Path + Count;
     if (Count != 0)
     {
-        DeviceName = FrLdrTempAlloc(FileName - Path + Count, TAG_DEVICE_NAME);
+        DeviceName = MmHeapAlloc(FileName - Path + Count);
         if (!DeviceName)
             return ENOMEM;
         for (p = Path, q = DeviceName; p != FileName; p++)
@@ -420,7 +417,7 @@ VOID FsRegisterDevice(CHAR* Prefix, const DEVVTBL* FuncTable)
     TRACE("FsRegisterDevice() Prefix = %s\n", Prefix);
 
     Length = strlen(Prefix) + 1;
-    pNewEntry = FrLdrTempAlloc(sizeof(DEVICE) + Length, TAG_DEVICE);
+    pNewEntry = MmHeapAlloc(sizeof(DEVICE) + Length);
     if (!pNewEntry)
         return;
     pNewEntry->FuncTable = FuncTable;

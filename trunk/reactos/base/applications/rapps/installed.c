@@ -23,7 +23,7 @@ GetApplicationString(HKEY hKey, LPWSTR lpKeyName, LPWSTR lpString)
         return TRUE;
     }
 
-    (VOID)StringCchCopyW(lpString, MAX_PATH, L"---");
+    wcscpy(lpString, L"---");
 
     return FALSE;
 }

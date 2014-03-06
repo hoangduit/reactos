@@ -95,13 +95,10 @@ UserCreateWinstaDirectory()
 
 /* OBJECT CALLBACKS  **********************************************************/
 
-NTSTATUS
-APIENTRY
-IntWinStaObjectDelete(
-    _In_ PVOID Parameters)
+VOID APIENTRY
+IntWinStaObjectDelete(PWIN32_DELETEMETHOD_PARAMETERS Parameters)
 {
-    PWIN32_DELETEMETHOD_PARAMETERS DeleteParameters = Parameters;
-   PWINSTATION_OBJECT WinSta = (PWINSTATION_OBJECT)DeleteParameters->Object;
+   PWINSTATION_OBJECT WinSta = (PWINSTATION_OBJECT)Parameters->Object;
 
    TRACE("Deleting window station (0x%p)\n", WinSta);
 
@@ -110,34 +107,30 @@ IntWinStaObjectDelete(
    RtlDestroyAtomTable(WinSta->AtomTable);
 
    RtlFreeUnicodeString(&WinSta->Name);
-
-   return STATUS_SUCCESS;
 }
 
 NTSTATUS
 APIENTRY
-IntWinStaObjectParse(
-    _In_ PVOID Parameters)
+IntWinStaObjectParse(PWIN32_PARSEMETHOD_PARAMETERS Parameters)
 {
-    PWIN32_PARSEMETHOD_PARAMETERS ParseParameters = Parameters;
-    PUNICODE_STRING RemainingName = ParseParameters->RemainingName;
+    PUNICODE_STRING RemainingName = Parameters->RemainingName;
 
     /* Assume we don't find anything */
-    *ParseParameters->Object = NULL;
+    *Parameters->Object = NULL;
 
     /* Check for an empty name */
     if (!RemainingName->Length)
     {
         /* Make sure this is a window station, can't parse a desktop now */
-        if (ParseParameters->ObjectType != ExWindowStationObjectType)
+        if (Parameters->ObjectType != ExWindowStationObjectType)
         {
             /* Fail */
             return STATUS_OBJECT_TYPE_MISMATCH;
         }
 
         /* Reference the window station and return */
-        ObReferenceObject(ParseParameters->ParseObject);
-        *ParseParameters->Object = ParseParameters->ParseObject;
+        ObReferenceObject(Parameters->ParseObject);
+        *Parameters->Object = Parameters->ParseObject;
         return STATUS_SUCCESS;
     }
 
@@ -160,19 +153,19 @@ IntWinStaObjectParse(
     /*
      * Check if we are parsing a desktop.
      */
-    if (ParseParameters->ObjectType == ExDesktopObjectType)
+    if (Parameters->ObjectType == ExDesktopObjectType)
     {
         /* Then call the desktop parse routine */
-        return IntDesktopObjectParse(ParseParameters->ParseObject,
-                                     ParseParameters->ObjectType,
-                                     ParseParameters->AccessState,
-                                     ParseParameters->AccessMode,
-                                     ParseParameters->Attributes,
-                                     ParseParameters->CompleteName,
+        return IntDesktopObjectParse(Parameters->ParseObject,
+                                     Parameters->ObjectType,
+                                     Parameters->AccessState,
+                                     Parameters->AccessMode,
+                                     Parameters->Attributes,
+                                     Parameters->CompleteName,
                                      RemainingName,
-                                     ParseParameters->Context,
-                                     ParseParameters->SecurityQos,
-                                     ParseParameters->Object);
+                                     Parameters->Context,
+                                     Parameters->SecurityQos,
+                                     Parameters->Object);
     }
 
     /* Should hopefully never get here */
@@ -181,15 +174,13 @@ IntWinStaObjectParse(
 
 NTSTATUS
 NTAPI
-IntWinstaOkToClose(
-    _In_ PVOID Parameters)
+IntWinstaOkToClose(PWIN32_OKAYTOCLOSEMETHOD_PARAMETERS Parameters)
 {
-    PWIN32_OKAYTOCLOSEMETHOD_PARAMETERS OkToCloseParameters = Parameters;
     PPROCESSINFO ppi;
 
     ppi = PsGetCurrentProcessWin32Process();
 
-    if(ppi && (OkToCloseParameters->Handle == ppi->hwinsta))
+    if(ppi && (Parameters->Handle == ppi->hwinsta))
     {
         return STATUS_ACCESS_DENIED;
     }

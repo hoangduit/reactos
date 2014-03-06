@@ -5,7 +5,6 @@
  * PURPOSE:         Manages all the partitions of the OS in an interactive way
  * PROGRAMMERS:     Lee Schroeder
  */
-
 #include "diskpart.h"
 
 BOOL attach_main(INT argc, LPWSTR *argv)

@@ -390,6 +390,19 @@ MmGetPageDirectory(VOID)
 
 VOID
 NTAPI
+MmDisableVirtualMapping(IN PEPROCESS Process,
+                        IN PVOID Address,
+                        OUT PBOOLEAN WasDirty,
+                        OUT PPFN_NUMBER Page)
+{
+    //
+    // TODO
+    //
+    UNIMPLEMENTED_DBGBREAK();
+}
+
+VOID
+NTAPI
 MmEnableVirtualMapping(IN PEPROCESS Process,
                        IN PVOID Address)
 {
@@ -560,6 +573,30 @@ MmCreateVirtualMapping(IN PEPROCESS Process,
                                         Protection,
                                         Pages,
                                         PageCount);
+}
+
+VOID
+NTAPI
+MmRawDeleteVirtualMapping(IN PVOID Address)
+{
+    PMMPTE PointerPte;
+
+    //
+    // Get the PTE
+    //
+    PointerPte = MiGetPageTableForProcess(NULL, Address, FALSE);
+    if ((PointerPte) && (PointerPte->u.Hard.Valid))
+    {
+        //
+        // Destroy it
+        //
+        PointerPte->u.Hard.AsUlong = 0;
+
+        //
+        // Flush the TLB
+        //
+        MiFlushTlb(PointerPte, Address);
+    }
 }
 
 VOID
@@ -779,12 +816,14 @@ NTAPI
 MiInitPageDirectoryMap(VOID)
 {
     MEMORY_AREA* MemoryArea = NULL;
+    PHYSICAL_ADDRESS BoundaryAddressMultiple;
     PVOID BaseAddress;
     NTSTATUS Status;
 
     //
     // Create memory area for the PTE area
     //
+    BoundaryAddressMultiple.QuadPart = 0;
     BaseAddress = (PVOID)PTE_BASE;
     Status = MmCreateMemoryArea(MmGetKernelAddressSpace(),
                                 MEMORY_AREA_OWNED_BY_ARM3,
@@ -794,7 +833,7 @@ MiInitPageDirectoryMap(VOID)
                                 &MemoryArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(NT_SUCCESS(Status));
 
     //
@@ -809,7 +848,7 @@ MiInitPageDirectoryMap(VOID)
                                 &MemoryArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(NT_SUCCESS(Status));
 
     //
@@ -824,7 +863,7 @@ MiInitPageDirectoryMap(VOID)
                                 &MemoryArea,
                                 TRUE,
                                 0,
-                                PAGE_SIZE);
+                                BoundaryAddressMultiple);
     ASSERT(NT_SUCCESS(Status));
 }
 

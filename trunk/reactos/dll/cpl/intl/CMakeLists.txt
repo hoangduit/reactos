@@ -1,7 +1,7 @@
 
 spec2def(intl.cpl intl.spec)
 
-list(APPEND SOURCE
+add_library(intl SHARED
     currency.c
     date.c
     generalp.c
@@ -14,10 +14,6 @@ list(APPEND SOURCE
     languages.c
     advanced.c
     sort.c
-    intl.h)
-
-add_library(intl SHARED
-    ${SOURCE}
     intl.rc
     ${CMAKE_CURRENT_BINARY_DIR}/intl.def)
 
@@ -33,5 +29,5 @@ add_importlibs(intl
     kernel32
     ntdll)
 
-add_pch(intl intl.h SOURCE)
+add_pch(intl intl.h)
 add_cd_file(TARGET intl DESTINATION reactos/system32 FOR all)

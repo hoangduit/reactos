@@ -6,8 +6,4 @@
  * PROGRAMMERS: Benedikt Freisen
  */
 
-void RegisterWclSelection();
-
-void ForceRefreshSelectionContents();
-
 LRESULT CALLBACK SelectionWinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);

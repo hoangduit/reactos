@@ -1,21 +1,18 @@
-#ifndef _MSGINA_H
-#define _MSGINA_H
+#define WIN32_NO_STATUS
 
 #include <stdarg.h>
-
-#define WIN32_NO_STATUS
-#define _INC_WINDOWS
-#define COM_NO_WINDOWS_H
-
+#include <stdlib.h>
 #include <windef.h>
 #include <winbase.h>
+#include <wincon.h>
+#include <winreg.h>
+#include <wingdi.h>
+#include <winnls.h>
+#include <winsvc.h>
 #include <winuser.h>
+#include <userenv.h>
 #include <winwlx.h>
-#include <ndk/rtlfuncs.h>
-#include <ntsecapi.h>
-
 #include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(msgina);
 
 #include "resource.h"
 
@@ -31,18 +28,11 @@ typedef struct
     PWLX_DISPATCH_VERSION_1_3 pWlxFuncs;
     HANDLE hDllInstance;
     HWND hStatusWindow;
-    HANDLE LsaHandle;
-    ULONG AuthenticationPackage;
     DWORD AutoLogonState;
-    BOOL bDisableCAD;
-    BOOL bAutoAdminLogon;
-    BOOL bDontDisplayLastUserName;
-    BOOL bShutdownWithoutLogon;
 
-    /* Information to be filled during logon */
+    /* Informations to be filled during logon */
     WCHAR UserName[256];
     WCHAR Domain[256];
-    WCHAR Password[256];
     SYSTEMTIME LogonTime;
     HANDLE UserToken;
     PLUID pAuthenticationId;
@@ -77,29 +67,7 @@ typedef struct _GINA_UI
     PFGINA_DISPLAYLOCKEDNOTICE DisplayLockedNotice;
 } GINA_UI, *PGINA_UI;
 
-/* lsa.c */
-
-BOOL
-ConnectToLsa(
-    PGINA_CONTEXT pgContext);
-
-BOOL
-MyLogonUser(
-    HANDLE LsaHandle,
-    ULONG AuthenticationPackage,
-    LPWSTR lpszUsername,
-    LPWSTR lpszDomain,
-    LPWSTR lpszPassword,
-    PHANDLE phToken);
-
 /* msgina.c */
-
-BOOL
-DoAdminUnlock(
-    IN PGINA_CONTEXT pgContext,
-    IN PWSTR UserName,
-    IN PWSTR Domain,
-    IN PWSTR Password);
 
 BOOL
 DoLoginTasks(
@@ -108,4 +76,4 @@ DoLoginTasks(
     IN PWSTR Domain,
     IN PWSTR Password);
 
-#endif /* _MSGINA_H */
+/* EOF */

@@ -339,13 +339,10 @@ typedef struct _MMPFN
     union
     {
         PFN_NUMBER Flink;
-        ULONG WsIndex;
+        ULONG WsIndex;                       // SavedSwapEntry
         PKEVENT Event;
         NTSTATUS ReadStatus;
         SINGLE_LIST_ENTRY NextStackPfn;
-
-        // HACK for ROSPFN
-        SWAPENTRY SwapEntry;
     } u1;
     PMMPTE PteAddress;
     union
@@ -357,7 +354,7 @@ typedef struct _MMPFN
     {
         struct
         {
-            USHORT ReferenceCount;
+            USHORT ReferenceCount;           // ReferenceCount
             MMPFNENTRY e1;
         };
         struct
@@ -369,10 +366,7 @@ typedef struct _MMPFN
     union
     {
         MMPTE OriginalPte;
-        LONG AweReferenceCount;
-
-        // HACK for ROSPFN
-        PMM_RMAP_ENTRY RmapListHead;
+        LONG AweReferenceCount;              // RmapListHead
     };
     union
     {
@@ -391,9 +385,6 @@ typedef struct _MMPFN
     MI_PFN_USAGES PfnUsage;
     CHAR ProcessName[16];
 #endif
-
-    // HACK until WS lists are supported
-    MMWSLE Wsle;
 } MMPFN, *PMMPFN;
 
 extern PMMPFN MmPfnDatabase;
@@ -521,7 +512,7 @@ MmCreateMemoryArea(
     PMEMORY_AREA *Result,
     BOOLEAN FixedAddress,
     ULONG AllocationFlags,
-    ULONG AllocationGranularity
+    PHYSICAL_ADDRESS BoundaryAddressMultiple OPTIONAL
 );
 
 PMEMORY_AREA
@@ -1301,10 +1292,24 @@ MmInitGlobalKernelPageDirectory(VOID);
 
 VOID
 NTAPI
+MmDisableVirtualMapping(
+    struct _EPROCESS *Process,
+    PVOID Address,
+    BOOLEAN* WasDirty,
+    PPFN_NUMBER Page
+);
+
+VOID
+NTAPI
 MmEnableVirtualMapping(
     struct _EPROCESS *Process,
     PVOID Address
 );
+
+VOID
+NTAPI
+MmRawDeleteVirtualMapping(PVOID Address);
+
 
 VOID
 NTAPI
@@ -1765,36 +1770,3 @@ ExpCheckPoolAllocation(
     PVOID P,
     POOL_TYPE PoolType,
     ULONG Tag);
-
-
-/* session.c *****************************************************************/
-
-_IRQL_requires_max_(APC_LEVEL)
-NTSTATUS
-NTAPI
-MmAttachSession(
-    _Inout_ PVOID SessionEntry,
-    _Out_ PKAPC_STATE ApcState);
-
-_IRQL_requires_max_(APC_LEVEL)
-VOID
-NTAPI
-MmDetachSession(
-    _Inout_ PVOID SessionEntry,
-    _Out_ PKAPC_STATE ApcState);
-
-VOID
-NTAPI
-MmQuitNextSession(
-    _Inout_ PVOID SessionEntry);
-
-PVOID
-NTAPI
-MmGetSessionById(
-    _In_ ULONG SessionId);
-
-_IRQL_requires_max_(APC_LEVEL)
-VOID
-NTAPI
-MmSetSessionLocaleId(
-    _In_ LCID LocaleId);

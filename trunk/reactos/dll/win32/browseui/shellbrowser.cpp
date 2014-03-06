@@ -20,11 +20,6 @@
 
 #include "precomp.h"
 
-#include <shellapi.h>
-#include <htiframe.h>
-
-#include "newatlinterfaces.h"
-
 /*
 TODO:
   **Provide implementation of new and delete that use LocalAlloc

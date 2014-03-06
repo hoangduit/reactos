@@ -4,7 +4,8 @@ Copyright (C) Microsoft Corporation, 1999
 
 --*/
 
-#include "cdrom.h"
+
+#include "sec.h"
 
 NTSTATUS
 NTAPI

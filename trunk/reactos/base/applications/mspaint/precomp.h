@@ -1,18 +1,16 @@
-#ifndef _MSPAINT_H
-#define _MSPAINT_H
-
 #include <stdarg.h>
-
 #include <windef.h>
 #include <winbase.h>
 #include <winuser.h>
+#include <winnls.h>
+#include <winreg.h>
 #include <wingdi.h>
 #include <windowsx.h>
 #include <commdlg.h>
+#include <shellapi.h>
 #include <commctrl.h>
 #include <tchar.h>
 #include <stdlib.h>
-#include <shellapi.h>
 
 #include "definitions.h"
 #include "drawing.h"
@@ -20,6 +18,10 @@
 #include "globalvar.h"
 #include "history.h"
 #include "mouse.h"
+#include "winproc.h"
+#include "palette.h"
+#include "toolsettings.h"
 #include "selection.h"
-
-#endif /* _MSPAINT_H */
+#include "sizebox.h"
+#include "dialogs.h"
+#include "registry.h"

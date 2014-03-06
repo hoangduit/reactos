@@ -11,6 +11,7 @@ DeleteExtractedFiles(
     UNIMPLEMENTED;
 }
 
+
 LPCSTR
 WINAPI
 GetDllVersion(void)
@@ -18,3 +19,4 @@ GetDllVersion(void)
     /* This is what it returns on Windows XP SP3 */
     return "5.1.2600.5512";
 }
+

@@ -56,10 +56,6 @@
 
 #include "precomp.h"
 
-#include <time.h>
-
-#include "getopt.h"
-
 char *__progname;
 
 time_t now;

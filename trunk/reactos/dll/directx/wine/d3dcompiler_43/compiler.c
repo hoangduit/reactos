@@ -17,8 +17,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "d3dcompiler_private.h"
+#define COBJMACROS
+#include "config.h"
+#include "wine/port.h"
+#include "wine/debug.h"
 #include "wine/unicode.h"
+
+#include "d3dcompiler_private.h"
 #include "wine/wpp.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3dcompiler);

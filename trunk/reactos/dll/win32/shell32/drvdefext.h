@@ -19,7 +19,7 @@
  */
 
 #ifndef _DRV_DEF_EXT_H_
-#define _DRV_DEF_EXT_H_
+#define _FILE_DEF_EXT_H_
 
 class CDrvDefExt :
 	public CComCoClass<CDrvDefExt, &CLSID_ShellDrvDefExt>,
@@ -72,4 +72,5 @@ BEGIN_COM_MAP(CDrvDefExt)
 END_COM_MAP()
 };
 
-#endif /* _DRV_DEF_EXT_H_ */
+#endif // _FILE_DEF_EXT_H_
+

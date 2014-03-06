@@ -6,9 +6,6 @@
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
  */
 
-#ifndef _HAL_PCH_
-#define _HAL_PCH_
-
 /* INCLUDES ******************************************************************/
 
 /* C Headers */
@@ -27,6 +24,8 @@
 
 /* IFS/DDK/NDK Headers */
 #include <ntifs.h>
+#include <bugcodes.h>
+#include <ntdddisk.h>
 #include <arc/arc.h>
 
 #include <ndk/asm.h>
@@ -63,4 +62,4 @@
 #include "mps.h"
 #include "halacpi.h"
 
-#endif /* _HAL_PCH_ */
+/* EOF */

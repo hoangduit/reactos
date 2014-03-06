@@ -15,8 +15,14 @@
  */
 
 
-#include <precomp.h>
-
+#include "glheader.h"
+#include "compiler.h" /* for ASSERT */
+#include "context.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "imports.h"
+#include "pixelstore.h"
+#include "teximage.h"
 #include "texpal.h"
 
 #if FEATURE_ES

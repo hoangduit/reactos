@@ -56,7 +56,7 @@ if(ARCH STREQUAL "i386")
     include(legacy.cmake)
     include(up.cmake)
     include(pic.cmake)
-    add_subdirectory(minihal)
+    include(minihal.cmake)
 
     # hal
     add_hal(hal SOURCES up/halup.rc COMPONENTS generic legacy up pic)

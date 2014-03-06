@@ -5,7 +5,7 @@ spec2def(kbdazel.dll kbdazel.spec)
 
 add_library(kbdazel SHARED kbdazel.c kbdazel.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdazel.def)
 
-set_module_type(kbdazel kbdlayout)
+set_entrypoint(kbdazel 0)
 
 add_dependencies(kbdazel psdk)
 

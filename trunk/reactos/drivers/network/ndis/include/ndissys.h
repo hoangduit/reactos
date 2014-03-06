@@ -10,9 +10,15 @@
 #ifndef __NDISSYS_H
 #define __NDISSYS_H
 
+#include <ntifs.h>
 #include <ndis.h>
+#include <xfilter.h>
+#include <afilter.h>
+#include <atm.h>
+#include <ndistapi.h>
+#include <ndisguid.h>
+#include <debug.h>
 
-#include "debug.h"
 #include "miniport.h"
 #include "protocol.h"
 #include "efilter.h"
@@ -62,3 +68,5 @@ ExGetCurrentProcessorCpuUsage(
 #endif
 
 #endif /* __NDISSYS_H */
+
+/* EOF */

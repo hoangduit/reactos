@@ -191,9 +191,7 @@ typedef struct _CONSRV_API_CONNECTINFO
     CONSOLE_START_INFO ConsoleStartInfo;
 } CONSRV_API_CONNECTINFO, *PCONSRV_API_CONNECTINFO;
 
-#if defined(_M_IX86)
 C_ASSERT(sizeof(CONSRV_API_CONNECTINFO) == 0x638);
-#endif
 
 typedef struct
 {
@@ -471,11 +469,13 @@ typedef struct
 typedef struct
 {
     HANDLE InputHandle;
+    BOOL Unicode;
+    BOOL bRead; // TRUE --> Read ; FALSE --> Peek
+
     ULONG InputsRead;
-    PINPUT_RECORD InputRecord;
+
     ULONG Length;
-    WORD wFlags;
-    BOOLEAN Unicode;
+    PINPUT_RECORD InputRecord;
 } CONSOLE_GETINPUT, *PCONSOLE_GETINPUT;
 
 typedef struct
@@ -492,10 +492,9 @@ typedef struct
 typedef struct
 {
     HANDLE InputHandle;
+    BOOL Unicode;
     DWORD Length;
     INPUT_RECORD* InputRecord;
-    BOOL Unicode;
-    BOOL AppendToEnd;
 } CONSOLE_WRITEINPUT, *PCONSOLE_WRITEINPUT;
 
 typedef struct

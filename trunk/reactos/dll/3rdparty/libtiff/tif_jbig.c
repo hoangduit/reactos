@@ -32,7 +32,7 @@
  *
  */
 
-#include <precomp.h>
+#include "tiffiop.h"
 
 #ifdef JBIG_SUPPORT
 #include "jbig.h"

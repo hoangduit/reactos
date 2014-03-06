@@ -1,7 +1,5 @@
 #include "precomp.h"
 
-#include <wincon.h>
-
 #define MAX_ASCII 100
 
 int checkRecv(SOCKET s);

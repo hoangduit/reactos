@@ -14,7 +14,26 @@
  * TODO: detect [number] at compilation, optimize accordingly
  */
 
-#include "precomp.h"
+#define IN_LIBXSLT
+#include "libxslt.h"
+
+#include <string.h>
+
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/valid.h>
+#include <libxml/hash.h>
+#include <libxml/xmlerror.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xpath.h>
+#include "xslt.h"
+#include "xsltInternals.h"
+#include "xsltutils.h"
+#include "imports.h"
+#include "templates.h"
+#include "keys.h"
+#include "pattern.h"
+#include "documents.h"
 
 #ifdef WITH_XSLT_DEBUG
 #define WITH_XSLT_DEBUG_PATTERN

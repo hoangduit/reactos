@@ -12,7 +12,6 @@
 HINSTANCE hInstance = NULL;
 HWND hTrackBar = NULL;
 HWND hToolBar = NULL;
-HMENU hMainMenu = NULL;
 TCHAR szAppTitle[256] = _T("");
 TCHAR szPrevFile[MAX_PATH] = _T("\0");
 WORD wDeviceId;
@@ -20,6 +19,17 @@ BOOL bIsOpened = FALSE;
 BOOL bIsPaused = FALSE;
 UINT MaxFilePos = 0;
 
+/* Known types table */
+static const TYPEBYEXT ExtTypes[] =
+{
+    { _T(".wav"),  WAVE_FILE    },
+    { _T(".wave"), WAVE_FILE    },
+    { _T(".mid"),  MIDI_FILE    },
+    { _T(".midi"), MIDI_FILE    },
+    { _T(".cda"),  AUDIOCD_FILE },
+    { _T(".avi"),  AVI_FILE     },
+    { _T("\0"),        0        }
+};
 
 /* ToolBar Buttons */
 static const TBBUTTON Buttons[] =
@@ -33,26 +43,6 @@ static const TBBUTTON Buttons[] =
     {TBICON_SEEKFORW,  IDC_SEEKFORW, TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, 0},
     {TBICON_FORWARD,   IDC_FORWARD,  TBSTATE_ENABLED, BTNS_BUTTON, {0}, 0, 0}
 };
-
-void EnableMenuItems(void)
-{
-    MCI_GENERIC_PARMS mciGeneric;
-    DWORD dwError;
-
-    EnableMenuItem(hMainMenu, IDM_CLOSE_FILE, MF_BYCOMMAND | MF_ENABLED);
-
-    dwError = mciSendCommand(wDeviceId, MCI_CONFIGURE, MCI_TEST, (DWORD_PTR)&mciGeneric);
-    if (dwError == 0)
-    {
-        EnableMenuItem(hMainMenu, IDM_DEVPROPS, MF_BYCOMMAND | MF_ENABLED);
-    }
-}
-
-void DisableMenuItems(void)
-{
-    EnableMenuItem(hMainMenu, IDM_CLOSE_FILE, MF_BYCOMMAND | MF_GRAYED);
-    EnableMenuItem(hMainMenu, IDM_DEVPROPS, MF_BYCOMMAND | MF_GRAYED);
-}
 
 static VOID
 SetImageList(HWND hwnd)
@@ -99,21 +89,6 @@ SetImageList(HWND hwnd)
                                               TB_SETIMAGELIST,
                                               0,
                                               (LPARAM)hImageList));
-}
-
-static VOID
-ShowMCIError(HWND hwnd, DWORD dwError)
-{
-    TCHAR szErrorMessage[256];
-    TCHAR szTempMessage[300];
-    
-    if (mciGetErrorString(dwError, szErrorMessage, sizeof(szErrorMessage) / sizeof(TCHAR)) == FALSE)
-    {
-        LoadString(hInstance, IDS_DEFAULTMCIERRMSG, szErrorMessage, sizeof(szErrorMessage) / sizeof(TCHAR));
-    }
-
-    _stprintf(szTempMessage, _T("MMSYS%u: %s"), dwError, szErrorMessage);
-    MessageBox(hwnd, szTempMessage, szAppTitle, MB_OK | MB_ICONEXCLAMATION);
 }
 
 static VOID
@@ -166,39 +141,43 @@ InitControls(HWND hwnd)
     SendMessage(hToolBar, TB_ADDBUTTONS, NumButtons, (LPARAM)Buttons);
 }
 
-static BOOL
-IsSupportedFileExtension(LPTSTR lpFileName, LPTSTR lpDeviceName, LPDWORD dwSize)
+static UINT
+IsSupportedFileExtension(LPTSTR lpFileName)
 {
-    HKEY hKey;
-    DWORD dwType;
-    TCHAR *pathend;
+    TCHAR szExt[MAX_PATH];
+    INT DotPos = 0, i, j;
 
-    pathend = _tcsrchr(lpFileName, '.');
-
-    if (pathend == NULL)
+    for (i = _tcslen(lpFileName); i >= 0; --i)
     {
-        return FALSE;
-    }
-
-    pathend++;
-
-    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\MCI Extensions"), 0, KEY_READ, &hKey) == ERROR_SUCCESS)
-    {
-        if (RegQueryValueEx(hKey, pathend, NULL, &dwType, (LPBYTE)lpDeviceName, dwSize) == ERROR_SUCCESS)
+        if (lpFileName[i] == '.')
         {
-            RegCloseKey(hKey);
-            if (dwType != REG_SZ)
-            {
-                return FALSE;
-            }
-
-            return TRUE;
+            DotPos = _tcslen(lpFileName) - i;
+            break;
         }
-        
-        RegCloseKey(hKey);
     }
 
-    return FALSE;
+    if (!DotPos) return UNSUPPORTED_FILE;
+
+    szExt[DotPos + 1] = _T('\0');
+    for (i = _tcslen(lpFileName), j = DotPos; j >= 0; --i, --j)
+    {
+        szExt[j] = lpFileName[i];
+    }
+
+    for (i = 0; ; i++)
+    {
+        if (ExtTypes[i].uType == UNSUPPORTED_FILE)
+        {
+            return UNSUPPORTED_FILE;
+        }
+
+        if (_tcscmp(ExtTypes[i].szExt, szExt) == 0)
+        {
+            return ExtTypes[i].uType;
+        }
+    }
+
+    return UNSUPPORTED_FILE;
 }
 
 static DWORD
@@ -214,9 +193,7 @@ CloseMciDevice(VOID)
         bIsOpened = FALSE;
     }
 
-    DisableMenuItems();
-
-    return 0;
+    return TRUE;
 }
 
 static DWORD
@@ -241,6 +218,7 @@ OpenMciDevice(HWND hwnd, LPTSTR lpType, LPTSTR lpFileName)
     dwError = mciSendCommand(0, MCI_OPEN, MCI_OPEN_TYPE | MCI_OPEN_ELEMENT | MCI_WAIT, (DWORD_PTR)&mciOpen);
     if (dwError != 0)
     {
+        MessageBox(0, _T("Can't open device! (1)"), NULL, MB_OK);
         return dwError;
     }
 
@@ -249,11 +227,11 @@ OpenMciDevice(HWND hwnd, LPTSTR lpType, LPTSTR lpFileName)
     dwError = mciSendCommand(mciOpen.wDeviceID, MCI_STATUS, MCI_STATUS_ITEM | MCI_WAIT, (DWORD_PTR)&mciStatus);
     if (dwError != 0)
     {
+        MessageBox(0, _T("Can't open device! (2)"), NULL, MB_OK);
         return dwError;
     }
 
-    SendMessage(hTrackBar, TBM_SETRANGEMIN, (WPARAM) TRUE, (LPARAM) 1);
-    SendMessage(hTrackBar, TBM_SETRANGEMAX, (WPARAM) TRUE, (LPARAM) mciStatus.dwReturn);
+    SendMessage(hTrackBar, TBM_SETRANGE, (WPARAM) TRUE, (LPARAM) MAKELONG(1, mciStatus.dwReturn));
     SendMessage(hTrackBar, TBM_SETPAGESIZE, 0, 10);
     SendMessage(hTrackBar, TBM_SETLINESIZE, 0, 1);
     SendMessage(hTrackBar, TBM_SETPOS, (WPARAM) TRUE, (LPARAM) 1);
@@ -282,10 +260,7 @@ OpenMciDevice(HWND hwnd, LPTSTR lpType, LPTSTR lpFileName)
     wDeviceId = mciOpen.wDeviceID;
     bIsOpened = TRUE;
     _tcscpy(szPrevFile, lpFileName);
-
-    EnableMenuItems();
-
-    return 0;
+    return TRUE;
 }
 
 static VOID
@@ -312,14 +287,14 @@ SeekPlayback(HWND hwnd, DWORD dwNewPos)
         dwError = mciSendCommand(wDeviceId, MCI_SEEK, MCI_WAIT | MCI_TO, (DWORD_PTR)&mciSeek);
         if (dwError != 0)
         {
-            ShowMCIError(hwnd, dwError);
+            MessageBox(hwnd, _T("SeekPlayback: Can't seek!"), NULL, MB_OK);
         }
 
         mciPlay.dwCallback = (DWORD_PTR)hwnd;
         dwError = mciSendCommand(wDeviceId, MCI_PLAY, MCI_NOTIFY, (DWORD_PTR)&mciPlay);
         if (dwError != 0)
         {
-            ShowMCIError(hwnd, dwError);
+            MessageBox(hwnd, _T("SeekPlayback: Can't play!"), NULL, MB_OK);
         }
     }
 }
@@ -381,7 +356,7 @@ PausePlayback(HWND hwnd)
         dwError = mciSendCommand(wDeviceId, MCI_PAUSE, MCI_WAIT, (DWORD_PTR)&mciGeneric);
         if (dwError != 0)
         {
-            ShowMCIError(hwnd, dwError);
+            MessageBox(hwnd, _T("Can't pause!"), NULL, MB_OK);
         }
         bIsPaused = TRUE;
     }
@@ -398,22 +373,9 @@ ResumePlayback(HWND hwnd)
         dwError = mciSendCommand(wDeviceId, MCI_RESUME, MCI_WAIT, (DWORD_PTR)&mciGeneric);
         if (dwError != 0)
         {
-            ShowMCIError(hwnd, dwError);
+            MessageBox(hwnd, _T("Can't resume!"), NULL, MB_OK);
         }
         bIsPaused = FALSE;
-    }
-}
-
-static VOID
-ShowDeviceProperties(HWND hwnd)
-{
-    MCI_GENERIC_PARMS mciGeneric;
-    DWORD dwError;
-
-    dwError = mciSendCommand(wDeviceId, MCI_CONFIGURE, MCI_WAIT, (DWORD_PTR)&mciGeneric);
-    if (dwError != 0)
-    {
-        ShowMCIError(hwnd, dwError);
     }
 }
 
@@ -444,8 +406,7 @@ PlayFile(HWND hwnd, LPTSTR lpFileName)
 {
     MCI_PLAY_PARMS mciPlay;
     TCHAR szLocalFileName[MAX_PATH];
-    TCHAR szDeviceName[MAX_PATH];
-    DWORD dwSize;
+    UINT FileType;
     MCIERROR mciError;
 
     if (lpFileName == NULL)
@@ -465,23 +426,25 @@ PlayFile(HWND hwnd, LPTSTR lpFileName)
         return;
     }
 
-    dwSize = sizeof(szDeviceName) - 2;
-    _tcsnset(szDeviceName, _T('\0'), dwSize / sizeof(TCHAR));
+    FileType = IsSupportedFileExtension(szLocalFileName);
 
-    if (!IsSupportedFileExtension(szLocalFileName, szDeviceName, &dwSize))
+    switch (FileType)
     {
-        TCHAR szErrorMessage[256];
-
-        LoadString(hInstance, IDS_UNKNOWNFILEEXT, szErrorMessage, sizeof(szErrorMessage) / sizeof(TCHAR));
-        MessageBox(hwnd, szErrorMessage, szAppTitle, MB_OK | MB_ICONEXCLAMATION);
-        return;
-    }
-
-    mciError = OpenMciDevice(hwnd, szDeviceName, szLocalFileName);
-    if (mciError != 0)
-    {
-        ShowMCIError(hwnd, mciError);
-        return;
+        case UNSUPPORTED_FILE:
+            MessageBox(hwnd, _T("Unsupported format!"), NULL, MB_OK);
+            return;
+        case WAVE_FILE:
+            OpenMciDevice(hwnd, _T("waveaudio"), szLocalFileName);
+            break;
+        case MIDI_FILE:
+            OpenMciDevice(hwnd, _T("sequencer"), szLocalFileName);
+            break;
+        case AUDIOCD_FILE:
+            OpenMciDevice(hwnd, _T("cdaudio"), szLocalFileName);
+            break;
+        case AVI_FILE:
+            OpenMciDevice(hwnd, _T("avivideo"), szLocalFileName);
+            break;
     }
 
     SetTimer(hwnd, IDT_PLAYTIMER, 100, (TIMERPROC) PlayTimerProc);
@@ -495,7 +458,7 @@ PlayFile(HWND hwnd, LPTSTR lpFileName)
     mciError = mciSendCommand(wDeviceId, MCI_PLAY, MCI_NOTIFY | MCI_FROM /*| MCI_TO*/, (DWORD_PTR)&mciPlay);
     if (mciError != 0)
     {
-        ShowMCIError(hwnd, mciError);
+        MessageBox(hwnd, _T("Can't play!"), NULL, MB_OK);
     }
 }
 
@@ -538,20 +501,7 @@ MainWndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
     {
         case WM_CREATE:
             InitControls(hwnd);
-            hMainMenu = GetMenu(hwnd);
             break;
-
-        case WM_DROPFILES:
-        {
-            HDROP drophandle;
-            TCHAR droppedfile[MAX_PATH];
-            
-            drophandle = (HDROP)wParam;
-            DragQueryFile(drophandle, 0, droppedfile, sizeof(droppedfile) / sizeof(TCHAR));
-            DragFinish(drophandle);
-            PlayFile(hwnd, droppedfile);
-            break;
-        }
 
         case WM_NOTIFY:
         {
@@ -690,14 +640,6 @@ MainWndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
                     _tcscpy(szPrevFile, _T("\0"));
                     break;
 
-                case IDM_DEVPROPS:
-                    ShowDeviceProperties(hwnd);
-                    break;
-                
-                case IDM_VOLUMECTL:
-                    ShellExecute(hwnd, NULL, _T("SNDVOL32.EXE"), NULL, NULL, SW_SHOWNORMAL);
-                    break;
-
                 case IDM_ABOUT:
         {
                     HICON mplayIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAIN));
@@ -727,7 +669,6 @@ _tWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPTSTR lpCmdLine, INT nCmdShow)
     TCHAR szClassName[] = _T("ROSMPLAY32");
     HWND hwnd;
     MSG msg;
-    DWORD dwError;
 
     hInstance = hInst;
 
@@ -756,16 +697,6 @@ _tWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPTSTR lpCmdLine, INT nCmdShow)
                         NULL,
                         hInstance,
                         NULL);
-
-    DragAcceptFiles(hwnd, TRUE);
-
-    DisableMenuItems();
-
-    dwError = SearchPath(NULL, _T("SNDVOL32.EXE"), NULL, 0, NULL, NULL);
-    if (dwError == 0)
-    {
-        EnableMenuItem(hMainMenu, IDM_VOLUMECTL, MF_BYCOMMAND | MF_GRAYED);
-    }
 
     /* Show it */
     ShowWindow(hwnd, SW_SHOW);

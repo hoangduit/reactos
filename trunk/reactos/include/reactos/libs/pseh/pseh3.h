@@ -244,8 +244,6 @@ void * __cdecl __attribute__((error("Can only be used inside an exception filter
 \
         if (1) \
         { \
-            /* Prevent this block from being optimized away */ \
-            asm volatile ("#\n"); \
             do
 
 

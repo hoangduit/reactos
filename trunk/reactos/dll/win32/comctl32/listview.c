@@ -134,9 +134,28 @@
  *   -- LVGroupComparE
  */
 
-#include "comctl32.h"
+#include <config.h>
+//#include "wine/port.h"
 
+#include <assert.h>
+//#include <ctype.h>
+//#include <string.h>
+//#include <stdlib.h>
+//#include <stdarg.h>
 #include <stdio.h>
+
+//#include "windef.h"
+//#include "winbase.h"
+//#include "winnt.h"
+//#include "wingdi.h"
+//#include "winuser.h"
+//#include "winnls.h"
+//#include "commctrl.h"
+#include "comctl32.h"
+#include <uxtheme.h>
+
+#include <wine/debug.h>
+#include <wine/unicode.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(listview);
 
@@ -8597,7 +8616,7 @@ static DWORD LISTVIEW_SetIconSpacing(LISTVIEW_INFO *infoPtr, INT cx, INT cy)
     return oldspacing;
 }
 
-static inline void set_icon_size(SIZE *size, HIMAGELIST himl, BOOL is_small)
+static inline void set_icon_size(SIZE *size, HIMAGELIST himl, BOOL small)
 {
     INT cx, cy;
     
@@ -8608,8 +8627,8 @@ static inline void set_icon_size(SIZE *size, HIMAGELIST himl, BOOL is_small)
     }
     else
     {
-	size->cx = GetSystemMetrics(is_small ? SM_CXSMICON : SM_CXICON);
-	size->cy = GetSystemMetrics(is_small ? SM_CYSMICON : SM_CYICON);
+	size->cx = GetSystemMetrics(small ? SM_CXSMICON : SM_CXICON);
+	size->cy = GetSystemMetrics(small ? SM_CYSMICON : SM_CYICON);
     }
 }
 

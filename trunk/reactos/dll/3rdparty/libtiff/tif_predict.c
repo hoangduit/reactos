@@ -29,8 +29,7 @@
  *
  * Predictor Tag Support (used by multiple codecs).
  */
-
-#include <precomp.h>
+#include "tiffiop.h"
 #include "tif_predict.h"
 
 #define	PredictorState(tif)	((TIFFPredictorState*) (tif)->tif_data)

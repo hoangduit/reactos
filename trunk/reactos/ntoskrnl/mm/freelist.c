@@ -21,11 +21,13 @@
 #define MODULE_INVOLVED_IN_ARM3
 #include "ARM3/miarm.h"
 
-#define ASSERT_IS_ROS_PFN(x) ASSERT(MI_IS_ROS_PFN(x) == TRUE);
-
 /* GLOBALS ****************************************************************/
 
-PMMPFN MmPfnDatabase;
+// ReactOS to NT Physical Page Descriptor Entry Legacy Mapping Definitions
+#define PHYSICAL_PAGE        MMPFN
+#define PPHYSICAL_PAGE       PMMPFN
+
+PPHYSICAL_PAGE MmPfnDatabase;
 
 PFN_NUMBER MmAvailablePages;
 PFN_NUMBER MmResidentAvailablePages;
@@ -162,7 +164,7 @@ MiAllocatePagesForMdl(IN PHYSICAL_ADDRESS LowAddress,
     PFN_NUMBER PageCount, LowPage, HighPage, SkipPages, PagesFound = 0, Page;
     PPFN_NUMBER MdlPage, LastMdlPage;
     KIRQL OldIrql;
-    PMMPFN Pfn1;
+    PPHYSICAL_PAGE Pfn1;
     INT LookForZeroedPages;
     ASSERT(KeGetCurrentIrql() <= APC_LEVEL);
     DPRINT1("ARM3-DEBUG: Being called with %I64x %I64x %I64x %lx %d %lu\n", LowAddress, HighAddress, SkipBytes, TotalBytes, CacheAttribute, MdlFlags);
@@ -405,7 +407,7 @@ MmSetRmapListHeadPage(PFN_NUMBER Pfn, PMM_RMAP_ENTRY ListHead)
         ASSERT(MiIsPfnInUse(Pfn1) == TRUE);
 
         /* Set the list head address */
-        Pfn1->RmapListHead = ListHead;
+        MI_GET_ROS_DATA(Pfn1)->RmapListHead = ListHead;
     }
     else
     {
@@ -413,7 +415,7 @@ MmSetRmapListHeadPage(PFN_NUMBER Pfn, PMM_RMAP_ENTRY ListHead)
         ASSERT(MiIsPfnInUse(Pfn1) == TRUE);
 
         /* In this case, the RMAP is actually being removed, so clear field */
-        Pfn1->RmapListHead = NULL;
+        MI_GET_ROS_DATA(Pfn1)->RmapListHead = NULL;
 
         /* ReactOS semantics will now release the page, which will make it free and enter a colored list */
     }
@@ -438,7 +440,7 @@ MmGetRmapListHeadPage(PFN_NUMBER Pfn)
     ASSERT_IS_ROS_PFN(Pfn1);
 
     /* Get the list head */
-    ListHead = Pfn1->RmapListHead;
+    ListHead = MI_GET_ROS_DATA(Pfn1)->RmapListHead;
 
     /* Should not have an RMAP for a non-active page */
     ASSERT(MiIsPfnInUse(Pfn1) == TRUE);
@@ -453,14 +455,14 @@ NTAPI
 MmSetSavedSwapEntryPage(PFN_NUMBER Pfn,  SWAPENTRY SwapEntry)
 {
    KIRQL oldIrql;
-   PMMPFN Pfn1;
+   PPHYSICAL_PAGE Page;
 
-   Pfn1 = MiGetPfnEntry(Pfn);
-   ASSERT(Pfn1);
-   ASSERT_IS_ROS_PFN(Pfn1);
+   Page = MiGetPfnEntry(Pfn);
+   ASSERT(Page);
+   ASSERT_IS_ROS_PFN(Page);
 
    oldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
-   Pfn1->u1.SwapEntry = SwapEntry;
+   MI_GET_ROS_DATA(Page)->SwapEntry = SwapEntry;
    KeReleaseQueuedSpinLock(LockQueuePfnLock, oldIrql);
 }
 
@@ -470,14 +472,14 @@ MmGetSavedSwapEntryPage(PFN_NUMBER Pfn)
 {
    SWAPENTRY SwapEntry;
    KIRQL oldIrql;
-   PMMPFN Pfn1;
+   PPHYSICAL_PAGE Page;
 
-   Pfn1 = MiGetPfnEntry(Pfn);
-   ASSERT(Pfn1);
-   ASSERT_IS_ROS_PFN(Pfn1);
+   Page = MiGetPfnEntry(Pfn);
+   ASSERT(Page);
+   ASSERT_IS_ROS_PFN(Page);
 
    oldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
-   SwapEntry = Pfn1->u1.SwapEntry;
+   SwapEntry = MI_GET_ROS_DATA(Page)->SwapEntry;
    KeReleaseQueuedSpinLock(LockQueuePfnLock, oldIrql);
 
    return(SwapEntry);
@@ -487,7 +489,7 @@ VOID
 NTAPI
 MmReferencePage(PFN_NUMBER Pfn)
 {
-   PMMPFN Pfn1;
+   PPHYSICAL_PAGE Page;
 
    DPRINT("MmReferencePage(PysicalAddress %x)\n", Pfn << PAGE_SHIFT);
 
@@ -495,12 +497,12 @@ MmReferencePage(PFN_NUMBER Pfn)
    ASSERT(Pfn != 0);
    ASSERT(Pfn <= MmHighestPhysicalPage);
 
-   Pfn1 = MiGetPfnEntry(Pfn);
-   ASSERT(Pfn1);
-   ASSERT_IS_ROS_PFN(Pfn1);
+   Page = MiGetPfnEntry(Pfn);
+   ASSERT(Page);
+   ASSERT_IS_ROS_PFN(Page);
 
-   ASSERT(Pfn1->u3.e2.ReferenceCount != 0);
-   Pfn1->u3.e2.ReferenceCount++;
+   ASSERT(Page->u3.e2.ReferenceCount != 0);
+   Page->u3.e2.ReferenceCount++;
 }
 
 ULONG
@@ -509,16 +511,16 @@ MmGetReferenceCountPage(PFN_NUMBER Pfn)
 {
    KIRQL oldIrql;
    ULONG RCount;
-   PMMPFN Pfn1;
+   PPHYSICAL_PAGE Page;
 
    DPRINT("MmGetReferenceCountPage(PhysicalAddress %x)\n", Pfn << PAGE_SHIFT);
 
    oldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
-   Pfn1 = MiGetPfnEntry(Pfn);
-   ASSERT(Pfn1);
-   ASSERT_IS_ROS_PFN(Pfn1);
+   Page = MiGetPfnEntry(Pfn);
+   ASSERT(Page);
+   ASSERT_IS_ROS_PFN(Page);
 
-   RCount = Pfn1->u3.e2.ReferenceCount;
+   RCount = Page->u3.e2.ReferenceCount;
 
    KeReleaseQueuedSpinLock(LockQueuePfnLock, oldIrql);
    return(RCount);
@@ -535,22 +537,24 @@ VOID
 NTAPI
 MmDereferencePage(PFN_NUMBER Pfn)
 {
-   PMMPFN Pfn1;
+   PPHYSICAL_PAGE Page;
    DPRINT("MmDereferencePage(PhysicalAddress %x)\n", Pfn << PAGE_SHIFT);
 
-   Pfn1 = MiGetPfnEntry(Pfn);
-   ASSERT(Pfn1);
-   ASSERT_IS_ROS_PFN(Pfn1);
+   Page = MiGetPfnEntry(Pfn);
+   ASSERT(Page);
+   ASSERT_IS_ROS_PFN(Page);
 
-   ASSERT(Pfn1->u3.e2.ReferenceCount != 0);
-   Pfn1->u3.e2.ReferenceCount--;
-   if (Pfn1->u3.e2.ReferenceCount == 0)
+   ASSERT(Page->u3.e2.ReferenceCount != 0);
+   Page->u3.e2.ReferenceCount--;
+   if (Page->u3.e2.ReferenceCount == 0)
    {
         /* Mark the page temporarily as valid, we're going to make it free soon */
-        Pfn1->u3.e1.PageLocation = ActiveAndValid;
+        Page->u3.e1.PageLocation = ActiveAndValid;
 
         /* It's not a ROS PFN anymore */
-        Pfn1->u4.AweAllocation = FALSE;
+        Page->u4.AweAllocation = FALSE;
+        ExFreePoolWithTag(MI_GET_ROS_DATA(Page), 'RsPf');
+        Page->RosMmData = 0;
 
         /* Bring it back into the free list */
         DPRINT("Legacy free: %lx\n", Pfn);
@@ -582,8 +586,11 @@ MmAllocPage(ULONG Type)
    Pfn1->u4.AweAllocation = TRUE;
 
    /* Allocate the extra ReactOS Data and zero it out */
-   Pfn1->u1.SwapEntry = 0;
-   Pfn1->RmapListHead = NULL;
+   Pfn1->RosMmData = (LONG)ExAllocatePoolWithTag(NonPagedPool, sizeof(MMROSPFN), 'RsPf');
+   ASSERT(MI_GET_ROS_DATA(Pfn1) != NULL);
+   ASSERT_IS_ROS_PFN(Pfn1);
+   MI_GET_ROS_DATA(Pfn1)->SwapEntry = 0;
+   MI_GET_ROS_DATA(Pfn1)->RmapListHead = NULL;
 
    return PfnOffset;
 }

@@ -27,7 +27,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+
+#include "glheader.h"
+#include "blend.h"
+#include "context.h"
+#include "enums.h"
+#include "macros.h"
+#include "mtypes.h"
+
+
 
 /**
  * Check if given blend source factor is legal.

@@ -5,7 +5,7 @@ spec2def(kbdindev.dll kbdindev.spec)
 
 add_library(kbdindev SHARED kbdindev.c kbdindev.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdindev.def)
 
-set_module_type(kbdindev kbdlayout)
+set_entrypoint(kbdindev 0)
 
 add_dependencies(kbdindev psdk)
 

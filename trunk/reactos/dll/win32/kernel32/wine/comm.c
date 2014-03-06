@@ -18,7 +18,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <k32.h>
+//#include "config.h"
+//#include "wine/port.h"
+
+#include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+#define NONAMELESSUNION
+#define NONAMELESSSTRUCT
+#include "windef.h"
+#include "winbase.h"
+#include "winerror.h"
+#include "winioctl.h"
+#include "winternl.h"
+//#include "ddk/ntddser.h"
 
 typedef LARGE_INTEGER PHYSICAL_ADDRESS, *PPHYSICAL_ADDRESS;
 #undef SERIAL_LSRMST_ESCAPE
@@ -41,9 +55,14 @@ typedef LARGE_INTEGER PHYSICAL_ADDRESS, *PPHYSICAL_ADDRESS;
 #undef IOCTL_SERIAL_LSRMST_INSERT
 #include <ntddser.h>
 
-#define NDEBUG
-#include <debug.h>
-DEBUG_CHANNEL(comm);
+#include "wine/unicode.h"
+
+#include "wine/debug.h"
+
+#define HeapAlloc RtlAllocateHeap
+#define HeapReAlloc RtlReAllocateHeap
+#define HeapFree RtlFreeHeap
+WINE_DEFAULT_DEBUG_CHANNEL(comm);
 
 /***********************************************************************
  *           COMM_Parse*   (Internal)

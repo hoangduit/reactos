@@ -29,7 +29,16 @@
  * glTexEnv-related functions
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/enums.h"
+#include "main/macros.h"
+#include "main/mtypes.h"
+#include "main/state.h"
+#include "main/texenv.h"
+#include "main/texstate.h"
+
 
 #define TE_ERROR(errCode, msg, value)				\
    _mesa_error(ctx, errCode, msg, _mesa_lookup_enum_by_nr(value));

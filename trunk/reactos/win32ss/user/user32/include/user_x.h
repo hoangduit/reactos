@@ -1,4 +1,3 @@
-#pragma once
 
 static __inline PVOID
 SharedPtrToUser(PVOID Ptr)

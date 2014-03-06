@@ -19,7 +19,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+#include <config.h>
+//#include "wine/port.h"
+
+//#include <stdarg.h>
+//#include <string.h>
+//#include <stdlib.h>
+
+#include <wine/unicode.h>
+#include <windef.h>
+#include <winbase.h>
+#include <wingdi.h>
+#include <winuser.h>
+#include <winreg.h>
+#include <winternl.h>
+#define NO_SHLWAPI_STREAM
+#include <shlwapi.h>
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 /* Get a function pointer from a DLL handle */
 #define GET_FUNC(func, module, name, fail) \

@@ -12,9 +12,6 @@
  */
 
 #include <advapi32.h>
-
-#include <sddl.h>
-
 WINE_DEFAULT_DEBUG_CHANNEL(advapi);
 
 #define MAX_GUID_STRING_LEN 39
@@ -1830,7 +1827,7 @@ static const RECORD SidTable[] =
 	{ SDDL_DOMAIN_GUESTS, WinAccountDomainGuestsSid /* FIXME: DOMAIN_GROUP_RID_GUESTS */ },
 	{ SDDL_DOMAIN_USERS, WinAccountDomainUsersSid /* FIXME: DOMAIN_GROUP_RID_USERS */ },
 	{ SDDL_ENTERPRISE_ADMINS, WinAccountEnterpriseAdminsSid /* FIXME: DOMAIN_GROUP_RID_ENTERPRISE_ADMINS */ },
-	{ SDDL_ENTERPRISE_DOMAIN_CONTROLLERS, WinEnterpriseControllersSid },
+	{ SDDL_ENTERPRISE_DOMAIN_CONTROLLERS, WinLogonIdsSid /* FIXME: SECURITY_SERVER_LOGON_RID */ },
 	{ SDDL_EVERYONE, WinWorldSid },
 	{ SDDL_GROUP_POLICY_ADMINS, WinAccountPolicyAdminsSid /* FIXME: DOMAIN_GROUP_RID_POLICY_ADMINS */ },
 	{ SDDL_INTERACTIVE, WinInteractiveSid },

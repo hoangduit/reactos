@@ -24,8 +24,7 @@
  * OF THIS SOFTWARE.
  */
 
-#include <precomp.h>
-
+#include "tiffiop.h"
 #ifdef CCITT_SUPPORT
 /*
  * TIFF Library.

@@ -1,15 +1,6 @@
-#ifndef _RECYCLEBIN_PRIVATE_H_
-#define _RECYCLEBIN_PRIVATE_H_
-
-#include <stdio.h>
-
-#define COBJMACROS
-
 #include "recyclebin.h"
-#include "recyclebin_v5.h"
-
+#include "sddl.h"
 #include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(recyclebin);
 
 /* Defines */
 
@@ -47,5 +38,3 @@ HRESULT RecycleBinGenericEnum_Constructor(OUT IRecycleBinEnumList **pprbel);
 /* recyclebin_v5.c */
 
 HRESULT RecycleBin5_Constructor(IN LPCWSTR VolumePath, OUT IUnknown **ppUnknown);
-
-#endif /* _RECYCLEBIN_PRIVATE_H_ */

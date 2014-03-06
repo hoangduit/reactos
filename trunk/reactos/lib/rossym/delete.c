@@ -8,12 +8,17 @@
  */
 
 #define NTOSAPI
-#include <ntdef.h>
+#include <ntddk.h>
 #include <reactos/rossym.h>
 #include "rossympriv.h"
+
+#define NDEBUG
+#include <debug.h>
 
 VOID
 RosSymDelete(PROSSYM_INFO RosSymInfo)
 {
   RosSymFreeMem(RosSymInfo);
 }
+
+/* EOF */

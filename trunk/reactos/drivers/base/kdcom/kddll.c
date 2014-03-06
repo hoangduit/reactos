@@ -8,9 +8,6 @@
 
 #include "kddll.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /* GLOBALS ********************************************************************/
 
 PFNDBGPRNT KdpDbgPrint = NULL;

@@ -11,9 +11,6 @@
 extern "C"
 {
 #include "svchost.h"
-
-#include <aclapi.h>
-#include <objidl.h>
 }
 
 /* GLOBALS *******************************************************************/

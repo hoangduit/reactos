@@ -9,10 +9,9 @@
 /* INCLUDES *******************************************************************/
 
 #include "precomp.h"
-#include <sm/smmsg.h> // To go in precomp.h after
-
+#include "sm/smmsg.h" // To go in precomp.h after
 #define NDEBUG
-#include <debug.h>
+#include "debug.h"
 
 /* FUNCTIONS ******************************************************************/
 
@@ -68,11 +67,11 @@ NTAPI
 SmConnectToSm(IN PUNICODE_STRING SbApiPortName,
               IN HANDLE SbApiPort,
               IN ULONG ImageType,
-              OUT PHANDLE SmApiPort)
+              IN HANDLE SmApiPort)
 {
     NTSTATUS Status;
     SB_CONNECTION_INFO ConnectInfo;
-    UNICODE_STRING PortName;
+    UNICODE_STRING DestinationString;
     SECURITY_QUALITY_OF_SERVICE SecurityQos;
     ULONG ConnectInfoLength = sizeof(ConnectInfo);
 
@@ -82,7 +81,7 @@ SmConnectToSm(IN PUNICODE_STRING SbApiPortName,
     SecurityQos.EffectiveOnly = TRUE;
 
     /* Set the SM API port name */
-    RtlInitUnicodeString(&PortName, L"\\SmApiPort");
+    RtlInitUnicodeString(&DestinationString, L"\\SmApiPort");
 
     /* Check if this is a client connecting to SMSS, or SMSS to itself */
     if (SbApiPortName)
@@ -109,7 +108,7 @@ SmConnectToSm(IN PUNICODE_STRING SbApiPortName,
 
     /* Connect to SMSS and exchange connection information */
     Status = NtConnectPort(SmApiPort,
-                           &PortName,
+                           &DestinationString,
                            &SecurityQos,
                            NULL,
                            NULL,

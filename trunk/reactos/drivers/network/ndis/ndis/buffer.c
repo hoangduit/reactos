@@ -10,6 +10,7 @@
 
 #include <ndissys.h>
 
+
 __inline ULONG SkipToOffset(
     IN PNDIS_BUFFER Buffer,
     IN UINT Offset,

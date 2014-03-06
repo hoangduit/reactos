@@ -55,12 +55,10 @@ list(APPEND SOURCE
     xmlwriter.c
     xpath.c
     xpointer.c
-    xmlstring.c
-    libxml.h)
+    xmlstring.c)
 
 add_library(libxml2 ${SOURCE})
 target_link_libraries(libxml2 oldnames)
-add_pch(libxml2 libxml.h SOURCE)
 add_dependencies(libxml2 psdk)
 
 if(NOT MSVC)

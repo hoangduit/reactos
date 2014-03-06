@@ -21,6 +21,8 @@
 
 #include "precomp.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(browseui);
+
 void CACLMulti::release_obj(struct ACLMultiSublist *obj)
 {
     obj->punk->Release();

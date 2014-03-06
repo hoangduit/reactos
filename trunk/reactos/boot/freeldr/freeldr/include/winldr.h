@@ -22,10 +22,6 @@
 
 #include <arc/setupblk.h>
 
-#define TAG_WLDR_DTE 'eDlW'
-#define TAG_WLDR_BDE 'dBlW'
-#define TAG_WLDR_NAME 'mNlW'
-
 /* Entry-point to kernel */
 typedef VOID (NTAPI *KERNEL_ENTRY_POINT) (PLOADER_PARAMETER_BLOCK LoaderBlock);
 

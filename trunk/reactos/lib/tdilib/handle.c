@@ -5,7 +5,7 @@
  * PURPOSE:     TDI transport handle management
  */
 
-#include "precomp.h"
+#include "iphlpapi_private.h"
 
 const PWCHAR TcpFileName = L"\\Device\\Tcp";
 

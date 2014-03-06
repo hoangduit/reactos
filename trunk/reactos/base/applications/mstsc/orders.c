@@ -20,8 +20,6 @@
 
 #include "precomp.h"
 
-#include "orders.h"
-
 extern uint8 *g_next_packet;
 static RDP_ORDER_STATE g_order_state;
 extern BOOL g_use_rdp5;

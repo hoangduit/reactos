@@ -11,9 +11,6 @@
 
 #include "usbccgp.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 USBCCGP_QueryInterface(
     IN PDEVICE_OBJECT DeviceObject,

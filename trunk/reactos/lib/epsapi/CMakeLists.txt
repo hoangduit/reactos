@@ -1,10 +1,8 @@
 
-list(APPEND SOURCE
+add_library(epsapi
     enum/drivers.c
     enum/modules.c
-    enum/processes.c
-    enum/precomp.h)
+    enum/processes.c)
 
-add_library(epsapi ${SOURCE})
-add_pch(epsapi enum/precomp.h SOURCE)
+add_pch(epsapi enum/precomp.h)
 add_dependencies(epsapi psdk)

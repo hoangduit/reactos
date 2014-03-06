@@ -8,10 +8,8 @@
 
 /* INCLUDES *****************************************************************/
 
-#include "vfat.h"
-
 #define NDEBUG
-#include <debug.h>
+#include "vfat.h"
 
 /*
  * update an existing FAT entry

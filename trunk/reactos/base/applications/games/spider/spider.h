@@ -1,6 +1,10 @@
-#ifndef _SPIDER_PCH_
-#define _SPIDER_PCH_
-
+#define WIN32_NO_STATUS
+#include <stdarg.h>
+#include <windef.h>
+#include <winbase.h>
+#include <winuser.h>
+#include <commctrl.h>
+#include <tchar.h>
 #include <cardlib.h>
 
 #include "resource.h"
@@ -42,5 +46,3 @@ void CARDLIBPROC DeckClickProc(CardRegion &stackobj, int iNumClicked);
 void CARDLIBPROC PileDblClickProc(CardRegion &stackobj, int iNumClicked);
 
 void CARDLIBPROC PileRemoveProc(CardRegion &stackobj, int iRemoved);
-
-#endif /* _SPIDER_PCH_ */

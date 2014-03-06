@@ -19,24 +19,22 @@ Notes:
 Revision History:
 
 --*/
-
-#ifndef _DISK_NEW_H_
-#define _DISK_NEW_H_
-
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
 #define NTDDI_VERSION NTDDI_WINXP
 
-#include <ntddk.h>
+#include "ntddk.h"
+#include "scsi.h"
 #include <wmidata.h>
-#include <classpnp.h>
-
+#include "classpnp.h"
 #if defined(JAPAN) && defined(_X86_)
-#include <machine.h>
+#include "machine.h"
 #endif
 
+#include <wmistr.h>
+
 #if defined(_X86_)
-#include <mountdev.h>
+#include "mountdev.h"
 #endif
 
 #ifdef ExAllocatePool
@@ -979,4 +977,3 @@ DiskReadSignature(
 
 #define DiskHashGuid(Guid) (((PULONG) &Guid)[0] ^ ((PULONG) &Guid)[0] ^ ((PULONG) &Guid)[0] ^ ((PULONG) &Guid)[0])
 
-#endif /* _DISK_NEW_H_ */

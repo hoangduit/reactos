@@ -16,6 +16,7 @@
 
 #include "usrmgr.h"
 
+
 typedef struct _USER_DATA
 {
     HMENU hPopupMenu;

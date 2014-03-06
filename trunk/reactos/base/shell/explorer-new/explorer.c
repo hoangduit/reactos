@@ -20,8 +20,6 @@
 
 #include "precomp.h"
 
-#include <winver.h>
-
 HINSTANCE hExplorerInstance;
 HMODULE hUser32;
 HANDLE hProcessHeap;
@@ -220,14 +218,12 @@ GetExplorerRegValueSet(IN HKEY hKey,
     DWORD dwType, dwSize;
     BOOL Ret = FALSE;
 
-    StringCbCopy(szBuffer, sizeof(szBuffer),
+    _tcscpy(szBuffer,
             TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer"));
-    if (FAILED(StringCbCat(szBuffer, sizeof(szBuffer),
-            _T("\\"))))
-        return FALSE;
-    if (FAILED(StringCbCat(szBuffer, sizeof(szBuffer),
-            lpSubKey)))
-    return FALSE;
+    _tcscat(szBuffer,
+            _T("\\"));
+    _tcscat(szBuffer,
+            lpSubKey);
 
     dwSize = sizeof(szBuffer);
     if (RegOpenKeyEx(hKey,
@@ -414,15 +410,6 @@ _tWinMain(IN HINSTANCE hInstance,
 
     if (CreateShellDesktop)
     {
-        /* Initialize shell dde support */
-        ShellDDEInit(TRUE);
-
-        /* Initialize shell icons */
-        FileIconInit(TRUE);
-
-        /* Initialize CLSID_ShellWindows class */
-        WinList_Init();
-
         if (RegisterTrayWindowClass() && RegisterTaskSwitchWndClass())
         {
             Tray = CreateTrayWindow();

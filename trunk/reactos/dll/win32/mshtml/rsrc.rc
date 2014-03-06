@@ -16,9 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <windef.h>
+//#include "windef.h"
 #include <winuser.h>
 #include <commctrl.h>
+//#include "mshtmcid.h"
 
 #include "resource.h"
 
@@ -55,6 +56,9 @@
 #endif
 #ifdef LANGUAGE_SV_SE
     #include "lang/Sv.rc"
+#endif
+#ifdef LANGUAGE_TR_TR
+    #include "lang/Tr.rc"
 #endif
 
 /* UTF-8 */
@@ -97,12 +101,6 @@
 #ifdef LANGUAGE_SL_SI
     #include "lang/Si.rc"
 #endif
-#ifdef LANGUAGE_SQ_AL
-    #include "lang/Sq.rc"
-#endif
-#ifdef LANGUAGE_TR_TR
-    #include "lang/Tr.rc"
-#endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/Uk.rc"
 #endif
@@ -118,4 +116,4 @@ REGINST REGINST mshtml.inf
 /* @makedep: blank.htm */
 blank.htm HTML "blank.htm"
 
-1 WINE_REGISTRY "mshtml_classes.rgs"
+1 WINE_REGISTRY mshtml_classes.rgs

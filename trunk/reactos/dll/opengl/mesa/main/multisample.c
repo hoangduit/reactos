@@ -22,7 +22,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/macros.h"
+#include "main/multisample.h"
+#include "main/mtypes.h"
+
 
 /**
  * Called via glSampleCoverageARB

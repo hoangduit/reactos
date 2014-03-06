@@ -25,7 +25,6 @@
  * UPDATE HISTORY:
  *      07/01/2005  Created
  */
-
 #include "precomp.h"
 
 #define NDEBUG
@@ -336,3 +335,4 @@ FreeObjectPicker(IN IDsObjectPicker *pDsObjectPicker)
 {
     pDsObjectPicker->lpVtbl->Release(pDsObjectPicker);
 }
+

@@ -8,7 +8,6 @@
 
 */
 
-#pragma once
 
 #define TraceLogger(x, ...)   DbgPrint(__VA_ARGS__)
 #define TraceLog(x) TraceLogger x
@@ -50,3 +49,5 @@
         WPP_DEFINE_BIT(CdromSecError)           /* bit 30 = 0x00000000 */ \
         WPP_DEFINE_BIT(CdromSecInfo)            /* bit 31 = 0x00000000 */ \
         )
+
+

@@ -21,7 +21,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+#include "colormac.h"
+#include "format_unpack.h"
+#include "macros.h"
+
+
 
 /* Expand 1, 2, 3, 4, 5, 6-bit values to fill 8 bits */
 

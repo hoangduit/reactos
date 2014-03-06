@@ -21,12 +21,9 @@ Revision History:
 
 --*/
 
+#define CLASS_INIT_GUID 1
 #include "classp.h"
-
-#include <stddef.h>
-
-#include <initguid.h>
-#include <mountdev.h>
+#include "debug.h"
 
 #ifdef ALLOC_PRAGMA
     #pragma alloc_text(INIT, DriverEntry)
@@ -241,7 +238,7 @@ ClassInitialize(
     status = IoAllocateDriverObjectExtension(DriverObject,
                                              CLASS_DRIVER_EXTENSION_KEY,
                                              sizeof(CLASS_DRIVER_EXTENSION),
-                                             (PVOID *)&driverExtension);
+                                             &driverExtension);
 
     if(NT_SUCCESS(status)) {
 
@@ -542,10 +539,13 @@ ClassDispatchPnp(
     PCLASS_DEV_INFO devInfo;
 
     PIO_STACK_LOCATION irpStack = IoGetCurrentIrpStackLocation(Irp);
+    PIO_STACK_LOCATION nextIrpStack = IoGetNextIrpStackLocation(Irp);
 
     NTSTATUS status = Irp->IoStatus.Status;
     BOOLEAN completeRequest = TRUE;
     BOOLEAN lockReleased = FALSE;
+
+    ULONG isRemoved;
 
     PAGED_CODE();
 
@@ -566,7 +566,7 @@ ClassDispatchPnp(
             devInfo = &(initData->PdoData);
         }
 
-        ClassAcquireRemoveLock(DeviceObject, Irp);
+        isRemoved = ClassAcquireRemoveLock(DeviceObject, Irp);
 
         DebugPrint((2, "ClassDispatchPnp (%p,%p): minor code %#x for %s %p\n",
                        DeviceObject, Irp,
@@ -894,6 +894,7 @@ ClassDispatchPnp(
             case IRP_MN_REMOVE_DEVICE:
             case IRP_MN_SURPRISE_REMOVAL: {
 
+                PDEVICE_OBJECT lowerDeviceObject = commonExtension->LowerDeviceObject;
                 UCHAR removeType = irpStack->MinorFunction;
 
                 if (commonExtension->PagingPathCount != 0) {
@@ -1043,7 +1044,7 @@ ClassDispatchPnp(
                         if (NT_SUCCESS(status)) {
 
                             IoAdjustPagingPathCount(
-                                (PLONG)&commonExtension->PagingPathCount,
+                                &commonExtension->PagingPathCount,
                                 irpStack->Parameters.UsageNotification.InPath);
 
                             if (irpStack->Parameters.UsageNotification.InPath) {
@@ -1096,13 +1097,13 @@ ClassDispatchPnp(
                     case DeviceUsageTypeHibernation: {
 
                         IoAdjustPagingPathCount(
-                            (PLONG)&commonExtension->HibernationPathCount,
+                            &commonExtension->HibernationPathCount,
                             irpStack->Parameters.UsageNotification.InPath
                             );
                         status = ClassForwardIrpSynchronous(commonExtension, Irp);
                         if (!NT_SUCCESS(status)) {
                             IoAdjustPagingPathCount(
-                                (PLONG)&commonExtension->HibernationPathCount,
+                                &commonExtension->HibernationPathCount,
                                 !irpStack->Parameters.UsageNotification.InPath
                                 );
                         }
@@ -1112,13 +1113,13 @@ ClassDispatchPnp(
 
                     case DeviceUsageTypeDumpFile: {
                         IoAdjustPagingPathCount(
-                            (PLONG)&commonExtension->DumpPathCount,
+                            &commonExtension->DumpPathCount,
                             irpStack->Parameters.UsageNotification.InPath
                             );
                         status = ClassForwardIrpSynchronous(commonExtension, Irp);
                         if (!NT_SUCCESS(status)) {
                             IoAdjustPagingPathCount(
-                                (PLONG)&commonExtension->DumpPathCount,
+                                &commonExtension->DumpPathCount,
                                 !irpStack->Parameters.UsageNotification.InPath
                                 );
                         }
@@ -1361,7 +1362,7 @@ NTSTATUS NTAPI ClassPnpStartDevice(IN PDEVICE_OBJECT DeviceObject)
             status = ClassGetDescriptor(
                         commonExtension->LowerDeviceObject,
                         &propertyId,
-                        (PSTORAGE_DESCRIPTOR_HEADER *)&fdoExtension->AdapterDescriptor);
+                        &fdoExtension->AdapterDescriptor);
 
             if(!NT_SUCCESS(status)) {
 
@@ -1383,7 +1384,7 @@ NTSTATUS NTAPI ClassPnpStartDevice(IN PDEVICE_OBJECT DeviceObject)
             status = ClassGetDescriptor(
                         commonExtension->LowerDeviceObject,
                         &propertyId,
-                        (PSTORAGE_DESCRIPTOR_HEADER *)&fdoExtension->DeviceDescriptor);
+                        &fdoExtension->DeviceDescriptor);
 
             if(!NT_SUCCESS(status)) {
 
@@ -2112,7 +2113,7 @@ ClassSendStartUnit(
     ClassAcquireRemoveLock(Fdo, irp);
 
     IoSetCompletionRoutine(irp,
-                           ClassAsynchronousCompletion,
+                           (PIO_COMPLETION_ROUTINE)ClassAsynchronousCompletion,
                            context,
                            TRUE,
                            TRUE,
@@ -3002,6 +3003,7 @@ ClassInterpretSenseInfo(
     )
 {
     PFUNCTIONAL_DEVICE_EXTENSION fdoExtension = Fdo->DeviceExtension;
+    PCOMMON_DEVICE_EXTENSION commonExtension = Fdo->DeviceExtension;
     PCLASS_PRIVATE_FDO_DATA fdoData = fdoExtension->PrivateFdoData;
 
     PSENSE_DATA       senseBuffer = Srb->SenseInfoBuffer;
@@ -3451,7 +3453,7 @@ ClassInterpretSenseInfo(
             // count for the physical device
             //
 
-            count = InterlockedIncrement((PLONG)&fdoExtension->MediaChangeCount);
+            count = InterlockedIncrement(&fdoExtension->MediaChangeCount);
             DebugPrint((ClassDebugSenseInfo, "ClassInterpretSenseInfo: "
                         "Media change count for device %d incremented to %#lx\n",
                         fdoExtension->DeviceNumber, count));
@@ -3916,7 +3918,7 @@ ClassInterpretSenseInfo(
         ULONG totalSize;
         ULONG senseBufferSize = 0;
         IO_ERROR_LOG_PACKET staticErrLogEntry = {0};
-        CLASS_ERROR_LOG_DATA staticErrLogData = { { { 0 } } };
+        CLASS_ERROR_LOG_DATA staticErrLogData = {0};
 
         //
         // Calculate the total size of the error log entry.
@@ -4213,7 +4215,7 @@ ClassFindModePage(
     IN BOOLEAN Use6Byte
     )
 {
-    PCHAR limit;
+    PUCHAR limit;
     ULONG  parameterHeaderLength;
     PVOID result = NULL;
 
@@ -6514,11 +6516,9 @@ NTAPI
 ClassSignalCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
-    IN PVOID Context
+    IN PKEVENT Event
     )
 {
-    PKEVENT Event = Context;
-
     KeSetEvent(Event, IO_NO_INCREMENT, FALSE);
 
     return STATUS_MORE_PROCESSING_REQUIRED;
@@ -6557,6 +6557,7 @@ ClassPnpQueryFdoRelations(
     PCLASS_DRIVER_EXTENSION
         driverExtension = IoGetDriverObjectExtension(Fdo->DriverObject,
                                                      CLASS_DRIVER_EXTENSION_KEY);
+    NTSTATUS status;
 
     PAGED_CODE();
 
@@ -6565,8 +6566,8 @@ ClassPnpQueryFdoRelations(
     // one.
     //
 
-    if(InterlockedIncrement((PLONG)&fdoExtension->EnumerationInterlock) == 1) {
-        driverExtension->InitData.ClassEnumerateDevice(Fdo);
+    if(InterlockedIncrement(&(fdoExtension->EnumerationInterlock)) == 1) {
+        status = driverExtension->InitData.ClassEnumerateDevice(Fdo);
     }
 
     Irp->IoStatus.Information = (ULONG_PTR) NULL;
@@ -6575,7 +6576,7 @@ ClassPnpQueryFdoRelations(
                                 Fdo,
                                 BusRelations,
                                 (PDEVICE_RELATIONS*)&Irp->IoStatus.Information);
-    InterlockedDecrement((PLONG)&fdoExtension->EnumerationInterlock);
+    InterlockedDecrement(&(fdoExtension->EnumerationInterlock));
 
     return Irp->IoStatus.Status;
 } // end ClassPnpQueryFdoRelations()
@@ -6928,10 +6929,10 @@ ClassInvalidateBusRelations(
     ASSERT_FDO(Fdo);
     ASSERT(driverExtension->InitData.ClassEnumerateDevice != NULL);
 
-    if(InterlockedIncrement((PLONG)&fdoExtension->EnumerationInterlock) == 1) {
+    if(InterlockedIncrement(&(fdoExtension->EnumerationInterlock)) == 1) {
         status = driverExtension->InitData.ClassEnumerateDevice(Fdo);
     }
-    InterlockedDecrement((PLONG)&fdoExtension->EnumerationInterlock);
+    InterlockedDecrement(&(fdoExtension->EnumerationInterlock));
 
     if(!NT_SUCCESS(status)) {
 
@@ -7123,7 +7124,7 @@ ClassRemoveDevice(
                  *  to delete it ourselves.
                  */
                 ClassAcquireChildLock(fdoExtension);
-                while ((child = ClassRemoveChild(fdoExtension, NULL, FALSE))){
+                while (child = ClassRemoveChild(fdoExtension, NULL, FALSE)){
 
                     //
                     // Yank the pdo.  This routine will unlink the device from the
@@ -7327,10 +7328,11 @@ ClassUpdateInformationInRegistry(
     IN ULONG              InquiryDataLength
     )
 {
+    PFUNCTIONAL_DEVICE_EXTENSION fdoExtension;
     NTSTATUS          status;
     SCSI_ADDRESS      scsiAddress;
     OBJECT_ATTRIBUTES objectAttributes;
-    PSTR              buffer;
+    PUCHAR            buffer;
     STRING            string;
     UNICODE_STRING    unicodeName;
     UNICODE_STRING    unicodeRegistryPath;
@@ -7342,6 +7344,7 @@ ClassUpdateInformationInRegistry(
     PAGED_CODE();
 
     ASSERT(DeviceName);
+    fdoExtension = Fdo->DeviceExtension;
     buffer = NULL;
     targetKey = NULL;
     RtlZeroMemory(&unicodeName,         sizeof(UNICODE_STRING));
@@ -7444,7 +7447,7 @@ ClassUpdateInformationInRegistry(
 
         RtlInitUnicodeString(&unicodeName, L"DeviceName");
 
-        sprintf(buffer, "%s%lu", DeviceName, DeviceNumber);
+        sprintf(buffer, "%s%d", DeviceName, DeviceNumber);
         RtlInitString(&string, buffer);
         status = RtlAnsiStringToUnicodeString(&unicodeData,
                                               &string,
@@ -8701,12 +8704,11 @@ VOID
 NTAPI
 ClasspRetryRequestDpc(
     IN PKDPC Dpc,
-    IN PVOID Context,
+    IN PDEVICE_OBJECT DeviceObject,
     IN PVOID Arg1,
     IN PVOID Arg2
     )
 {
-    PDEVICE_OBJECT deviceObject = Context;
     PFUNCTIONAL_DEVICE_EXTENSION fdoExtension;
     PCOMMON_DEVICE_EXTENSION commonExtension;
     PCLASS_PRIVATE_FDO_DATA fdoData;
@@ -8714,9 +8716,9 @@ ClasspRetryRequestDpc(
     KIRQL irql;
 
 
-    commonExtension = deviceObject->DeviceExtension;
+    commonExtension = DeviceObject->DeviceExtension;
     ASSERT(commonExtension->IsFdo);
-    fdoExtension = deviceObject->DeviceExtension;
+    fdoExtension = DeviceObject->DeviceExtension;
     fdoData = fdoExtension->PrivateFdoData;
 
 

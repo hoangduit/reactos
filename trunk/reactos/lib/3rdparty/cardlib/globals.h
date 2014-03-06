@@ -12,4 +12,4 @@ extern HBITMAP  __hbmPlaceHolder;
 
 extern HPALETTE __hPalette;
 
-#endif /* GLOBALS_INCLUDED */
+#endif

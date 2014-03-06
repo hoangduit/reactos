@@ -28,12 +28,6 @@
 
 #include <usetup.h>
 
-#include "bootsup.h"
-#include "chkdsk.h"
-#include "format.h"
-#include "drivesup.h"
-#include "settings.h"
-
 #define NDEBUG
 #include <debug.h>
 
@@ -676,8 +670,6 @@ LanguagePage(PINPUT_RECORD Ir)
         {
             if (ConfirmQuit(Ir) == TRUE)
                 return QUIT_PAGE;
-            else
-                RedrawGenericList(LanguageList);
         }
         else if (Ir->Event.KeyEvent.uChar.AsciiChar == 0x0D)  /* ENTER */
         {
@@ -1356,7 +1348,7 @@ KeyboardSettingsPage(PINPUT_RECORD Ir)
         }
     }
 
-    return KEYBOARD_SETTINGS_PAGE;
+    return DISPLAY_SETTINGS_PAGE;
 }
 
 
@@ -1422,7 +1414,7 @@ LayoutSettingsPage(PINPUT_RECORD Ir)
         }
     }
 
-    return LAYOUT_SETTINGS_PAGE;
+    return DISPLAY_SETTINGS_PAGE;
 }
 
 

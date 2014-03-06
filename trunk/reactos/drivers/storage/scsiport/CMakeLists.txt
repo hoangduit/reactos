@@ -4,14 +4,11 @@ spec2def(scsiport.sys scsiport.spec ADD_IMPORTLIB)
 list(APPEND SOURCE
     scsiport.c
     stubs.c
-    precomp.h)
-
-add_library(scsiport SHARED
-    ${SOURCE}
     scsiport.rc
     ${CMAKE_CURRENT_BINARY_DIR}/scsiport.def)
-
-add_pch(scsiport precomp.h SOURCE)
+    
+add_library(scsiport SHARED ${SOURCE})
+add_pch(scsiport precomp.h)
 set_module_type(scsiport kernelmodedriver)
 add_importlibs(scsiport ntoskrnl hal)
 

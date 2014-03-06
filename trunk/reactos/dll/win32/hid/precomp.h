@@ -1,9 +1,8 @@
-#ifndef _HID_PCH_
-#define _HID_PCH_
-
 #include <stdarg.h>
-
 #define WIN32_NO_STATUS
+#include <windef.h>
+#include <winbase.h>
+#include <debug.h>
 #define NTOS_MODE_USER
 #include <ndk/umtypes.h>
 
@@ -16,9 +15,11 @@ typedef VOID
 (WINAPI *PINTERFACE_DEREFERENCE)(
   PVOID  Context);
 
+//#include <hidusage.h>
 #include <hidclass.h>
+//#include <hidpi.h>
 
 extern HINSTANCE hDllInstance;
 extern const GUID HidClassGuid;
 
-#endif /* _HID_PCH_ */
+/* EOF */

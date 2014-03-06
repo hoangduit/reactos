@@ -18,6 +18,8 @@ PSAC_CHANNEL ChannelArray[SAC_MAX_CHANNELS];
 LONG ChannelRefCount[SAC_MAX_CHANNELS];
 LONG ChannelReaped[SAC_MAX_CHANNELS];
 SAC_CHANNEL_LOCK ChannelSlotLock[SAC_MAX_CHANNELS];
+LONG CurrentChannelRefCount;
+KMUTEX CurrentChannelLock;
 
 /* FUNCTIONS ******************************************************************/
 

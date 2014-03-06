@@ -25,10 +25,7 @@
  * UPDATE HISTORY:
  *      12/10/2005  Created
  */
-
 #include "precomp.h"
-
-#include <ntsecapi.h>
 
 #define NDEBUG
 #include <debug.h>

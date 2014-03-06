@@ -15,30 +15,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-
 #ifndef _SCRRUN_PRIVATE_H_
-#define _SCRRUN_PRIVATE_H_
-
-#include <wine/config.h>
-
-#include <stdarg.h>
-
-#define WIN32_NO_STATUS
-#define _INC_WINDOWS
-#define COM_NO_WINDOWS_H
-
-#define COBJMACROS
-
-#include <windef.h>
-#include <winbase.h>
-#include <winnls.h>
-#include <objbase.h>
-#include <oleauto.h>
-#include <dispex.h>
-#include <scrrun.h>
-
-#include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(scrrun);
+#define _SCRRUN_PRIVATE_H
 
 extern HRESULT WINAPI FileSystem_CreateInstance(IClassFactory*,IUnknown*,REFIID,void**) DECLSPEC_HIDDEN;
 extern HRESULT WINAPI Dictionary_CreateInstance(IClassFactory*,IUnknown*,REFIID,void**) DECLSPEC_HIDDEN;
@@ -66,4 +44,4 @@ static inline BOOL heap_free(void *mem)
     return HeapFree(GetProcessHeap(), 0, mem);
 }
 
-#endif /* _SCRRUN_PRIVATE_H_ */
+#endif

@@ -11,9 +11,6 @@
 
 #include "usbccgp.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 NTAPI
 FDO_QueryCapabilitiesCompletionRoutine(

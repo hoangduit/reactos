@@ -113,7 +113,6 @@ list(APPEND SOURCE
     vmr9.idl
 #   vmrender.idl
     wbemcli.idl
-    wbemdisp.idl
     wbemprov.idl
     wia_lh.idl
     wia_xp.idl

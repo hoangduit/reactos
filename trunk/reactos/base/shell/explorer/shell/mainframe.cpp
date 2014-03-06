@@ -33,6 +33,8 @@
 */
 extern HWND create_webchildwindow(const WebChildWndInfo& info);
 
+#include "../resource.h"
+
 #include "../dialogs/settings.h"	// for MdiSdiDlg
 
 //#define _NO_REBAR

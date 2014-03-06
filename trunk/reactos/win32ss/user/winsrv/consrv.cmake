@@ -29,7 +29,6 @@ list(APPEND CONSRV_SOURCE
     consrv/frontends/gui/text.c
     consrv/frontends/tui/tuiterm.c
     # consrv/consrv.rc
-    consrv/consrv.h
     )
 
 #
@@ -46,7 +45,6 @@ else()
 endif()
 
 add_library(consrv ${CONSRV_SOURCE})
-add_pch(consrv consrv/consrv.h CONSRV_SOURCE)
 #add_object_library(consrv ${CONSRV_SOURCE})
 
 list(APPEND CONSRV_IMPORT_LIBS psapi)

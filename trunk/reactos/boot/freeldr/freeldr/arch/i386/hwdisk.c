@@ -48,7 +48,7 @@ static LONG DiskClose(ULONG FileId)
 {
     DISKCONTEXT* Context = FsGetDeviceSpecific(FileId);
 
-    FrLdrTempFree(Context, TAG_HW_DISK_CONTEXT);
+    MmHeapFree(Context);
     return ESUCCESS;
 }
 
@@ -97,7 +97,7 @@ static LONG DiskOpen(CHAR* Path, OPENMODE OpenMode, ULONG* FileId)
         SectorCount = PartitionTableEntry.PartitionSectorCount;
     }
 
-    Context = FrLdrTempAlloc(sizeof(DISKCONTEXT), TAG_HW_DISK_CONTEXT);
+    Context = MmHeapAlloc(sizeof(DISKCONTEXT));
     if (!Context)
         return ENOMEM;
     Context->DriveNumber = DriveNumber;

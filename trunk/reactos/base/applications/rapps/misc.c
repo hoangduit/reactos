@@ -8,6 +8,7 @@
 
 #include "rapps.h"
 
+
 /* SESSION Operation */
 #define EXTRACT_FILLFILELIST  0x00000001
 #define EXTRACT_EXTRACTFILES  0x00000002
@@ -111,23 +112,18 @@ GetClientWindowHeight(HWND hwnd)
 VOID
 CopyTextToClipboard(LPCWSTR lpszText)
 {
-    HRESULT hr;
-
-    if (OpenClipboard(NULL))
+    if(OpenClipboard(NULL))
     {
         HGLOBAL ClipBuffer;
         WCHAR *Buffer;
-        DWORD cchBuffer;
 
         EmptyClipboard();
-        cchBuffer = wcslen(lpszText) + 1;
-        ClipBuffer = GlobalAlloc(GMEM_DDESHARE, cchBuffer * sizeof(WCHAR));
-        Buffer = GlobalLock(ClipBuffer);
-        hr = StringCchCopyW(Buffer, cchBuffer, lpszText);
+        ClipBuffer = GlobalAlloc(GMEM_DDESHARE, (wcslen(lpszText) + 1) * sizeof(TCHAR));
+        Buffer = (WCHAR*)GlobalLock(ClipBuffer);
+        wcscpy(Buffer, lpszText);
         GlobalUnlock(ClipBuffer);
 
-        if (SUCCEEDED(hr))
-            SetClipboardData(CF_UNICODETEXT, ClipBuffer);
+        SetClipboardData(CF_UNICODETEXT, ClipBuffer);
 
         CloseClipboard();
     }
@@ -149,35 +145,17 @@ SetWelcomeText(VOID)
 }
 
 VOID
-ShowPopupMenu(HWND hwnd, UINT MenuID, UINT DefaultItem)
+ShowPopupMenu(HWND hwnd, UINT MenuID)
 {
-    HMENU hMenu = NULL;
-    HMENU hPopupMenu;
-    MENUITEMINFO mii;
+    HMENU hPopupMenu = GetSubMenu(LoadMenuW(hInst, MAKEINTRESOURCEW(MenuID)), 0);
     POINT pt;
-
-    if (MenuID)
-    {
-        hMenu = LoadMenuW(hInst, MAKEINTRESOURCEW(MenuID));
-        hPopupMenu = GetSubMenu(hMenu, 0);
-    }
-    else
-        hPopupMenu = GetMenu(hwnd);
-
-    ZeroMemory(&mii, sizeof(mii));
-    mii.cbSize = sizeof(mii);
-    mii.fMask = MIIM_STATE;
-    GetMenuItemInfo(hPopupMenu, DefaultItem, FALSE, &mii);
-    if (!(mii.fState & MFS_GRAYED))
-        SetMenuDefaultItem(hPopupMenu, DefaultItem, FALSE);
 
     GetCursorPos(&pt);
 
     SetForegroundWindow(hwnd);
     TrackPopupMenu(hPopupMenu, 0, pt.x, pt.y, 0, hMainWnd, NULL);
 
-    if (hMenu)
-        DestroyMenu(hMenu);
+    DestroyMenu(hPopupMenu);
 }
 
 BOOL
@@ -231,26 +209,6 @@ StartProcess(LPWSTR lpPath, BOOL Wait)
     return TRUE;
 }
 
-BOOL
-GetStorageDirectory(PWCHAR lpDirectory, DWORD cch)
-{
-    if (cch < MAX_PATH)
-        return FALSE;
-
-    if (!SHGetSpecialFolderPathW(NULL, lpDirectory, CSIDL_LOCAL_APPDATA, TRUE))
-        return FALSE;
-
-    if (FAILED(StringCchCatW(lpDirectory, cch, L"\\rapps")))
-        return FALSE;
-
-    if (!CreateDirectoryW(lpDirectory, NULL) &&
-        GetLastError() != ERROR_ALREADY_EXISTS)
-    {
-        return FALSE;
-    }
-
-    return TRUE;
-}
 
 BOOL
 ExtractFilesFromCab(LPWSTR lpCabName, LPWSTR lpOutputPath)
@@ -304,13 +262,13 @@ InitLogs(VOID)
     if (RegCreateKeyExW(HKEY_LOCAL_MACHINE,
                         szBuf, 0, NULL,
                         REG_OPTION_NON_VOLATILE,
-                        KEY_WRITE, NULL, &hKey, &dwDisp) != ERROR_SUCCESS)
+                        KEY_WRITE, NULL, &hKey, &dwDisp) != ERROR_SUCCESS) 
     {
         return;
     }
 
-    if (!GetModuleFileName(NULL, szPath, sizeof(szPath) / sizeof(szPath[0])))
-        return;
+    if (!GetCurrentDirectoryW(MAX_PATH, szPath)) return;
+    wcscat(szPath, L"\\rapps.exe");
 
     if (RegSetValueExW(hKey,
                        L"EventMessageFile",
@@ -319,13 +277,13 @@ InitLogs(VOID)
                        (LPBYTE)szPath,
                        (DWORD)(wcslen(szPath) + 1) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
-        RegCloseKey(hKey);
+        RegCloseKey(hKey); 
         return;
     }
 
-    dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE |
-             EVENTLOG_INFORMATION_TYPE;
-
+    dwData = EVENTLOG_ERROR_TYPE | EVENTLOG_WARNING_TYPE | 
+             EVENTLOG_INFORMATION_TYPE; 
+ 
     if (RegSetValueExW(hKey,
                        L"TypesSupported",
                        0,
@@ -333,7 +291,7 @@ InitLogs(VOID)
                        (LPBYTE)&dwData,
                        sizeof(DWORD)) != ERROR_SUCCESS)
     {
-        RegCloseKey(hKey);
+        RegCloseKey(hKey); 
         return;
     }
 
@@ -344,7 +302,7 @@ InitLogs(VOID)
                        (LPBYTE)szPath,
                        (DWORD)(wcslen(szPath) + 1) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
-        RegCloseKey(hKey);
+        RegCloseKey(hKey); 
         return;
     }
 
@@ -355,7 +313,7 @@ InitLogs(VOID)
                        (LPBYTE)&dwCategoryNum,
                        sizeof(DWORD)) != ERROR_SUCCESS)
     {
-        RegCloseKey(hKey);
+        RegCloseKey(hKey); 
         return;
     }
 

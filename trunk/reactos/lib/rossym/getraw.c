@@ -8,9 +8,12 @@
  */
 
 #define NTOSAPI
-#include <ntdef.h>
+#include <ntddk.h>
 #include <reactos/rossym.h>
 #include "rossympriv.h"
+
+#define NDEBUG
+#include <debug.h>
 
 ULONG
 RosSymGetRawDataLength(PROSSYM_INFO RosSymInfo)
@@ -36,3 +39,5 @@ RosSymGetRawData(PROSSYM_INFO RosSymInfo, PVOID RawData)
   memcpy((char *) RawData + RosSymHeader->StringsOffset, RosSymInfo->Strings,
          RosSymHeader->StringsLength);
 }
+
+/* EOF */

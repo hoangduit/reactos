@@ -8,9 +8,8 @@ include_directories(${REACTOS_SOURCE_DIR}/include/reactos/libs/sound)
 list(APPEND SOURCE
     detect.c
     registry.c
-    control.c
-    precomp.h)
+    control.c)
 
 add_library(mment4 ${SOURCE})
-add_pch(mment4 precomp.h SOURCE)
+add_pch(mment4 precomp.h)
 add_dependencies(mment4 psdk)

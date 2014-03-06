@@ -21,7 +21,6 @@
 /*
 Implements the toolbar band of a cabinet window
 */
-
 #include "precomp.h"
 
 /*

@@ -19,16 +19,13 @@
 
 #include <freeldr.h>
 
-#define TAG_STRING ' rtS'
-#define TAG_OS_ITEM 'tISO'
-
 static PCSTR CopyString(PCSTR Source)
 {
     PSTR Dest;
 
     if (!Source)
         return NULL;
-    Dest = FrLdrHeapAlloc(strlen(Source) + 1, TAG_STRING);
+    Dest = MmHeapAlloc(strlen(Source) + 1);
     if (Dest)
     {
         strcpy(Dest, Source);
@@ -64,7 +61,7 @@ OperatingSystemItem* InitOperatingSystemList(ULONG* OperatingSystemCountPointer)
     //
     // Allocate memory to hold operating system lists
     //
-    Items = FrLdrHeapAlloc(Count * sizeof(OperatingSystemItem), TAG_OS_ITEM);
+    Items = MmHeapAlloc(Count * sizeof(OperatingSystemItem));
     if (!Items)
     {
         return NULL;

@@ -8,9 +8,9 @@
 
 /* INCLUDES *****************************************************************/
 
-#include "precomp.h"
+#include <wlansvc_s.h>
 
-#define NDEBUG
+//#define NDEBUG
 #include <debug.h>
 
 /* GLOBALS ******************************************************************/

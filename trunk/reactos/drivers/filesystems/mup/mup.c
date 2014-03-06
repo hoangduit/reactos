@@ -31,6 +31,9 @@
 #define NDEBUG
 #include <debug.h>
 
+/* GLOBALS *****************************************************************/
+
+
 /* FUNCTIONS ****************************************************************/
 
 /*
@@ -97,3 +100,4 @@ DriverEntry(PDRIVER_OBJECT DriverObject,
 
     return STATUS_SUCCESS;
 }
+

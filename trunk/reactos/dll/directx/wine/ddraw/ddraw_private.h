@@ -19,30 +19,26 @@
 #ifndef __WINE_DLLS_DDRAW_DDRAW_PRIVATE_H
 #define __WINE_DLLS_DDRAW_DDRAW_PRIVATE_H
 
-#include <config.h>
-#include <wine/port.h>
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
 
 #include <assert.h>
-#include <stdarg.h>
-
-#define _INC_WINDOWS
-#define COM_NO_WINDOW_H
-
 #define COBJMACROS
 #define NONAMELESSSTRUCT
 #define NONAMELESSUNION
+#include <wine/debug.h>
 
-#include <windef.h>
 #include <winbase.h>
 #include <wingdi.h>
 #include <winuser.h>
-#include <d3d.h>
 
-#include <wine/debug.h>
+#include <d3d.h>
+//#include "ddraw.h"
+#ifdef DDRAW_INIT_GUID
+#include <initguid.h>
+#endif
 #include <wine/list.h>
 #include <wine/wined3d.h>
-
-WINE_DEFAULT_DEBUG_CHANNEL(ddraw);
 
 extern const struct wined3d_parent_ops ddraw_null_wined3d_parent_ops DECLSPEC_HIDDEN;
 extern DWORD force_refresh_rate DECLSPEC_HIDDEN;
@@ -61,7 +57,6 @@ struct FvfToDecl
 #define DDRAW_RESTORE_MODE      0x00000004
 #define DDRAW_NO3D              0x00000008
 #define DDRAW_SCL_DDRAW1        0x00000010
-#define DDRAW_SCL_RECURSIVE     0x00000020
 
 #define DDRAW_STRIDE_ALIGNMENT  8
 
@@ -119,9 +114,7 @@ struct ddraw
 #define DDRAW_WINDOW_CLASS_NAME "DirectDrawDeviceWnd"
 
 HRESULT ddraw_init(struct ddraw *ddraw, enum wined3d_device_type device_type) DECLSPEC_HIDDEN;
-void ddraw_d3dcaps1_from_7(D3DDEVICEDESC *caps1, D3DDEVICEDESC7 *caps7) DECLSPEC_HIDDEN;
 void ddraw_destroy_swapchain(struct ddraw *ddraw) DECLSPEC_HIDDEN;
-HRESULT ddraw_get_d3dcaps(const struct ddraw *ddraw, D3DDEVICEDESC7 *caps) DECLSPEC_HIDDEN;
 
 static inline void ddraw_set_swapchain_window(struct ddraw *ddraw, HWND window)
 {
@@ -185,7 +178,6 @@ struct ddraw_surface
 
     /* Clipper objects */
     struct ddraw_clipper *clipper;
-    struct ddraw_palette *palette;
 
     /* For the ddraw surface list */
     struct list             surface_list_entry;
@@ -193,18 +185,9 @@ struct ddraw_surface
     DWORD                   Handle;
 };
 
-struct ddraw_texture
-{
-    unsigned int version;
-    DDSURFACEDESC2 surface_desc;
-
-    struct ddraw_surface *root;
-};
-
-HRESULT ddraw_surface_create(struct ddraw *ddraw, const DDSURFACEDESC2 *surface_desc,
-        struct ddraw_surface **surface, IUnknown *outer_unknown, unsigned int version) DECLSPEC_HIDDEN;
-HRESULT ddraw_surface_init(struct ddraw_surface *surface, struct ddraw *ddraw, struct ddraw_texture *texture,
-        struct wined3d_surface *wined3d_surface, const struct wined3d_parent_ops **parent_ops) DECLSPEC_HIDDEN;
+HRESULT ddraw_surface_create_texture(struct ddraw_surface *surface, DWORD surface_flags) DECLSPEC_HIDDEN;
+HRESULT ddraw_surface_init(struct ddraw_surface *surface, struct ddraw *ddraw,
+        DDSURFACEDESC2 *desc, DWORD flags, UINT version) DECLSPEC_HIDDEN;
 ULONG ddraw_surface_release_iface(struct ddraw_surface *This) DECLSPEC_HIDDEN;
 
 static inline struct ddraw_surface *impl_from_IDirect3DTexture(IDirect3DTexture *iface)
@@ -294,7 +277,7 @@ struct d3d_device
     IUnknown *outer_unknown;
     struct wined3d_device *wined3d_device;
     struct ddraw *ddraw;
-    IUnknown *rt_iface;
+    struct ddraw_surface *target;
 
     struct wined3d_buffer *index_buffer;
     UINT index_buffer_size;
@@ -323,7 +306,7 @@ struct d3d_device
     DWORD vertex_type;
     DWORD render_flags;
     DWORD nb_vertices;
-    BYTE *sysmem_vertex_buffer;
+    LPBYTE sysmem_vertex_buffer;
     DWORD vertex_size;
     DWORD buffer_size;
 
@@ -332,12 +315,16 @@ struct d3d_device
     D3DMATRIXHANDLE          world, proj, view;
 };
 
-HRESULT d3d_device_create(struct ddraw *ddraw, struct ddraw_surface *target, IUnknown *rt_iface,
+HRESULT d3d_device_create(struct ddraw *ddraw, struct ddraw_surface *target,
         UINT version, struct d3d_device **device, IUnknown *outer_unknown) DECLSPEC_HIDDEN;
 enum wined3d_depth_buffer_type d3d_device_update_depth_stencil(struct d3d_device *device) DECLSPEC_HIDDEN;
 
 /* The IID */
 extern const GUID IID_D3DDEVICE_WineD3D DECLSPEC_HIDDEN;
+
+/* Helper functions */
+HRESULT IDirect3DImpl_GetCaps(const struct wined3d *wined3d,
+        D3DDEVICEDESC *Desc123, D3DDEVICEDESC7 *Desc7) DECLSPEC_HIDDEN;
 
 static inline struct d3d_device *impl_from_IDirect3DDevice(IDirect3DDevice *iface)
 {
@@ -386,9 +373,9 @@ struct ddraw_palette
     LONG ref;
 
     struct wined3d_palette *wineD3DPalette;
-    struct ddraw *ddraw;
-    IUnknown *ifaceToRelease;
-    DWORD flags;
+
+    /* IDirectDrawPalette fields */
+    IUnknown                  *ifaceToRelease;
 };
 
 static inline struct ddraw_palette *impl_from_IDirectDrawPalette(IDirectDrawPalette *iface)
@@ -615,6 +602,18 @@ struct member_info
     } while (0)
 
 #define DD_STRUCT_COPY_BYSIZE(to,from) DD_STRUCT_COPY_BYSIZE_(to,from,(from)->dwSize)
+
+#define SIZEOF_END_PADDING(type, last_field) \
+    (sizeof(type) - offsetof(type, last_field) - sizeof(((type *)0)->last_field))
+
+static inline void copy_to_surfacedesc2(DDSURFACEDESC2 *to, DDSURFACEDESC2 *from)
+{
+    DWORD from_size = from->dwSize;
+    if (from_size == sizeof(DDSURFACEDESC))
+        from_size -= SIZEOF_END_PADDING(DDSURFACEDESC, ddsCaps);
+    to->dwSize = sizeof(DDSURFACEDESC2); /* for struct copy */
+    DD_STRUCT_COPY_BYSIZE_(to, from, from_size);
+}
 
 HRESULT hr_ddraw_from_wined3d(HRESULT hr) DECLSPEC_HIDDEN;
 

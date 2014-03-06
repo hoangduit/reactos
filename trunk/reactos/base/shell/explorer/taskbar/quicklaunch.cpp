@@ -28,6 +28,8 @@
 
 #include <precomp.h>
 
+#include "../resource.h"
+
 #include "quicklaunch.h"
 
 

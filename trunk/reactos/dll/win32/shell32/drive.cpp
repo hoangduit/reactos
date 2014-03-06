@@ -19,6 +19,7 @@
  */
 
 #include "precomp.h"
+using namespace std;
 
 #define MAX_PROPERTY_SHEET_PAGE 32
 
@@ -146,7 +147,7 @@ SH_ShowDriveProperties(WCHAR *pwszDrive, LPCITEMIDLIST pidlFolder, LPCITEMIDLIST
     }
 
     CComPtr<IDataObject> pDataObj;
-    HRESULT hr = SHCreateDataObject(pidlFolder, 1, apidl, NULL, IID_PPV_ARG(IDataObject, &pDataObj));
+    HRESULT hr = SHCreateDataObject(pidlFolder, 1, apidl, NULL, IID_IDataObject, (LPVOID *)&pDataObj);
 
     if (SUCCEEDED(hr))
     {

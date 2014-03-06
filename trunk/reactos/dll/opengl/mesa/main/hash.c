@@ -34,7 +34,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "imports.h"
+#include "hash.h"
+
 
 #define TABLE_SIZE 1023  /**< Size of lookup table/array */
 

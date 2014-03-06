@@ -306,3 +306,4 @@ FindScsiAdapter (
 #endif
    return (STATUS_OBJECT_PATH_NOT_FOUND);
 }
+

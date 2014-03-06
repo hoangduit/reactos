@@ -5,9 +5,6 @@
  * PROGRAMMER:      Timo Kreuzer (timo.kreuzer@reactos.org)
  */
 
-#ifndef _BMFD_PCH_
-#define _BMFD_PCH_
-
 #include <stdarg.h>
 #include <windef.h>
 #include <wingdi.h>
@@ -367,4 +364,3 @@ APIENTRY
 BmfdDestroyFont(
     IN FONTOBJ *pfo);
 
-#endif /* _BMFD_PCH_ */

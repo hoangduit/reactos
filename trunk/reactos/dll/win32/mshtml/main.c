@@ -20,11 +20,32 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "mshtml_private.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
 
+//#include <stdarg.h>
+#include <stdio.h>
+
+#define COBJMACROS
+
+#include <windef.h>
+#include <winbase.h>
+//#include "winuser.h"
+#include <winreg.h>
+#include <ole2.h>
 #include <advpub.h>
-#include <rpcproxy.h>
-#include <initguid.h>
+//#include "shlwapi.h"
+#include <optary.h>
+#include "rpcproxy.h"
+#include <shlguid.h>
+
+#include <wine/debug.h>
+
+#define INIT_GUID
+#include "mshtml_private.h"
+#include "resource.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(mshtml);
 
 HINSTANCE hInst;
 DWORD mshtml_tls = TLS_OUT_OF_INDEXES;

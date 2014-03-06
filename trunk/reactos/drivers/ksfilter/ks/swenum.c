@@ -6,13 +6,8 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
 
-#include <stdio.h>
-#include <swenum.h>
-
-#define NDEBUG
-#include <debug.h>
+#include "priv.h"
 
 LONG KsDeviceCount = 0;
 

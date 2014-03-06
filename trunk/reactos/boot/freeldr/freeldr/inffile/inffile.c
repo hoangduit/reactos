@@ -35,12 +35,6 @@
 /* actual string limit is MAX_INF_STRING_LENGTH+1 (plus terminating null) under Windows */
 #define MAX_STRING_LEN        (MAX_INF_STRING_LENGTH+1)
 
-#define TAG_INF_KEY 'KfnI'
-#define TAG_INF_FIELD 'ffnI'
-#define TAG_INF_LINE 'LfnI'
-#define TAG_INF_SECTION 'SfnI'
-#define TAG_INF_CACHE 'CfnI'
-#define TAG_INF_FILE 'FfnI'
 
 typedef struct _INFCACHEFIELD
 {
@@ -164,7 +158,7 @@ InfpCacheFreeLine(
     Next = Line->Next;
     if (Line->Key != NULL)
     {
-        FrLdrTempFree(Line->Key, TAG_INF_KEY);
+        MmHeapFree(Line->Key);
         Line->Key = NULL;
     }
 
@@ -172,12 +166,12 @@ InfpCacheFreeLine(
     while (Line->FirstField != NULL)
     {
         Field = Line->FirstField->Next;
-        FrLdrTempFree(Line->FirstField, TAG_INF_FIELD);
+        MmHeapFree(Line->FirstField);
         Line->FirstField = Field;
     }
     Line->LastField = NULL;
 
-    FrLdrTempFree(Line, TAG_INF_LINE);
+    MmHeapFree(Line);
 
     return Next;
 }
@@ -203,7 +197,7 @@ InfpCacheFreeSection(
     }
     Section->LastLine = NULL;
 
-    FrLdrTempFree(Section, TAG_INF_SECTION);
+    MmHeapFree(Section);
 
     return Next;
 }
@@ -256,7 +250,7 @@ InfpCacheAddSection(
 
     /* Allocate and initialize the new section */
     Size = sizeof(INFCACHESECTION) + strlen(Name);
-    Section = (PINFCACHESECTION)FrLdrTempAlloc(Size, TAG_INF_SECTION);
+    Section = (PINFCACHESECTION)MmHeapAlloc(Size);
     if (Section == NULL)
     {
 //      DPRINT("RtlAllocateHeap() failed\n");
@@ -296,7 +290,7 @@ InfpCacheAddLine(PINFCACHESECTION Section)
         return NULL;
     }
 
-    Line = (PINFCACHELINE)FrLdrTempAlloc(sizeof(INFCACHELINE), TAG_INF_LINE);
+    Line = (PINFCACHELINE)MmHeapAlloc(sizeof(INFCACHELINE));
     if (Line == NULL)
     {
 //      DPRINT("RtlAllocateHeap() failed\n");
@@ -334,7 +328,7 @@ InfpAddKeyToLine(
     if (Line->Key != NULL)
         return NULL;
 
-    Line->Key = FrLdrTempAlloc(strlen(Key) + 1, TAG_INF_KEY);
+    Line->Key = MmHeapAlloc(strlen(Key) + 1);
     if (Line->Key == NULL)
         return NULL;
 
@@ -354,7 +348,7 @@ InfpAddFieldToLine(
     SIZE_T Size;
 
     Size = sizeof(INFCACHEFIELD) + strlen(Data);
-    Field = (PINFCACHEFIELD)FrLdrTempAlloc(Size, TAG_INF_FIELD);
+    Field = (PINFCACHEFIELD)MmHeapAlloc(Size);
     if (Field == NULL)
     {
         return NULL;
@@ -972,7 +966,7 @@ InfOpenFile(
     //
     // Allocate buffer to cache the file
     //
-    FileBuffer = FrLdrTempAlloc(FileSize + 1, TAG_INF_FILE);
+    FileBuffer = MmHeapAlloc(FileSize + 1);
     if (!FileBuffer)
     {
         ArcClose(FileId);
@@ -986,7 +980,7 @@ InfOpenFile(
     if ((ret != ESUCCESS) || (Count != FileSize))
     {
         ArcClose(FileId);
-        FrLdrTempFree(FileBuffer, TAG_INF_FILE);
+        MmHeapFree(FileBuffer);
         return FALSE;
     }
 
@@ -1003,10 +997,10 @@ InfOpenFile(
     //
     // Allocate infcache header
     //
-    Cache = (PINFCACHE)FrLdrTempAlloc(sizeof(INFCACHE), TAG_INF_CACHE);
+    Cache = (PINFCACHE)MmHeapAlloc(sizeof(INFCACHE));
     if (!Cache)
     {
-        FrLdrTempFree(FileBuffer, TAG_INF_FILE);
+        MmHeapFree(FileBuffer);
         return FALSE;
     }
 
@@ -1024,14 +1018,14 @@ InfOpenFile(
                               ErrorLine);
     if (!Success)
     {
-        FrLdrTempFree(Cache, TAG_INF_CACHE);
+        MmHeapFree(Cache);
         Cache = NULL;
     }
 
     //
     // Free file buffer, as it has been parsed
     //
-    FrLdrTempFree(FileBuffer, TAG_INF_FILE);
+    MmHeapFree(FileBuffer);
 
     //
     // Return .inf parsed contents
@@ -1060,7 +1054,7 @@ InfCloseFile(HINF InfHandle)
     }
     Cache->LastSection = NULL;
 
-    FrLdrTempFree(Cache, TAG_INF_CACHE);
+    MmHeapFree(Cache);
 }
 
 

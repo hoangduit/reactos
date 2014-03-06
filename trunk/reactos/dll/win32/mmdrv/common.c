@@ -11,9 +11,6 @@
 
 #include "mmdrv.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /*
     Translates errors to MMRESULT codes.
 */

@@ -22,14 +22,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <config.h>
+#include <wine/port.h>
+
+//#include <math.h>
+#include <stdio.h>
+//#include <string.h>
+
 #include "wined3d_private.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d_shader);
-
-/* pow, mul_high, sub_high, mul_low */
-const float wined3d_srgb_const0[] = {0.41666f, 1.055f, 0.055f, 12.92f};
-/* cmp */
-const float wined3d_srgb_const1[] = {0.0031308f, 0.0f, 0.0f, 0.0f};
 
 static const char * const shader_opcode_names[] =
 {
@@ -1725,6 +1727,7 @@ ULONG CDECL wined3d_shader_incref(struct wined3d_shader *shader)
     return refcount;
 }
 
+/* Do not call while under the GL lock. */
 ULONG CDECL wined3d_shader_decref(struct wined3d_shader *shader)
 {
     ULONG refcount = InterlockedDecrement(&shader->ref);
@@ -1810,14 +1813,14 @@ HRESULT CDECL wined3d_shader_set_local_constants_float(struct wined3d_shader *sh
     return WINED3D_OK;
 }
 
-void find_vs_compile_args(const struct wined3d_state *state, const struct wined3d_shader *shader,
-        WORD swizzle_map, struct vs_compile_args *args)
+void find_vs_compile_args(const struct wined3d_state *state,
+        const struct wined3d_shader *shader, struct vs_compile_args *args)
 {
     args->fog_src = state->render_states[WINED3D_RS_FOGTABLEMODE]
             == WINED3D_FOG_NONE ? VS_FOG_COORD : VS_FOG_Z;
     args->clip_enabled = state->render_states[WINED3D_RS_CLIPPING]
             && state->render_states[WINED3D_RS_CLIPPLANEENABLE];
-    args->swizzle_map = swizzle_map;
+    args->swizzle_map = shader->device->stream_info.swizzle_map;
 }
 
 static BOOL match_usage(BYTE usage1, BYTE usage_idx1, BYTE usage2, BYTE usage_idx2)
@@ -2018,9 +2021,11 @@ static HRESULT geometryshader_init(struct wined3d_shader *shader, struct wined3d
     return WINED3D_OK;
 }
 
-void find_ps_compile_args(const struct wined3d_state *state, const struct wined3d_shader *shader,
-        BOOL position_transformed, struct ps_compile_args *args, const struct wined3d_gl_info *gl_info)
+void find_ps_compile_args(const struct wined3d_state *state,
+        const struct wined3d_shader *shader, struct ps_compile_args *args)
 {
+    struct wined3d_device *device = shader->device;
+    const struct wined3d_gl_info *gl_info = &device->adapter->gl_info;
     const struct wined3d_texture *texture;
     UINT i;
 
@@ -2050,7 +2055,7 @@ void find_ps_compile_args(const struct wined3d_state *state, const struct wined3
             {
                 DWORD tex_transform = flags & ~WINED3D_TTFF_PROJECTED;
 
-                if (!state->shader[WINED3D_SHADER_TYPE_VERTEX])
+                if (!state->vertex_shader)
                 {
                     unsigned int j;
                     unsigned int index = state->texture_states[i][WINED3D_TSS_TEXCOORD_INDEX];
@@ -2149,7 +2154,7 @@ void find_ps_compile_args(const struct wined3d_state *state, const struct wined3
     }
     if (shader->reg_maps.shader_version.major >= 3)
     {
-        if (position_transformed)
+        if (device->stream_info.position_transformed)
             args->vp_mode = pretransformed;
         else if (use_vs(state))
             args->vp_mode = vertexshader;
@@ -2165,7 +2170,7 @@ void find_ps_compile_args(const struct wined3d_state *state, const struct wined3
             switch (state->render_states[WINED3D_RS_FOGTABLEMODE])
             {
                 case WINED3D_FOG_NONE:
-                    if (position_transformed || use_vs(state))
+                    if (device->stream_info.position_transformed || use_vs(state))
                     {
                         args->fog = WINED3D_FFP_PS_FOG_LINEAR;
                         break;

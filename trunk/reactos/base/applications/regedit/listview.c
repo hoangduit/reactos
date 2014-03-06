@@ -20,6 +20,7 @@
 
 #include "regedit.h"
 
+
 #define CX_ICON    16
 #define CY_ICON    16
 #define NUM_ICONS   2

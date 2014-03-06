@@ -1,15 +1,13 @@
-#ifndef _INPUT_H
-#define _INPUT_H
-
-#include <stdarg.h>
-
 #define WIN32_NO_STATUS
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winnls.h>
 #include <winreg.h>
+#include <wingdi.h>
 #include <winuser.h>
 #include <commctrl.h>
+#include <cpl.h>
 #include <tchar.h>
 
 #include "resource.h"
@@ -73,4 +71,4 @@ GetHotkeys(LPTSTR szHotkey, LPTSTR szLangHotkey, LPTSTR szLayoutHotkey);
 
 void ShowLastWin32Error(HWND hWndOwner);
 
-#endif /* _INPUT_H */
+/* EOF */

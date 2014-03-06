@@ -1,11 +1,9 @@
 
 list(APPEND SOURCE
-    dosdev.c
     FindFiles.c
     GetCurrentDirectory.c
     GetDriveType.c
     GetModuleFileName.c
-    interlck.c
     lstrcpynW.c
     MultiByteToWideChar.c
     SetCurrentDirectory.c

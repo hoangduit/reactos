@@ -9,8 +9,6 @@
 
 #include "mmsys.h"
 
-#include <shellapi.h>
-
 #define VOLUME_DIVIDER 0xFFF
 
 typedef struct _IMGINFO

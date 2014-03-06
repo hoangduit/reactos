@@ -26,7 +26,17 @@
  * 
  **************************************************************************/
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/state.h"
+#include "main/api_validate.h"
+#include "main/varray.h"
+#include "main/bufferobj.h"
+#include "main/enums.h"
+#include "main/macros.h"
+
+#include "vbo_context.h"
+
 
 /**
  * All vertex buffers should be in an unmapped state when we're about

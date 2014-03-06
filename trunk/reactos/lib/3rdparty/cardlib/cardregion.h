@@ -1,6 +1,10 @@
 #ifndef CARDREGION_INCLUDED
 #define CARDREGION_INCLUDED
 
+#include "globals.h"
+#include "cardstack.h"
+//#include "cardlib.h"
+
 class CardWindow;
 
 //
@@ -211,4 +215,5 @@ private:
 	HANDLE			mxlock;
 };
 
-#endif /* CARDREGION_INCLUDED */
+#endif
+

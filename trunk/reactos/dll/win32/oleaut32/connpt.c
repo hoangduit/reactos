@@ -22,9 +22,25 @@
  * comments just above that function for information.
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
 
 #include <assert.h>
+#include <stdarg.h>
+//#include <string.h>
+
+#define COBJMACROS
+
+//#include "winerror.h"
+#include <windef.h>
+#include <winbase.h>
+//#include "wingdi.h"
+//#include "winuser.h"
+#include <ole2.h>
+#include <olectl.h>
+//#include "connpt.h"
+
+#include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(ole);
 

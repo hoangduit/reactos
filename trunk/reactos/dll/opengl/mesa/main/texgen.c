@@ -29,7 +29,17 @@
  * glTexGen-related functions
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/enums.h"
+#include "main/macros.h"
+#include "main/mfeatures.h"
+#include "main/texgen.h"
+#include "main/texstate.h"
+#include "math/m_matrix.h"
+#include "main/dispatch.h"
+
 
 #if FEATURE_texgen
 

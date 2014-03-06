@@ -56,8 +56,6 @@ PVOID KernelMemory = 0;
 #define KernelMemorySize            (8 * 1024 * 1024)
 #define XROUNDUP(x,n)               ((((ULONG)x) + ((n) - 1)) & (~((n) - 1)))
 
-#define TAG_MBOOT 'oobM'
-
 char reactos_module_strings[64][256];    // Array to hold module names
 
 /* Load Address of Next Module */
@@ -464,7 +462,7 @@ FrLdrMapModule(FILE *KernelImage, PCHAR ImageName, PCHAR MemLoadAddr, ULONG Kern
     //phnum = ehdr.e_phnum;
     shsize = ehdr.e_shentsize;
     shnum = ehdr.e_shnum;
-    sptr = (PCHAR)FrLdrTempAlloc(shnum * shsize, TAG_MBOOT);
+    sptr = (PCHAR)MmHeapAlloc(shnum * shsize);
 
     /* Read section headers */
     FsSetFilePointer(KernelImage,  ehdr.e_shoff);
@@ -565,14 +563,14 @@ FrLdrMapModule(FILE *KernelImage, PCHAR ImageName, PCHAR MemLoadAddr, ULONG Kern
 
     if (!ELF_SECTION(targetSection)->sh_addr) continue;
 
-    RelocSection = FrLdrTempAlloc(shdr->sh_size, TAG_MBOOT);
+    RelocSection = MmHeapAlloc(shdr->sh_size);
     FsSetFilePointer(KernelImage, relstart);
     FsReadFile(KernelImage, shdr->sh_size, NULL, RelocSection);
 
     /* Get the symbol section */
     shdr = ELF_SECTION(shdr->sh_link);
 
-    SymbolSection = FrLdrTempAlloc(shdr->sh_size, TAG_MBOOT);
+    SymbolSection = MmHeapAlloc(shdr->sh_size);
     FsSetFilePointer(KernelImage, shdr->sh_offset);
     FsReadFile(KernelImage, shdr->sh_size, NULL, SymbolSection);
 
@@ -647,11 +645,11 @@ FrLdrMapModule(FILE *KernelImage, PCHAR ImageName, PCHAR MemLoadAddr, ULONG Kern
 #endif
     }
 
-    FrLdrTempFree(SymbolSection, TAG_MBOOT);
-    FrLdrTempFree(RelocSection, TAG_MBOOT);
+    MmHeapFree(SymbolSection);
+    MmHeapFree(RelocSection);
     }
 
-    FrLdrTempFree(sptr, TAG_MBOOT);
+    MmHeapFree(sptr);
 
     ModuleData->ModStart = (ULONG)MemLoadAddr;
     /* Increase the next Load Base */

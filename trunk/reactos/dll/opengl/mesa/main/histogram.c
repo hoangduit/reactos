@@ -22,9 +22,15 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
 
+#include "glheader.h"
+#include "bufferobj.h"
+#include "colormac.h"
 #include "histogram.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "main/dispatch.h"
+
 
 #if FEATURE_histogram
 

@@ -6,8 +6,7 @@
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
  */
 
-#ifndef _SECUR32_PCH_
-#define _SECUR32_PCH_
+/* INCLUDES ******************************************************************/
 
 #include <stdarg.h>
 
@@ -17,10 +16,10 @@
 #define COM_NO_WINDOWS_H
 #include <windef.h>
 #include <winbase.h>
+#include <winnls.h>
 #define NTOS_MODE_USER
 #include <ndk/rtlfuncs.h>
+#include <lsass/lsass.h>
 
 #include <secext.h>
 #include <security.h>
-
-#endif /* _SECUR32_PCH_ */

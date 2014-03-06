@@ -40,11 +40,7 @@ list(APPEND SOURCE
     src/string.cpp
     src/strstream.cpp
     src/time_facets.cpp
-    src/stlport_prefix.h)
+    src/c_locale.c
+    src/cxa.c)
 
-add_library(stlport
-    ${SOURCE}
-    src/cxa.c
-    src/c_locale.c)
-
-add_pch(stlport src/stlport_prefix.h SOURCE)
+add_library(stlport ${SOURCE})

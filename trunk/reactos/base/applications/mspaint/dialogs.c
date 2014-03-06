@@ -10,8 +10,6 @@
 
 #include "precomp.h"
 
-#include <winnls.h>
-
 /* FUNCTIONS ********************************************************/
 
 LRESULT CALLBACK

@@ -20,9 +20,6 @@
 
 #pragma once
 
-#define TAG_CACHE_DATA 'DcaC'
-#define TAG_CACHE_BLOCK 'BcaC'
-
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 // This structure describes a cached block element. The disk is divided up into

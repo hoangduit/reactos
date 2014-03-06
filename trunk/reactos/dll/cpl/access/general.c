@@ -9,6 +9,7 @@
 
 #include "access.h"
 
+
 #define BAUDTICKS 6
 static UINT nBaudArray[BAUDTICKS] = {300, 1200, 2400, 4800, 9600, 19200};
 

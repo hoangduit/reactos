@@ -13,6 +13,7 @@
 
 #include "ndissys.h"
 
+
 #if DBG
 
 /* See debug.h for debug/trace constants */
@@ -132,3 +133,4 @@ NdisWriteEventLogEntry(
 }
 
 /* EOF */
+

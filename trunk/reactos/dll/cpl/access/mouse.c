@@ -9,6 +9,7 @@
 
 #include "access.h"
 
+
 #define SPEEDTICKS 9
 #define ACCELTICKS 9
 
@@ -50,7 +51,7 @@ MouseKeysDlgProc(HWND hwndDlg,
             /* Set the thumb */
             SendDlgItemMessage(hwndDlg, IDC_MOUSEKEYS_SPEED_TRACK, TBM_SETPOS, TRUE, i);
 
-            /* Set the number of ticks for the acceleration trackbar */
+            /* Set the number of ticks for the accelleration trackbar */
             SendDlgItemMessage(hwndDlg, IDC_MOUSEKEYS_ACCEL_TRACK, TBM_SETRANGE,
                                TRUE, MAKELONG(0, ACCELTICKS - 1));
 

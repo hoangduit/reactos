@@ -20,6 +20,8 @@
 
 #include "setupapi_private.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
+
 static RPC_BINDING_HANDLE LocalBindingHandle = NULL;
 static HSTRING_TABLE LocalStringTable = NULL;
 

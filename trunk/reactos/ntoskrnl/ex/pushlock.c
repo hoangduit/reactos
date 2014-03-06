@@ -472,8 +472,7 @@ ExfAcquirePushLockExclusive(PEX_PUSH_LOCK PushLock)
 {
     EX_PUSH_LOCK OldValue = *PushLock, NewValue, TempValue;
     BOOLEAN NeedWake;
-    EX_PUSH_LOCK_WAIT_BLOCK Block;
-    PEX_PUSH_LOCK_WAIT_BLOCK WaitBlock = &Block;
+    DEFINE_WAIT_BLOCK(WaitBlock);
 
     /* Start main loop */
     for (;;)
@@ -646,8 +645,7 @@ ExfAcquirePushLockShared(PEX_PUSH_LOCK PushLock)
 {
     EX_PUSH_LOCK OldValue = *PushLock, NewValue;
     BOOLEAN NeedWake;
-    EX_PUSH_LOCK_WAIT_BLOCK Block;
-    PEX_PUSH_LOCK_WAIT_BLOCK WaitBlock = &Block;
+    DEFINE_WAIT_BLOCK(WaitBlock);
 
     /* Start main loop */
     for (;;)

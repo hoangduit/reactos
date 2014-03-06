@@ -1,7 +1,6 @@
 /*
  * DESCRIPTION: Default TDI event handlers.
  */
-
 #include "precomp.h"
 
 /*

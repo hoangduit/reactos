@@ -9,8 +9,6 @@
 
 #include "kbdclass.h"
 
-#include <debug.h>
-
 static IO_COMPLETION_ROUTINE ForwardIrpAndWaitCompletion;
 
 static NTSTATUS NTAPI

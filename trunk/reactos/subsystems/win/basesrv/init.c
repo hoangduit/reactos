@@ -9,13 +9,10 @@
 /* INCLUDES *******************************************************************/
 
 #include "basesrv.h"
-
-#include <winreg.h>
+#include "api.h"
 
 #define NDEBUG
 #include <debug.h>
-
-#include "api.h"
 
 /* GLOBALS ********************************************************************/
 

@@ -442,6 +442,82 @@ CmiCompareHashI(
 	return (strncasecmp(Buffer, HashString, 4) == 0);
 }
 
+static BOOLEAN
+CmiCompareKeyNames(
+	IN PCUNICODE_STRING KeyName,
+	IN PCM_KEY_NODE KeyCell)
+{
+	PWCHAR UnicodeName;
+	USHORT i;
+
+	if (KeyCell->Flags & KEY_COMP_NAME)
+	{
+		if (KeyName->Length != KeyCell->NameLength * sizeof(WCHAR))
+			return FALSE;
+
+		for (i = 0; i < KeyCell->NameLength; i++)
+		{
+			if (KeyName->Buffer[i] != ((PCHAR)KeyCell->Name)[i])
+				return FALSE;
+		}
+	}
+	else
+	{
+		if (KeyName->Length != KeyCell->NameLength)
+			return FALSE;
+
+		UnicodeName = (PWCHAR)KeyCell->Name;
+		for (i = 0; i < KeyCell->NameLength / sizeof(WCHAR); i++)
+		{
+			if (KeyName->Buffer[i] != UnicodeName[i])
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+static BOOLEAN
+CmiCompareKeyNamesI(
+	IN PCUNICODE_STRING KeyName,
+	IN PCM_KEY_NODE KeyCell)
+{
+	PWCHAR UnicodeName;
+	USHORT i;
+
+	DPRINT("Flags: %hx\n", KeyCell->Flags);
+
+	if (KeyCell->Flags & KEY_COMP_NAME)
+	{
+		if (KeyName->Length != KeyCell->NameLength * sizeof(WCHAR))
+			return FALSE;
+
+		/* FIXME: use _strnicmp */
+		for (i = 0; i < KeyCell->NameLength; i++)
+		{
+			if (RtlUpcaseUnicodeChar(KeyName->Buffer[i]) !=
+				RtlUpcaseUnicodeChar(((PCHAR)KeyCell->Name)[i]))
+			return FALSE;
+		}
+	}
+	else
+	{
+		if (KeyName->Length != KeyCell->NameLength)
+			return FALSE;
+
+		UnicodeName = (PWCHAR)KeyCell->Name;
+		/* FIXME: use _strnicmp */
+		for (i = 0; i < KeyCell->NameLength / sizeof(WCHAR); i++)
+		{
+			if (RtlUpcaseUnicodeChar(KeyName->Buffer[i]) !=
+				RtlUpcaseUnicodeChar(UnicodeName[i]))
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
 NTSTATUS
 CmiScanForSubKey(
 	IN PCMHIVE RegistryHive,
@@ -453,7 +529,6 @@ CmiScanForSubKey(
 {
 	PCM_KEY_FAST_INDEX HashBlock;
 	PCM_KEY_NODE CurSubKeyCell;
-	BOOLEAN CaseInsensitive;
 	ULONG Storage;
 	ULONG i;
 
@@ -462,7 +537,6 @@ CmiScanForSubKey(
 	ASSERT(RegistryHive);
 
 	*pSubKeyCell = NULL;
-    CaseInsensitive = (Attributes & OBJ_CASE_INSENSITIVE) != 0;
 
 	for (Storage = Stable; Storage < HTYPE_COUNT; Storage++)
 	{
@@ -479,20 +553,40 @@ CmiScanForSubKey(
 
 		for (i = 0; i < KeyCell->SubKeyCounts[Storage]; i++)
 		{
-            if ((HashBlock->List[i].HashKey == 0) ||
-                (CmCompareHash(SubKeyName, (PCHAR)&HashBlock->List[i].HashKey, CaseInsensitive)))
-            {
-                CurSubKeyCell = (PCM_KEY_NODE)HvGetCell (
-                    &RegistryHive->Hive,
-                    HashBlock->List[i].Cell);
+			if (Attributes & OBJ_CASE_INSENSITIVE)
+			{
+				if ((HashBlock->List[i].HashKey == 0
+				 || CmiCompareHashI(SubKeyName, (PCHAR)&HashBlock->List[i].HashKey)))
+				{
+					CurSubKeyCell = (PCM_KEY_NODE)HvGetCell (
+						&RegistryHive->Hive,
+						HashBlock->List[i].Cell);
 
-                if (CmCompareKeyName(CurSubKeyCell, SubKeyName, CaseInsensitive))
-                {
-                    *pSubKeyCell = CurSubKeyCell;
-                    *pBlockOffset = HashBlock->List[i].Cell;
-                    return STATUS_SUCCESS;
-                }
-            }
+					if (CmiCompareKeyNamesI(SubKeyName, CurSubKeyCell))
+					{
+						*pSubKeyCell = CurSubKeyCell;
+						*pBlockOffset = HashBlock->List[i].Cell;
+						return STATUS_SUCCESS;
+					}
+				}
+			}
+			else
+			{
+				if ((HashBlock->List[i].HashKey == 0
+				 || CmiCompareHash(SubKeyName, (PCHAR)&HashBlock->List[i].HashKey)))
+				{
+					CurSubKeyCell = (PCM_KEY_NODE)HvGetCell (
+						&RegistryHive->Hive,
+						HashBlock->List[i].Cell);
+
+					if (CmiCompareKeyNames(SubKeyName, CurSubKeyCell))
+					{
+						*pSubKeyCell = CurSubKeyCell;
+						*pBlockOffset = HashBlock->List[i].Cell;
+						return STATUS_SUCCESS;
+					}
+				}
+			}
 		}
 	}
 
@@ -660,6 +754,44 @@ CmiAddValueKey(
 	return STATUS_SUCCESS;
 }
 
+static BOOLEAN
+CmiComparePackedNames(
+	IN PCUNICODE_STRING Name,
+	IN PUCHAR NameBuffer,
+	IN USHORT NameBufferSize,
+	IN BOOLEAN NamePacked)
+{
+	PWCHAR UNameBuffer;
+	ULONG i;
+
+	if (NamePacked == TRUE)
+	{
+		if (Name->Length != NameBufferSize * sizeof(WCHAR))
+			return FALSE;
+
+		for (i = 0; i < Name->Length / sizeof(WCHAR); i++)
+		{
+			if (RtlUpcaseUnicodeChar(Name->Buffer[i]) != RtlUpcaseUnicodeChar((WCHAR)NameBuffer[i]))
+				return FALSE;
+		}
+	}
+	else
+	{
+		if (Name->Length != NameBufferSize)
+			return FALSE;
+
+		UNameBuffer = (PWCHAR)NameBuffer;
+
+		for (i = 0; i < Name->Length / sizeof(WCHAR); i++)
+		{
+			if (RtlUpcaseUnicodeChar(Name->Buffer[i]) != RtlUpcaseUnicodeChar(UNameBuffer[i]))
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
 NTSTATUS
 CmiScanForValueKey(
 	IN PCMHIVE RegistryHive,
@@ -691,11 +823,11 @@ CmiScanForValueKey(
 			&RegistryHive->Hive,
 			ValueListCell->ValueOffset[i]);
 
-		if (CmComparePackedNames(ValueName,
-                                 (PUCHAR)CurValueCell->Name,
-                                 CurValueCell->NameLength,
-                                 (CurValueCell->Flags & VALUE_COMP_NAME) ? TRUE : FALSE,
-                                 TRUE))
+		if (CmiComparePackedNames(
+			ValueName,
+			(PUCHAR)CurValueCell->Name,
+			CurValueCell->NameLength,
+			(BOOLEAN)((CurValueCell->Flags & VALUE_COMP_NAME) ? TRUE : FALSE)))
 		{
 			*pValueCell = CurValueCell;
 			*pValueCellOffset = ValueListCell->ValueOffset[i];

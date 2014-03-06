@@ -8,10 +8,9 @@
  *              Johannes Anderwald (johannes.anderwald@reactos.org)
  */
 
-#include "libusb.h"
 
-#define NDEBUG
-#include <debug.h>
+#define INITGUID
+#include "libusb.h"
 
 class CUSBDevice : public IUSBDevice
 {

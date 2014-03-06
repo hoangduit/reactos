@@ -5,7 +5,7 @@ spec2def(kbdfr.dll kbdfr.spec)
 
 add_library(kbdfr SHARED kbdfr.c kbdfr.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdfr.def)
 
-set_module_type(kbdfr kbdlayout)
+set_entrypoint(kbdfr 0)
 
 add_dependencies(kbdfr psdk)
 

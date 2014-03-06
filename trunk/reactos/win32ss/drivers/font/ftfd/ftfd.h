@@ -5,9 +5,6 @@
  * PROGRAMMER:      Timo Kreuzer (timo.kreuzer@reactos.org)
  */
 
-#ifndef _FTFD_PCH_
-#define _FTFD_PCH_
-
 #include <stdarg.h>
 #include <windef.h>
 #include <wingdi.h>
@@ -151,4 +148,3 @@ FtfdQueryFontData(
 	PVOID pv,
 	ULONG cjSize);
 
-#endif /* _FTFD_PCH_ */

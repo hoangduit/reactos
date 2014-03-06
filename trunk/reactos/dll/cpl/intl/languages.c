@@ -1,7 +1,5 @@
 #include "intl.h"
 
-#include <shellapi.h>
-
 /* Property page dialog callback */
 INT_PTR CALLBACK
 LanguagesPageProc(HWND hwndDlg,
@@ -31,7 +29,10 @@ LanguagesPageProc(HWND hwndDlg,
                         shInputDll.lpParameters = _T("shell32.dll,Control_RunDLL input.dll");
                         if (ShellExecuteEx(&shInputDll) == 0)
                         {
-                            PrintErrorMsgBox(IDS_ERROR_INPUT_DLL);
+                            MessageBox(NULL,
+                                       _T("Can't start input.dll"),
+                                       _T("Error"),
+                                       MB_OK | MB_ICONERROR);
                         }
                     }
                     break;

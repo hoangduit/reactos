@@ -11,23 +11,16 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <consrv.h>
+#include "consrv.h"
+#include "include/conio.h"
+#include "include/settings.h"
+#include "guisettings.h"
 
 #define NDEBUG
 #include <debug.h>
 
+
 /* FUNCTIONS ******************************************************************/
-
-COLORREF RGBFromAttrib2(PCONSOLE Console, WORD Attribute)
-{
-    HPALETTE hPalette = Console->ActiveBuffer->PaletteHandle;
-    PALETTEENTRY pe;
-
-    if (hPalette == NULL) return RGBFromAttrib(Console, Attribute);
-
-    GetPaletteEntries(hPalette, Attribute, 1, &pe);
-    return PALETTERGB(pe.peRed, pe.peGreen, pe.peBlue);
-}
 
 VOID
 GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
@@ -224,8 +217,8 @@ GuiPaintTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
 
     LastAttribute = ConioCoordToPointer(Buffer, LeftChar, TopLine)->Attributes;
 
-    SetTextColor(GuiData->hMemDC, RGBFromAttrib2(Console, TextAttribFromAttrib(LastAttribute)));
-    SetBkColor(GuiData->hMemDC, RGBFromAttrib2(Console, BkgdAttribFromAttrib(LastAttribute)));
+    SetTextColor(GuiData->hMemDC, RGBFromAttrib(Console, TextAttribFromAttrib(LastAttribute)));
+    SetBkColor(GuiData->hMemDC, RGBFromAttrib(Console, BkgdAttribFromAttrib(LastAttribute)));
 
     OldFont = SelectObject(GuiData->hMemDC, GuiData->Font);
 
@@ -254,8 +247,8 @@ GuiPaintTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
                 Attribute = From->Attributes;
                 if (Attribute != LastAttribute)
                 {
-                    SetTextColor(GuiData->hMemDC, RGBFromAttrib2(Console, TextAttribFromAttrib(Attribute)));
-                    SetBkColor(GuiData->hMemDC, RGBFromAttrib2(Console, BkgdAttribFromAttrib(Attribute)));
+                    SetTextColor(GuiData->hMemDC, RGBFromAttrib(Console, TextAttribFromAttrib(Attribute)));
+                    SetBkColor(GuiData->hMemDC, RGBFromAttrib(Console, BkgdAttribFromAttrib(Attribute)));
                     LastAttribute = Attribute;
                 }
             }
@@ -287,7 +280,7 @@ GuiPaintTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
             Attribute = ConioCoordToPointer(Buffer, Buffer->CursorPosition.X, Buffer->CursorPosition.Y)->Attributes;
             if (Attribute == DEFAULT_SCREEN_ATTRIB) Attribute = Buffer->ScreenDefaultAttrib;
 
-            CursorBrush = CreateSolidBrush(RGBFromAttrib2(Console, TextAttribFromAttrib(Attribute)));
+            CursorBrush = CreateSolidBrush(RGBFromAttrib(Console, Attribute));
             OldBrush    = SelectObject(GuiData->hMemDC, CursorBrush);
 
             PatBlt(GuiData->hMemDC,

@@ -4,8 +4,14 @@
 //    Freeware
 //    Copyright J Brown 2001
 //
+//#include <windows.h>
 
-#include "cardlib.h"
+#define WIN32_NO_STATUS
+#include <windef.h>
+
+#include <stdlib.h>
+
+#include "cardstack.h"
 
 Card &CardStack::operator[] (size_t index)
 {

@@ -8,10 +8,8 @@
  *              Johannes Anderwald (johannes.anderwald@reactos.org)
  */
 
-#include "parser.h"
 
-#define NDEBUG
-#include <debug.h>
+#include "parser.h"
 
 typedef struct
 {

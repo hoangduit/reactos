@@ -27,8 +27,6 @@ HvpWriteLog(
    return TRUE;
 
    ASSERT(RegistryHive->ReadOnly == FALSE);
-   ASSERT(RegistryHive->BaseBlock->Length ==
-          RegistryHive->Storage[Stable].Length * HV_BLOCK_SIZE);
 
    DPRINT("HvpWriteLog called\n");
 
@@ -115,7 +113,7 @@ HvpWriteLog(
       DPRINT("FileFlush failed\n");
    }
 
-   /* Update second update counter and CheckSum. */
+   /* Update first and second update counter and CheckSum. */
    RegistryHive->BaseBlock->Sequence2++;
    RegistryHive->BaseBlock->CheckSum =
       HvpHiveHeaderChecksum(RegistryHive->BaseBlock);
@@ -152,8 +150,6 @@ HvpWriteHive(
    BOOLEAN Success;
 
    ASSERT(RegistryHive->ReadOnly == FALSE);
-   ASSERT(RegistryHive->BaseBlock->Length ==
-          RegistryHive->Storage[Stable].Length * HV_BLOCK_SIZE);
 
    DPRINT("HvpWriteHive called\n");
 
@@ -265,7 +261,6 @@ HvSyncHive(
 
    /* Clear dirty bitmap. */
    RtlClearAllBits(&RegistryHive->DirtyVector);
-   RegistryHive->DirtyCount = 0;
 
    return TRUE;
 }

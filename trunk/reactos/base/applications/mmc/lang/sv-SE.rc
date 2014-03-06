@@ -1,4 +1,9 @@
-/* Swedish translation by Jaix Bly */
+/*
+ * PROJECT:      ReactOS RAPPS
+ * FILE:         base\applications\mmc\lang\sv-SE.rc
+ * PURPOSE:      Swedish resource file
+ * TRANSLATOR:   Jaix Bly
+ */
 
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 
@@ -6,10 +11,11 @@ IDM_CONSOLE_SMALL MENU
 BEGIN
     POPUP "&Arkiv"
     BEGIN
-        MENUITEM "New\tCtrl+N", IDM_FILE_NEW
+        MENUITEM "New\tStrg+N", IDM_FILE_NEW
         MENUITEM SEPARATOR
         MENUITEM "&Avsluta\tAlt+F4", IDM_FILE_EXIT
     END
+
     POPUP "&Hjälp"
     BEGIN
         MENUITEM "&Om ReactOS Management Console...", IDM_HELP_ABOUT
@@ -20,14 +26,16 @@ IDM_CONSOLE_LARGE MENU
 BEGIN
     POPUP "&Arkiv"
     BEGIN
-        MENUITEM "New\tCtrl+N", IDM_FILE_NEW
+        MENUITEM "New\tStrg+N", IDM_FILE_NEW
         MENUITEM SEPARATOR
         MENUITEM "&Avsluta\tAlt+F4", IDM_FILE_EXIT
     END
+
     POPUP "&Windows"
     BEGIN
         MENUITEM "List", IDM_WINDOWS_LIST
     END
+
     POPUP "&Hjälp"
     BEGIN
         MENUITEM "&Om ReactOS Management Console...", IDM_HELP_ABOUT

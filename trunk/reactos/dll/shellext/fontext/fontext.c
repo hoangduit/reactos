@@ -10,9 +10,6 @@
 
 #include "fontext.h"
 
-#include <winbase.h>
-#include <debug.h>
-
 static HINSTANCE hInstance;
 
 HRESULT WINAPI

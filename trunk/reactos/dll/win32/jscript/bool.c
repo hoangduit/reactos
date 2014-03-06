@@ -19,6 +19,10 @@
 
 #include "jscript.h"
 
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(jscript);
+
 typedef struct {
     jsdisp_t dispex;
 

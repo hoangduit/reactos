@@ -8,12 +8,6 @@
 
 #include "private.hpp"
 
-#ifndef YDEBUG
-#define NDEBUG
-#endif
-
-#include <debug.h>
-
 GUID IID_IDmaChannelSlave;
 
 class CPortWaveCyclic : public IPortWaveCyclic,

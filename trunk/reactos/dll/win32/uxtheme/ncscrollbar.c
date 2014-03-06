@@ -10,8 +10,9 @@
  */
  
 #include "uxthemep.h"
+#include <wine/debug.h>
 
-#include <assert.h>
+WINE_DEFAULT_DEBUG_CHANNEL(uxtheme);
 
 static BOOL SCROLL_trackVertical;
 static enum SCROLL_HITTEST SCROLL_trackHitTest;

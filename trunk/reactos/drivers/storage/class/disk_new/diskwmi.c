@@ -22,8 +22,6 @@ Revision History:
 
 #include "disk.h"
 
-#include <wmistr.h>
-
 NTSTATUS
 NTAPI
 DiskSendFailurePredictIoctl(

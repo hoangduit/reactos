@@ -21,12 +21,11 @@
 #include <config.h>
 
 #include <stdarg.h>
-
 #include <windef.h>
 #include <winbase.h>
-#include <winldap.h>
-
+#include "winldap.h"
 #include <wine/debug.h>
+
 WINE_DEFAULT_DEBUG_CHANNEL(wldap32);
 
 #ifndef LBER_ERROR

@@ -56,8 +56,8 @@ ULONG MmTotalSystemPtes;
 // being released, which is then inserted in front of the recorded cluster.
 //
 
-FORCEINLINE
 ULONG
+FORCEINLINE
 MI_GET_CLUSTER_SIZE(IN PMMPTE Pte)
 {
     //

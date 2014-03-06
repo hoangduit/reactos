@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include "ndissys.h"
+
+
 /* FIXME: Possibly move this to ntddk.h */
 typedef struct _NETWORK_HEADER
 {

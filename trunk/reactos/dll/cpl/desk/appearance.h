@@ -1,5 +1,3 @@
-#pragma once
-
 /* Some definitions for theme */
 #define SIZE_BORDER_WIDTH       0
 #define SIZE_SCROLL_WIDTH       1

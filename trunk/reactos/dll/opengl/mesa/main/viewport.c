@@ -28,7 +28,12 @@
  * glViewport and glDepthRange functions.
  */
 
-#include <precomp.h>
+
+#include "context.h"
+#include "macros.h"
+#include "mtypes.h"
+#include "viewport.h"
+
 
 /**
  * Set the viewport.

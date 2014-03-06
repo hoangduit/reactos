@@ -28,11 +28,7 @@ Revision History:
 #ifndef __CDROMP_H__
 #define __CDROMP_H__
 
-#include <ntddk.h>
-#include <ntddcdvd.h>
-#include <classpnp.h>
-#include <ntddmmc.h>
-
+#include "ntddmmc.h"
 #include "trace.h"
 
 extern CLASSPNP_SCAN_FOR_SPECIAL_INFO CdromHackItems[];
@@ -876,4 +872,4 @@ CdRompFlushDelayedList(
     IN BOOLEAN CalledFromWorkItem
     );
 
-#endif /* __CDROMP_H__ */
+#endif // __CDROMP_H__

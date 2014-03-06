@@ -25,7 +25,12 @@
  *    Keith Whitwell <keithw@tungstengraphics.com>
  */
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/colormac.h"
+#include "swrast/s_chan.h"
+#include "t_context.h"
+#include "t_vertex.h"
 
 #define DBG 0
 

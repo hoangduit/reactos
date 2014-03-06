@@ -11,9 +11,6 @@
 
 #include "usbccgp.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /* Driver verifier */
 DRIVER_ADD_DEVICE USBCCGP_AddDevice;
 

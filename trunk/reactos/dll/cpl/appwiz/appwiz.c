@@ -6,11 +6,12 @@
  *                          Dmitry Chapyshev (dmitry@reactos.org)
  */
 
+#include <config.h>
+#include <wine/port.h>
+
 #include "appwiz.h"
 
-#include <shellapi.h>
-#include <cpl.h>
-#include <wine/unicode.h>
+WINE_DEFAULT_DEBUG_CHANNEL(appwiz);
 
 HINSTANCE hApplet = NULL;
 

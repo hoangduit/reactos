@@ -16,17 +16,15 @@ list(APPEND SOURCE
     registry.c
     resinfo_reactos.c
     route_reactos.c
-    iphlpapi_private.h
-    ${CMAKE_CURRENT_BINARY_DIR}/iphlpapi_stubs.c)
-
-add_library(iphlpapi SHARED
-    ${SOURCE}
     iphlpapi.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/iphlpapi_stubs.c
     ${CMAKE_CURRENT_BINARY_DIR}/iphlpapi.def)
+
+add_library(iphlpapi SHARED ${SOURCE})
 
 set_module_type(iphlpapi win32dll UNICODE)
 target_link_libraries(iphlpapi wine tdilib)
 add_importlibs(iphlpapi icmp dhcpcsvc advapi32 ws2_32 msvcrt kernel32 ntdll)
-add_pch(iphlpapi iphlpapi_private.h SOURCE)
+add_pch(iphlpapi iphlpapi_private.h)
 add_cd_file(TARGET iphlpapi DESTINATION reactos/system32 FOR all)
 

@@ -7,11 +7,11 @@
  * REVISIONS:
  *   CSH 01/09-2000 Created
  */
-
 #include <afd.h>
-
-#include <tdikrnl.h>
-#include <tdiinfo.h>
+#include <pseh/pseh2.h>
+#include "debug.h"
+#include "tdiconn.h"
+#include "tdi_proto.h"
 
 #if DBG
 #if 0

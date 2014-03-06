@@ -5,7 +5,7 @@ spec2def(kbdne.dll kbdne.spec)
 
 add_library(kbdne SHARED kbdne.c kbdne.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdne.def)
 
-set_module_type(kbdne kbdlayout)
+set_entrypoint(kbdne 0)
 
 add_dependencies(kbdne psdk)
 

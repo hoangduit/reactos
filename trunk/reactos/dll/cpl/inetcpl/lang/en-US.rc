@@ -19,6 +19,8 @@
  *
  */
 
+#include "inetcpl.h"
+
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 
 /* "General" propsheet */

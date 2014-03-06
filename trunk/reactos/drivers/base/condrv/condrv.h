@@ -17,18 +17,26 @@
     #include "VisualDDKHelpers.h"
 #endif
 
-#include <wdm.h>
+
+#include <ntddk.h>
+#include <condrv/ntddcon.h>
+
 
 #define CONDRV_TAG      ' noC'
 #define DD_CONDRV_TAG   '1noC'
 #define CONDRV_CONS_TAG '2noC'
 
-/* Console Driver object extension */
+
+//
+// Console Driver object extension
+//
 typedef struct _CONDRV_DRIVER
 {
     UNICODE_STRING RegistryPath;
     PDEVICE_OBJECT Controller; // The unique Controller device for the driver.
 } CONDRV_DRIVER, *PCONDRV_DRIVER;
+
+
 
 NTSTATUS NTAPI
 ConDrvCreateController(IN PDRIVER_OBJECT DriverObject,
@@ -36,4 +44,7 @@ ConDrvCreateController(IN PDRIVER_OBJECT DriverObject,
 NTSTATUS NTAPI
 ConDrvDeleteController(IN PDRIVER_OBJECT DriverObject);
 
+
 #endif // __CONDRV_H__
+
+/* EOF */

@@ -5,7 +5,7 @@ spec2def(kbdinguj.dll kbdinguj.spec)
 
 add_library(kbdinguj SHARED kbdinguj.c kbdinguj.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdinguj.def)
 
-set_module_type(kbdinguj kbdlayout)
+set_entrypoint(kbdinguj 0)
 
 add_dependencies(kbdinguj psdk)
 

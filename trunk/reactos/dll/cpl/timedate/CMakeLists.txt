@@ -1,7 +1,7 @@
 
 spec2def(timedate.cpl timedate.spec)
 
-list(APPEND SOURCE
+add_library(timedate SHARED
     clock.c
     dateandtime.c
     internettime.c
@@ -9,10 +9,6 @@ list(APPEND SOURCE
     ntpclient.c
     timedate.c
     timezone.c
-    timedate.h)
-
-add_library(timedate SHARED
-    ${SOURCE}
     timedate.rc
     ${CMAKE_CURRENT_BINARY_DIR}/timedate.def)
 
@@ -28,5 +24,5 @@ add_importlibs(timedate
     msvcrt
     kernel32)
 
-add_pch(timedate timedate.h SOURCE)
+add_pch(timedate timedate.h)
 add_cd_file(TARGET timedate DESTINATION reactos/system32 FOR all)

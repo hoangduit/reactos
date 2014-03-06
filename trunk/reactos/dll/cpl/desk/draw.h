@@ -1,5 +1,3 @@
-#pragma once
-
 BOOL
 MyDrawFrameControl(HDC hDC, LPRECT rc, UINT uType, UINT uState, COLOR_SCHEME *scheme);
 BOOL
@@ -15,3 +13,4 @@ MyDrawMenuBarTemp(HWND Wnd, HDC DC, LPRECT Rect, HMENU Menu, HFONT Font, COLOR_S
 
 #define MY_BF_ACTIVEBORDER 0x1000000
 #define MY_BF_INACTIVEBORDER 0x2000000
+

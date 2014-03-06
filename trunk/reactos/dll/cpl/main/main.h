@@ -1,17 +1,16 @@
-#ifndef _MAIN_H
-#define _MAIN_H
-
-#include <stdarg.h>
-
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
 #include <wingdi.h>
+#include <winuser.h>
 #include <wincon.h>
+#include <commdlg.h>
+#include <cplext.h>
+#include <tchar.h>
 #include <devguid.h>
 #include <shlobj.h>
 #include <cpl.h>
@@ -64,4 +63,4 @@ PropSheetAddPage(HPROPSHEETPAGE hpage, LPARAM lParam);
 LONG APIENTRY
 MouseApplet(HWND hwnd, UINT uMsg, LPARAM wParam, LPARAM lParam);
 
-#endif /* _MAIN_H */
+/* EOF */

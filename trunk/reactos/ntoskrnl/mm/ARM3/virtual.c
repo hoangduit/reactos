@@ -350,25 +350,25 @@ MiDeleteSystemPageableVm(IN PMMPTE PointerPte,
                 KeReleaseQueuedSpinLock(LockQueuePfnLock, OldIrql);
 
                 /* Destroy the PTE */
-                MI_ERASE_PTE(PointerPte);
-            }
-            else
-            {
-                /*
-                 * The only other ARM3 possibility is a demand zero page, which would
-                 * mean freeing some of the paged pool pages that haven't even been
-                 * touched yet, as part of a larger allocation.
-                 *
-                 * Right now, we shouldn't expect any page file information in the PTE
-                 */
-                ASSERT(PointerPte->u.Soft.PageFileHigh == 0);
-
-                /* Destroy the PTE */
-                MI_ERASE_PTE(PointerPte);
+                PointerPte->u.Long = 0;
             }
 
             /* Actual legitimate pages */
             ActualPages++;
+        }
+        else
+        {
+            /*
+             * The only other ARM3 possibility is a demand zero page, which would
+             * mean freeing some of the paged pool pages that haven't even been
+             * touched yet, as part of a larger allocation.
+             *
+             * Right now, we shouldn't expect any page file information in the PTE
+             */
+            ASSERT(PointerPte->u.Soft.PageFileHigh == 0);
+
+            /* Destroy the PTE */
+            PointerPte->u.Long = 0;
         }
 
         /* Keep going */
@@ -486,7 +486,7 @@ MiDeletePte(IN PMMPTE PointerPte,
     }
 
     /* Destroy the PTE and flush the TLB */
-    MI_ERASE_PTE(PointerPte);
+    PointerPte->u.Long = 0;
     KeFlushCurrentTb();
 }
 
@@ -503,6 +503,7 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
     KIRQL OldIrql;
     BOOLEAN AddressGap = FALSE;
     PSUBSECTION Subsection;
+    PUSHORT UsedPageTableEntries;
 
     /* Get out if this is a fake VAD, RosMm will free the marea pages */
     if ((Vad) && (Vad->u.VadFlags.Spare == 1)) return;
@@ -559,6 +560,7 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
         /* Now we should have a valid PDE, mapped in, and still have some VA */
         ASSERT(PointerPde->u.Hard.Valid == 1);
         ASSERT(Va <= EndingAddress);
+        UsedPageTableEntries = &MmWorkingSetList->UsedPageTableEntries[MiGetPdeOffset(Va)];
 
         /* Check if this is a section VAD with gaps in it */
         if ((AddressGap) && (LastPrototypePte))
@@ -588,10 +590,11 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
             TempPte = *PointerPte;
             if (TempPte.u.Long)
             {
-                MiDecrementPageTableReferences((PVOID)Va);
+                *UsedPageTableEntries -= 1;
+                ASSERT((*UsedPageTableEntries) < PTE_COUNT);
 
                 /* Check if the PTE is actually mapped in */
-                if (MI_IS_MAPPED_PTE(&TempPte))
+                if (TempPte.u.Long & 0xFFFFFC01)
                 {
                     /* Are we dealing with section VAD? */
                     if ((LastPrototypePte) && (PrototypePte > LastPrototypePte))
@@ -618,7 +621,7 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
                         (TempPte.u.Soft.Prototype == 1))
                     {
                         /* Just nuke it */
-                        MI_ERASE_PTE(PointerPte);
+                        PointerPte->u.Long = 0;
                     }
                     else
                     {
@@ -632,7 +635,7 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
                 else
                 {
                     /* The PTE was never mapped, just nuke it here */
-                    MI_ERASE_PTE(PointerPte);
+                    PointerPte->u.Long = 0;
                 }
             }
 
@@ -649,8 +652,7 @@ MiDeleteVirtualAddresses(IN ULONG_PTR Va,
         /* The PDE should still be valid at this point */
         ASSERT(PointerPde->u.Hard.Valid == 1);
 
-        /* Check remaining PTE count (go back 1 page due to above loop) */
-        if (MiQueryPageTableReferences((PVOID)(Va - PAGE_SIZE)) == 0)
+        if (*UsedPageTableEntries == 0)
         {
             if (PointerPde->u.Long != 0)
             {
@@ -1692,12 +1694,7 @@ MiQueryMemoryBasicInformation(IN HANDLE ProcessHandle,
     if (MemoryArea->Type == MEMORY_AREA_SECTION_VIEW)
     {
         Status = MmQuerySectionView(MemoryArea, BaseAddress, &MemoryInfo, &ResultLength);
-        if (!NT_SUCCESS(Status))
-        {
-            DPRINT1("MmQuerySectionView failed. MemoryArea=%p (%p-%p), BaseAddress=%p\n",
-                    MemoryArea, MemoryArea->StartingAddress, MemoryArea->EndingAddress, BaseAddress);
-            NT_ASSERT(NT_SUCCESS(Status));
-        }
+        ASSERT(NT_SUCCESS(Status));
     }
     else
     {
@@ -1738,7 +1735,7 @@ MiQueryMemoryBasicInformation(IN HANDLE ProcessHandle,
         ObDereferenceObject(TargetProcess);
     }
 
-    /* Return the data, NtQueryInformation already probed it */
+    /* Return the data, NtQueryInformation already probed it*/
     if (PreviousMode != KernelMode)
     {
         _SEH2_TRY
@@ -2118,8 +2115,7 @@ MiProtectVirtualMemory(IN PEPROCESS Process,
                 ASSERT(PteContents.u.Soft.Transition == 0);
 
                 /* The PTE is already demand-zero, just update the protection mask */
-                PteContents.u.Soft.Protection = ProtectionMask;
-                MI_WRITE_INVALID_PTE(PointerPte, PteContents);
+                PointerPte->u.Soft.Protection = ProtectionMask;
                 ASSERT(PointerPte->u.Long != 0);
             }
 
@@ -2859,258 +2855,6 @@ NtProtectVirtualMemory(IN HANDLE ProcessHandle,
     return Status;
 }
 
-FORCEINLINE
-BOOLEAN
-MI_IS_LOCKED_VA(
-    PMMPFN Pfn1,
-    ULONG LockType)
-{
-    // HACK until we have proper WSLIST support
-    PMMWSLE Wsle = &Pfn1->Wsle;
-
-    if ((LockType & MAP_PROCESS) && (Wsle->u1.e1.LockedInWs))
-        return TRUE;
-    if ((LockType & MAP_SYSTEM) && (Wsle->u1.e1.LockedInMemory))
-        return TRUE;
-
-    return FALSE;
-}
-
-FORCEINLINE
-VOID
-MI_LOCK_VA(
-    PMMPFN Pfn1,
-    ULONG LockType)
-{
-    // HACK until we have proper WSLIST support
-    PMMWSLE Wsle = &Pfn1->Wsle;
-
-    if (!Wsle->u1.e1.LockedInWs &&
-        !Wsle->u1.e1.LockedInMemory)
-    {
-        MiReferenceProbedPageAndBumpLockCount(Pfn1);
-    }
-
-    if (LockType & MAP_PROCESS)
-        Wsle->u1.e1.LockedInWs = 1;
-    if (LockType & MAP_SYSTEM)
-        Wsle->u1.e1.LockedInMemory = 1;
-}
-
-FORCEINLINE
-VOID
-MI_UNLOCK_VA(
-    PMMPFN Pfn1,
-    ULONG LockType)
-{
-    // HACK until we have proper WSLIST support
-    PMMWSLE Wsle = &Pfn1->Wsle;
-
-    if (LockType & MAP_PROCESS)
-        Wsle->u1.e1.LockedInWs = 0;
-    if (LockType & MAP_SYSTEM)
-        Wsle->u1.e1.LockedInMemory = 0;
-
-    if (!Wsle->u1.e1.LockedInWs &&
-        !Wsle->u1.e1.LockedInMemory)
-    {
-        MiDereferencePfnAndDropLockCount(Pfn1);
-    }
-}
-
-static
-NTSTATUS
-MiCheckVadsForLockOperation(
-    _Inout_ PVOID *BaseAddress,
-    _Inout_ PSIZE_T RegionSize,
-    _Inout_ PVOID *EndAddress)
-
-{
-    PMMVAD Vad;
-    PVOID CurrentVa;
-
-    /* Get the base address and align the start address */
-    *EndAddress = (PUCHAR)*BaseAddress + *RegionSize;
-    *EndAddress = ALIGN_UP_POINTER_BY(*EndAddress, PAGE_SIZE);
-    *BaseAddress = ALIGN_DOWN_POINTER_BY(*BaseAddress, PAGE_SIZE);
-
-    /* First loop and check all VADs */
-    CurrentVa = *BaseAddress;
-    while (CurrentVa < *EndAddress)
-    {
-        /* Get VAD */
-        Vad = MiLocateAddress(CurrentVa);
-        if (Vad == NULL)
-        {
-            /// FIXME: this might be a memory area for a section view...
-            return STATUS_ACCESS_VIOLATION;
-        }
-
-        /* Check VAD type */
-        if ((Vad->u.VadFlags.VadType != VadNone) &&
-            (Vad->u.VadFlags.VadType != VadImageMap) &&
-            (Vad->u.VadFlags.VadType != VadWriteWatch))
-        {
-            *EndAddress = CurrentVa;
-            *RegionSize = (PUCHAR)*EndAddress - (PUCHAR)*BaseAddress;
-            return STATUS_INCOMPATIBLE_FILE_MAP;
-        }
-
-        CurrentVa = (PVOID)((Vad->EndingVpn + 1) << PAGE_SHIFT);
-    }
-
-    *RegionSize = (PUCHAR)*EndAddress - (PUCHAR)*BaseAddress;
-    return STATUS_SUCCESS;
-}
-
-static
-NTSTATUS
-MiLockVirtualMemory(
-    IN OUT PVOID *BaseAddress,
-    IN OUT PSIZE_T RegionSize,
-    IN ULONG MapType)
-{
-    PEPROCESS CurrentProcess;
-    PMMSUPPORT AddressSpace;
-    PVOID CurrentVa, EndAddress;
-    PMMPTE PointerPte, LastPte;
-    PMMPDE PointerPde;
-#if (_MI_PAGING_LEVELS >= 3)
-    PMMPDE PointerPpe;
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-    PMMPDE PointerPxe;
-#endif
-    PMMPFN Pfn1;
-    NTSTATUS Status, TempStatus;
-
-    /* Lock the address space */
-    AddressSpace = MmGetCurrentAddressSpace();
-    MmLockAddressSpace(AddressSpace);
-
-    /* Make sure we still have an address space */
-    CurrentProcess = PsGetCurrentProcess();
-    if (CurrentProcess->VmDeleted)
-    {
-        Status = STATUS_PROCESS_IS_TERMINATING;
-        goto Cleanup;
-    }
-
-    /* Check the VADs in the requested range */
-    Status = MiCheckVadsForLockOperation(BaseAddress, RegionSize, &EndAddress);
-    if (!NT_SUCCESS(Status))
-    {
-        goto Cleanup;
-    }
-
-    /* Enter SEH for probing */
-    _SEH2_TRY
-    {
-        /* Loop all pages and probe them */
-        CurrentVa = *BaseAddress;
-        while (CurrentVa < EndAddress)
-        {
-            (void)(*(volatile CHAR*)CurrentVa);
-            CurrentVa = (PUCHAR)CurrentVa + PAGE_SIZE;
-        }
-    }
-    _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
-    {
-        Status = _SEH2_GetExceptionCode();
-        goto Cleanup;
-    }
-    _SEH2_END;
-
-    /* All pages were accessible, since we hold the address space lock, nothing
-       can be de-committed. Assume success for now. */
-    Status = STATUS_SUCCESS;
-
-    /* Get the PTE and PDE */
-    PointerPte = MiAddressToPte(*BaseAddress);
-    PointerPde = MiAddressToPde(*BaseAddress);
-#if (_MI_PAGING_LEVELS >= 3)
-    PointerPpe = MiAddressToPpe(*BaseAddress);
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-    PointerPxe = MiAddressToPxe(*BaseAddress);
-#endif
-
-    /* Get the last PTE */
-    LastPte = MiAddressToPte((PVOID)((ULONG_PTR)EndAddress - 1));
-
-    /* Lock the process working set */
-    MiLockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-
-    /* Loop the pages */
-    do
-    {
-        /* Check for a page that is not accessible */
-        while (
-#if (_MI_PAGING_LEVELS == 4)
-               (PointerPxe->u.Hard.Valid == 0) ||
-#endif
-#if (_MI_PAGING_LEVELS >= 3)
-               (PointerPpe->u.Hard.Valid == 0) ||
-#endif
-               (PointerPde->u.Hard.Valid == 0) ||
-               (PointerPte->u.Hard.Valid == 0))
-        {
-            /* Release process working set */
-            MiUnlockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-
-            /* Access the page */
-            CurrentVa = MiPteToAddress(PointerPte);
-
-            //HACK: Pass a placeholder TrapInformation so the fault handler knows we're unlocked
-            TempStatus = MmAccessFault(TRUE, CurrentVa, KernelMode, (PVOID)0xBADBADA3);
-            if (!NT_SUCCESS(TempStatus))
-            {
-                // This should only happen, when remote backing storage is not accessible
-                ASSERT(FALSE);
-                Status = TempStatus;
-                goto Cleanup;
-            }
-
-            /* Lock the process working set */
-            MiLockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-        }
-
-        /* Get the PFN */
-        Pfn1 = MiGetPfnEntry(PFN_FROM_PTE(PointerPte));
-        ASSERT(Pfn1 != NULL);
-
-        /* Check the previous lock status */
-        if (MI_IS_LOCKED_VA(Pfn1, MapType))
-        {
-            Status = STATUS_WAS_LOCKED;
-        }
-
-        /* Lock it */
-        MI_LOCK_VA(Pfn1, MapType);
-
-        /* Go to the next PTE */
-        PointerPte++;
-
-        /* Check if we're on a PDE boundary */
-        if (MiIsPteOnPdeBoundary(PointerPte)) PointerPde++;
-#if (_MI_PAGING_LEVELS >= 3)
-        if (MiIsPteOnPpeBoundary(PointerPte)) PointerPpe++;
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-        if (MiIsPteOnPxeBoundary(PointerPte)) PointerPxe++;
-#endif
-    } while (PointerPte <= LastPte);
-
-    /* Release process working set */
-    MiUnlockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-
-Cleanup:
-    /* Unlock address space */
-    MmUnlockAddressSpace(AddressSpace);
-
-    return Status;
-}
-
 NTSTATUS
 NTAPI
 NtLockVirtualMemory(IN HANDLE ProcessHandle,
@@ -3239,11 +2983,9 @@ NtLockVirtualMemory(IN HANDLE ProcessHandle,
     }
 
     //
-    // Call the internal function
+    // Oops :(
     //
-    Status = MiLockVirtualMemory(&CapturedBaseAddress,
-                                 &CapturedBytesToLock,
-                                 MapType);
+    UNIMPLEMENTED;
 
     //
     // Detach if needed
@@ -3264,7 +3006,7 @@ NtLockVirtualMemory(IN HANDLE ProcessHandle,
         // Return data to user
         //
         *BaseAddress = CapturedBaseAddress;
-        *NumberOfBytesToLock = CapturedBytesToLock;
+        *NumberOfBytesToLock = 0;
     }
     _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
     {
@@ -3278,174 +3020,8 @@ NtLockVirtualMemory(IN HANDLE ProcessHandle,
     //
     // Return status
     //
-    return Status;
+    return STATUS_SUCCESS;
 }
-
-
-static
-NTSTATUS
-MiUnlockVirtualMemory(
-    IN OUT PVOID *BaseAddress,
-    IN OUT PSIZE_T RegionSize,
-    IN ULONG MapType)
-{
-    PEPROCESS CurrentProcess;
-    PMMSUPPORT AddressSpace;
-    PVOID EndAddress;
-    PMMPTE PointerPte, LastPte;
-    PMMPDE PointerPde;
-#if (_MI_PAGING_LEVELS >= 3)
-    PMMPDE PointerPpe;
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-    PMMPDE PointerPxe;
-#endif
-    PMMPFN Pfn1;
-    NTSTATUS Status;
-
-    /* Lock the address space */
-    AddressSpace = MmGetCurrentAddressSpace();
-    MmLockAddressSpace(AddressSpace);
-
-    /* Make sure we still have an address space */
-    CurrentProcess = PsGetCurrentProcess();
-    if (CurrentProcess->VmDeleted)
-    {
-        Status = STATUS_PROCESS_IS_TERMINATING;
-        goto Cleanup;
-    }
-
-    /* Check the VADs in the requested range */
-    Status = MiCheckVadsForLockOperation(BaseAddress, RegionSize, &EndAddress);
-
-    /* Note: only bail out, if we hit an area without a VAD. If we hit an
-       incompatible VAD we continue, like Windows does */
-    if (Status == STATUS_ACCESS_VIOLATION)
-    {
-        Status = STATUS_NOT_LOCKED;
-        goto Cleanup;
-    }
-
-    /* Get the PTE and PDE */
-    PointerPte = MiAddressToPte(*BaseAddress);
-    PointerPde = MiAddressToPde(*BaseAddress);
-#if (_MI_PAGING_LEVELS >= 3)
-    PointerPpe = MiAddressToPpe(*BaseAddress);
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-    PointerPxe = MiAddressToPxe(*BaseAddress);
-#endif
-
-    /* Get the last PTE */
-    LastPte = MiAddressToPte((PVOID)((ULONG_PTR)EndAddress - 1));
-
-    /* Lock the process working set */
-    MiLockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-
-    /* Loop the pages */
-    do
-    {
-        /* Check for a page that is not present */
-        if (
-#if (_MI_PAGING_LEVELS == 4)
-               (PointerPxe->u.Hard.Valid == 0) ||
-#endif
-#if (_MI_PAGING_LEVELS >= 3)
-               (PointerPpe->u.Hard.Valid == 0) ||
-#endif
-               (PointerPde->u.Hard.Valid == 0) ||
-               (PointerPte->u.Hard.Valid == 0))
-        {
-            /* Remember it, but keep going */
-            Status = STATUS_NOT_LOCKED;
-        }
-        else
-        {
-            /* Get the PFN */
-            Pfn1 = MiGetPfnEntry(PFN_FROM_PTE(PointerPte));
-            ASSERT(Pfn1 != NULL);
-
-            /* Check if all of the requested locks are present */
-            if (((MapType & MAP_SYSTEM) && !MI_IS_LOCKED_VA(Pfn1, MAP_SYSTEM)) ||
-                ((MapType & MAP_PROCESS) && !MI_IS_LOCKED_VA(Pfn1, MAP_PROCESS)))
-            {
-                /* Remember it, but keep going */
-                Status = STATUS_NOT_LOCKED;
-
-                /* Check if no lock is present */
-                if (!MI_IS_LOCKED_VA(Pfn1, MAP_PROCESS | MAP_SYSTEM))
-                {
-                    DPRINT1("FIXME: Should remove the page from WS\n");
-                }
-            }
-        }
-
-        /* Go to the next PTE */
-        PointerPte++;
-
-        /* Check if we're on a PDE boundary */
-        if (MiIsPteOnPdeBoundary(PointerPte)) PointerPde++;
-#if (_MI_PAGING_LEVELS >= 3)
-        if (MiIsPteOnPpeBoundary(PointerPte)) PointerPpe++;
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-        if (MiIsPteOnPxeBoundary(PointerPte)) PointerPxe++;
-#endif
-    } while (PointerPte <= LastPte);
-
-    /* Check if we hit a page that was not locked */
-    if (Status == STATUS_NOT_LOCKED)
-    {
-        goto CleanupWithWsLock;
-    }
-
-    /* All pages in the region were locked, so unlock them all */
-
-    /* Get the PTE and PDE */
-    PointerPte = MiAddressToPte(*BaseAddress);
-    PointerPde = MiAddressToPde(*BaseAddress);
-#if (_MI_PAGING_LEVELS >= 3)
-    PointerPpe = MiAddressToPpe(*BaseAddress);
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-    PointerPxe = MiAddressToPxe(*BaseAddress);
-#endif
-
-    /* Loop the pages */
-    do
-    {
-        /* Unlock it */
-        Pfn1 = MiGetPfnEntry(PFN_FROM_PTE(PointerPte));
-        MI_UNLOCK_VA(Pfn1, MapType);
-
-        /* Go to the next PTE */
-        PointerPte++;
-
-        /* Check if we're on a PDE boundary */
-        if (MiIsPteOnPdeBoundary(PointerPte)) PointerPde++;
-#if (_MI_PAGING_LEVELS >= 3)
-        if (MiIsPteOnPpeBoundary(PointerPte)) PointerPpe++;
-#endif
-#if (_MI_PAGING_LEVELS == 4)
-        if (MiIsPteOnPxeBoundary(PointerPte)) PointerPxe++;
-#endif
-    } while (PointerPte <= LastPte);
-
-    /* Everything is done */
-    Status = STATUS_SUCCESS;
-
-CleanupWithWsLock:
-
-    /* Release process working set */
-    MiUnlockProcessWorkingSet(CurrentProcess, PsGetCurrentThread());
-
-Cleanup:
-    /* Unlock address space */
-    MmUnlockAddressSpace(AddressSpace);
-
-    return Status;
-}
-
 
 NTSTATUS
 NTAPI
@@ -3575,11 +3151,9 @@ NtUnlockVirtualMemory(IN HANDLE ProcessHandle,
     }
 
     //
-    // Call the internal function
+    // Oops :(
     //
-    Status = MiUnlockVirtualMemory(&CapturedBaseAddress,
-                                   &CapturedBytesToUnlock,
-                                   MapType);
+    UNIMPLEMENTED;
 
     //
     // Detach if needed
@@ -3599,8 +3173,8 @@ NtUnlockVirtualMemory(IN HANDLE ProcessHandle,
         //
         // Return data to user
         //
-        *BaseAddress = CapturedBaseAddress;
-        *NumberOfBytesToUnlock = CapturedBytesToUnlock;
+        *BaseAddress = PAGE_ALIGN(CapturedBaseAddress);
+        *NumberOfBytesToUnlock = 0;
     }
     _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
     {
@@ -4504,7 +4078,7 @@ NtAllocateVirtualMemory(IN HANDLE ProcessHandle,
         Status = STATUS_CONFLICTING_ADDRESSES;
         goto FailPath;
     }
-
+	
 	if ((AllocationType & MEM_RESET) == MEM_RESET)
     {
         /// @todo HACK: pretend success
@@ -4679,7 +4253,6 @@ NtAllocateVirtualMemory(IN HANDLE ProcessHandle,
     //
     TempPte.u.Long = 0;
     TempPte.u.Soft.Protection = ProtectionMask;
-    NT_ASSERT(TempPte.u.Long != 0);
 
     //
     // Get the PTE, PDE and the last PTE for this address range
@@ -4836,7 +4409,7 @@ NtFreeVirtualMemory(IN HANDLE ProcessHandle,
     PMEMORY_AREA MemoryArea;
     SIZE_T PRegionSize;
     PVOID PBaseAddress;
-    LONG_PTR CommitReduction = 0;
+    ULONG_PTR CommitReduction = 0;
     ULONG_PTR StartingAddress, EndingAddress;
     PMMVAD Vad;
     NTSTATUS Status;
@@ -5258,51 +4831,5 @@ FailPath:
     if (ProcessHandle != NtCurrentProcess()) ObDereferenceObject(Process);
     return Status;
 }
-
-
-PHYSICAL_ADDRESS
-NTAPI
-MmGetPhysicalAddress(PVOID Address)
-{
-    PHYSICAL_ADDRESS PhysicalAddress;
-    MMPDE TempPde;
-    MMPTE TempPte;
-
-    /* Check if the PXE/PPE/PDE is valid */
-    if (
-#if (_MI_PAGING_LEVELS == 4)
-        (MiAddressToPxe(Address)->u.Hard.Valid) &&
-#endif
-#if (_MI_PAGING_LEVELS >= 3)
-        (MiAddressToPpe(Address)->u.Hard.Valid) &&
-#endif
-        (MiAddressToPde(Address)->u.Hard.Valid))
-    {
-        /* Check for large pages */
-        TempPde = *MiAddressToPde(Address);
-        if (TempPde.u.Hard.LargePage)
-        {
-            /* Physical address is base page + large page offset */
-            PhysicalAddress.QuadPart = TempPde.u.Hard.PageFrameNumber << PAGE_SHIFT;
-            PhysicalAddress.QuadPart += ((ULONG_PTR)Address & (PAGE_SIZE * PTE_PER_PAGE - 1));
-            return PhysicalAddress;
-        }
-
-        /* Check if the PTE is valid */
-        TempPte = *MiAddressToPte(Address);
-        if (TempPte.u.Hard.Valid)
-        {
-            /* Physical address is base page + page offset */
-            PhysicalAddress.QuadPart = TempPte.u.Hard.PageFrameNumber << PAGE_SHIFT;
-            PhysicalAddress.QuadPart += ((ULONG_PTR)Address & (PAGE_SIZE - 1));
-            return PhysicalAddress;
-        }
-    }
-
-    DPRINT1("MM:MmGetPhysicalAddressFailed base address was %p\n", Address);
-    PhysicalAddress.QuadPart = 0;
-    return PhysicalAddress;
-}
-
 
 /* EOF */

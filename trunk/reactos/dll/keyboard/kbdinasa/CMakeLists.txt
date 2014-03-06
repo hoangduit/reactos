@@ -5,7 +5,7 @@ spec2def(kbdinasa.dll kbdinasa.spec)
 
 add_library(kbdinasa SHARED kbdinasa.c kbdinasa.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdinasa.def)
 
-set_module_type(kbdinasa kbdlayout)
+set_entrypoint(kbdinasa 0)
 
 add_dependencies(kbdinasa psdk)
 

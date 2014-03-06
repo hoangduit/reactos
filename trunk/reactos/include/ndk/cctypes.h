@@ -81,19 +81,6 @@ typedef struct _PRIVATE_CACHE_MAP
     LIST_ENTRY PrivateLinks;
 } PRIVATE_CACHE_MAP, *PPRIVATE_CACHE_MAP;
 
-typedef struct _MBCB {
-    CSHORT NodeTypeCode;
-    CSHORT NodeIsInZone;
-    ULONG PagesToWrite;
-    ULONG DirtyPages;
-    ULONG Reserved;
-    LIST_ENTRY BitmapRanges;
-    LONGLONG ResumeWritePage;
-    BITMAP_RANGE BitmapRange1;
-    BITMAP_RANGE BitmapRange2;
-    BITMAP_RANGE BitmapRange3;
-} MBCB, *PMBCB;
-
 #ifdef _NTIFS_INCLUDED_
 
 //
@@ -116,12 +103,12 @@ typedef struct _SHARED_CACHE_MAP
     PVOID NeedToZero;
     ULONG ActivePage;
     ULONG NeedToZeroPage;
-    KSPIN_LOCK ActiveVacbSpinLock;
+    ULONG ActiveVacbSpinLock;
     ULONG VacbActiveCount;
     ULONG DirtyPages;
     LIST_ENTRY SharedCacheMapLinks;
     ULONG Flags;
-    LONG Status;
+    ULONG Status;
     PMBCB Mbcb;
     PVOID Section;
     PKEVENT CreateEvent;
@@ -132,12 +119,12 @@ typedef struct _SHARED_CACHE_MAP
     PVOID LazyWriteContext;
     LIST_ENTRY PrivateList;
     PVOID LogHandle;
-    PFLUSH_TO_LSN FlushToLsnRoutine;
+    PVOID FlushToLsnRoutine;
     ULONG DirtyPageThreshold;
     ULONG LazyWritePassCount;
     PCACHE_UNINITIALIZE_EVENT UninitializeEvent;
     PVACB NeedToZeroVacb;
-    KSPIN_LOCK BcbSpinLock;
+    ULONG BcbSpinLock;
     PVOID Reserved;
     KEVENT Event;
     EX_PUSH_LOCK VacbPushLock;

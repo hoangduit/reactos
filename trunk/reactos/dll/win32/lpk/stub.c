@@ -8,8 +8,6 @@
 
 #include "ros_lpk.h"
 
-#include <stubs.h>
-
 #define UNIMPLEMENTED DbgPrint("LPK: %s is unimplemented, please try again later.\n", __FUNCTION__);
 
 /*

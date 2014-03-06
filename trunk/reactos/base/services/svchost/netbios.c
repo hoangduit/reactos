@@ -10,9 +10,6 @@
 
 #include "svchost.h"
 
-#include <lmerr.h>
-#include <nb30.h>
-
 /* GLOBALS *******************************************************************/
 
 LONG GlobalNetBiosUseCount;

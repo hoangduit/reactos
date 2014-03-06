@@ -9,8 +9,6 @@
 
 #include "tcpsvcs.h"
 
-#include <winsvc.h>
-
 static WCHAR ServiceName[] = L"tcpsvcs";
 
 volatile BOOL bShutdown = FALSE;

@@ -12,13 +12,10 @@ list(APPEND SOURCE
     sysdm.c
     userprofile.c
     virtmem.c
-    precomp.h)
-
-add_library(sysdm SHARED
-    ${SOURCE}
     sysdm.rc
     ${CMAKE_CURRENT_BINARY_DIR}/sysdm.def)
 
+add_library(sysdm SHARED ${SOURCE})
 set_module_type(sysdm cpl UNICODE)
 
 add_importlibs(sysdm
@@ -36,5 +33,5 @@ add_importlibs(sysdm
     kernel32
     ntdll)
 
-add_pch(sysdm precomp.h SOURCE)
+add_pch(sysdm precomp.h)
 add_cd_file(TARGET sysdm DESTINATION reactos/system32 FOR all)

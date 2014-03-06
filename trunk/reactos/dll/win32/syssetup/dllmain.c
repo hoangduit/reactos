@@ -32,6 +32,7 @@
 
 HINSTANCE hDllInstance;
 
+
 /* FUNCTIONS *****************************************************************/
 
 BOOL WINAPI

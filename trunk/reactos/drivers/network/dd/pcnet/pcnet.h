@@ -25,11 +25,7 @@
  *     - this assumes 32-bit physical addresses
  */
 
-#ifndef _PCNET_PCH_
-#define _PCNET_PCH_
-
 #include <ndis.h>
-
 #include "pci.h"
 #include "pcnethw.h"
 
@@ -163,5 +159,3 @@ MiGetMediaDuplex(PADAPTER Adapter);
 
 /* memory pool tag */
 #define PCNET_TAG 'tNcP'
-
-#endif /* _PCNET_PCH_ */

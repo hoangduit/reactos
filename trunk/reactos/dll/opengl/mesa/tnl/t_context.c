@@ -25,7 +25,22 @@
  *    Keith Whitwell <keith@tungstengraphics.com>
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/imports.h"
+#include "main/context.h"
+#include "main/macros.h"
+#include "main/mtypes.h"
+#include "main/light.h"
+#include "math/m_translate.h"
+#include "math/m_xform.h"
+#include "main/state.h"
+
+#include "tnl.h"
+#include "t_context.h"
+#include "t_pipeline.h"
+
+#include "vbo/vbo.h"
 
 GLboolean
 _tnl_CreateContext( struct gl_context *ctx )

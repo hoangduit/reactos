@@ -22,7 +22,6 @@ Revision History:
 
 --*/
 
-#pragma once
 
 VOID ClassDebugPrint(CLASS_DEBUG_LEVEL DebugPrintLevel, PCCHAR DebugMessage, ...);
 
@@ -54,7 +53,7 @@ VOID ClassDebugPrint(CLASS_DEBUG_LEVEL DebugPrintLevel, PCCHAR DebugMessage, ...
 
         ULONG Index;                // index into buffer
         KSPIN_LOCK SpinLock;
-        PSTR Buffer;                // requires spinlock to access
+        PUCHAR Buffer;              // requires spinlock to access
         ULONG NumberOfBuffers;      // number of buffers available
         SIZE_T EachBufferSize;      // size of each buffer
 
@@ -145,3 +144,5 @@ VOID ClassDebugPrint(CLASS_DEBUG_LEVEL DebugPrintLevel, PCCHAR DebugMessage, ...
     #define DBGGETSRBSTATUSSTR(_pSrb)
     
 #endif
+
+

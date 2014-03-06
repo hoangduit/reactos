@@ -5,10 +5,10 @@
  * PURPOSE:     DLL Initialization
  */
 
+/* INCLUDES ******************************************************************/
 #include "precomp.h"
 
-#include <ndk/iofuncs.h>
-#include <ndk/rtltypes.h>
+/* DATA **********************************************************************/
 
 /* FUNCTIONS *****************************************************************/
 
@@ -120,3 +120,4 @@ AcsHlpNoteNewConnection(IN PAUTODIAL_ADDR ConnectionAddress,
     /* Send it to the driver */
     return AcsHlpSendCommand(&Command);
 }
+

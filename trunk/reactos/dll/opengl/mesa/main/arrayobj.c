@@ -38,7 +38,20 @@
  * \author Brian Paul
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "hash.h"
+#include "image.h"
+#include "imports.h"
+#include "context.h"
+#include "mfeatures.h"
+#include "bufferobj.h"
+#include "arrayobj.h"
+#include "macros.h"
+#include "mtypes.h"
+#include "varray.h"
+#include "main/dispatch.h"
+
 
 /**
  * Look up the array object for the given ID.

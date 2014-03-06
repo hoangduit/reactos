@@ -20,9 +20,6 @@
 
 #include "precomp.h"
 
-#include <winreg.h>
-#include <commdlg.h>
-
 #define MAX_KEY_NAME 255
 
 HINSTANCE hInst;

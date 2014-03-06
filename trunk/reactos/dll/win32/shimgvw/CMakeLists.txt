@@ -17,7 +17,6 @@ add_importlibs(shimgvw
     user32
     gdi32
     gdiplus
-    comdlg32
     msvcrt
     kernel32
     ntdll)

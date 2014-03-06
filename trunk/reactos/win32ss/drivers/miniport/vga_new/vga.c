@@ -11,8 +11,6 @@
 
 #include "vga.h"
 
-#include <devioctl.h>
-
 //---------------------------------------------------------------------------
 //
 // Function declarations

@@ -10,8 +10,6 @@
 
 #include "srv.h"
 
-#include <ndk/mmfuncs.h>
-
 #define NDEBUG
 #include <debug.h>
 
@@ -141,28 +139,29 @@ CsrLoadServerDll(IN PCHAR DllString,
     if (!NT_SUCCESS(Status)) return Status;
 
     /* If we are loading ourselves, don't actually load us */
-    if (ServerId != CSRSRV_SERVERDLL_INDEX)
-    {
-        /* Load the DLL */
-        Status = LdrLoadDll(NULL, 0, &TempString, &hServerDll);
-        if (!NT_SUCCESS(Status))
-        {
-            /* Setup error parameters */
-            Parameters[0] = (ULONG_PTR)&TempString;
-            Parameters[1] = (ULONG_PTR)&ErrorString;
-            RtlInitUnicodeString(&ErrorString, L"Default Load Path");
+	if (ServerId != CSRSRV_SERVERDLL_INDEX)
+	{
+		/* Load the DLL */
+		Status = LdrLoadDll(NULL, 0, &TempString, &hServerDll);
 
-            /* Send a hard error */
-            NtRaiseHardError(Status,
-                             2,
-                             3,
-                             Parameters,
-                             OptionOk,
-                             &Response);
-        }
+		if (!NT_SUCCESS(Status))
+		{
+			/* Setup error parameters */
+			Parameters[0] = (ULONG_PTR)&TempString;
+			Parameters[1] = (ULONG_PTR)&ErrorString;
+			RtlInitUnicodeString(&ErrorString, L"Default Load Path");
 
-        /* Get rid of the string */
-        RtlFreeUnicodeString(&TempString);
+			/* Send a hard error */
+			NtRaiseHardError(Status,
+				2,
+				3,
+				Parameters,
+				OptionOk,
+				&Response);
+		}
+
+		/* Get rid of the string */
+		RtlFreeUnicodeString(&TempString);
         if (!NT_SUCCESS(Status)) return Status;
     }
 
