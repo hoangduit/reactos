@@ -11,9 +11,6 @@
 
 #include "usbstor.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 USBSTOR_BuildCBW(
     IN ULONG Tag,

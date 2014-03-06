@@ -6,7 +6,12 @@
  * COPYRIGHT:   Copyright 2011 Eric Kohl
  */
 
+/* INCLUDES ****************************************************************/
+
 #include "lsasrv.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(lsasrv);
+
 
 /* GLOBALS *****************************************************************/
 
@@ -241,6 +246,8 @@ LsapCreateDatabaseObjects(VOID)
     PSID AccountDomainSid = NULL;
     PSECURITY_DESCRIPTOR PolicySd = NULL;
     ULONG PolicySdSize = 0;
+    ULONG AuditEventsCount;
+    ULONG AuditEventsSize;
     ULONG i;
     NTSTATUS Status;
 
@@ -261,15 +268,17 @@ LsapCreateDatabaseObjects(VOID)
     AuditLogInfo.NextAuditRecordId = 0;			// DWORD
 
     /* Initialize the Audit Events attribute */
+    AuditEventsCount = AuditCategoryAccountLogon - AuditCategorySystem + 1;
+    AuditEventsSize = sizeof(LSAP_POLICY_AUDIT_EVENTS_DATA) + AuditEventsCount * sizeof(DWORD);
     AuditEventsInfo = RtlAllocateHeap(RtlGetProcessHeap(),
                                       HEAP_ZERO_MEMORY,
-                                      sizeof(LSAP_POLICY_AUDIT_EVENTS_DATA));
+                                      AuditEventsSize);
     if (AuditEventsInfo == NULL)
         return STATUS_INSUFFICIENT_RESOURCES;
 
     AuditEventsInfo->AuditingMode = FALSE;
-    AuditEventsInfo->MaximumAuditEventCount = POLICY_AUDIT_EVENT_TYPE_COUNT;
-    for (i = 0; i < POLICY_AUDIT_EVENT_TYPE_COUNT; i++)
+    AuditEventsInfo->MaximumAuditEventCount = AuditEventsCount;
+    for (i = 0; i < AuditEventsCount; i++)
         AuditEventsInfo->AuditEvents[i] = 0;
 
     /* Initialize the DNS Domain GUID attribute */
@@ -347,7 +356,7 @@ LsapCreateDatabaseObjects(VOID)
     LsapSetObjectAttribute(PolicyObject,
                            L"PolAdtEv",
                            AuditEventsInfo,
-                           sizeof(LSAP_POLICY_AUDIT_EVENTS_DATA));
+                           AuditEventsSize);
 
     /* Set the DNS Domain Name attribute */
     LsapSetObjectAttribute(PolicyObject,
@@ -980,7 +989,7 @@ LsapSetObjectAttribute(PLSA_DB_OBJECT DbObject,
                          NULL);
     if (!NT_SUCCESS(Status))
     {
-        ERR("NtCreateKey failed for '%S' with status 0x%lx\n",
+        ERR("NtCreateKey failed for '%S' with status 0x%lx\n", 
             AttributeName, Status);
         return Status;
     }
@@ -994,7 +1003,7 @@ LsapSetObjectAttribute(PLSA_DB_OBJECT DbObject,
 
     if (!NT_SUCCESS(Status))
     {
-        ERR("RtlpNtSetValueKey failed for '%S' with status 0x%lx\n",
+        ERR("RtlpNtSetValueKey failed for '%S' with status 0x%lx\n", 
             AttributeName, Status);
     }
 

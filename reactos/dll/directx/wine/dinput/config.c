@@ -16,10 +16,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "dinput_private.h"
+#define NONAMELESSUNION
 
-#include <winuser.h>
-#include <commctrl.h>
+//#include "wine/unicode.h"
+//#include "objbase.h"
+#include "dinput_private.h"
+//#include "device_private.h"
 
 #include "resource.h"
 

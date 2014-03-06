@@ -23,12 +23,22 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file image.c
  * Image handling.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "colormac.h"
+#include "image.h"
+#include "imports.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+
+
 
 /**
  * \return GL_TRUE if type is packed pixel type, GL_FALSE otherwise.

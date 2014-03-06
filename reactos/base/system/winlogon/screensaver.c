@@ -10,16 +10,17 @@
 
 #include "winlogon.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(winlogon);
+
 /* FUNCTIONS ****************************************************************/
 
 #ifndef USE_GETLASTINPUTINFO
 static
 LRESULT
 CALLBACK
-KeyboardActivityProc(
-    IN INT nCode,
-    IN WPARAM wParam,
-    IN LPARAM lParam)
+KeyboardActivityProc(IN INT nCode,
+                     IN WPARAM wParam,
+                     IN LPARAM lParam)
 {
     InterlockedExchange((LONG*)&WLSession->LastActivity, ((PKBDLLHOOKSTRUCT)lParam)->time);
     return CallNextHookEx(NULL, nCode, wParam, lParam);
@@ -29,10 +30,9 @@ KeyboardActivityProc(
 static
 LRESULT
 CALLBACK
-MouseActivityProc(
-    IN INT nCode,
-    IN WPARAM wParam,
-    IN LPARAM lParam)
+MouseActivityProc(IN INT nCode,
+                  IN WPARAM wParam,
+                  IN LPARAM lParam)
 {
     InterlockedExchange((LONG*)&WLSession->LastActivity, ((PMSLLHOOKSTRUCT)lParam)->time);
     return CallNextHookEx(NULL, nCode, wParam, lParam);
@@ -42,8 +42,7 @@ MouseActivityProc(
 
 static
 VOID
-LoadScreenSaverParameters(
-    OUT LPDWORD Timeout)
+LoadScreenSaverParameters(OUT LPDWORD Timeout)
 {
     BOOL Enabled;
 
@@ -73,8 +72,7 @@ LoadScreenSaverParameters(
 static
 DWORD
 WINAPI
-ScreenSaverThreadMain(
-    IN LPVOID lpParameter)
+ScreenSaverThreadMain(IN LPVOID lpParameter)
 {
     PWLSESSION Session = (PWLSESSION)lpParameter;
     HANDLE HandleArray[3];
@@ -199,8 +197,7 @@ cleanup:
 
 
 BOOL
-InitializeScreenSaver(
-    IN OUT PWLSESSION Session)
+InitializeScreenSaver(IN OUT PWLSESSION Session)
 {
     HANDLE ScreenSaverThread;
 
@@ -252,8 +249,7 @@ InitializeScreenSaver(
 
 
 VOID
-StartScreenSaver(
-    IN PWLSESSION Session)
+StartScreenSaver(IN PWLSESSION Session)
 {
     HKEY hKey = NULL, hCurrentUser = NULL;
     WCHAR szApplicationName[MAX_PATH];

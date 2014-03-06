@@ -7,7 +7,6 @@
  * UPDATE HISTORY:
  * 20040708 Created
  */
-
 #include "afd.h"
 
 static NTSTATUS SatisfyAccept( PAFD_DEVICE_EXTENSION DeviceExt,

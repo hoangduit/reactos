@@ -22,7 +22,8 @@ list(APPEND SOURCE
     ldr/ldrutils.c
     rtl/libsupp.c
     rtl/version.c
-    include/ntdll.h)
+    def/ntdll.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/ntdll.def)
 
 if(ARCH STREQUAL "i386")
     list(APPEND ASM_SOURCE dispatch/i386/dispatch.S)
@@ -35,12 +36,7 @@ else()
 endif()
 
 add_asm_files(ntdll_asm ${ASM_SOURCE})
-
-add_library(ntdll SHARED
-    ${SOURCE}
-    ${ntdll_asm}
-    def/ntdll.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/ntdll.def)
+add_library(ntdll SHARED ${SOURCE} ${ntdll_asm})
 
 set_module_type(ntdll win32dll ENTRYPOINT 0)
 #############################################
@@ -59,7 +55,7 @@ target_link_libraries(ntdll
                       uuid
                       ${PSEH_LIB})
 
-add_pch(ntdll include/ntdll.h SOURCE)
+add_pch(ntdll include/ntdll.h)
 add_dependencies(ntdll ntstatus asm)
 
 add_cd_file(TARGET ntdll DESTINATION reactos/system32 NO_CAB FOR all)

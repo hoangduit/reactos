@@ -1,3 +1,4 @@
+
 #include "precomp.h"
 
 #define NDEBUG
@@ -49,3 +50,4 @@ GetSecurityUserInfo(
     UNIMPLEMENTED;
     return STATUS_UNSUCCESSFUL;
 }
+

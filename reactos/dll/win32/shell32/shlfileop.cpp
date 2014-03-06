@@ -21,9 +21,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+//#define NO_SHLWAPI_STREAM
 #include "precomp.h"
-
-#include "xdg.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 

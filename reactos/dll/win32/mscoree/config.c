@@ -18,12 +18,30 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "mscoree_private.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
 
+#define COBJMACROS
+
+#include <stdarg.h>
+
+#include <windef.h>
+#include <winbase.h>
+#include <winreg.h>
 #include <ole2.h>
-#include <shlwapi.h>
-#include <initguid.h>
 #include <msxml2.h>
+//#include "mscoree.h"
+#include <corhdr.h>
+#include <metahost.h>
+#include <cordebug.h>
+#include <wine/list.h>
+#include "mscoree_private.h"
+#include <shlwapi.h>
+
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL( mscoree );
 
 enum parse_state
 {

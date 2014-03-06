@@ -9,8 +9,6 @@
 
 #include "serial.h"
 
-#include <debug.h>
-
 NTSTATUS NTAPI
 SerialClose(
 	IN PDEVICE_OBJECT DeviceObject,

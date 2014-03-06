@@ -10,8 +10,6 @@
 
 #include "compbatt.h"
 
-#include <debug.h>
-
 /* GLOBALS ********************************************************************/
 
 ULONG CompBattDebug;

@@ -7,8 +7,7 @@ list(APPEND SOURCE
     fbtpwr.c
     fbtrwr.c
 #   fbtwmi.c
-    fbtusb.c
-    precomp.h)
+    fbtusb.c)
 
 add_library(fbtusb SHARED ${SOURCE} fbtusb.rc)
 
@@ -20,5 +19,4 @@ endif()
 
 set_module_type(fbtusb kernelmodedriver)
 add_importlibs(fbtusb ntoskrnl hal usbd)
-add_pch(fbtusb precomp.h SOURCE)
 add_cd_file(TARGET fbtusb DESTINATION reactos/system32/drivers FOR all)

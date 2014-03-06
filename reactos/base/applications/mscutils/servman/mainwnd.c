@@ -9,8 +9,6 @@
 
 #include "precomp.h"
 
-#include <windowsx.h>
-
 static const TCHAR szMainWndClass[] = TEXT("ServManWndClass");
 
 BOOL bSortAscending = TRUE;

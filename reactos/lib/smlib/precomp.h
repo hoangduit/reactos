@@ -6,9 +6,9 @@
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
  */
 
-#ifndef _SMLIB_PCH_
-#define _SMLIB_PCH_
+/* INCLUDES ******************************************************************/
 
+/* SDK/DDK/NDK Headers. */
 #define WIN32_NO_STATUS
 #include <windef.h>
 #include <winreg.h>
@@ -21,4 +21,3 @@
 
 #include <sm/helper.h>
 
-#endif /* _SMLIB_PCH_ */

@@ -22,8 +22,6 @@
 
 #include "precomp.h"
 
-#include <stdio.h>
-
 /* TODO:
  *      - the dialog box could be non modal
  *      - in that case,

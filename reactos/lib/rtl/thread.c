@@ -158,7 +158,7 @@ RtlpFreeUserStack(IN HANDLE Process,
  * @implemented
  */
 NTSTATUS
-__cdecl
+NTAPI
 RtlSetThreadIsCritical(IN BOOLEAN NewValue,
                        OUT PBOOLEAN OldValue OPTIONAL,
                        IN BOOLEAN NeedBreaks)

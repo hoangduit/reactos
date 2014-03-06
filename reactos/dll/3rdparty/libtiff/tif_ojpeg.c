@@ -123,8 +123,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
 
-#include <precomp.h>
-
+#include "tiffiop.h"
 #ifdef OJPEG_SUPPORT
 
 /* Configuration defines here are:

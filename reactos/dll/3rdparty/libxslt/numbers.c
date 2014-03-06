@@ -10,7 +10,24 @@
  * Bjorn Reese <breese@users.sourceforge.net>
  */
 
-#include "precomp.h"
+#define IN_LIBXSLT
+#include "libxslt.h"
+
+#include <math.h>
+#include <limits.h>
+#include <float.h>
+#include <string.h>
+
+#include <libxml/xmlmemory.h>
+#include <libxml/parserInternals.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
+#include <libxml/encoding.h>
+#include "xsltutils.h"
+#include "pattern.h"
+#include "templates.h"
+#include "transform.h"
+#include "numbersInternals.h"
 
 #ifndef FALSE
 # define FALSE (0 == 1)

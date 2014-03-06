@@ -1,3 +1,4 @@
+#include "config.h"
 #include "editor.h"
 
 #define DEFINE_THISCALL_WRAPPER(func,args) \

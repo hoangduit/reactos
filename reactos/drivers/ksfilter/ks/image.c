@@ -6,13 +6,7 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
-
-#include <ntimage.h>
-#include <ndk/ldrfuncs.h>
-
-#define NDEBUG
-#include <debug.h>
+#include "priv.h"
 
 /*
     @implemented

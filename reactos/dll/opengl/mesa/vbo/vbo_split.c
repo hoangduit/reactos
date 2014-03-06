@@ -47,7 +47,13 @@
  * limitations on drivers which want to use it as a fallback path.
  */
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/imports.h"
+#include "main/mtypes.h"
+#include "main/macros.h"
+
+#include "vbo_split.h"
+#include "vbo.h"
 
 /* True if a primitive can be split without copying of vertices, false
  * otherwise.

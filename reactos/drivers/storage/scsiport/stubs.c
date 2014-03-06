@@ -6,9 +6,9 @@
  * PROGRAMMER:      Timo Kreuzer (timo.kreuzer@reactos.org)
  */
 
-#include "precomp.h"
+/* INCLUDES *****************************************************************/
 
-#include <srb.h>
+#include "precomp.h"
 
 #define NDEBUG
 #include <debug.h>
@@ -270,3 +270,4 @@ ScsiPortWriteRegisterUlong(
 {
     WRITE_REGISTER_ULONG(Register, Value);
 }
+

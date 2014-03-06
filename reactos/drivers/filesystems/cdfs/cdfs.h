@@ -2,12 +2,14 @@
 #define CDFS_H
 
 #include <ntifs.h>
+#include <ntddk.h>
 #include <ntddcdrm.h>
 
 #define CDFS_BASIC_SECTOR 2048
 #define CDFS_PRIMARY_DESCRIPTOR_LOCATION 16
 #define BLOCKSIZE CDFS_BASIC_SECTOR
 #define CDFS_MAX_NAME_LEN 256
+
 
 /* Volume descriptor types (VdType) */
 #define BOOT_VOLUME_DESCRIPTOR_TYPE		0
@@ -470,4 +472,4 @@ CdfsAcquireForLazyWrite(IN PVOID Context,
 VOID NTAPI
 CdfsReleaseFromLazyWrite(IN PVOID Context);
 
-#endif /* CDFS_H */
+#endif //CDFS_H

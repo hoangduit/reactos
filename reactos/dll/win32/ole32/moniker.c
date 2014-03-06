@@ -21,10 +21,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
 
+#include <config.h>
+//#include "wine/port.h"
+
+#include <stdarg.h>
+//#include <string.h>
+
+#define COBJMACROS
+
+//#include "winerror.h"
+#include <windef.h>
+#include <winbase.h>
+//#include "winuser.h"
+//#include "wtypes.h"
+#include <ole2.h>
+
+//#include "wine/list.h"
+#include <wine/debug.h>
+#include <wine/unicode.h>
 #include <wine/exception.h>
 
+#include "compobj_private.h"
+#include "moniker.h"
 #include <irot.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(ole);

@@ -1,7 +1,5 @@
 #include "calc.h"
 
-#include <limits.h>
-
 void apply_int_mask(calc_number_t *r)
 {
     unsigned __int64 mask;

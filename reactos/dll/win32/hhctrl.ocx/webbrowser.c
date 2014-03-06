@@ -20,7 +20,9 @@
 
 #include "hhctrl.h"
 
-#include <mshtmhst.h>
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(htmlhelp);
 
 typedef struct IOleClientSiteImpl
 {

@@ -11,9 +11,6 @@
 
 #include "usbstor.h"
 
-#define NDEBUG
-#include <debug.h>
-
 //
 // driver verifier
 //
@@ -517,3 +514,4 @@ USBSTOR_IsFloppy(
     //
     return FALSE;
 }
+

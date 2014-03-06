@@ -5,7 +5,7 @@ spec2def(kbdgneo.dll kbdgneo.spec)
 
 add_library(kbdgneo SHARED kbdgneo.c kbdgneo.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdgneo.def)
 
-set_module_type(kbdgneo kbdlayout)
+set_entrypoint(kbdgneo 0)
 
 add_dependencies(kbdgneo psdk)
 

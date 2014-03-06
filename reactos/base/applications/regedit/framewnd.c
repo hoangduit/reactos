@@ -20,10 +20,6 @@
 
 #include "regedit.h"
 
-#include <commdlg.h>
-#include <cderr.h>
-#include <objsel.h>
-
 /********************************************************************************
  * Global and Local Variables:
  */

@@ -7,10 +7,6 @@
 
 #include "precomp.h"
 
-#include <stdlib.h>
-#include <tchar.h>
-#include <powrprof.h>
-
 /*
  * This takes strings from a resource stringtable
  * and outputs it to the console.

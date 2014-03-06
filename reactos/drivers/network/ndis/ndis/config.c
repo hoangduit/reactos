@@ -33,8 +33,6 @@
 
 #include "ndissys.h"
 
-#include <ntifs.h>
-
 #define PARAMETERS_KEY L"Parameters"     /* The parameters subkey under the device-specific key */
 
 /*

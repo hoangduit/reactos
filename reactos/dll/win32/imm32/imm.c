@@ -38,6 +38,12 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(imm);
 
+typedef struct tagIMCCInternal
+{
+    DWORD dwLock;
+    DWORD dwSize;
+} IMCCInternal;
+
 #define MAKE_FUNCPTR(f) typeof(f) * p##f
 typedef struct _tagImmHkl{
     struct list entry;
@@ -407,7 +413,6 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpReserved)
             IMM_FreeThreadData();
             break;
         case DLL_PROCESS_DETACH:
-            if (lpReserved) break;
             IMM_FreeThreadData();
             IMM_FreeAllImmHkl();
             TlsFree(tlsIndex);
@@ -2627,9 +2632,8 @@ LPINPUTCONTEXT WINAPI ImmLockIMC(HIMC hIMC)
 BOOL WINAPI ImmUnlockIMC(HIMC hIMC)
 {
     InputContextData *data = hIMC;
-    if (data->dwLock)
-        data->dwLock--;
-    return TRUE;
+    data->dwLock--;
+    return (data->dwLock!=0);
 }
 
 /***********************************************************************
@@ -2646,7 +2650,15 @@ DWORD WINAPI ImmGetIMCLockCount(HIMC hIMC)
 */
 HIMCC  WINAPI ImmCreateIMCC(DWORD size)
 {
-    return GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE, size);
+    IMCCInternal *internal;
+    int real_size = size + sizeof(IMCCInternal);
+
+    internal = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, real_size);
+    if (internal == NULL)
+        return NULL;
+
+    internal->dwSize = size;
+    return  internal;
 }
 
 /***********************************************************************
@@ -2654,7 +2666,8 @@ HIMCC  WINAPI ImmCreateIMCC(DWORD size)
 */
 HIMCC WINAPI ImmDestroyIMCC(HIMCC block)
 {
-    return GlobalFree(block);
+    HeapFree(GetProcessHeap(),0,block);
+    return NULL;
 }
 
 /***********************************************************************
@@ -2662,7 +2675,11 @@ HIMCC WINAPI ImmDestroyIMCC(HIMCC block)
 */
 LPVOID WINAPI ImmLockIMCC(HIMCC imcc)
 {
-    return GlobalLock(imcc);
+    IMCCInternal *internal;
+    internal = imcc;
+
+    internal->dwLock ++;
+    return internal + 1;
 }
 
 /***********************************************************************
@@ -2670,7 +2687,11 @@ LPVOID WINAPI ImmLockIMCC(HIMCC imcc)
 */
 BOOL WINAPI ImmUnlockIMCC(HIMCC imcc)
 {
-    return GlobalUnlock(imcc);
+    IMCCInternal *internal;
+    internal = imcc;
+
+    internal->dwLock --;
+    return (internal->dwLock!=0);
 }
 
 /***********************************************************************
@@ -2678,7 +2699,10 @@ BOOL WINAPI ImmUnlockIMCC(HIMCC imcc)
 */
 DWORD WINAPI ImmGetIMCCLockCount(HIMCC imcc)
 {
-    return GlobalFlags(imcc) & GMEM_LOCKCOUNT;
+    IMCCInternal *internal;
+    internal = imcc;
+
+    return internal->dwLock;
 }
 
 /***********************************************************************
@@ -2686,7 +2710,15 @@ DWORD WINAPI ImmGetIMCCLockCount(HIMCC imcc)
 */
 HIMCC  WINAPI ImmReSizeIMCC(HIMCC imcc, DWORD size)
 {
-    return GlobalReAlloc(imcc, size, GMEM_ZEROINIT | GMEM_MOVEABLE);
+    IMCCInternal *internal,*newone;
+    int real_size = size + sizeof(IMCCInternal);
+
+    internal = imcc;
+
+    newone = HeapReAlloc(GetProcessHeap(), 0, internal, real_size);
+    newone->dwSize = size;
+
+    return newone;
 }
 
 /***********************************************************************
@@ -2694,7 +2726,10 @@ HIMCC  WINAPI ImmReSizeIMCC(HIMCC imcc, DWORD size)
 */
 DWORD WINAPI ImmGetIMCCSize(HIMCC imcc)
 {
-    return GlobalSize(imcc);
+    IMCCInternal *internal;
+    internal = imcc;
+
+    return internal->dwSize;
 }
 
 /***********************************************************************

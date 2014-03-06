@@ -21,6 +21,8 @@
 
 #include "setupapi_private.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
+
 /* Unicode constants */
 static const WCHAR BackSlash[] = {'\\',0};
 static const WCHAR ClassGUID[]  = {'C','l','a','s','s','G','U','I','D',0};
@@ -211,7 +213,7 @@ CheckSectionValid(
      * Field[3] Minor version
      * Field[4] Product type
      * Field[5] Suite mask
-     * Remark: these fields may be NULL if the information is not provided
+     * Remark: lastests fields may be NULL if the information is not provided
      */
     Fields[0] = Section;
     if (Fields[0] == NULL)

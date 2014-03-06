@@ -24,6 +24,8 @@ Revision History:
 
 --*/
 
+#include "ntddk.h"
+#include "classpnp.h"
 #include "cdrom.h"
 
 NTSTATUS

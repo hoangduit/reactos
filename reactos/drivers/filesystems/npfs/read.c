@@ -16,8 +16,6 @@
 /* GLOBALS ********************************************************************/
 
 LONG NpSlowReadCalls;
-ULONG NpFastReadTrue;
-ULONG NpFastReadFalse;
 
 /* FUNCTIONS ******************************************************************/
 
@@ -25,8 +23,8 @@ BOOLEAN
 NTAPI
 NpCommonRead(IN PFILE_OBJECT FileObject,
              IN PVOID Buffer,
-             IN ULONG BufferSize,
-             OUT PIO_STATUS_BLOCK IoStatus,
+             IN ULONG BufferSize, 
+             OUT PIO_STATUS_BLOCK IoStatus, 
              IN PIRP Irp,
              IN PLIST_ENTRY List)
 {
@@ -190,48 +188,6 @@ NpFsdRead(IN PDEVICE_OBJECT DeviceObject,
     }
 
     return IoStatus.Status;
-}
-
-
-_Function_class_(FAST_IO_READ)
-_IRQL_requires_same_
-BOOLEAN
-NTAPI
-NpFastRead(
-    _In_ PFILE_OBJECT FileObject,
-    _In_ PLARGE_INTEGER FileOffset,
-    _In_ ULONG Length,
-    _In_ BOOLEAN Wait,
-    _In_ ULONG LockKey,
-    _Out_ PVOID Buffer,
-    _Out_ PIO_STATUS_BLOCK IoStatus,
-    _In_ PDEVICE_OBJECT DeviceObject)
-{
-    LIST_ENTRY DeferredList;
-    BOOLEAN Result;
-    PAGED_CODE();
-
-    InitializeListHead(&DeferredList);
-
-    FsRtlEnterFileSystem();
-    NpAcquireSharedVcb();
-
-    Result = NpCommonRead(FileObject,
-                          Buffer,
-                          Length,
-                          IoStatus,
-                          NULL,
-                          &DeferredList);
-    if (Result)
-        ++NpFastReadTrue;
-    else
-        ++NpFastReadFalse;
-
-    NpReleaseVcb();
-    NpCompleteDeferredIrps(&DeferredList);
-    FsRtlExitFileSystem();
-
-    return Result;
 }
 
 /* EOF */

@@ -6,10 +6,13 @@
  * COPYRIGHT:   Copyright 2009 Eric Kohl
  */
 
+/* INCLUDES ****************************************************************/
+
+
 #include "lsasrv.h"
 
-#include <ndk/lpcfuncs.h>
-#include <ndk/psfuncs.h>
+WINE_DEFAULT_DEBUG_CHANNEL(lsasrv);
+
 
 static LIST_ENTRY LsapLogonContextList;
 

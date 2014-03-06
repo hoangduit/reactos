@@ -28,7 +28,16 @@
  * Raster position operations.
  */
 
-#include <precomp.h>
+#include "glheader.h"
+#include "context.h"
+#include "feedback.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "rastpos.h"
+#include "state.h"
+#include "main/dispatch.h"
+
 
 #if FEATURE_rastpos
 

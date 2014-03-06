@@ -8,13 +8,8 @@
 
 #include "audiosrv.h"
 
-#include <winreg.h>
-#include <winuser.h>
-#include <mmsystem.h>
-#include <setupapi.h>
-#include <ksmedia.h>
-
 static HDEVNOTIFY device_notification_handle = NULL;
+
 
 /*
     Finds all devices within the KSCATEGORY_AUDIO category and puts them

@@ -71,34 +71,18 @@ INIT_FUNCTION
 NTSTATUS
 NTAPI
 InitWindowStationImpl(VOID);
+NTSTATUS NTAPI UserCreateWinstaDirectory();
 
-NTSTATUS
-NTAPI
-UserCreateWinstaDirectory();
+VOID APIENTRY IntWinStaObjectDelete(PWIN32_DELETEMETHOD_PARAMETERS Parameters);
+NTSTATUS APIENTRY IntWinStaObjectParse(PWIN32_PARSEMETHOD_PARAMETERS Parameters);
+NTSTATUS NTAPI IntWinstaOkToClose(PWIN32_OKAYTOCLOSEMETHOD_PARAMETERS Parameters);
 
-NTSTATUS
-APIENTRY
-IntWinStaObjectDelete(
-    _In_ PVOID Parameters);
-
-NTSTATUS
-APIENTRY
-IntWinStaObjectParse(
-    _In_ PVOID Parameters);
-
-NTSTATUS
-NTAPI
-IntWinstaOkToClose(
-    _In_ PVOID Parameters);
-
-NTSTATUS
-FASTCALL
+NTSTATUS FASTCALL
 IntValidateWindowStationHandle(
    HWINSTA WindowStation,
    KPROCESSOR_MODE AccessMode,
    ACCESS_MASK DesiredAccess,
    PWINSTATION_OBJECT *Object);
-
 BOOL FASTCALL UserSetProcessWindowStation(HWINSTA hWindowStation);
 
 BOOL FASTCALL co_IntInitializeDesktopGraphics(VOID);

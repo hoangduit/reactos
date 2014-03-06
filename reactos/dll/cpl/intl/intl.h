@@ -1,18 +1,16 @@
-#ifndef _INTL_H
-#define _INTL_H
-
-#include <stdarg.h>
-
 #define WIN32_NO_STATUS
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winnls.h>
 #include <winreg.h>
 #include <winuser.h>
+#include <shellapi.h>
 #include <cpl.h>
 #include <setupapi.h>
 #include <tchar.h>
 #include <malloc.h>
+#include <debug.h>
 
 #include "resource.h"
 
@@ -60,7 +58,6 @@ extern DWORD IsUnattendedSetupEnabled;
 extern DWORD UnattendLCID;
 
 /* intl.c */
-VOID PrintErrorMsgBox(UINT msg);
 
 /* languages.c */
 INT_PTR CALLBACK
@@ -117,4 +114,4 @@ SetupApplet(HWND hwndDlg, LCID lcid);
 /* kblayouts.c */
 VOID AddNewKbLayoutsByLcid(LCID Lcid);
 
-#endif /* _INTL_H */
+/* EOF */

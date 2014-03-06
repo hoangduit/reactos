@@ -22,9 +22,6 @@
 
 #include "precomp.h"
 
-#include <mmsystem.h>
-#include <commoncontrols.h>
-
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 WINE_DECLARE_DEBUG_CHANNEL(pidl);
 
@@ -937,10 +934,12 @@ void WINAPI SHAddToRecentDocs (UINT uFlags,LPCVOID pv)
     hres = CoCreateInstance(CLSID_ShellLink,
                  NULL,
                  CLSCTX_INPROC_SERVER,
-                 IID_PPV_ARG(IShellLinkA,&psl));
+                 IID_IShellLinkA,
+                 (void **)&psl);
     if(SUCCEEDED(hres)) {
 
-        hres = psl->QueryInterface(IID_PPV_ARG(IPersistFile,&pPf));
+        hres = psl->QueryInterface(IID_IPersistFile,
+                         (LPVOID *)&pPf);
         if(FAILED(hres)) {
         /* bombed */
         ERR("failed QueryInterface for IPersistFile %08x\n", hres);
@@ -1022,7 +1021,7 @@ HRESULT WINAPI SHCreateShellFolderViewEx(
     if (FAILED(hRes))
         return hRes;
 
-    hRes = psf->QueryInterface(IID_PPV_ARG(IShellView, ppv));
+    hRes = psf->QueryInterface(IID_IShellView, (LPVOID *)ppv);
     psf->Release();
 
     return hRes;
@@ -1071,7 +1070,7 @@ HRESULT WINAPI SHGetInstanceExplorer (IUnknown **lpUnknown)
       return E_FAIL;
 
     SHELL32_IExplorerInterface->AddRef();
-    return S_OK;
+    return NOERROR;
 }
 /*************************************************************************
  * SHFreeUnusedLibraries            [SHELL32.123]
@@ -1098,7 +1097,7 @@ void WINAPI SHFreeUnusedLibraries (void)
 BOOL WINAPI DAD_AutoScroll(HWND hwnd, AUTO_SCROLL_DATA *samples, const POINT * pt)
 {
     FIXME("hwnd = %p %p %p\n",hwnd,samples,pt);
-    return FALSE;
+    return 0;
 }
 /*************************************************************************
  * DAD_DragEnter                [SHELL32.130]
@@ -1147,7 +1146,7 @@ BOOL WINAPI DAD_SetDragImage(
     LPPOINT lppt)
 {
     FIXME("%p %p stub\n",himlTrack, lppt);
-  return FALSE;
+  return 0;
 }
 /*************************************************************************
  * DAD_ShowDragImage                [SHELL32.137]
@@ -1158,7 +1157,7 @@ BOOL WINAPI DAD_SetDragImage(
 BOOL WINAPI DAD_ShowDragImage(BOOL bShow)
 {
     FIXME("0x%08x stub\n",bShow);
-    return FALSE;
+    return 0;
 }
 
 static const WCHAR szwCabLocation[] = {
@@ -1251,9 +1250,8 @@ BOOL WINAPI WriteCabinetState(CABINETSTATE *cs)
  *
  */
 BOOL WINAPI FileIconInit(BOOL bFullInit)
-{
-    FIXME("(%s)\n", bFullInit ? "true" : "false");
-    return FALSE;
+{    FIXME("(%s)\n", bFullInit ? "true" : "false");
+    return 0;
 }
 
 /*************************************************************************
@@ -1774,9 +1772,9 @@ EXTERN_C HPSXA WINAPI SHCreatePropSheetExtArrayEx(HKEY hKey, LPCWSTR pszSubKey, 
                    /* Attempt to get an IShellPropSheetExt and an IShellExtInit instance.
                        Only if both interfaces are supported it's a real shell extension.
                        Then call IShellExtInit's Initialize method. */
-                    if (SUCCEEDED(CoCreateInstance(clsid, NULL, CLSCTX_INPROC_SERVER/* | CLSCTX_NO_CODE_DOWNLOAD */, IID_PPV_ARG(IShellPropSheetExt, &pspsx))))
+                    if (SUCCEEDED(CoCreateInstance(clsid, NULL, CLSCTX_INPROC_SERVER/* | CLSCTX_NO_CODE_DOWNLOAD */, IID_IShellPropSheetExt, (LPVOID *)&pspsx)))
                     {
-                        if (SUCCEEDED(pspsx->QueryInterface(IID_PPV_ARG(IShellExtInit, &psxi))))
+                        if (SUCCEEDED(pspsx->QueryInterface(IID_IShellExtInit, (PVOID *)&psxi)))
                         {
                             if (SUCCEEDED(psxi->Initialize(NULL, pDataObj, hKey)))
                             {
@@ -1901,7 +1899,7 @@ HRESULT WINAPI SHCreateStdEnumFmtEtc(
         return hRes;
 
     pef->AddRef();
-    hRes = pef->QueryInterface(IID_PPV_ARG(IEnumFORMATETC, ppenumFormatetc));
+    hRes = pef->QueryInterface(IID_IEnumFORMATETC, (LPVOID*)ppenumFormatetc);
     pef->Release();
 
     return hRes;
@@ -1927,7 +1925,7 @@ HRESULT WINAPI SHCreateShellFolderView(const SFV_CREATE *pcsfv, IShellView **pps
     if (FAILED(hRes))
         return hRes;
 
-    hRes = psf->QueryInterface(IID_PPV_ARG(IShellView, ppsv));
+    hRes = psf->QueryInterface(IID_IShellView, (LPVOID *)ppsv);
     psf->Release();
 
     return hRes;
@@ -2270,9 +2268,7 @@ EXTERN_C HRESULT WINAPI SHGetImageList(int iImageList, REFIID riid, void **ppv)
     /* Get the interface for the new image list */
     if (hNew)
     {
-        IImageList *imageList = (IImageList*) hNew;
-        ret = imageList->QueryInterface(riid, ppv);
-
+        ret = HIMAGELIST_QueryInterface(hNew, riid, ppv);
         ImageList_Destroy(hNew);
     }
 

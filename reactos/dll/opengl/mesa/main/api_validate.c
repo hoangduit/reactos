@@ -22,7 +22,15 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+#include "glheader.h"
+#include "api_validate.h"
+#include "bufferobj.h"
+#include "context.h"
+#include "imports.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "vbo/vbo.h"
+
 
 /**
  * \return  number of bytes in array [count] of type.

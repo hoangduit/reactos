@@ -11,9 +11,6 @@
 
 #include "usbstor.h"
 
-#define NDEBUG
-#include <debug.h>
-
 VOID
 USBSTOR_DumpDeviceDescriptor(PUSB_DEVICE_DESCRIPTOR DeviceDescriptor)
 {

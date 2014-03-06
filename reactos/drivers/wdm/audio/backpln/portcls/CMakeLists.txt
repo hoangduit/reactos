@@ -47,19 +47,17 @@ list(APPEND SOURCE
     undoc.cpp
     unregister.cpp
     version.cpp
-    private.hpp)
+    ${CMAKE_CURRENT_BINARY_DIR}/portcls.def)
 
 add_library(portcls SHARED
     ${SOURCE}
-    guid.cpp
-    portcls.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/portcls.def)
+    portcls.rc)
 
 target_link_libraries(portcls
     libcntpr
     ${PSEH_LIB})
 
 set_module_type(portcls kernelmodedriver ENTRYPOINT 0 )
-add_pch(portcls private.hpp SOURCE)
+add_pch(portcls private.hpp)
 add_importlibs(portcls ntoskrnl ks drmk hal)
 add_cd_file(TARGET portcls DESTINATION reactos/system32/drivers FOR all)

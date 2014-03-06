@@ -33,9 +33,21 @@ ClasspPowerHandler(
     IN CLASS_POWER_OPTIONS Options
     );
 
-IO_COMPLETION_ROUTINE ClasspPowerDownCompletion;
+NTSTATUS
+NTAPI
+ClasspPowerDownCompletion(
+    IN PDEVICE_OBJECT DeviceObject,
+    IN PIRP Irp,
+    IN PCLASS_POWER_CONTEXT Context
+    );
 
-IO_COMPLETION_ROUTINE ClasspPowerUpCompletion;
+NTSTATUS
+NTAPI
+ClasspPowerUpCompletion(
+    IN PDEVICE_OBJECT DeviceObject,
+    IN PIRP Irp,
+    IN PCLASS_POWER_CONTEXT Context
+    );
 
 VOID
 NTAPI
@@ -80,12 +92,15 @@ ClassDispatchPower(
 {
     PCOMMON_DEVICE_EXTENSION commonExtension = DeviceObject->DeviceExtension;
     ULONG isRemoved;
+    PCLASS_POWER_DEVICE powerRoutine = NULL;
 
     //
     // NOTE: This code may be called at PASSIVE or DISPATCH, depending
     //       upon the device object it is being called for.
     //       don't do anything that would break under either circumstance.
     //
+
+    //NTSTATUS status;
 
     isRemoved = ClassAcquireRemoveLock(DeviceObject, Irp);
 
@@ -144,10 +159,9 @@ NTAPI
 ClasspPowerUpCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
-    IN PVOID CompletionContext
+    IN PCLASS_POWER_CONTEXT Context
     )
 {
-    PCLASS_POWER_CONTEXT context = CompletionContext;
     PCOMMON_DEVICE_EXTENSION commonExtension = DeviceObject->DeviceExtension;
     PFUNCTIONAL_DEVICE_EXTENSION fdoExtension = DeviceObject->DeviceExtension;
 
@@ -159,20 +173,20 @@ ClasspPowerUpCompletion(
 
     DebugPrint((1, "ClasspPowerUpCompletion: Device Object %p, Irp %p, "
                    "Context %p\n",
-                DeviceObject, Irp, context));
+                DeviceObject, Irp, Context));
 
-    ASSERT(!TEST_FLAG(context->Srb.SrbFlags, SRB_FLAGS_FREE_SENSE_BUFFER));
-    ASSERT(!TEST_FLAG(context->Srb.SrbFlags, SRB_FLAGS_PORT_DRIVER_ALLOCSENSE));
-    ASSERT(context->Options.PowerDown == FALSE);
-    ASSERT(context->Options.HandleSpinUp);
+    ASSERT(!TEST_FLAG(Context->Srb.SrbFlags, SRB_FLAGS_FREE_SENSE_BUFFER));
+    ASSERT(!TEST_FLAG(Context->Srb.SrbFlags, SRB_FLAGS_PORT_DRIVER_ALLOCSENSE));
+    ASSERT(Context->Options.PowerDown == FALSE);
+    ASSERT(Context->Options.HandleSpinUp);
 
     if(Irp->PendingReturned) {
         IoMarkIrpPending(Irp);
     }
 
-    context->PowerChangeState.PowerUp++;
+    Context->PowerChangeState.PowerUp++;
 
-    switch(context->PowerChangeState.PowerUp) {
+    switch(Context->PowerChangeState.PowerUp) {
 
         case PowerUpDeviceLocked: {
 
@@ -189,13 +203,13 @@ ClasspPowerUpCompletion(
             // request unless we can ignore failed locks
             //
 
-            if((context->Options.LockQueue == TRUE) &&
+            if((Context->Options.LockQueue == TRUE) &&
                (!NT_SUCCESS(Irp->IoStatus.Status))) {
 
                 DebugPrint((1, "(%p)\tIrp status was %lx\n",
                             Irp, Irp->IoStatus.Status));
                 DebugPrint((1, "(%p)\tSrb status was %lx\n",
-                            Irp, context->Srb.SrbStatus));
+                            Irp, Context->Srb.SrbStatus));
 
                 //
                 // Lock was not successful - throw down the power IRP
@@ -203,8 +217,8 @@ ClasspPowerUpCompletion(
                 // the queue.
                 //
 
-                context->InUse = FALSE;
-                context = NULL;
+                Context->InUse = FALSE;
+                Context = NULL;
 
                 //
                 // Set the new power state
@@ -241,16 +255,16 @@ ClasspPowerUpCompletion(
                 return STATUS_MORE_PROCESSING_REQUIRED;
 
             } else {
-                context->QueueLocked = (UCHAR) context->Options.LockQueue;
+                Context->QueueLocked = (UCHAR) Context->Options.LockQueue;
             }
 
             Irp->IoStatus.Status = STATUS_NOT_SUPPORTED;
 
-            context->PowerChangeState.PowerUp = PowerUpDeviceLocked;
+            Context->PowerChangeState.PowerUp = PowerUpDeviceLocked;
 
             IoSetCompletionRoutine(Irp,
                                    ClasspPowerUpCompletion,
-                                   context,
+                                   Context,
                                    TRUE,
                                    TRUE,
                                    TRUE);
@@ -273,42 +287,42 @@ ClasspPowerUpCompletion(
                 // Issue the start unit command to the device.
                 //
 
-                context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
-                context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
+                Context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
+                Context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
 
-                context->Srb.SrbStatus = context->Srb.ScsiStatus = 0;
-                context->Srb.DataTransferLength = 0;
+                Context->Srb.SrbStatus = Context->Srb.ScsiStatus = 0;
+                Context->Srb.DataTransferLength = 0;
 
-                context->Srb.TimeOutValue = START_UNIT_TIMEOUT;
+                Context->Srb.TimeOutValue = START_UNIT_TIMEOUT;
 
-                context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
+                Context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
                                         SRB_FLAGS_DISABLE_AUTOSENSE |
                                         SRB_FLAGS_DISABLE_SYNCH_TRANSFER |
                                         SRB_FLAGS_NO_QUEUE_FREEZE;
 
-                if(context->Options.LockQueue) {
-                    SET_FLAG(context->Srb.SrbFlags, SRB_FLAGS_BYPASS_LOCKED_QUEUE);
+                if(Context->Options.LockQueue) {
+                    SET_FLAG(Context->Srb.SrbFlags, SRB_FLAGS_BYPASS_LOCKED_QUEUE);
                 }
 
-                context->Srb.CdbLength = 6;
+                Context->Srb.CdbLength = 6;
 
-                cdb = (PCDB) (context->Srb.Cdb);
+                cdb = (PCDB) (Context->Srb.Cdb);
                 RtlZeroMemory(cdb, sizeof(CDB));
 
 
                 cdb->START_STOP.OperationCode = SCSIOP_START_STOP_UNIT;
                 cdb->START_STOP.Start = 1;
 
-                context->PowerChangeState.PowerUp = PowerUpDeviceOn;
+                Context->PowerChangeState.PowerUp = PowerUpDeviceOn;
 
                 IoSetCompletionRoutine(Irp,
                                        ClasspPowerUpCompletion,
-                                       context,
+                                       Context,
                                        TRUE,
                                        TRUE,
                                        TRUE);
 
-                nextStack->Parameters.Scsi.Srb = &(context->Srb);
+                nextStack->Parameters.Scsi.Srb = &(Context->Srb);
                 nextStack->MajorFunction = IRP_MJ_SCSI;
 
                 status = IoCallDriver(commonExtension->LowerDeviceObject, Irp);
@@ -321,7 +335,7 @@ ClasspPowerUpCompletion(
                 // we're done.
                 //
 
-                context->FinalStatus = Irp->IoStatus.Status;
+                Context->FinalStatus = Irp->IoStatus.Status;
                 goto ClasspPowerUpCompletionFailure;
             }
 
@@ -334,32 +348,32 @@ ClasspPowerUpCompletion(
             // First deal with an error if one occurred.
             //
 
-            if(SRB_STATUS(context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
+            if(SRB_STATUS(Context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
 
                 BOOLEAN retry;
 
                 DebugPrint((1, "%p\tError occured when issuing START_UNIT "
                             "command to device. Srb %p, Status %x\n",
                             Irp,
-                            &context->Srb,
-                            context->Srb.SrbStatus));
+                            &Context->Srb,
+                            Context->Srb.SrbStatus));
 
-                ASSERT(!(TEST_FLAG(context->Srb.SrbStatus,
+                ASSERT(!(TEST_FLAG(Context->Srb.SrbStatus,
                                    SRB_STATUS_QUEUE_FROZEN)));
-                ASSERT(context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
+                ASSERT(Context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
 
-                context->RetryInterval = 0;
+                Context->RetryInterval = 0;
 
                 retry = ClassInterpretSenseInfo(
                             commonExtension->DeviceObject,
-                            &context->Srb,
+                            &Context->Srb,
                             IRP_MJ_SCSI,
                             IRP_MJ_POWER,
-                            MAXIMUM_RETRIES - context->RetryCount,
+                            MAXIMUM_RETRIES - Context->RetryCount,
                             &status,
-                            &context->RetryInterval);
+                            &Context->RetryInterval);
 
-                if((retry == TRUE) && (context->RetryCount-- != 0)) {
+                if((retry == TRUE) && (Context->RetryCount-- != 0)) {
 
                     DebugPrint((1, "(%p)\tRetrying failed request\n", Irp));
 
@@ -368,18 +382,18 @@ ClasspPowerUpCompletion(
                     // next time.
                     //
 
-                    context->PowerChangeState.PowerUp--;
+                    Context->PowerChangeState.PowerUp--;
 
                     RetryPowerRequest(commonExtension->DeviceObject,
                                       Irp,
-                                      context);
+                                      Context);
 
                     break;
 
                 }
-
+                
                 // reset retries
-                context->RetryCount = MAXIMUM_RETRIES;
+                Context->RetryCount = MAXIMUM_RETRIES;
 
             }
 
@@ -387,22 +401,22 @@ ClasspPowerUpCompletionFailure:
 
             DebugPrint((1, "(%p)\tPreviously spun device up\n", Irp));
 
-            if (context->QueueLocked) {
+            if (Context->QueueLocked) {
                 DebugPrint((1, "(%p)\tUnlocking queue\n", Irp));
 
-                context->Srb.Function = SRB_FUNCTION_UNLOCK_QUEUE;
-                context->Srb.SrbFlags = SRB_FLAGS_BYPASS_LOCKED_QUEUE;
-                context->Srb.SrbStatus = context->Srb.ScsiStatus = 0;
-                context->Srb.DataTransferLength = 0;
-
-                nextStack->Parameters.Scsi.Srb = &(context->Srb);
+                Context->Srb.Function = SRB_FUNCTION_UNLOCK_QUEUE;
+                Context->Srb.SrbFlags = SRB_FLAGS_BYPASS_LOCKED_QUEUE;
+                Context->Srb.SrbStatus = Context->Srb.ScsiStatus = 0;
+                Context->Srb.DataTransferLength = 0;
+                
+                nextStack->Parameters.Scsi.Srb = &(Context->Srb);
                 nextStack->MajorFunction = IRP_MJ_SCSI;
 
-                context->PowerChangeState.PowerUp = PowerUpDeviceStarted;
+                Context->PowerChangeState.PowerUp = PowerUpDeviceStarted;
 
                 IoSetCompletionRoutine(Irp,
                                        ClasspPowerUpCompletion,
-                                       context,
+                                       Context,
                                        TRUE,
                                        TRUE,
                                        TRUE);
@@ -425,21 +439,21 @@ ClasspPowerUpCompletionFailure:
             // error conditions ....
             //
 
-            if (context->QueueLocked) {
+            if (Context->QueueLocked) {
                 DebugPrint((1, "(%p)\tPreviously unlocked queue\n", Irp));
                 ASSERT(NT_SUCCESS(Irp->IoStatus.Status));
-                ASSERT(context->Srb.SrbStatus == SRB_STATUS_SUCCESS);
+                ASSERT(Context->Srb.SrbStatus == SRB_STATUS_SUCCESS);
             } else {
                 DebugPrint((1, "(%p)\tFall-through (queue not locked)\n", Irp));
             }
 
             DebugPrint((1, "(%p)\tFreeing srb and completing\n", Irp));
-            context->InUse = FALSE;
+            Context->InUse = FALSE;
 
-            status = context->FinalStatus;
+            status = Context->FinalStatus;
             Irp->IoStatus.Status = status;
 
-            context = NULL;
+            Context = NULL;
 
             //
             // Set the new power state
@@ -464,11 +478,6 @@ ClasspPowerUpCompletionFailure:
             PoStartNextPowerIrp(Irp);
 
             return status;
-        }
-
-        case PowerUpDeviceInitial: {
-            NT_ASSERT(context->PowerChangeState.PowerUp != PowerUpDeviceInitial);
-            break;
         }
     }
 
@@ -519,10 +528,9 @@ NTAPI
 ClasspPowerDownCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
-    IN PVOID CompletionContext
+    IN PCLASS_POWER_CONTEXT Context
     )
 {
-    PCLASS_POWER_CONTEXT context = CompletionContext;
     PFUNCTIONAL_DEVICE_EXTENSION fdoExtension = DeviceObject->DeviceExtension;
     PCOMMON_DEVICE_EXTENSION commonExtension = DeviceObject->DeviceExtension;
 
@@ -533,20 +541,20 @@ ClasspPowerDownCompletion(
 
     DebugPrint((1, "ClasspPowerDownCompletion: Device Object %p, "
                    "Irp %p, Context %p\n",
-                DeviceObject, Irp, context));
+                DeviceObject, Irp, Context));
 
-    ASSERT(!TEST_FLAG(context->Srb.SrbFlags, SRB_FLAGS_FREE_SENSE_BUFFER));
-    ASSERT(!TEST_FLAG(context->Srb.SrbFlags, SRB_FLAGS_PORT_DRIVER_ALLOCSENSE));
-    ASSERT(context->Options.PowerDown == TRUE);
-    ASSERT(context->Options.HandleSpinDown);
+    ASSERT(!TEST_FLAG(Context->Srb.SrbFlags, SRB_FLAGS_FREE_SENSE_BUFFER));
+    ASSERT(!TEST_FLAG(Context->Srb.SrbFlags, SRB_FLAGS_PORT_DRIVER_ALLOCSENSE));
+    ASSERT(Context->Options.PowerDown == TRUE);
+    ASSERT(Context->Options.HandleSpinDown);
 
     if(Irp->PendingReturned) {
         IoMarkIrpPending(Irp);
     }
 
-    context->PowerChangeState.PowerDown2++;
+    Context->PowerChangeState.PowerDown2++;
 
-    switch(context->PowerChangeState.PowerDown2) {
+    switch(Context->PowerChangeState.PowerDown2) {
 
         case PowerDownDeviceLocked2: {
 
@@ -554,7 +562,7 @@ ClasspPowerDownCompletion(
 
             DebugPrint((1, "(%p)\tPreviously sent power lock\n", Irp));
 
-            if((context->Options.LockQueue == TRUE) &&
+            if((Context->Options.LockQueue == TRUE) &&
                (!NT_SUCCESS(Irp->IoStatus.Status))) {
 
                 DebugPrint((1, "(%p)\tIrp status was %lx\n",
@@ -562,7 +570,7 @@ ClasspPowerDownCompletion(
                             Irp->IoStatus.Status));
                 DebugPrint((1, "(%p)\tSrb status was %lx\n",
                             Irp,
-                            context->Srb.SrbStatus));
+                            Context->Srb.SrbStatus));
 
                 Irp->IoStatus.Status = STATUS_NOT_SUPPORTED;
 
@@ -572,8 +580,8 @@ ClasspPowerDownCompletion(
                 // the queue.
                 //
 
-                context->InUse = FALSE;
-                context = NULL;
+                Context->InUse = FALSE;
+                Context = NULL;
 
                 //
                 // Set the new power state
@@ -609,7 +617,7 @@ ClasspPowerDownCompletion(
                 return STATUS_MORE_PROCESSING_REQUIRED;
 
             } else {
-                context->QueueLocked = (UCHAR) context->Options.LockQueue;
+                Context->QueueLocked = (UCHAR) Context->Options.LockQueue;
             }
 
             if (!TEST_FLAG(fdoExtension->PrivateFdoData->HackFlags,
@@ -618,49 +626,49 @@ ClasspPowerDownCompletion(
                 //
                 // send SCSIOP_SYNCHRONIZE_CACHE
                 //
-
-                context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
-                context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
-
-                context->Srb.TimeOutValue = fdoExtension->TimeOutValue;
-
-                context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
+    
+                Context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
+                Context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
+    
+                Context->Srb.TimeOutValue = fdoExtension->TimeOutValue;
+    
+                Context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
                                         SRB_FLAGS_DISABLE_AUTOSENSE |
                                         SRB_FLAGS_DISABLE_SYNCH_TRANSFER |
                                         SRB_FLAGS_NO_QUEUE_FREEZE |
                                         SRB_FLAGS_BYPASS_LOCKED_QUEUE;
-
-                context->Srb.SrbStatus = context->Srb.ScsiStatus = 0;
-                context->Srb.DataTransferLength = 0;
-
-                context->Srb.CdbLength = 10;
-
-                cdb = (PCDB) context->Srb.Cdb;
-
+    
+                Context->Srb.SrbStatus = Context->Srb.ScsiStatus = 0;
+                Context->Srb.DataTransferLength = 0;
+    
+                Context->Srb.CdbLength = 10;
+    
+                cdb = (PCDB) Context->Srb.Cdb;
+                
                 RtlZeroMemory(cdb, sizeof(CDB));
                 cdb->SYNCHRONIZE_CACHE10.OperationCode = SCSIOP_SYNCHRONIZE_CACHE;
-
+    
                 IoSetCompletionRoutine(Irp,
                                        ClasspPowerDownCompletion,
-                                       context,
+                                       Context,
                                        TRUE,
                                        TRUE,
                                        TRUE);
-
-                nextStack->Parameters.Scsi.Srb = &(context->Srb);
+    
+                nextStack->Parameters.Scsi.Srb = &(Context->Srb);
                 nextStack->MajorFunction = IRP_MJ_SCSI;
-
+    
                 status = IoCallDriver(commonExtension->LowerDeviceObject, Irp);
-
+    
                 DebugPrint((1, "(%p)\tIoCallDriver returned %lx\n", Irp, status));
                 break;
-
+            
             } else {
-
+               
                 DebugPrint((1, "(%p)\tPower Down: not sending SYNCH_CACHE\n",
                             DeviceObject));
-                context->PowerChangeState.PowerDown2++;
-                context->Srb.SrbStatus = SRB_STATUS_SUCCESS;
+                Context->PowerChangeState.PowerDown2++;
+                Context->Srb.SrbStatus = SRB_STATUS_SUCCESS;
                 // and fall through....
             }
             // no break in case the device doesn't like synch_cache commands
@@ -678,7 +686,7 @@ ClasspPowerDownCompletion(
             // SCSIOP_SYNCHRONIZE_CACHE was sent
             //
 
-            if(SRB_STATUS(context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
+            if(SRB_STATUS(Context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
 
                 BOOLEAN retry;
 
@@ -686,24 +694,24 @@ ClasspPowerDownCompletion(
                             "SYNCHRONIZE_CACHE command to device. "
                             "Srb %p, Status %lx\n",
                             Irp,
-                            &context->Srb,
-                            context->Srb.SrbStatus));
+                            &Context->Srb,
+                            Context->Srb.SrbStatus));
 
-                ASSERT(!(TEST_FLAG(context->Srb.SrbStatus,
+                ASSERT(!(TEST_FLAG(Context->Srb.SrbStatus,
                                    SRB_STATUS_QUEUE_FROZEN)));
-                ASSERT(context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
+                ASSERT(Context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
 
-                context->RetryInterval = 0;
+                Context->RetryInterval = 0;
                 retry = ClassInterpretSenseInfo(
                             commonExtension->DeviceObject,
-                            &context->Srb,
+                            &Context->Srb,
                             IRP_MJ_SCSI,
                             IRP_MJ_POWER,
-                            MAXIMUM_RETRIES - context->RetryCount,
+                            MAXIMUM_RETRIES - Context->RetryCount,
                             &status,
-                            &context->RetryInterval);
+                            &Context->RetryInterval);
 
-                if((retry == TRUE) && (context->RetryCount-- != 0)) {
+                if((retry == TRUE) && (Context->RetryCount-- != 0)) {
 
                         DebugPrint((1, "(%p)\tRetrying failed request\n", Irp));
 
@@ -712,15 +720,15 @@ ClasspPowerDownCompletion(
                         // the next time.
                         //
 
-                        context->PowerChangeState.PowerDown2--;
+                        Context->PowerChangeState.PowerDown2--;
                         RetryPowerRequest(commonExtension->DeviceObject,
                                           Irp,
-                                          context);
+                                          Context);
                         break;
                 }
 
                 DebugPrint((1, "(%p)\tSYNCHRONIZE_CACHE not retried\n", Irp));
-                context->RetryCount = MAXIMUM_RETRIES;
+                Context->RetryCount = MAXIMUM_RETRIES;
 
             } // end !SRB_STATUS_SUCCESS
 
@@ -736,23 +744,23 @@ ClasspPowerDownCompletion(
             // Issue the start unit command to the device.
             //
 
-            context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
-            context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
+            Context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
+            Context->Srb.Function = SRB_FUNCTION_EXECUTE_SCSI;
 
-            context->Srb.TimeOutValue = START_UNIT_TIMEOUT;
+            Context->Srb.TimeOutValue = START_UNIT_TIMEOUT;
 
-            context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
+            Context->Srb.SrbFlags = SRB_FLAGS_NO_DATA_TRANSFER |
                                     SRB_FLAGS_DISABLE_AUTOSENSE |
                                     SRB_FLAGS_DISABLE_SYNCH_TRANSFER |
                                     SRB_FLAGS_NO_QUEUE_FREEZE |
                                     SRB_FLAGS_BYPASS_LOCKED_QUEUE;
 
-            context->Srb.SrbStatus = context->Srb.ScsiStatus = 0;
-            context->Srb.DataTransferLength = 0;
+            Context->Srb.SrbStatus = Context->Srb.ScsiStatus = 0;
+            Context->Srb.DataTransferLength = 0;
 
-            context->Srb.CdbLength = 6;
+            Context->Srb.CdbLength = 6;
 
-            cdb = (PCDB) context->Srb.Cdb;
+            cdb = (PCDB) Context->Srb.Cdb;
             RtlZeroMemory(cdb, sizeof(CDB));
 
             cdb->START_STOP.OperationCode = SCSIOP_START_STOP_UNIT;
@@ -761,12 +769,12 @@ ClasspPowerDownCompletion(
 
             IoSetCompletionRoutine(Irp,
                                    ClasspPowerDownCompletion,
-                                   context,
+                                   Context,
                                    TRUE,
                                    TRUE,
                                    TRUE);
 
-            nextStack->Parameters.Scsi.Srb = &(context->Srb);
+            nextStack->Parameters.Scsi.Srb = &(Context->Srb);
             nextStack->MajorFunction = IRP_MJ_SCSI;
 
             status = IoCallDriver(commonExtension->LowerDeviceObject, Irp);
@@ -784,31 +792,31 @@ ClasspPowerDownCompletion(
             // stop was sent
             //
 
-            if(SRB_STATUS(context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
+            if(SRB_STATUS(Context->Srb.SrbStatus) != SRB_STATUS_SUCCESS) {
 
                 BOOLEAN retry;
 
                 DebugPrint((1, "(%p)\tError occured when issueing STOP_UNIT "
                             "command to device. Srb %p, Status %lx\n",
                             Irp,
-                            &context->Srb,
-                            context->Srb.SrbStatus));
+                            &Context->Srb,
+                            Context->Srb.SrbStatus));
 
-                ASSERT(!(TEST_FLAG(context->Srb.SrbStatus,
+                ASSERT(!(TEST_FLAG(Context->Srb.SrbStatus,
                                    SRB_STATUS_QUEUE_FROZEN)));
-                ASSERT(context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
+                ASSERT(Context->Srb.Function == SRB_FUNCTION_EXECUTE_SCSI);
 
-                context->RetryInterval = 0;
+                Context->RetryInterval = 0;
                 retry = ClassInterpretSenseInfo(
                             commonExtension->DeviceObject,
-                            &context->Srb,
+                            &Context->Srb,
                             IRP_MJ_SCSI,
                             IRP_MJ_POWER,
-                            MAXIMUM_RETRIES - context->RetryCount,
+                            MAXIMUM_RETRIES - Context->RetryCount,
                             &status,
-                            &context->RetryInterval);
+                            &Context->RetryInterval);
 
-                if((retry == TRUE) && (context->RetryCount-- != 0)) {
+                if((retry == TRUE) && (Context->RetryCount-- != 0)) {
 
                         DebugPrint((1, "(%p)\tRetrying failed request\n", Irp));
 
@@ -817,15 +825,15 @@ ClasspPowerDownCompletion(
                         // the next time.
                         //
 
-                        context->PowerChangeState.PowerDown2--;
+                        Context->PowerChangeState.PowerDown2--;
                         RetryPowerRequest(commonExtension->DeviceObject,
                                           Irp,
-                                          context);
+                                          Context);
                         break;
                 }
 
                 DebugPrint((1, "(%p)\tSTOP_UNIT not retried\n", Irp));
-                context->RetryCount = MAXIMUM_RETRIES;
+                Context->RetryCount = MAXIMUM_RETRIES;
 
             } // end !SRB_STATUS_SUCCESS
 
@@ -838,18 +846,18 @@ ClasspPowerDownCompletion(
             //
 
             if (!NT_SUCCESS(status)) {
-
-                PSENSE_DATA senseBuffer = context->Srb.SenseInfoBuffer;
-
-                if (TEST_FLAG(context->Srb.SrbStatus,
+                
+                PSENSE_DATA senseBuffer = Context->Srb.SenseInfoBuffer;
+                
+                if (TEST_FLAG(Context->Srb.SrbStatus,
                               SRB_STATUS_AUTOSENSE_VALID) &&
                     ((senseBuffer->SenseKey & 0xf) == SCSI_SENSE_NOT_READY) &&
                     (senseBuffer->AdditionalSenseCode == SCSI_ADSENSE_LUN_NOT_READY) &&
                     (senseBuffer->AdditionalSenseCodeQualifier == SCSI_SENSEQ_FORMAT_IN_PROGRESS)
                     ) {
                     ignoreError = FALSE;
-                    context->FinalStatus = STATUS_DEVICE_BUSY;
-                    status = context->FinalStatus;
+                    Context->FinalStatus = STATUS_DEVICE_BUSY;
+                    status = Context->FinalStatus;
                 }
 
             }
@@ -866,7 +874,7 @@ ClasspPowerDownCompletion(
 
                 IoSetCompletionRoutine(Irp,
                                        ClasspPowerDownCompletion,
-                                       context,
+                                       Context,
                                        TRUE,
                                        TRUE,
                                        TRUE);
@@ -892,23 +900,23 @@ ClasspPowerDownCompletion(
 
             DebugPrint((1, "(%p)\tPreviously sent power irp\n", Irp));
 
-            if (context->QueueLocked) {
+            if (Context->QueueLocked) {
 
                 DebugPrint((1, "(%p)\tUnlocking queue\n", Irp));
+                
+                Context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
 
-                context->Srb.Length = sizeof(SCSI_REQUEST_BLOCK);
+                Context->Srb.SrbStatus = Context->Srb.ScsiStatus = 0;
+                Context->Srb.DataTransferLength = 0;
 
-                context->Srb.SrbStatus = context->Srb.ScsiStatus = 0;
-                context->Srb.DataTransferLength = 0;
-
-                context->Srb.Function = SRB_FUNCTION_UNLOCK_QUEUE;
-                context->Srb.SrbFlags = SRB_FLAGS_BYPASS_LOCKED_QUEUE;
-                nextStack->Parameters.Scsi.Srb = &(context->Srb);
+                Context->Srb.Function = SRB_FUNCTION_UNLOCK_QUEUE;
+                Context->Srb.SrbFlags = SRB_FLAGS_BYPASS_LOCKED_QUEUE;
+                nextStack->Parameters.Scsi.Srb = &(Context->Srb);
                 nextStack->MajorFunction = IRP_MJ_SCSI;
 
                 IoSetCompletionRoutine(Irp,
                                        ClasspPowerDownCompletion,
-                                       context,
+                                       Context,
                                        TRUE,
                                        TRUE,
                                        TRUE);
@@ -930,18 +938,18 @@ ClasspPowerDownCompletion(
             // error conditions ....
             //
 
-            if (context->QueueLocked == FALSE) {
+            if (Context->QueueLocked == FALSE) {
                 DebugPrint((1, "(%p)\tFall through (queue not locked)\n", Irp));
             } else {
                 DebugPrint((1, "(%p)\tPreviously unlocked queue\n", Irp));
                 ASSERT(NT_SUCCESS(Irp->IoStatus.Status));
-                ASSERT(context->Srb.SrbStatus == SRB_STATUS_SUCCESS);
+                ASSERT(Context->Srb.SrbStatus == SRB_STATUS_SUCCESS);
             }
 
             DebugPrint((1, "(%p)\tFreeing srb and completing\n", Irp));
-            context->InUse = FALSE;
-            status = context->FinalStatus; // allow failure to propogate
-            context = NULL;
+            Context->InUse = FALSE;
+            status = Context->FinalStatus; // allow failure to propogate
+            Context = NULL;
 
             if(Irp->PendingReturned) {
                 IoMarkIrpPending(Irp);
@@ -969,11 +977,6 @@ ClasspPowerDownCompletion(
             fdoExtension->PowerDownInProgress = FALSE;
 
             return status;
-        }
-
-        case PowerDownDeviceInitial2: {
-            NT_ASSERT(context->PowerChangeState.PowerDown2 != PowerDownDeviceInitial2);
-            break;
         }
     }
 
@@ -1059,8 +1062,6 @@ ClasspPowerHandler(
                              */
                             SET_FLAG(DeviceObject->Flags, DO_VERIFY_VOLUME);
                         }
-                        break;
-                    default:
                         break;
                 }
             
@@ -1338,8 +1339,6 @@ ClassMinimalPowerHandler(
                             SET_FLAG(fdoExtension->DeviceObject->Flags, DO_VERIFY_VOLUME);  
                         } 
                         break;
-                    default:
-                        break;
                 }
             } 
         }
@@ -1519,6 +1518,8 @@ RetryPowerRequest(
     PCLASS_POWER_CONTEXT Context
     )
 {
+    PFUNCTIONAL_DEVICE_EXTENSION fdoExtension = DeviceObject->DeviceExtension;
+    PCOMMON_DEVICE_EXTENSION commonExtension = DeviceObject->DeviceExtension;
     PIO_STACK_LOCATION nextIrpStack = IoGetNextIrpStackLocation(Irp);
     PSCSI_REQUEST_BLOCK srb = &(Context->Srb);
     LARGE_INTEGER dueTime;

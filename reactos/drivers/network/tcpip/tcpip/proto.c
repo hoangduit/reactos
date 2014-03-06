@@ -37,3 +37,4 @@ NTSTATUS TiGetProtocolNumber(
 
   return STATUS_SUCCESS;
 }
+

@@ -1,6 +1,10 @@
-#ifndef _SCSIPORT_PCH_
-#define _SCSIPORT_PCH_
+#include <ntddk.h>
+#include <srb.h>
+#include <scsi.h>
+#include <ntddscsi.h>
+#include <ntddstor.h>
+#include <ntdddisk.h>
+#include <stdio.h>
+#include <stdarg.h>
 
-#include <wdm.h>
-
-#endif /* _SCSIPORT_PCH_ */
+#include "scsiport_int.h"

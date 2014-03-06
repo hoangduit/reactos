@@ -11,6 +11,7 @@
 HWND hListView;
 BOOL bAscending = TRUE;
 
+
 PVOID
 ListViewGetlParam(INT Index)
 {
@@ -102,10 +103,10 @@ CreateListView(HWND hwnd)
     hListView = CreateWindowExW(WS_EX_CLIENTEDGE,
                                 WC_LISTVIEWW,
                                 L"",
-                                WS_CHILD | WS_VISIBLE | LVS_SORTASCENDING | LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS,
+                                WS_CHILD | WS_VISIBLE | LVS_SORTASCENDING | LVS_REPORT | LVS_SINGLESEL,
                                 205, 28, 465, 250,
                                 hwnd,
-                                GetSubMenu(LoadMenuW(hInst, MAKEINTRESOURCEW(IDR_APPLICATIONMENU)), 0),
+                                NULL,
                                 hInst,
                                 NULL);
 

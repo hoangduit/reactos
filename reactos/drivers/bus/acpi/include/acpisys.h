@@ -3,10 +3,6 @@
  * FILE:    acpi/ospm/include/acpisys.h
  * PURPOSE: ACPI bus driver definitions
  */
-
-extern UNICODE_STRING ProcessorHardwareIds;
-extern LPWSTR ProcessorNameString;
-
 typedef enum _DEVICE_PNP_STATE {
 
     NotStarted = 0,         // Not started yet

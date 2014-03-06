@@ -4,10 +4,17 @@
 //    Freeware
 //    Copyright J Brown 2001
 //
+//#include <windows.h>
 
-#include "cardlib.h"
+#define WIN32_NO_STATUS
+#include <windef.h>
 
 #include <math.h>
+//#include <stdio.h>
+
+#include "cardlib.h"
+//#include "cardwindow.h"
+//#include "cardregion.h"
 
 #if 1
 #define TRACE(s)

@@ -11,9 +11,6 @@
 
 #include "usbccgp.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /* Driver verifier */
 IO_COMPLETION_ROUTINE SyncForwardIrpCompletionRoutine;
 

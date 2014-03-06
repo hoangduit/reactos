@@ -23,7 +23,24 @@
  * B) Want to use a substandard API to tune its performance.
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+
+#include <config.h>
+//#include "wine/port.h"
+
+#include <stdarg.h>
+//#include <string.h>
+//#include <stdlib.h>
+
+#define NONAMELESSUNION
+#define NONAMELESSSTRUCT
+#include <windef.h>
+#include <winbase.h>
+//#include "winreg.h"
+#include <winternl.h>
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 /*************************************************************************
  *      @	[SHLWAPI.241]

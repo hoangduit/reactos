@@ -6,9 +6,6 @@
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
  */
 
-#ifndef _GDI32_PCH_
-#define _GDI32_PCH_
-
 /* INCLUDES ******************************************************************/
 
 /* Definitions */
@@ -17,7 +14,7 @@
 #define COM_NO_WINDOWS_H
 #define NTOS_MODE_USER
 
-#include <stdarg.h>
+#include <stdio.h>
 
 /* SDK/DDK/NDK Headers. */
 #include <windef.h>
@@ -28,12 +25,18 @@
 #include <wingdi.h>
 #define _ENGINE_EXPORT_
 #include <winddi.h>
+#include <d3dnthal.h>
 #include <prntfont.h>
 #include <winddiui.h>
 #include <winspool.h>
 
+#include <pseh/pseh2.h>
+
+#include <ddraw.h>
 #include <ddrawi.h>
+#include <ddrawint.h>
 #include <ddrawgdi.h>
+#include <d3dhal.h>
 
 /* Public Win32K Headers */
 #include <ntgdityp.h>
@@ -46,4 +49,4 @@
 /* Deprecated NTGDI calls which shouldn't exist */
 #include <ntgdibad.h>
 
-#endif /* _GDI32_PCH_ */
+/* EOF */

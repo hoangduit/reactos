@@ -24,8 +24,6 @@
  *                  15-Feb-2004 vizzini - Created
  */
 
-#pragma once
-
 #include <csq.h>
 
 /*
@@ -53,3 +51,4 @@ CsqReleaseLock(PIO_CSQ Csq, KIRQL Irql);
 
 VOID NTAPI
 CsqCompleteCanceledIrp(PIO_CSQ Csq, PIRP Irp);
+

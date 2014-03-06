@@ -141,4 +141,3 @@
 @ stdcall VideoPortZeroMemory(ptr long) NTOSKRNL.RtlZeroMemory
 @ stdcall VideoPortZeroDeviceMemory(ptr long) NTOSKRNL.RtlZeroMemory
 @ stdcall VpNotifyEaData(ptr ptr)
-@ stdcall WdDdiWatchdogDpcCallback(ptr ptr ptr ptr)

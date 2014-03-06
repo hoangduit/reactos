@@ -18,7 +18,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+
+#include <stdarg.h>
+
+#include <windef.h>
+#include <winbase.h>
+
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(schannel);
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {

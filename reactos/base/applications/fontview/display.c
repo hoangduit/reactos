@@ -20,10 +20,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "precomp.h"
-
-#include <stdio.h>
-#include <malloc.h>
+#include "display.h"
 
 #define SPACING1 8
 #define SPACING2 5

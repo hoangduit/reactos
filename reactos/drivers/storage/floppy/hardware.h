@@ -34,8 +34,6 @@
  *       in favor of shifts or bitfields
  */
 
-#pragma once
-
 #define FLOPPY_DEFAULT_IRQ              0x6
 #define FDC_PORT_BYTES                  0x8
 
@@ -352,3 +350,4 @@ HwDumpRegisters(PCONTROLLER_INFO ControllerInfo);
 
 NTSTATUS NTAPI
 HwTurnOffMotor(PCONTROLLER_INFO ControllerInfo);
+

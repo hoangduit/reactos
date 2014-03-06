@@ -16,7 +16,18 @@
 ** parser for analysis.
 */
 
-#include "msipriv.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+//#include <ctype.h>
+//#include <stdarg.h>
+//#include <stdlib.h>
+
+//#include "windef.h"
+//#include "winbase.h"
+#include <wine/unicode.h>
+#include "query.h"
 #include "sql.tab.h"
 
 /*

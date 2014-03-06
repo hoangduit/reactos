@@ -19,13 +19,16 @@
  */
 
 
-#include "precomp.h"
+#include <config.h>
 
 #include <assert.h>
-
 #ifdef HAVE_LIBXML2
 # include <libxml/tree.h>
 #endif
+
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(msxml);
 
 /* Both XDR and XSD are valid XML
  * We just convert the doc tree, no need for a parser.

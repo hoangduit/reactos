@@ -18,7 +18,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS system libraries
- * FILE:            dll/win32/userenv/profile.c
+ * FILE:            lib/userenv/profile.c
  * PURPOSE:         User profile code
  * PROGRAMMERS:     Eric Kohl
  *                  Hervé Poussineau
@@ -26,10 +26,9 @@
 
 #include "precomp.h"
 
-#include <sddl.h>
-
 #define NDEBUG
 #include <debug.h>
+
 
 /* FUNCTIONS ***************************************************************/
 
@@ -815,8 +814,8 @@ GetUserProfileDirectoryW(HANDLE hToken,
     HKEY hKey;
     LONG Error;
 
-    if (!GetUserSidStringFromToken(hToken,
-                                   &SidString))
+    if (!GetUserSidFromToken(hToken,
+                             &SidString))
     {
         DPRINT1("GetUserSidFromToken() failed\n");
         return FALSE;
@@ -899,8 +898,8 @@ CheckForLoadedProfile(HANDLE hToken)
 
     DPRINT("CheckForLoadedProfile() called\n");
 
-    if (!GetUserSidStringFromToken(hToken,
-                                   &SidString))
+    if (!GetUserSidFromToken(hToken,
+                             &SidString))
     {
         DPRINT1("GetUserSidFromToken() failed\n");
         return FALSE;
@@ -1167,7 +1166,7 @@ LoadUserProfileW(IN HANDLE hToken,
     }
 
     /* Get user SID string */
-    ret = GetUserSidStringFromToken(hToken, &SidString);
+    ret = GetUserSidFromToken(hToken, &SidString);
     if (!ret)
     {
         DPRINT1("GetUserSidFromToken() failed\n");
@@ -1187,11 +1186,6 @@ LoadUserProfileW(IN HANDLE hToken,
                         SidString.Buffer,
                         szUserHivePath);
     AcquireRemoveRestorePrivilege(FALSE);
-
-    /* HACK: Do not fail if the profile has already been loaded! */
-    if (Error == ERROR_SHARING_VIOLATION)
-        Error = ERROR_SUCCESS;
-
     if (Error != ERROR_SUCCESS)
     {
         DPRINT1("RegLoadKeyW() failed (Error %ld)\n", Error);
@@ -1244,8 +1238,8 @@ UnloadUserProfile(HANDLE hToken,
 
     RegCloseKey(hProfile);
 
-    if (!GetUserSidStringFromToken(hToken,
-                                   &SidString))
+    if (!GetUserSidFromToken(hToken,
+                             &SidString))
     {
         DPRINT1("GetUserSidFromToken() failed\n");
         return FALSE;

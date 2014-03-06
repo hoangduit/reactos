@@ -10,6 +10,7 @@
 
 #include "precomp.h"
 
+
 static VOID
 SetListViewColumns(HWND hwndListView)
 {

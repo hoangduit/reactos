@@ -6,13 +6,13 @@
  * PROGRAMMERS:     ReactOS Portable Systems Group
  */
 
-#ifndef _CMBATT_PCH_
-#define _CMBATT_PCH_
-
-#include <wdm.h>
+#include <ntddk.h>
+#include <initguid.h>
 #include <batclass.h>
+#include <acpiioct.h>
 #include <wmilib.h>
 #include <wdmguid.h>
+#include <debug.h>
 
 #define IOCTL_BATTERY_QUERY_UNIQUE_ID  \
     CTL_CODE(FILE_DEVICE_BATTERY, 0x101, METHOD_BUFFERED, FILE_READ_ACCESS) // 0x294404 
@@ -279,4 +279,4 @@ CmBattQueryTag(
 extern PDEVICE_OBJECT AcAdapterPdo;
 extern ULONG CmBattDebug;
 
-#endif /* _CMBATT_PCH_ */
+/* EOF */

@@ -6,7 +6,6 @@
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
  */
 
-#pragma once
 
 /* DATA **********************************************************************/
 

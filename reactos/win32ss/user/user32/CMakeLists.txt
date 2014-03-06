@@ -58,7 +58,8 @@ list(APPEND SOURCE
     windows/text.c
     windows/window.c
     windows/winpos.c
-    include/user32.h)
+    user32.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/user32.def)
 
 if(USE_NEW_CURSORICON)
     list(APPEND SOURCE windows/cursoricon_new.c)
@@ -66,11 +67,7 @@ else()
     list(APPEND SOURCE windows/cursoricon.c)
 endif()
 
-add_library(user32 SHARED
-    ${SOURCE}
-    user32.rc
-    ${CMAKE_CURRENT_BINARY_DIR}/user32.def)
-
+add_library(user32 SHARED ${SOURCE})
 set_module_type(user32 win32dll ENTRYPOINT DllMain 12 UNICODE)
 target_link_libraries(user32 user32_wsprintf wine win32ksys ${PSEH_LIB})
 
@@ -81,5 +78,5 @@ endif()
 
 add_delay_importlibs(user32 imm32 usp10)
 add_importlibs(user32 gdi32 advapi32 kernel32 ntdll)
-add_pch(user32 include/user32.h SOURCE)
+add_pch(user32 include/user32.h)
 add_cd_file(TARGET user32 DESTINATION reactos/system32 FOR all)

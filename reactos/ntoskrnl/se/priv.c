@@ -19,42 +19,32 @@
 
 /* GLOBALS ********************************************************************/
 
-#define CONST_LUID(x1, x2) {x1, x2}
-const LUID SeCreateTokenPrivilege = CONST_LUID(SE_CREATE_TOKEN_PRIVILEGE, 0);
-const LUID SeAssignPrimaryTokenPrivilege = CONST_LUID(SE_ASSIGNPRIMARYTOKEN_PRIVILEGE, 0);
-const LUID SeLockMemoryPrivilege = CONST_LUID(SE_LOCK_MEMORY_PRIVILEGE, 0);
-const LUID SeIncreaseQuotaPrivilege = CONST_LUID(SE_INCREASE_QUOTA_PRIVILEGE, 0);
-const LUID SeUnsolicitedInputPrivilege = CONST_LUID(6, 0);
-const LUID SeTcbPrivilege = CONST_LUID(SE_TCB_PRIVILEGE, 0);
-const LUID SeSecurityPrivilege = CONST_LUID(SE_SECURITY_PRIVILEGE, 0);
-const LUID SeTakeOwnershipPrivilege = CONST_LUID(SE_TAKE_OWNERSHIP_PRIVILEGE, 0);
-const LUID SeLoadDriverPrivilege = CONST_LUID(SE_LOAD_DRIVER_PRIVILEGE, 0);
-const LUID SeSystemProfilePrivilege = CONST_LUID(SE_SYSTEM_PROFILE_PRIVILEGE, 0);
-const LUID SeSystemtimePrivilege = CONST_LUID(SE_SYSTEMTIME_PRIVILEGE, 0);
-const LUID SeProfileSingleProcessPrivilege = CONST_LUID(SE_PROF_SINGLE_PROCESS_PRIVILEGE, 0);
-const LUID SeIncreaseBasePriorityPrivilege = CONST_LUID(SE_INC_BASE_PRIORITY_PRIVILEGE, 0);
-const LUID SeCreatePagefilePrivilege = CONST_LUID(SE_CREATE_PAGEFILE_PRIVILEGE, 0);
-const LUID SeCreatePermanentPrivilege = CONST_LUID(SE_CREATE_PERMANENT_PRIVILEGE, 0);
-const LUID SeBackupPrivilege = CONST_LUID(SE_BACKUP_PRIVILEGE, 0);
-const LUID SeRestorePrivilege = CONST_LUID(SE_RESTORE_PRIVILEGE, 0);
-const LUID SeShutdownPrivilege = CONST_LUID(SE_SHUTDOWN_PRIVILEGE, 0);
-const LUID SeDebugPrivilege = CONST_LUID(SE_DEBUG_PRIVILEGE, 0);
-const LUID SeAuditPrivilege = CONST_LUID(SE_AUDIT_PRIVILEGE, 0);
-const LUID SeSystemEnvironmentPrivilege = CONST_LUID(SE_SYSTEM_ENVIRONMENT_PRIVILEGE, 0);
-const LUID SeChangeNotifyPrivilege = CONST_LUID(SE_CHANGE_NOTIFY_PRIVILEGE, 0);
-const LUID SeRemoteShutdownPrivilege = CONST_LUID(SE_REMOTE_SHUTDOWN_PRIVILEGE, 0);
-const LUID SeUndockPrivilege = CONST_LUID(SE_UNDOCK_PRIVILEGE, 0);
-const LUID SeSyncAgentPrivilege = CONST_LUID(SE_SYNC_AGENT_PRIVILEGE, 0);
-const LUID SeEnableDelegationPrivilege = CONST_LUID(SE_ENABLE_DELEGATION_PRIVILEGE, 0);
-const LUID SeManageVolumePrivilege = CONST_LUID(SE_MANAGE_VOLUME_PRIVILEGE, 0);
-const LUID SeImpersonatePrivilege = CONST_LUID(SE_IMPERSONATE_PRIVILEGE, 0);
-const LUID SeCreateGlobalPrivilege = CONST_LUID(SE_CREATE_GLOBAL_PRIVILEGE, 0);
-const LUID SeTrustedCredmanPrivilege = CONST_LUID(SE_TRUSTED_CREDMAN_ACCESS_PRIVILEGE, 0);
-const LUID SeRelabelPrivilege = CONST_LUID(SE_RELABEL_PRIVILEGE, 0);
-const LUID SeIncreaseWorkingSetPrivilege = CONST_LUID(SE_INC_WORKING_SET_PRIVILEGE, 0);
-const LUID SeTimeZonePrivilege = CONST_LUID(SE_TIME_ZONE_PRIVILEGE, 0);
-const LUID SeCreateSymbolicLinkPrivilege = CONST_LUID(SE_CREATE_SYMBOLIC_LINK_PRIVILEGE, 0);
-
+LUID SeCreateTokenPrivilege;
+LUID SeAssignPrimaryTokenPrivilege;
+LUID SeLockMemoryPrivilege;
+LUID SeIncreaseQuotaPrivilege;
+LUID SeUnsolicitedInputPrivilege;
+LUID SeTcbPrivilege;
+LUID SeSecurityPrivilege;
+LUID SeTakeOwnershipPrivilege;
+LUID SeLoadDriverPrivilege;
+LUID SeCreatePagefilePrivilege;
+LUID SeIncreaseBasePriorityPrivilege;
+LUID SeSystemProfilePrivilege;
+LUID SeSystemtimePrivilege;
+LUID SeProfileSingleProcessPrivilege;
+LUID SeCreatePermanentPrivilege;
+LUID SeBackupPrivilege;
+LUID SeRestorePrivilege;
+LUID SeShutdownPrivilege;
+LUID SeDebugPrivilege;
+LUID SeAuditPrivilege;
+LUID SeSystemEnvironmentPrivilege;
+LUID SeChangeNotifyPrivilege;
+LUID SeRemoteShutdownPrivilege;
+LUID SeUndockPrivilege;
+LUID SeSyncAgentPrivilege;
+LUID SeEnableDelegationPrivilege;
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
@@ -63,7 +53,58 @@ INIT_FUNCTION
 NTAPI
 SepInitPrivileges(VOID)
 {
-
+    SeCreateTokenPrivilege.LowPart = SE_CREATE_TOKEN_PRIVILEGE;
+    SeCreateTokenPrivilege.HighPart = 0;
+    SeAssignPrimaryTokenPrivilege.LowPart = SE_ASSIGNPRIMARYTOKEN_PRIVILEGE;
+    SeAssignPrimaryTokenPrivilege.HighPart = 0;
+    SeLockMemoryPrivilege.LowPart = SE_LOCK_MEMORY_PRIVILEGE;
+    SeLockMemoryPrivilege.HighPart = 0;
+    SeIncreaseQuotaPrivilege.LowPart = SE_INCREASE_QUOTA_PRIVILEGE;
+    SeIncreaseQuotaPrivilege.HighPart = 0;
+    SeUnsolicitedInputPrivilege.LowPart = SE_UNSOLICITED_INPUT_PRIVILEGE;
+    SeUnsolicitedInputPrivilege.HighPart = 0;
+    SeTcbPrivilege.LowPart = SE_TCB_PRIVILEGE;
+    SeTcbPrivilege.HighPart = 0;
+    SeSecurityPrivilege.LowPart = SE_SECURITY_PRIVILEGE;
+    SeSecurityPrivilege.HighPart = 0;
+    SeTakeOwnershipPrivilege.LowPart = SE_TAKE_OWNERSHIP_PRIVILEGE;
+    SeTakeOwnershipPrivilege.HighPart = 0;
+    SeLoadDriverPrivilege.LowPart = SE_LOAD_DRIVER_PRIVILEGE;
+    SeLoadDriverPrivilege.HighPart = 0;
+    SeSystemProfilePrivilege.LowPart = SE_SYSTEM_PROFILE_PRIVILEGE;
+    SeSystemProfilePrivilege.HighPart = 0;
+    SeSystemtimePrivilege.LowPart = SE_SYSTEMTIME_PRIVILEGE;
+    SeSystemtimePrivilege.HighPart = 0;
+    SeProfileSingleProcessPrivilege.LowPart = SE_PROF_SINGLE_PROCESS_PRIVILEGE;
+    SeProfileSingleProcessPrivilege.HighPart = 0;
+    SeIncreaseBasePriorityPrivilege.LowPart = SE_INC_BASE_PRIORITY_PRIVILEGE;
+    SeIncreaseBasePriorityPrivilege.HighPart = 0;
+    SeCreatePagefilePrivilege.LowPart = SE_CREATE_PAGEFILE_PRIVILEGE;
+    SeCreatePagefilePrivilege.HighPart = 0;
+    SeCreatePermanentPrivilege.LowPart = SE_CREATE_PERMANENT_PRIVILEGE;
+    SeCreatePermanentPrivilege.HighPart = 0;
+    SeBackupPrivilege.LowPart = SE_BACKUP_PRIVILEGE;
+    SeBackupPrivilege.HighPart = 0;
+    SeRestorePrivilege.LowPart = SE_RESTORE_PRIVILEGE;
+    SeRestorePrivilege.HighPart = 0;
+    SeShutdownPrivilege.LowPart = SE_SHUTDOWN_PRIVILEGE;
+    SeShutdownPrivilege.HighPart = 0;
+    SeDebugPrivilege.LowPart = SE_DEBUG_PRIVILEGE;
+    SeDebugPrivilege.HighPart = 0;
+    SeAuditPrivilege.LowPart = SE_AUDIT_PRIVILEGE;
+    SeAuditPrivilege.HighPart = 0;
+    SeSystemEnvironmentPrivilege.LowPart = SE_SYSTEM_ENVIRONMENT_PRIVILEGE;
+    SeSystemEnvironmentPrivilege.HighPart = 0;
+    SeChangeNotifyPrivilege.LowPart = SE_CHANGE_NOTIFY_PRIVILEGE;
+    SeChangeNotifyPrivilege.HighPart = 0;
+    SeRemoteShutdownPrivilege.LowPart = SE_REMOTE_SHUTDOWN_PRIVILEGE;
+    SeRemoteShutdownPrivilege.HighPart = 0;
+    SeUndockPrivilege.LowPart = SE_UNDOCK_PRIVILEGE;
+    SeUndockPrivilege.HighPart = 0;
+    SeSyncAgentPrivilege.LowPart = SE_SYNC_AGENT_PRIVILEGE;
+    SeSyncAgentPrivilege.HighPart = 0;
+    SeEnableDelegationPrivilege.LowPart = SE_ENABLE_DELEGATION_PRIVILEGE;
+    SeEnableDelegationPrivilege.HighPart = 0;
 }
 
 
@@ -89,17 +130,15 @@ SepPrivilegeCheck(PTOKEN Token,
     /* Get the number of privileges that are required to match */
     Required = (PrivilegeControl & PRIVILEGE_SET_ALL_NECESSARY) ? PrivilegeCount : 1;
 
-    /* Acquire a shared token lock */
-    SepAcquireTokenLockShared(Token);
-
     /* Loop all requested privileges until we found the required ones */
-    for (i = 0; i < PrivilegeCount; i++)
+    for (i = 0; i < PrivilegeCount && Required > 0; i++)
     {
         /* Loop the privileges of the token */
         for (j = 0; j < Token->PrivilegeCount; j++)
         {
             /* Check if the LUIDs match */
-            if (RtlEqualLuid(&Token->Privileges[j].Luid, &Privileges[i].Luid))
+            if (Token->Privileges[j].Luid.LowPart == Privileges[i].Luid.LowPart &&
+                Token->Privileges[j].Luid.HighPart == Privileges[i].Luid.HighPart)
             {
                 DPRINT("Found privilege. Attributes: %lx\n",
                        Token->Privileges[j].Attributes);
@@ -109,14 +148,6 @@ SepPrivilegeCheck(PTOKEN Token,
                 {
                     Privileges[i].Attributes |= SE_PRIVILEGE_USED_FOR_ACCESS;
                     Required--;
-
-                    /* Check if we have found all privileges */
-                    if (Required == 0)
-                    {
-                        /* We're done! */
-                        SepReleaseTokenLock(Token);
-                        return TRUE;
-                    }
                 }
 
                 /* Leave the inner loop */
@@ -125,131 +156,8 @@ SepPrivilegeCheck(PTOKEN Token,
         }
     }
 
-    /* Release the token lock */
-    SepReleaseTokenLock(Token);
-
-    /* When we reached this point, we did not find all privileges */
-    NT_ASSERT(Required > 0);
-    return FALSE;
-}
-
-NTSTATUS
-NTAPI
-SepSinglePrivilegeCheck(
-    LUID PrivilegeValue,
-    PTOKEN Token,
-    KPROCESSOR_MODE PreviousMode)
-{
-    LUID_AND_ATTRIBUTES Privilege;
-    PAGED_CODE();
-    ASSERT(!RtlEqualLuid(&PrivilegeValue, &SeTcbPrivilege));
-
-    Privilege.Luid = PrivilegeValue;
-    Privilege.Attributes = SE_PRIVILEGE_ENABLED;
-    return SepPrivilegeCheck(Token,
-                             &Privilege,
-                             1,
-                             PRIVILEGE_SET_ALL_NECESSARY,
-                             PreviousMode);
-}
-
-NTSTATUS
-NTAPI
-SePrivilegePolicyCheck(
-    _Inout_ PACCESS_MASK DesiredAccess,
-    _Inout_ PACCESS_MASK GrantedAccess,
-    _In_ PSECURITY_SUBJECT_CONTEXT SubjectContext,
-    _In_ PTOKEN Token,
-    _Out_opt_ PPRIVILEGE_SET *OutPrivilegeSet,
-    _In_ KPROCESSOR_MODE PreviousMode)
-{
-    SIZE_T PrivilegeSize;
-    PPRIVILEGE_SET PrivilegeSet;
-    ULONG PrivilegeCount = 0, Index = 0;
-    ACCESS_MASK AccessMask = 0;
-    PAGED_CODE();
-
-    /* Check if we have a security subject context */
-    if (SubjectContext != NULL)
-    {
-        /* Check if there is a client impersonation token */
-        if (SubjectContext->ClientToken != NULL)
-            Token = SubjectContext->ClientToken;
-        else
-            Token = SubjectContext->PrimaryToken;
-    }
-
-    /* Check if the caller wants ACCESS_SYSTEM_SECURITY access */
-    if (*DesiredAccess & ACCESS_SYSTEM_SECURITY)
-    {
-        /* Do the privilege check */
-        if (SepSinglePrivilegeCheck(SeSecurityPrivilege, Token, PreviousMode))
-        {
-            /* Remember this access flag */
-            AccessMask |= ACCESS_SYSTEM_SECURITY;
-            PrivilegeCount++;
-        }
-        else
-        {
-            return STATUS_PRIVILEGE_NOT_HELD;
-        }
-    }
-
-    /* Check if the caller wants WRITE_OWNER access */
-    if (*DesiredAccess & WRITE_OWNER)
-    {
-        /* Do the privilege check */
-        if (SepSinglePrivilegeCheck(SeTakeOwnershipPrivilege, Token, PreviousMode))
-        {
-            /* Remember this access flag */
-            AccessMask |= WRITE_OWNER;
-            PrivilegeCount++;
-        }
-    }
-
-    /* Update the access masks */
-    *GrantedAccess |= AccessMask;
-    *DesiredAccess &= ~AccessMask;
-
-    /* Does the caller want a privilege set? */
-    if (OutPrivilegeSet != NULL)
-    {
-        /* Do we have any privileges to report? */
-        if (PrivilegeCount > 0)
-        {
-            /* Calculate size and allocate the structure */
-            PrivilegeSize = FIELD_OFFSET(PRIVILEGE_SET, Privilege[PrivilegeCount]);
-            PrivilegeSet = ExAllocatePoolWithTag(PagedPool, PrivilegeSize, 'rPeS');
-            *OutPrivilegeSet = PrivilegeSet;
-            if (PrivilegeSet == NULL)
-            {
-                return STATUS_INSUFFICIENT_RESOURCES;
-            }
-
-            PrivilegeSet->PrivilegeCount = PrivilegeCount;
-            PrivilegeSet->Control = 0;
-
-            if (AccessMask & WRITE_OWNER)
-            {
-                PrivilegeSet->Privilege[Index].Luid = SeTakeOwnershipPrivilege;
-                PrivilegeSet->Privilege[Index].Attributes = SE_PRIVILEGE_USED_FOR_ACCESS;
-                Index++;
-            }
-
-            if (AccessMask & ACCESS_SYSTEM_SECURITY)
-            {
-                PrivilegeSet->Privilege[Index].Luid = SeSecurityPrivilege;
-                PrivilegeSet->Privilege[Index].Attributes = SE_PRIVILEGE_USED_FOR_ACCESS;
-            }
-        }
-        else
-        {
-            /* No privileges, no structure */
-            *OutPrivilegeSet = NULL;
-        }
-    }
-
-    return STATUS_SUCCESS;
+    /* Return whether we found all required privileges */
+    return (Required == 0);
 }
 
 NTSTATUS
@@ -325,7 +233,7 @@ SeCaptureLuidAndAttributesArray(PLUID_AND_ATTRIBUTES Src,
             return STATUS_INSUFFICIENT_RESOURCES;
         }
     }
-
+    
     /* copy the array to the buffer */
     _SEH2_TRY
     {

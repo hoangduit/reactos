@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #ifndef __WINE_WINE_PORT_H
@@ -25,9 +25,7 @@
 # error You must include config.h to use this header
 #endif
 
-#ifndef _GNU_SOURCE
-# define _GNU_SOURCE  /* for pread/pwrite, isfinite */
-#endif
+#define _GNU_SOURCE  /* for pread/pwrite */
 #include <fcntl.h>
 #include <math.h>
 #include <sys/types.h>
@@ -248,15 +246,11 @@ extern int getopt_long_only (int ___argc, char *const *___argv,
 size_t getpagesize(void);
 #endif  /* HAVE_GETPAGESIZE */
 
-#if !defined(HAVE_ISFINITE) && !defined(isfinite)
-int isfinite(double x);
-#endif
-
-#if !defined(HAVE_ISINF) && !defined(isinf)
+#if !defined(HAVE_ISINF) && !defined(_ISINF) && !defined(isinf)
 int isinf(double x);
 #endif
 
-#if !defined(HAVE_ISNAN) && !defined(isnan)
+#if !defined(HAVE_ISNAN) && !defined(_ISNAN) && !defined(isnan)
 int isnan(double x);
 #endif
 

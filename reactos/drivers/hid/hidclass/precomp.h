@@ -1,11 +1,14 @@
-#ifndef _HIDCLASS_PCH_
-#define _HIDCLASS_PCH_
+#pragma once
 
 #define _HIDPI_NO_FUNCTION_MACROS_
-#include <wdm.h>
+#define NDEBUG
+#include <ntddk.h>
+#include <initguid.h>
+#include <hidport.h>
 #include <hidpddi.h>
 #include <stdio.h>
-#include <hidport.h>
+#include <wdmguid.h>
+#include <debug.h>
 
 #define HIDCLASS_TAG 'CdiH'
 
@@ -213,4 +216,4 @@ HidClassPDO_GetReportDescription(
     PHIDP_DEVICE_DESC DeviceDescription,
     ULONG CollectionNumber);
 
-#endif /* _HIDCLASS_PCH_ */
+/* eof */

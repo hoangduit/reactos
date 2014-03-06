@@ -25,8 +25,6 @@
 
 #include "sndvol32.h"
 
-#include <winreg.h>
-
 static INT
 LengthOfStrResource(IN HINSTANCE hInst,
                     IN UINT uID)

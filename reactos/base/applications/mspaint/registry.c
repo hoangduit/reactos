@@ -10,8 +10,6 @@
 
 #include "precomp.h"
 
-#include <winreg.h>
-
 /* FUNCTIONS ********************************************************/
 
 void

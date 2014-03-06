@@ -9,8 +9,6 @@
 
 #include "tcpsvcs.h"
 
-#include <time.h>
-
 static BOOL
 SendTime(SOCKET sock, CHAR *time)
 {

@@ -7,7 +7,6 @@
  * REVISIONS:
  *   CSH 27/08-2000 Created
  */
-
 #include <ne2000.h>
 
 NTSTATUS
@@ -1056,5 +1055,4 @@ DriverEntry(
         }
 
 #endif
-
 /* EOF */

@@ -10,8 +10,6 @@
 
 #include "usetup.h"
 
-#include <zlib.h>
-
 #define NDEBUG
 #include <debug.h>
 

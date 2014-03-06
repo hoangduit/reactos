@@ -2,20 +2,12 @@
 
 [Section]
 Name = Stamina 2.5
-Description = Free typing tutor. To run this program, please install the Microsoft Visual C++ 6 Redistributable Package.
+Description = Free typing tutor.
 URLSite = http://stamina.ru
-Size = 4.7 MB
+Size = 4.7MB
 Category = 8
 URLDownload = http://stamina.ru/files/StaminaSetup.exe
 CDPath = none
 
 [Section.0407]
-Description = Ein freies Schreiblernprogramm. Um dieses Programm nutzen zu können, müssen Sie das Microsoft Visual C++ 6 Redistributable Package installieren.
-
-[Section.0418]
-Description = Tutor gratuit pentru dactilografiere. (FIXME)
-Size = 4,7 Mo
-
-[Section.041f]
-Description = Ücretsiz bir düğme takımında yazma öğreticisi. Yazılımı çalıştırmk için Mikroyazılım Basarî C++ 6 Yeniden Dağıtılabilir Paket'i kurunuz.
-Size = 4,7 MB
+Description = Ein freies Schreiblernprogramm.

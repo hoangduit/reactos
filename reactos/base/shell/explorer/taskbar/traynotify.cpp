@@ -28,7 +28,10 @@
 
 #include <precomp.h>
 
+#include "../resource.h"
+
 #include "traynotify.h"
+
 
 #include "../notifyhook/notifyhook.h"
 

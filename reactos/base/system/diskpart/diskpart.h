@@ -6,16 +6,19 @@
  *                  an interactive way
  * PROGRAMMERS:     Lee Schroeder
  */
-
 #ifndef DISKPART_H
 #define DISKPART_H
 
 /* INCLUDES ******************************************************************/
 
-#include <stdio.h>
-
 #define WIN32_NO_STATUS
+#include <stdarg.h>
 #include <windef.h>
+#include <winbase.h>
+#include <wincon.h>
+#include <winuser.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "resource.h"
 

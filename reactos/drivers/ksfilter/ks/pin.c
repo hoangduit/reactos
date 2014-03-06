@@ -6,12 +6,8 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
 
-#include <bdamedia.h>
-
-#define NDEBUG
-#include <debug.h>
+#include "priv.h"
 
 typedef struct _KSISTREAM_POINTER
 {

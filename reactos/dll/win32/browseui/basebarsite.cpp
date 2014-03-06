@@ -22,7 +22,6 @@
 Base bar that contains a vertical or horizontal explorer band. It also
 provides resizing abilities.
 */
-
 #include "precomp.h"
 
 /*

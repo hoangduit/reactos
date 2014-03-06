@@ -19,7 +19,26 @@
  *
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+
+#include <config.h>
+
+//#include <stdlib.h>
+//#include <string.h>
+#include <stdarg.h>
+//#include <stdio.h>
+//#include <ctype.h>
+
+#define COBJMACROS
+
+#include <windef.h>
+#include <winbase.h>
+#include <objbase.h>
+#include <oleauto.h>
+//#include "winerror.h"
+
+#include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(ole);
 

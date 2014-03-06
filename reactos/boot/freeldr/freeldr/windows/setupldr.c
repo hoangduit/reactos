@@ -26,7 +26,6 @@
 #include <debug.h>
 
 DBG_DEFAULT_CHANNEL(WINDOWS);
-#define TAG_BOOT_OPTIONS 'pOtB'
 
 void
 WinLdrSetupMachineDependent(PLOADER_PARAMETER_BLOCK LoaderBlock);
@@ -140,8 +139,7 @@ LoadReactOSSetup(IN OperatingSystemItem* OperatingSystem,
 {
     CHAR FileName[512];
     CHAR BootPath[512];
-    LPCSTR LoadOptions;
-    LPSTR BootOptions;
+    LPCSTR LoadOptions, BootOptions;
     BOOLEAN BootFromFloppy;
     ULONG i, ErrorLine;
     HINF InfHandle;
@@ -201,20 +199,16 @@ LoadReactOSSetup(IN OperatingSystemItem* OperatingSystem,
         return;
     }
 
+    BootOptions = LoadOptions;
+
 #if DBG
     /* Get debug load options and use them */
     if (InfFindFirstLine(InfHandle, "SetupData", "DbgOsLoadOptions", &InfContext))
     {
-        LPCSTR DbgLoadOptions;
-
-        if (InfGetDataField(&InfContext, 1, &DbgLoadOptions))
-            LoadOptions = DbgLoadOptions;
+        if (InfGetDataField(&InfContext, 1, &LoadOptions))
+            BootOptions = LoadOptions;
     }
 #endif
-
-    /* Copy loadoptions (original string will be freed) */
-    BootOptions = FrLdrTempAlloc(strlen(LoadOptions) + 1, TAG_BOOT_OPTIONS);
-    strcpy(BootOptions, LoadOptions);
 
     TRACE("BootOptions: '%s'\n", BootOptions);
 
@@ -237,9 +231,6 @@ LoadReactOSSetup(IN OperatingSystemItem* OperatingSystem,
 
     /* Get a list of boot drivers */
     SetupLdrScanBootDrivers(&LoaderBlock->BootDriverListHead, InfHandle, BootPath);
-
-    /* Close the inf file */
-    InfCloseFile(InfHandle);
 
     /* Load ReactOS */
     LoadAndBootWindowsCommon(_WIN32_WINNT_WS03,

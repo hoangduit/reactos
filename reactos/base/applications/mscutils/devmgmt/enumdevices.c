@@ -9,11 +9,6 @@
 
 #include "precomp.h"
 
-#include <cfgmgr32.h>
-#include <dll/devmgr/devmgr.h>
-#include <initguid.h>
-#include <devguid.h>
-
 static SP_CLASSIMAGELIST_DATA ImageListData;
 static HDEVINFO hDevInfo;
 

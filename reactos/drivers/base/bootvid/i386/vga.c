@@ -1152,3 +1152,4 @@ VidSolidColorFill(IN ULONG Left,
         }
     }
 }
+

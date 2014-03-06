@@ -11,8 +11,6 @@
 
 #include "timedate.h"
 
-#include <math.h>
-
 typedef struct _CLOCKDATA
 {
     HBRUSH hGreyBrush;

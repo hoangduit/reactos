@@ -9,14 +9,20 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <consrv.h>
+#include "consrv.h"
+#include "include/conio.h"
+#include "include/term.h"
+#include "conoutput.h"
+#include "handle.h"
 
 #define NDEBUG
 #include <debug.h>
 
+
 /* GLOBALS ********************************************************************/
 
 #define TAB_WIDTH   8
+
 
 /* PRIVATE FUNCTIONS **********************************************************/
 

@@ -10,8 +10,6 @@
 
 #include "input.h"
 
-#include <cpl.h>
-
 #define NUM_APPLETS    (1)
 
 LONG CALLBACK SystemApplet(VOID);

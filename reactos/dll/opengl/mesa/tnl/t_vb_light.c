@@ -22,7 +22,20 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+
+#include "main/glheader.h"
+#include "main/colormac.h"
+#include "main/light.h"
+#include "main/macros.h"
+#include "main/imports.h"
+#include "main/simple_list.h"
+#include "main/mtypes.h"
+
+#include "math/m_translate.h"
+
+#include "t_context.h"
+#include "t_pipeline.h"
 
 #define LIGHT_TWOSIDE       0x1
 #define LIGHT_MATERIAL      0x2

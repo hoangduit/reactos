@@ -26,9 +26,14 @@
  * New (3.1) transformation code written by Keith Whitwell.
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/imports.h"
+#include "main/macros.h"
 
 #include "m_vector.h"
+
+
 
 /**
  * Given a vector [count][4] of floats, set all the [][elt] values

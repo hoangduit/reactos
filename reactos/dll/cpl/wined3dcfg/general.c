@@ -1,7 +1,5 @@
 #include "wined3dcfg.h"
 
-#include <winreg.h>
-
 static LONG ReadSetting(HKEY hKey, PWCHAR szKey, PWCHAR szBuffer, DWORD dwSize)
 {
     return RegQueryValueExW(hKey, szKey, NULL, NULL, (LPBYTE)szBuffer, &dwSize);

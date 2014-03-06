@@ -23,11 +23,17 @@
  * - Also creates the special registry keys created at run-time
  */
 
-#include "devenum_private.h"
+#define NONAMELESSSTRUCT
+#define NONAMELESSUNION
 
+#include "devenum_private.h"
 #include <vfw.h>
 
-#include "resource.h"
+#include <wine/debug.h>
+//#include "wine/unicode.h"
+//#include "mmddk.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(devenum);
 
 extern HINSTANCE DEVENUM_hInstance;
 

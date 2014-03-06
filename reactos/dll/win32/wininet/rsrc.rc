@@ -19,7 +19,9 @@
  */
 
 #include <windef.h>
+//#include "winbase.h"
 #include <winuser.h>
+//#include "winnls.h"
 
 #include "resource.h"
 
@@ -114,9 +116,6 @@
 #endif
 #ifdef LANGUAGE_SL_SI
     #include "lang/wininet_Si.rc"
-#endif
-#ifdef LANGUAGE_SQ_AL
-    #include "lang/wininet_Sq.rc"
 #endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/wininet_Uk.rc"

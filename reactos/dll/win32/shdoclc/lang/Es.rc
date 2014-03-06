@@ -1,4 +1,6 @@
 /*
+ * Spanish resources for mshtml
+ *
  * Copyright 2006, 2007 José Manuel Ferrer Ortiz
  *
  * This library is free software; you can redistribute it and/or
@@ -16,6 +18,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "shdoclc.h"
+
 LANGUAGE LANG_SPANISH, SUBLANG_NEUTRAL
 
 STRINGTABLE
@@ -31,7 +35,7 @@ STRINGTABLE
 
 IDR_BROWSE_CONTEXT_MENU MENU
 {
-    POPUP "" /* Default */
+    POPUP "Default"
     {
         MENUITEM "&Atrás",                 IDM_GOBACKWARD
         MENUITEM "Ade&lante",              IDM_GOFORWARD
@@ -53,10 +57,11 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM "I&mprimir",              IDM_PRINT
         MENUITEM "&Recargar",              _IDM_REFRESH
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "Propie&dades",           IDM_PROPERTIES
     }
 
-    POPUP "" /* Image */
+    POPUP "Image"
     {
         MENUITEM "&Abrir enlace",            IDM_FOLLOWLINKC
         MENUITEM "A&brir en nueva ventana",  IDM_FOLLOWLINKN
@@ -78,10 +83,11 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM SEPARATOR
         MENUITEM "Añadir a &Favoritos...",   IDM_ADDFAVORITES
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "Propie&dades",             IDM_PROPERTIES
     }
 
-    POPUP "" /* Control */
+    POPUP "Control"
     {
         MENUITEM "&Deshacer",         IDM_UNDO
         MENUITEM SEPARATOR
@@ -90,10 +96,11 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM "&Pegar",            IDM_PASTE
         MENUITEM "&Eliminar",         IDM_DELETE
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "&Seleccionar todo", IDM_SELECTALL
     }
 
-    POPUP "" /* Table */
+    POPUP "Table"
     {
         POPUP "&Seleccionar"
         {
@@ -103,11 +110,12 @@ IDR_BROWSE_CONTEXT_MENU MENU
             MENUITEM "&Tabla",            IDM_TABLESELECT
         }
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "Propiedades de &celda", IDM_CELLPROPERTIES
         MENUITEM "Propiedades de &tabla", IDM_TABLEPROPERTIES
     }
 
-    POPUP "" /* 1DSite Select */
+    POPUP "1DSite Select"
     {
         MENUITEM "Co&rtar",           IDM_CUT
         MENUITEM "&Copiar",           IDM_COPY
@@ -117,7 +125,7 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM SEPARATOR
     }
 
-    POPUP "" /* Anchor */
+    POPUP "Anchor"
     {
         MENUITEM "&Abrir",                      IDM_FOLLOWLINKC
         MENUITEM "Abrir en una &nueva ventana", IDM_FOLLOWLINKN
@@ -131,15 +139,16 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM SEPARATOR
         MENUITEM "Añadir a &Favoritos...",      IDM_ADDFAVORITES
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "P&ropiedades",                IDM_PROPERTIES
     }
 
-    POPUP "" /* Context Unknown */
+    POPUP "Context Unknown"
     {
         MENUITEM SEPARATOR
     }
 
-    POPUP "" /* DYNSRC Image */
+    POPUP "DYNSRC Image"
     {
         MENUITEM "&Abrir enlace",               IDM_FOLLOWLINKC
         MENUITEM "Abrir en una &nueva ventana", IDM_FOLLOWLINKN
@@ -158,12 +167,13 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM SEPARATOR
         MENUITEM "Añadir a &Favoritos...",      IDM_ADDFAVORITES
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "&Reproducir",                 IDM_DYNSRCPLAY
         MENUITEM "&Parar",                      IDM_DYNSRCSTOP
         MENUITEM "Prop&iedades",                IDM_PROPERTIES
     }
 
-    POPUP "" /* ART Image */
+    POPUP "ART Image"
     {
         MENUITEM "&Abrir enlace",               IDM_FOLLOWLINKC
         MENUITEM "Abrir en una &nueva ventana", IDM_FOLLOWLINKN
@@ -186,10 +196,11 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM "Pa&rar",                      IDM_IMGARTSTOP
         MENUITEM "Re&bobinar",                  IDM_IMGARTREWIND
         MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
         MENUITEM "Propiedade&s",                IDM_PROPERTIES
     }
 
-    POPUP "" /* Debug */
+    POPUP "Debug"
     {
         MENUITEM "Trazar &etiquetas",           IDM_TRACETAGS
         MENUITEM "Fallos de &recursos",         IDM_RESOURCEFAILURES
@@ -209,7 +220,7 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM "Ed&itar vista",               IDM_EDITMODE
     }
 
-    POPUP "" /* Vertical Scrollbar */
+    POPUP "Vertical Scrollbar"
     {
         MENUITEM "Desplazar &aquí",   IDM_SCROLL_HERE
         MENUITEM SEPARATOR
@@ -223,7 +234,7 @@ IDR_BROWSE_CONTEXT_MENU MENU
         MENUITEM "Desplazar aba&jo",  IDM_SCROLL_DOWN
     }
 
-    POPUP "" /* Horizontal Scrollbar */
+    POPUP "Horizontal Scrollbar"
     {
         MENUITEM "Desplazar &aquí",           IDM_SCROLL_HERE
         MENUITEM SEPARATOR

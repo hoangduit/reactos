@@ -14,8 +14,6 @@
 
 #include "i8042prt.h"
 
-#include <debug.h>
-
 /* FUNCTIONS *****************************************************************/
 
 /*
@@ -214,7 +212,7 @@ i8042MouHandleButtons(
 		(DeviceExtension->MouseButtonState & ~Mask) | (NewButtonData & Mask);
 }
 
-/* Does final initializations for the mouse. This method
+/* Does lastest initializations for the mouse. This method
  * is called just before connecting the interrupt.
  */
 NTSTATUS

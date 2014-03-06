@@ -29,8 +29,7 @@
  *
  * Builtin Compression Scheme Configuration Support.
  */
-
-#include <precomp.h>
+#include "tiffiop.h"
 
 static int NotConfigured(TIFF*, int);
 

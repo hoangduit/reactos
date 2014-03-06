@@ -22,6 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file swrast/s_blend.c
  * \brief software blending.
@@ -32,7 +33,17 @@
  * Celestia uses glBlendFunc(GL_SRC_ALPHA, GL_ONE), for example.
  */
 
-#include <precomp.h>
+
+
+#include "main/glheader.h"
+#include "main/context.h"
+#include "main/colormac.h"
+#include "main/macros.h"
+
+#include "s_blend.h"
+#include "s_context.h"
+#include "s_span.h"
+
 
 #if defined(USE_MMX_ASM)
 #include "x86/mmx.h"
@@ -41,6 +52,7 @@
 #else
 #define _BLENDAPI
 #endif
+
 
 /**
  * Integer divide by 255

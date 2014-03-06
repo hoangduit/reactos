@@ -28,7 +28,15 @@
  * \author Brian Paul
  */
 
-#include <precomp.h>
+#include "main/glheader.h"
+#include "main/bufferobj.h"
+#include "main/image.h"
+#include "main/macros.h"
+
+#include "s_context.h"
+#include "s_span.h"
+
+
 
 /**
  * Render a bitmap.

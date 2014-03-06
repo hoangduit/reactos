@@ -1,15 +1,14 @@
 
-list(APPEND SOURCE
+add_library(floppy SHARED
     csqrtns.c
     floppy.c
     hardware.c
     ioctl.c
     readwrite.c
-    precomp.h)
+    floppy.rc)
 
-add_library(floppy SHARED ${SOURCE} floppy.rc)
 target_link_libraries(floppy csq)
-add_pch(floppy precomp.h SOURCE)
+add_pch(floppy precomp.h)
 set_module_type(floppy kernelmodedriver)
 add_importlibs(floppy hal ntoskrnl)
 add_cd_file(TARGET floppy DESTINATION reactos/system32/drivers NO_CAB FOR all)

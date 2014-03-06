@@ -11,9 +11,6 @@
 #include "videoprt.h"
 #include "../../gdi/eng/engevent.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /* PUBLIC FUNCTIONS ***********************************************************/
 
 /*
@@ -140,3 +137,4 @@ VideoPortWaitForSingleObject(IN PVOID HwDeviceExtension,
 }
 
 /* EOF */
+

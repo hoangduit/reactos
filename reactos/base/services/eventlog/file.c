@@ -11,11 +11,6 @@
 
 #include "eventlog.h"
 
-#include <ndk/iofuncs.h>
-
-#define NDEBUG
-#include <debug.h>
-
 /* GLOBALS ******************************************************************/
 
 static LIST_ENTRY LogFileListHead;
@@ -87,7 +82,7 @@ LogfInitializeNew(PLOGFILE LogFile)
 
 
 static NTSTATUS
-LogfInitializeExisting(PLOGFILE LogFile, BOOL Backup)
+LogfInitializeExisting(PLOGFILE LogFile)
 {
     DWORD dwRead;
     DWORD dwRecordsNumber = 0;
@@ -269,30 +264,27 @@ LogfInitializeExisting(PLOGFILE LogFile, BOOL Backup)
        But for now limit EventLog size to just under 5K. */
     LogFile->Header.MaxSize = 5000;
 
-    if (!Backup)
+    if (SetFilePointer(LogFile->hFile, 0, NULL, FILE_BEGIN) ==
+        INVALID_SET_FILE_POINTER)
     {
-        if (SetFilePointer(LogFile->hFile, 0, NULL, FILE_BEGIN) ==
-            INVALID_SET_FILE_POINTER)
-        {
-            DPRINT1("SetFilePointer() failed! %d\n", GetLastError());
-            return STATUS_EVENTLOG_FILE_CORRUPT;
-        }
+        DPRINT1("SetFilePointer() failed! %d\n", GetLastError());
+        return STATUS_EVENTLOG_FILE_CORRUPT;
+    }
 
-        if (!WriteFile(LogFile->hFile,
-                       &LogFile->Header,
-                       sizeof(EVENTLOGHEADER),
-                       &dwRead,
-                       NULL))
-        {
-            DPRINT1("WriteFile failed! %d\n", GetLastError());
-            return STATUS_EVENTLOG_FILE_CORRUPT;
-        }
+    if (!WriteFile(LogFile->hFile,
+                   &LogFile->Header,
+                   sizeof(EVENTLOGHEADER),
+                   &dwRead,
+                   NULL))
+    {
+        DPRINT1("WriteFile failed! %d\n", GetLastError());
+        return STATUS_EVENTLOG_FILE_CORRUPT;
+    }
 
-        if (!FlushFileBuffers(LogFile->hFile))
-        {
-            DPRINT1("FlushFileBuffers failed! %d\n", GetLastError());
-            return STATUS_EVENTLOG_FILE_CORRUPT;
-        }
+    if (!FlushFileBuffers(LogFile->hFile))
+    {
+        DPRINT1("FlushFileBuffers failed! %d\n", GetLastError());
+        return STATUS_EVENTLOG_FILE_CORRUPT;
     }
 
     return STATUS_SUCCESS;
@@ -388,7 +380,7 @@ LogfCreate(PLOGFILE *LogFile,
     if (bCreateNew)
         Status = LogfInitializeNew(pLogFile);
     else
-        Status = LogfInitializeExisting(pLogFile, Backup);
+        Status = LogfInitializeExisting(pLogFile);
 
     if (!NT_SUCCESS(Status))
         goto fail;
@@ -1099,31 +1091,18 @@ NTSTATUS
 LogfClearFile(PLOGFILE LogFile,
               PUNICODE_STRING BackupFileName)
 {
-    NTSTATUS Status;
-
     RtlAcquireResourceExclusive(&LogFile->Lock, TRUE);
 
     if (BackupFileName->Length > 0)
     {
-        /* Write a backup file */
-        Status = LogfBackupFile(LogFile,
-                                BackupFileName);
-        if (!NT_SUCCESS(Status))
-        {
-            DPRINT1("LogfBackupFile failed (Status: 0x%08lx)\n", Status);
-            return Status;
-        }
+        /* FIXME: Write a backup file */
     }
 
-    Status = LogfInitializeNew(LogFile);
-    if (!NT_SUCCESS(Status))
-    {
-        DPRINT1("LogfInitializeNew failed (Status: 0x%08lx)\n", Status);
-    }
+    LogfInitializeNew(LogFile);
 
     RtlReleaseResource(&LogFile->Lock);
 
-    return Status;
+    return STATUS_SUCCESS;
 }
 
 

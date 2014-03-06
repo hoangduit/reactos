@@ -6,10 +6,7 @@
  * PROGRAMMER:      Johannes Anderwald
  */
 
-#include "precomp.h"
-
-#define YDEBUG
-#include <debug.h>
+#include "priv.h"
 
 MIXER_STATUS
 MMixerGetPinDataFlowAndCommunication(

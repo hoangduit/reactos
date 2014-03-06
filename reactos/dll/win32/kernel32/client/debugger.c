@@ -9,9 +9,6 @@
 /* INCLUDES *****************************************************************/
 
 #include <k32.h>
-
-#include <ndk/dbgkfuncs.h>
-
 #define NDEBUG
 #include <debug.h>
 

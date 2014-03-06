@@ -83,8 +83,8 @@ FsRtlIsNotifyOnList(IN PLIST_ENTRY NotifyList,
     return NULL;
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 FsRtlNotifyAcquireFastMutex(IN PREAL_NOTIFY_SYNC RealNotifySync)
 {
     ULONG_PTR CurrentThread = (ULONG_PTR)KeGetCurrentThread();
@@ -233,8 +233,8 @@ FsRtlNotifyCompleteIrpList(IN PNOTIFY_CHANGE NotifyChange,
     }
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 FsRtlNotifyReleaseFastMutex(IN PREAL_NOTIFY_SYNC RealNotifySync)
 {
     RealNotifySync->OwnerCount--;

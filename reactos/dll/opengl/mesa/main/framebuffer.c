@@ -22,13 +22,27 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * Functions for allocating/managing framebuffers and renderbuffers.
  * Also, routines for reading/writing renderbuffer data as ubytes,
  * ushorts, uints, etc.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "imports.h"
+#include "buffers.h"
+#include "context.h"
+#include "enums.h"
+#include "formats.h"
+#include "macros.h"
+#include "mtypes.h"
+#include "framebuffer.h"
+#include "renderbuffer.h"
+#include "texobj.h"
+
+
 
 /**
  * Compute/set the _DepthMax field for the given framebuffer.

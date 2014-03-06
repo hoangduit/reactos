@@ -7,11 +7,9 @@
  */
 
 /* INCLUDES ******************************************************************/
-
 #include <ws2_32.h>
 
 /* DATA **********************************************************************/
-
 BOOLEAN WsAsyncThreadInitialized;
 LONG WsAsyncTaskHandle;
 PLIST_ENTRY WsAsyncQueue;

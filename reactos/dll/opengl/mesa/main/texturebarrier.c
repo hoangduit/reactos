@@ -28,7 +28,9 @@
  * \author Marek Olšák <maraeo@gmail.com>
  */
 
-#include <precomp.h>
+#include "context.h"
+#include "texturebarrier.h"
+
 
 static void
 _mesa_texture_barrier(struct gl_context *ctx)

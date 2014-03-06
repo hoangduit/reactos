@@ -215,3 +215,4 @@ MiniportHandleInterrupt (
     
     NdisDprReleaseSpinLock(&adapter->Lock);
 }
+

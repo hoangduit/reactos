@@ -76,6 +76,3 @@ set(_PREFAST_ FALSE CACHE BOOL
 set(_VS_ANALYZE_ FALSE CACHE BOOL
 "Whether to enable static analysis while compiling.")
 endif()
-
-set(USE_DUMMY_PSEH FALSE CACHE BOOL
-"Whether to disable PSEH support.")

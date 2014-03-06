@@ -29,8 +29,7 @@
  *
  * XXX We assume short = 16-bits and long = 32-bits XXX
  */
-
-#include <precomp.h>
+#include "tiffiop.h"
 
 #ifndef TIFFSwabShort
 void

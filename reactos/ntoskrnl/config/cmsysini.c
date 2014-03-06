@@ -36,71 +36,6 @@ extern BOOLEAN CmFirstTime;
 
 /* FUNCTIONS ******************************************************************/
 
-BOOLEAN
-NTAPI
-CmpLinkKeyToHive(
-    _In_z_ PWSTR LinkKeyName,
-    _In_z_ PWSTR TargetKeyName)
-{
-    OBJECT_ATTRIBUTES ObjectAttributes;
-    UNICODE_STRING LinkKeyName_U;
-    HANDLE TargetKeyHandle;
-    ULONG Disposition;
-    NTSTATUS Status;
-    PAGED_CODE();
-
-    /* Initialize the object attributes */
-    RtlInitUnicodeString(&LinkKeyName_U, LinkKeyName);
-    InitializeObjectAttributes(&ObjectAttributes,
-                               &LinkKeyName_U,
-                               OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE,
-                               NULL,
-                               NULL);
-
-    /* Create the link key */
-    Status = ZwCreateKey(&TargetKeyHandle,
-                         KEY_CREATE_LINK,
-                         &ObjectAttributes,
-                         0,
-                         NULL,
-                         REG_OPTION_VOLATILE | REG_OPTION_CREATE_LINK,
-                         &Disposition);
-    if (!NT_SUCCESS(Status))
-    {
-        DPRINT1("CM: CmpLinkKeyToHive: couldn't create %S Status = 0x%lx\n",
-                LinkKeyName, Status);
-        return FALSE;
-    }
-
-    /* Check if the new key was actually created */
-    if (Disposition != REG_CREATED_NEW_KEY)
-    {
-        DPRINT1("CM: CmpLinkKeyToHive: %S already exists!\n", LinkKeyName);
-        ZwClose(TargetKeyHandle);
-        return FALSE;
-    }
-
-    /* Set the target key name as link target */
-    Status = ZwSetValueKey(TargetKeyHandle,
-                           &CmSymbolicLinkValueName,
-                           0,
-                           REG_LINK,
-                           TargetKeyName,
-                           wcslen(TargetKeyName) * sizeof(WCHAR));
-
-    /* Close the link key handle */
-    ObCloseHandle(TargetKeyHandle, KernelMode);
-
-    if (!NT_SUCCESS(Status))
-    {
-        DPRINT1("CM: CmpLinkKeyToHive: couldn't create symbolic link for %S\n",
-                TargetKeyName);
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
 VOID
 NTAPI
 CmpDeleteKeyObject(PVOID DeletedObject)
@@ -649,7 +584,7 @@ UseSet:
     LoaderExtension = LoaderBlock->Extension;
     if (LoaderExtension)
     {
-        DPRINT("ReactOS doesn't support NTLDR Profiles yet!\n");
+        ASSERTMSG("ReactOS doesn't support NTLDR Profiles yet!\n", FALSE);
     }
 
     /* Create the current hardware profile key */
@@ -816,6 +751,7 @@ CmpInitializeSystemHive(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     if (HiveBase)
     {
         /* Import it */
+        ((PHBASE_BLOCK)HiveBase)->Length = LoaderBlock->RegistryLength;
         Status = CmpInitializeHive((PCMHIVE*)&SystemHive,
                                    HINIT_MEMORY,
                                    HIVE_NOLAZYFLUSH,
@@ -1453,13 +1389,9 @@ CmpInitializeHiveList(IN USHORT Flag)
     /* Get rid of the SD */
     ExFreePoolWithTag(SecurityDescriptor, TAG_CM);
 
-    /* Link SECURITY to SAM */
-    CmpLinkKeyToHive(L"\\Registry\\Machine\\Security\\SAM",
-                     L"\\Registry\\Machine\\SAM\\SAM");
+    /* FIXME: Link SECURITY to SAM */
 
-    /* Link S-1-5-18 to .Default */
-    CmpLinkKeyToHive(L"\\Registry\\User\\S-1-5-18",
-                     L"\\Registry\\User\\.Default");
+    /* FIXME: Link S-1-5-18 to .Default */
 }
 
 BOOLEAN
@@ -1948,11 +1880,6 @@ CmpUnlockRegistry(VOID)
         /* Flush the registry */
         CmpDoFlushAll(TRUE);
         CmpFlushOnLockRelease = FALSE;
-    }
-    else
-    {
-        /* Lazy flush the registry */
-        CmpLazyFlush();
     }
 
     /* Release the lock and leave the critical region */

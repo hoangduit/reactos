@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ksiface.h"
+#include "kstypes.h"
+
 #define TAG_KSDEVICE 'DESK'
 #define TAG_KSOBJECT_TAG 'HOSK'
 

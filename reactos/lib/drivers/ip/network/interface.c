@@ -11,9 +11,6 @@
 
 #include "precomp.h"
 
-#include <ntifs.h>
-#include <ipifcons.h>
-
 ULONG NextDefaultAdapter = 0;
 
 NTSTATUS GetInterfaceIPv4Address( PIP_INTERFACE Interface,

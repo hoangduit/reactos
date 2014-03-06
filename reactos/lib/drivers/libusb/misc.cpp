@@ -8,10 +8,8 @@
  *              Johannes Anderwald (johannes.anderwald@reactos.org)
  */
 
-#include "libusb.h"
 
-#define NDEBUG
-#include <debug.h>
+#include "libusb.h"
 
 //
 // driver verifier

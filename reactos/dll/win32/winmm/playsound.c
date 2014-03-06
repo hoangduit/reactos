@@ -21,9 +21,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "winemm.h"
+//#include <stdarg.h>
+//#include <string.h>
 
+#include <windef.h>
+//#include "winbase.h"
+//#include "mmsystem.h"
+//#include "wingdi.h"
+//#include "winuser.h"
+#include <winreg.h>
+#include "winemm.h"
 #include <winternl.h>
+
+#include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(winmm);
 

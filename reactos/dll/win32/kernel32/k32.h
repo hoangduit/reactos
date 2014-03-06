@@ -11,10 +11,9 @@
 
 /* INCLUDES ******************************************************************/
 
-#include <stdio.h>
-
 /* PSDK/NDK Headers */
 #define WIN32_NO_STATUS
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <wingdi.h>
@@ -28,6 +27,7 @@
 #define NTDDI_VERSION NTDDI_WS03SP1
 
 #include <ndk/cmfuncs.h>
+#include <ndk/dbgkfuncs.h>
 #include <ndk/exfuncs.h>
 #include <ndk/iofuncs.h>
 #include <ndk/kdtypes.h>
@@ -35,6 +35,7 @@
 #include <ndk/ldrfuncs.h>
 #include <ndk/mmfuncs.h>
 #include <ndk/obfuncs.h>
+#include <ndk/pofuncs.h>
 #include <ndk/psfuncs.h>
 #include <ndk/rtlfuncs.h>
 #include <ndk/setypes.h>
@@ -46,9 +47,18 @@
 #include <win/basemsg.h>
 #include <win/console.h>
 #include <win/conmsg.h>
+#include <win/winmsg.h>
+
+/* C Headers */
+//#include <ctype.h>
+//#include <limits.h>
+//#include <stdio.h>
+//#include <wchar.h>
 
 /* DDK Driver Headers */
+#include <ntddbeep.h>
 #include <mountmgr.h>
+//#include <mountdev.h>
 
 /* Internal Kernel32 Header */
 #include "include/kernel32.h"
@@ -65,4 +75,4 @@
 /* Virtual DOS Machines (VDM) Support Definitions */
 #include "include/vdm.h"
 
-#endif /* __K32_H */
+#endif

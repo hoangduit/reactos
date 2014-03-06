@@ -1,5 +1,5 @@
 
-list(APPEND SOURCE
+list(APPEND GLOBAL_FILES
     infcore.c
     infget.c
     infput.c)
@@ -8,11 +8,10 @@ if(CMAKE_CROSSCOMPILING)
     list(APPEND SOURCE
         infrosgen.c
         infrosget.c
-        infrosput.c
-        inflib.h)
+        infrosput.c)
 
-    add_library(inflib ${SOURCE})
-    add_pch(inflib inflib.h SOURCE)
+    add_library(inflib ${GLOBAL_FILES} ${SOURCE})
+    add_pch(inflib inflib.h)
     add_dependencies(inflib psdk)
 else()
     list(APPEND SOURCE
@@ -22,7 +21,7 @@ else()
         infhostrtl.c)
 
     add_definitions(-D__NO_CTYPE_INLINES -DINFLIB_HOST)
-    add_library(inflibhost ${SOURCE})
+    add_library(inflibhost ${GLOBAL_FILES} ${SOURCE})
     if(NOT MSVC)
         add_target_compile_flags(inflibhost "-Wpointer-arith -Wwrite-strings")
     endif()

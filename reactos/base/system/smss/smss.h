@@ -10,14 +10,17 @@
 #ifndef _SM_
 #define _SM_
 
-#include <stdio.h>
-
-/* Native Headers */
+//
+// Native Headers
+//
 #define WIN32_NO_STATUS
+#include <stdio.h>
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
 
+#include <pseh/pseh2.h>
 #define RTL_NUMBER_OF_V1(A) (sizeof(A)/sizeof((A)[0]))
 #define RTL_NUMBER_OF_V2(A) RTL_NUMBER_OF_V1(A)
 #ifdef ENABLE_RTL_NUMBER_OF_V2
@@ -35,10 +38,13 @@
 #include <ndk/psfuncs.h>
 #include <ndk/lpcfuncs.h>
 #include <ndk/setypes.h>
+#include <ndk/sefuncs.h>
 #include <ndk/umfuncs.h>
 #include <ndk/kefuncs.h>
 
-/* SM Protocol Header */
+//
+// SM Protocol Header
+//
 #include <sm/smmsg.h>
 
 /* DEFINES ********************************************************************/
@@ -305,4 +311,4 @@ SmpExecuteImage(
     IN PRTL_USER_PROCESS_INFORMATION ProcessInformation
 );
 
-#endif /* _SM_ */
+#endif

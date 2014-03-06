@@ -7,10 +7,7 @@
  * REVISIONS:
  *   CSH 05/04-2003 Created
  */
-
 #include "vfatxlib.h"
-
-#include <ndk/obfuncs.h>
 
 #define NDEBUG
 #include <debug.h>

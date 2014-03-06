@@ -234,9 +234,6 @@
     <ClCompile Include="powerpc\thread.c">
       <Filter>powerpc</Filter>
     </ClCompile>
-    <ClCompile Include="memstream.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="CMakeLists.txt" />

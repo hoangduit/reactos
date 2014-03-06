@@ -1,5 +1,3 @@
-#pragma once
-
 typedef struct tagGUIDStruct
 {
     BYTE dummy; /* offset 01 is unknown */

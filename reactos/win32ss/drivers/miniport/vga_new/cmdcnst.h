@@ -6,7 +6,6 @@
  * PROGRAMMERS:     Copyright (c) 1992  Microsoft Corporation
  */
 
-#pragma once
  
 //--------------------------------------------------------------------------
 //   Definition of the set/clear mode command language.

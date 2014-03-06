@@ -23,7 +23,6 @@ NpQueryFsVolumeInfo(IN PVOID Buffer,
     PFILE_FS_VOLUME_INFORMATION InfoBuffer = Buffer;
     NTSTATUS Status;
     USHORT NameLength;
-    TRACE("Entered\n");
 
     *Length -= sizeof(*InfoBuffer);
 
@@ -48,7 +47,6 @@ NpQueryFsVolumeInfo(IN PVOID Buffer,
     RtlCopyMemory(InfoBuffer->VolumeLabel, L"Named Pipe", NameLength);
     *Length -= NameLength;
 
-    TRACE("Leaving, Status = %lx\n", Status);
     return Status;
 }
 
@@ -58,7 +56,6 @@ NpQueryFsSizeInfo(IN PVOID Buffer,
                   IN OUT PULONG Length)
 {
     PFILE_FS_SIZE_INFORMATION InfoBuffer = Buffer;
-    TRACE("Entered\n");
 
     *Length -= sizeof(*InfoBuffer);
 
@@ -67,7 +64,6 @@ NpQueryFsSizeInfo(IN PVOID Buffer,
     InfoBuffer->SectorsPerAllocationUnit = 1;
     InfoBuffer->BytesPerSector = 1;
 
-    TRACE("Leaving, Status = STATUS_SUCCESS\n");
     return STATUS_SUCCESS;
 }
 
@@ -78,7 +74,6 @@ NpQueryFsDeviceInfo(IN PVOID Buffer,
 {
     PFILE_FS_DEVICE_INFORMATION InfoBuffer = Buffer;
     NTSTATUS Status;
-    TRACE("Entered\n");
 
     if (*Length >= sizeof(*InfoBuffer))
     {
@@ -92,7 +87,6 @@ NpQueryFsDeviceInfo(IN PVOID Buffer,
     {
         Status = STATUS_BUFFER_OVERFLOW;
     }
-    TRACE("Leaving, Status = %lx\n", Status);
     return Status;
 }
 
@@ -104,7 +98,6 @@ NpQueryFsAttributeInfo(IN PVOID Buffer,
     PFILE_FS_ATTRIBUTE_INFORMATION InfoBuffer = Buffer;
     NTSTATUS Status;
     USHORT NameLength;
-    TRACE("Entered\n");
 
     NameLength = (USHORT)(*Length - 12);
     if (NameLength < 8)
@@ -124,7 +117,6 @@ NpQueryFsAttributeInfo(IN PVOID Buffer,
     InfoBuffer->FileSystemAttributes = FILE_CASE_PRESERVED_NAMES;
     RtlCopyMemory(InfoBuffer->FileSystemName, L"NPFS", NameLength);
 
-    TRACE("Leaving, Status = %lx\n", Status);
     return Status;
 }
 
@@ -134,13 +126,11 @@ NpQueryFsFullSizeInfo(IN PVOID Buffer,
                       IN OUT PULONG Length)
 {
     PFILE_FS_FULL_SIZE_INFORMATION InfoBuffer = Buffer;
-    TRACE("Entered\n");
 
     *Length -= sizeof(*InfoBuffer);
 
     RtlZeroMemory(InfoBuffer, sizeof(*InfoBuffer));
 
-    TRACE("Leaving, Status = STATUS_SUCCESS\n");
     return STATUS_SUCCESS;
 }
 
@@ -150,12 +140,11 @@ NpCommonQueryVolumeInformation(IN PDEVICE_OBJECT DeviceObject,
                                IN PIRP Irp)
 {
     PIO_STACK_LOCATION IoStack;
-    FS_INFORMATION_CLASS InfoClass;
+    FILE_INFORMATION_CLASS InfoClass;
     ULONG Length;
     PVOID Buffer;
     NTSTATUS Status;
     PAGED_CODE();
-    TRACE("Entered\n");
 
     IoStack = IoGetCurrentIrpStackLocation(Irp);
     Buffer = Irp->AssociatedIrp.SystemBuffer;
@@ -185,7 +174,6 @@ NpCommonQueryVolumeInformation(IN PDEVICE_OBJECT DeviceObject,
     }
 
     Irp->IoStatus.Information = IoStack->Parameters.QueryVolume.Length - Length;
-    TRACE("Leaving, Status = %lx\n", Status);
     return Status;
 }
 
@@ -196,7 +184,6 @@ NpFsdQueryVolumeInformation(IN PDEVICE_OBJECT DeviceObject,
 {
     NTSTATUS Status;
     PAGED_CODE();
-    TRACE("Entered\n");
 
     FsRtlEnterFileSystem();
     ExAcquireResourceSharedLite(&NpVcb->Lock, TRUE);
@@ -212,7 +199,6 @@ NpFsdQueryVolumeInformation(IN PDEVICE_OBJECT DeviceObject,
         IoCompleteRequest(Irp, IO_NAMED_PIPE_INCREMENT);
     }
 
-    TRACE("Leaving, Status = %lx\n", Status);
     return Status;
 }
 

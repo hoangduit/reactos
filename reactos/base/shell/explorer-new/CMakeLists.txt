@@ -14,9 +14,9 @@ list(APPEND SOURCE
     trayntfy.c
     trayprop.c
     traywnd.c
-    precomp.h)
+    explorer.rc)
 
-add_executable(explorer_new ${SOURCE} explorer.rc)
+add_executable(explorer_new ${SOURCE})
 target_link_libraries(explorer_new uuid)
 set_module_type(explorer_new win32gui UNICODE)
 add_importlibs(explorer_new
@@ -28,11 +28,10 @@ add_importlibs(explorer_new
     oleaut32
     shell32
     shlwapi
-    shdocvw
     version
     uxtheme
     msvcrt
     kernel32
     ntdll)
-add_pch(explorer_new precomp.h SOURCE)
+add_pch(explorer_new precomp.h)
 add_cd_file(TARGET explorer_new DESTINATION reactos FOR all)

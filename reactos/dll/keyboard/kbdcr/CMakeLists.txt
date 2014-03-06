@@ -5,7 +5,7 @@ spec2def(kbdcr.dll kbdcr.spec)
 
 add_library(kbdcr SHARED kbdcr.c kbdcr.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdcr.def)
 
-set_module_type(kbdcr kbdlayout)
+set_entrypoint(kbdcr 0)
 
 add_dependencies(kbdcr psdk)
 

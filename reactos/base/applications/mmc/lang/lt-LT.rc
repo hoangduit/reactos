@@ -6,10 +6,11 @@ IDM_CONSOLE_SMALL MENU
 BEGIN
     POPUP "&Byla"
     BEGIN
-        MENUITEM "New\tCtrl+N", IDM_FILE_NEW
+        MENUITEM "New\tStrg+N", IDM_FILE_NEW
         MENUITEM SEPARATOR
         MENUITEM "&Baigti\tAlt+F4", IDM_FILE_EXIT
     END
+
     POPUP "&Pagalba"
     BEGIN
         MENUITEM "&Apie ReactOS Valdymo Pultą...", IDM_HELP_ABOUT
@@ -20,14 +21,16 @@ IDM_CONSOLE_LARGE MENU
 BEGIN
     POPUP "&Byla"
     BEGIN
-        MENUITEM "New\tCtrl+N", IDM_FILE_NEW
+        MENUITEM "New\tStrg+N", IDM_FILE_NEW
         MENUITEM SEPARATOR
         MENUITEM "&Baigti\tAlt+F4", IDM_FILE_EXIT
     END
+
     POPUP "&Windows"
     BEGIN
         MENUITEM "List", IDM_WINDOWS_LIST
     END
+
     POPUP "&Pagalba"
     BEGIN
         MENUITEM "&Apie ReactOS Valdymo Pultą...", IDM_HELP_ABOUT

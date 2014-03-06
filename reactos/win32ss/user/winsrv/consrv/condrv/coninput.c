@@ -9,10 +9,15 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <consrv.h>
+#include "consrv.h"
+#include "include/conio.h"
+#include "include/term.h"
+#include "handle.h"
+#include "lineinput.h"
 
 #define NDEBUG
 #include <debug.h>
+
 
 /* GLOBALS ********************************************************************/
 
@@ -55,9 +60,8 @@ ConioInputEventToAnsi(PCONSOLE Console, PINPUT_RECORD InputEvent)
 }
 
 NTSTATUS FASTCALL
-ConioAddInputEvent(PCONSOLE Console,
-                   PINPUT_RECORD InputEvent,
-                   BOOLEAN AppendToEnd)
+ConioProcessInputEvent(PCONSOLE Console,
+                       PINPUT_RECORD InputEvent)
 {
     ConsoleInput *ConInRec;
 
@@ -93,17 +97,7 @@ ConioAddInputEvent(PCONSOLE Console,
     if (ConInRec == NULL) return STATUS_INSUFFICIENT_RESOURCES;
 
     ConInRec->InputEvent = *InputEvent;
-
-    if (AppendToEnd)
-    {
-        /* Append the event to the end of the queue */
-        InsertTailList(&Console->InputBuffer.InputEvents, &ConInRec->ListEntry);
-    }
-    else
-    {
-        /* Append the event to the beginning of the queue */
-        InsertHeadList(&Console->InputBuffer.InputEvents, &ConInRec->ListEntry);
-    }
+    InsertTailList(&Console->InputBuffer.InputEvents, &ConInRec->ListEntry);
 
     SetEvent(Console->InputBuffer.ActiveEvent);
     CsrNotifyWait(&Console->InputBuffer.ReadWaitQueue,
@@ -116,13 +110,6 @@ ConioAddInputEvent(PCONSOLE Console,
     }
 
     return STATUS_SUCCESS;
-}
-
-NTSTATUS FASTCALL
-ConioProcessInputEvent(PCONSOLE Console,
-                       PINPUT_RECORD InputEvent)
-{
-    return ConioAddInputEvent(Console, InputEvent, TRUE);
 }
 
 VOID FASTCALL
@@ -371,7 +358,6 @@ ConDrvReadConsole(IN PCONSOLE Console,
 NTSTATUS NTAPI
 ConDrvGetConsoleInput(IN PCONSOLE Console,
                       IN PCONSOLE_INPUT_BUFFER InputBuffer,
-                      IN BOOLEAN KeepEvents,
                       IN BOOLEAN WaitForMoreEvents,
                       IN BOOLEAN Unicode,
                       OUT PINPUT_RECORD InputRecord,
@@ -421,8 +407,7 @@ ConDrvGetConsoleInput(IN PCONSOLE Console,
         ++i;
         CurrentInput = CurrentInput->Flink;
 
-        /* Remove the events from the queue if needed */
-        if (!KeepEvents)
+        if (WaitForMoreEvents) // TRUE --> Read, we remove inputs from the buffer ; FALSE --> Peek, we keep inputs.
         {
             RemoveEntryList(&Input->ListEntry);
             ConsoleFreeHeap(Input);
@@ -444,7 +429,6 @@ NTSTATUS NTAPI
 ConDrvWriteConsoleInput(IN PCONSOLE Console,
                         IN PCONSOLE_INPUT_BUFFER InputBuffer,
                         IN BOOLEAN Unicode,
-                        IN BOOLEAN AppendToEnd,
                         IN PINPUT_RECORD InputRecord,
                         IN ULONG NumEventsToWrite,
                         OUT PULONG NumEventsWritten OPTIONAL)
@@ -473,7 +457,7 @@ ConDrvWriteConsoleInput(IN PCONSOLE Console,
                                               &AsciiChar);
         }
 
-        Status = ConioAddInputEvent(Console, InputRecord++, AppendToEnd);
+        Status = ConioProcessInputEvent(Console, InputRecord++);
     }
 
     if (NumEventsWritten) *NumEventsWritten = i;

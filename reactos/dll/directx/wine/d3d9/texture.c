@@ -18,7 +18,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <config.h>
 #include "d3d9_private.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(d3d9);
 
 static inline struct d3d9_texture *impl_from_IDirect3DTexture9(IDirect3DTexture9 *iface)
 {
@@ -1318,7 +1321,6 @@ HRESULT texture_init(struct d3d9_texture *texture, struct d3d9_device *device,
     desc.multisample_type = WINED3D_MULTISAMPLE_NONE;
     desc.multisample_quality = 0;
     desc.usage = usage & WINED3DUSAGE_MASK;
-    desc.usage |= WINED3DUSAGE_TEXTURE;
     desc.pool = pool;
     desc.width = width;
     desc.height = height;
@@ -1329,7 +1331,7 @@ HRESULT texture_init(struct d3d9_texture *texture, struct d3d9_device *device,
         surface_flags |= WINED3D_SURFACE_MAPPABLE;
 
     wined3d_mutex_lock();
-    hr = wined3d_texture_create(device->wined3d_device, &desc, levels, surface_flags,
+    hr = wined3d_texture_create_2d(device->wined3d_device, &desc, levels, surface_flags,
             texture, &d3d9_texture_wined3d_parent_ops, &texture->wined3d_texture);
     wined3d_mutex_unlock();
     if (FAILED(hr))
@@ -1359,7 +1361,6 @@ HRESULT cubetexture_init(struct d3d9_texture *texture, struct d3d9_device *devic
     desc.multisample_type = WINED3D_MULTISAMPLE_NONE;
     desc.multisample_quality = 0;
     desc.usage = usage & WINED3DUSAGE_MASK;
-    desc.usage |= WINED3DUSAGE_TEXTURE;
     desc.pool = pool;
     desc.width = edge_length;
     desc.height = edge_length;
@@ -1370,7 +1371,7 @@ HRESULT cubetexture_init(struct d3d9_texture *texture, struct d3d9_device *devic
         surface_flags |= WINED3D_SURFACE_MAPPABLE;
 
     wined3d_mutex_lock();
-    hr = wined3d_texture_create(device->wined3d_device, &desc, levels, surface_flags,
+    hr = wined3d_texture_create_cube(device->wined3d_device, &desc, levels, surface_flags,
             texture, &d3d9_texture_wined3d_parent_ops, &texture->wined3d_texture);
     wined3d_mutex_unlock();
     if (FAILED(hr))
@@ -1399,7 +1400,6 @@ HRESULT volumetexture_init(struct d3d9_texture *texture, struct d3d9_device *dev
     desc.multisample_type = WINED3D_MULTISAMPLE_NONE;
     desc.multisample_quality = 0;
     desc.usage = usage & WINED3DUSAGE_MASK;
-    desc.usage |= WINED3DUSAGE_TEXTURE;
     desc.pool = pool;
     desc.width = width;
     desc.height = height;
@@ -1407,7 +1407,7 @@ HRESULT volumetexture_init(struct d3d9_texture *texture, struct d3d9_device *dev
     desc.size = 0;
 
     wined3d_mutex_lock();
-    hr = wined3d_texture_create(device->wined3d_device, &desc, levels, 0,
+    hr = wined3d_texture_create_3d(device->wined3d_device, &desc, levels,
             texture, &d3d9_texture_wined3d_parent_ops, &texture->wined3d_texture);
     wined3d_mutex_unlock();
     if (FAILED(hr))

@@ -18,9 +18,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "dbghelp_private.h"
+#include "config.h"
 
+#include "dbghelp_private.h"
 #include "wdbgexts.h"
+
+#ifndef DBGHELP_STATIC_LIB
+#include "winerror.h"
+#include "psapi.h"
+#include "wine/debug.h"
+#include "winnls.h"
+#endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(dbghelp);
 

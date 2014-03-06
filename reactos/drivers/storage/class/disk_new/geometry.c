@@ -21,7 +21,9 @@ Revision History:
 
 --*/
 
+
 #include "disk.h"
+#include "ntddstor.h"
 
 #if defined (_X86_)
 

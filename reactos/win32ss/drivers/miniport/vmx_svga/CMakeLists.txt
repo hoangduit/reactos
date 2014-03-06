@@ -5,3 +5,5 @@ add_library(vmx_svga SHARED ${SOURCE})
 
 set_module_type(vmx_svga kernelmodedriver)
 add_importlibs(vmx_svga ntoskrnl videoprt)
+
+add_pch(vmx_svga precomp.h)

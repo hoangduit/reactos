@@ -21,7 +21,9 @@ Revision History:
 
 --*/
 
+
 #include "classp.h"
+#include "debug.h"
 
 #if DBG
 
@@ -61,9 +63,7 @@ Revision History:
         #define CLASS_GLOBAL_BUFFERED_DEBUG_PRINT_BUFFERS 512
     #endif   // CLASS_GLOBAL_BUFFERED_DEBUG_PRINT_BUFFERS
 
-    #ifdef ALLOC_DATA_PRAGMA
-        #pragma data_seg("NONPAGE")
-    #endif
+    #pragma data_seg("NONPAGE")
 
 
 
@@ -178,8 +178,8 @@ Revision History:
                 //
 
                 ULONG index;
-                PSTR buffer;
-                index = InterlockedIncrement((PLONG)&ClasspnpGlobals.Index);
+                PUCHAR buffer;
+                index = InterlockedIncrement(&ClasspnpGlobals.Index);
                 index %= ClasspnpGlobals.NumberOfBuffers;
                 index *= (ULONG)ClasspnpGlobals.EachBufferSize;
 

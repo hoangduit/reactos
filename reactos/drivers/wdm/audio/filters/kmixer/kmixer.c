@@ -8,9 +8,6 @@
 
 #include "kmixer.h"
 
-#define YDEBUG
-#include <debug.h>
-
 NTSTATUS
 NTAPI
 KMix_Pnp(

@@ -27,7 +27,14 @@
  * glPixelStore functions.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "bufferobj.h"
+#include "context.h"
+#include "pixelstore.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+
 
 void GLAPIENTRY
 _mesa_PixelStorei( GLenum pname, GLint param )

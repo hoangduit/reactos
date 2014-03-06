@@ -7,10 +7,7 @@
                     Andrew Greenwood
  */
 
-#include "precomp.h"
-
-#define NDEBUG
-#include <debug.h>
+#include "priv.h"
 
 const GUID IID_IUnknown = {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x46}};
 

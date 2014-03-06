@@ -62,7 +62,7 @@ extern NTSTATUS NewCMIAdapter
     IN      POOL_TYPE   PoolType
 );
 
-extern "C" NTSTATUS NTAPI AdapterDispatchPnp
+extern "C" NTSTATUS AdapterDispatchPnp
 (
     IN      PDEVICE_OBJECT  pDeviceObject,
     IN      PIRP            pIrp

@@ -68,7 +68,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="memstream.c" />
     <ClCompile Include="message.c" />
     <ClCompile Include="network.c" />
     <ClCompile Include="nls.c" />

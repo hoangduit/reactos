@@ -17,9 +17,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-
-#pragma once
-
+#define NONAMELESSUNION
+#define NONAMELESSSTRUCT
+//#include "windef.h"
+//#include "winerror.h"
+#include <objbase.h>
+#include <oleauto.h>
 #include <math.h>
 
 /* Get just the type from a variant pointer */

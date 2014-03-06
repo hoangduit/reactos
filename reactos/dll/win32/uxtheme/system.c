@@ -19,10 +19,9 @@
  */
 
 #include "uxthemep.h"
+#include <wine/debug.h>
 
-#include <stdio.h>
-#include <winreg.h>
-#include <uxundoc.h>
+WINE_DEFAULT_DEBUG_CHANNEL(uxtheme);
 
 /***********************************************************************
  * Defines and global variables
@@ -51,7 +50,7 @@ static ATOM atSubAppName;
 static ATOM atSubIdList;
 ATOM atWndContrext;
 
-PTHEME_FILE ActiveThemeFile;
+static PTHEME_FILE ActiveThemeFile;
 
 /***********************************************************************/
 
@@ -139,39 +138,6 @@ static HRESULT UXTHEME_SetActiveTheme(PTHEME_FILE tf)
     return S_OK;
 }
 
-static BOOL bIsThemeActive(LPCWSTR pszTheme, LPCWSTR pszColor, LPCWSTR pszSize)
-{
-    if (ActiveThemeFile == NULL)
-        return FALSE;
-
-    if (wcscmp(pszTheme, ActiveThemeFile->szThemeFile) != 0)
-        return FALSE;
-
-    if (!pszColor[0])
-    {
-        if (ActiveThemeFile->pszAvailColors != ActiveThemeFile->pszSelectedColor)
-            return FALSE;
-    }
-    else
-    {
-        if (wcscmp(pszColor, ActiveThemeFile->pszSelectedColor) != 0)
-            return FALSE;
-    }
-
-    if (!pszSize[0])
-    {
-        if (ActiveThemeFile->pszAvailSizes != ActiveThemeFile->pszSelectedSize)
-            return FALSE;
-    }
-    else
-    {
-        if (wcscmp(pszSize, ActiveThemeFile->pszSelectedSize) != 0)
-            return FALSE;
-    }
-
-    return TRUE;
-}
-
 /***********************************************************************
  *      UXTHEME_LoadTheme
  *
@@ -220,14 +186,7 @@ void UXTHEME_LoadTheme(BOOL bLoad)
         bThemeActive = FALSE;
     }
 
-    if(bThemeActive)
-    {
-        if( bIsThemeActive(szCurrentTheme, szCurrentColor, szCurrentSize) )
-        {
-            TRACE("Tried to load active theme again\n");
-            return;
-        }
-
+    if(bThemeActive) {
         /* Make sure the theme requested is actually valid */
         hr = MSSTYLES_OpenThemeFile(szCurrentTheme,
                                     szCurrentColor[0]?szCurrentColor:NULL,
@@ -512,8 +471,6 @@ static HRESULT UXTHEME_ApplyTheme(PTHEME_FILE tf)
     WCHAR tmp[2];
     HRESULT hr;
 
-    TRACE("UXTHEME_ApplyTheme\n");
-
     if (tf && !ActiveThemeFile)
     {
         UXTHEME_BackupSystemMetrics();
@@ -605,7 +562,7 @@ BOOL WINAPI IsThemeActive(void)
     WCHAR tmp[10];
     DWORD buffsize;
 
-    TRACE("IsThemeActive\n");
+    TRACE("\n");
     SetLastError(ERROR_SUCCESS);
 
     if (ActiveThemeFile) 
@@ -1346,3 +1303,16 @@ HRESULT WINAPI CheckThemeSignature(LPCWSTR pszThemeFileName)
     MSSTYLES_CloseThemeFile(pt);
     return S_OK;
 }
+
+HRESULT WINAPI DrawNCPreview(HDC hDC, 
+                             DWORD DNCP_Flag,
+                             LPRECT prcPreview, 
+                             LPCWSTR pszThemeFileName, 
+                             LPCWSTR pszColorName,
+                             LPCWSTR pszSizeName,
+                             PNONCLIENTMETRICSW pncMetrics,
+                             COLORREF* lpaRgbValues)
+{
+    return E_NOTIMPL;
+}
+

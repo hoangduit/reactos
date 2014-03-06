@@ -668,7 +668,7 @@ FindNextVolumeA(IN HANDLE handle,
         if (!WideCharToMultiByte( CP_ACP, 0, buffer, -1, volume, len, NULL, NULL )) ret = FALSE;
     }
 
-    RtlFreeHeap(RtlGetProcessHeap(), 0, buffer);
+    HeapFree( GetProcessHeap(), 0, buffer );
     return ret;
 }
 

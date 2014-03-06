@@ -18,9 +18,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <oledlg.h>
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
 
-#include "resource.h"
+#include <windef.h>
+//#include "winbase.h"
+//#include "winuser.h"
+//#include "winnls.h"
+//#include "oledlg.h"
+
+//#include "resource.h"
 
 /*
  * Everything specific to any language goes
@@ -52,6 +60,9 @@
 #endif
 #ifdef LANGUAGE_SV_SE
     #include "lang/oledlg_Sv.rc"
+#endif
+#ifdef LANGUAGE_TR_TR
+    #include "lang/oledlg_Tr.rc"
 #endif
 
 /* UTF-8 */
@@ -91,15 +102,10 @@
 #ifdef LANGUAGE_SL_SI
     #include "lang/oledlg_Si.rc"
 #endif
-#ifdef LANGUAGE_SQ_AL
-    #include "lang/oledlg_Sq.rc"
-#endif
-#ifdef LANGUAGE_TR_TR
-    #include "lang/oledlg_Tr.rc"
-#endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/oledlg_Uk.rc"
 #endif
 #ifdef LANGUAGE_ZH_CN
     #include "lang/oledlg_Zh.rc"
 #endif
+

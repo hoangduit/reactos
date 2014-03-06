@@ -23,7 +23,12 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-#include <precomp.h>
+#include <ntddk.h>
+
+#include <acpi.h>
+#include <acpi_bus.h>
+#include <acpi_drivers.h>
+#include <glue.h>
 
 #define NDEBUG
 #include <debug.h>

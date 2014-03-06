@@ -5,8 +5,6 @@
  *	An enumeration containing the states in the timer DFA
  */
 
-#pragma once
-
 #define VERSION "0.0.3"
 
 #ifndef PAGE_ROUND_UP

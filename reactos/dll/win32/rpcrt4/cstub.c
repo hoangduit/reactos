@@ -19,7 +19,28 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+
+#include <config.h>
+//#include "wine/port.h"
+
+#include <stdarg.h>
+
+#define COBJMACROS
+
+#include <windef.h>
+#include <winbase.h>
+//#include "winerror.h"
+//#include "excpt.h"
+
+#include <objbase.h>
+#include <rpcproxy.h>
+
+#include <wine/debug.h>
+#include <wine/exception.h>
+
+#include "cpsf.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(ole);
 
@@ -354,7 +375,7 @@ HRESULT WINAPI CStdStubBuffer_QueryInterface(LPRPCSTUBBUFFER iface,
   if (IsEqualIID(&IID_IUnknown, riid) ||
       IsEqualIID(&IID_IRpcStubBuffer, riid))
   {
-    IRpcStubBuffer_AddRef(iface);
+    IUnknown_AddRef(iface);
     *obj = iface;
     return S_OK;
   }

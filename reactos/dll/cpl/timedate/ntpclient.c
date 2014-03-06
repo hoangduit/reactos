@@ -9,8 +9,6 @@
 
 #include "timedate.h"
 
-#include <winsock2.h>
-
 #define TIMEOUT 4000 /* 4 second timeout */
 
 typedef struct _INFO

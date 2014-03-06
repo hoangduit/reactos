@@ -5,7 +5,7 @@ Name = PuTTY
 Version = 0.63
 Licence = MIT
 Description = A free SSH, Telnet, rlogin, and raw TCP client.
-Size = 1.78 MB
+Size = 1.78MB
 Category = 5
 URLSite = http://www.chiark.greenend.org.uk/~sgtatham/putty/
 URLDownload = http://the.earth.li/~sgtatham/putty/latest/x86/putty-0.63-installer.exe
@@ -33,10 +33,6 @@ Description = Darmowy klient obsługujący protokoły SSH, Telnet, rlogin oraz b
 [Section.0418]
 Description = Un client gratuit de SSH, Telnet, rlogin, and TCP brut.
 Size = 1,78 Mo
-
-[Section.041f]
-Description = Özgür bir SSH, Telnet, rlogin ve ham TCP istemcisi.
-Size = 1,78 MB
 
 [Section.0422]
 Description = Безплатний SSH, Telnet, rlogin та raw TCP клієнт.

@@ -15,14 +15,6 @@
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-/*
- * FTP User Program -- Command Interface.
- */
-
-#include "precomp.h"
-
-#include <fcntl.h>
-
 #ifndef lint
 char copyright[] =
 "@(#) Copyright (c) 1985, 1989 Regents of the University of California.\n\
@@ -32,6 +24,11 @@ char copyright[] =
 #ifndef lint
 static char sccsid[] = "@(#)main.c	based on 5.13 (Berkeley) 3/14/89";
 #endif /* not lint */
+
+/*
+ * FTP User Program -- Command Interface.
+ */
+#include "precomp.h"
 
 #if defined(sun) && !defined(FD_SET)
 typedef int uid_t;

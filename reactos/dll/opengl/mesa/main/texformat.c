@@ -32,7 +32,12 @@
  * \author Brian Paul
  */
 
-#include <precomp.h>
+
+#include "context.h"
+#include "enums.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "texformat.h"
 
 #define RETURN_IF_SUPPORTED(f) do {		\
    if (ctx->TextureFormatSupported[f])		\

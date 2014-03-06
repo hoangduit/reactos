@@ -8,9 +8,6 @@
 
 #include "sysaudio.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 NTAPI
 Dispatch_fnDeviceIoControl(

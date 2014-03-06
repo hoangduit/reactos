@@ -73,8 +73,7 @@ DetectAcpiBios(PCONFIGURATION_COMPONENT_DATA SystemKey, ULONG *BusNumber)
 
         /* Set 'Configuration Data' value */
         PartialResourceList =
-            FrLdrHeapAlloc(sizeof(CM_PARTIAL_RESOURCE_LIST) + TableSize,
-                           TAG_HW_RESOURCE_LIST);
+            MmHeapAlloc(sizeof(CM_PARTIAL_RESOURCE_LIST) + TableSize);
 
         if (PartialResourceList == NULL)
         {

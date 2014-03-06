@@ -9,8 +9,6 @@
 
 #include "serial.h"
 
-#include <debug.h>
-
 #define IO_METHOD_FROM_CTL_CODE(ctlCode) (ctlCode&0x00000003)
 
 static VOID
@@ -829,10 +827,12 @@ SerialDeviceControl(
 				Status = STATUS_INVALID_PARAMETER;
 			else
 			{
-				IoMarkIrpPending(Irp);
-
+				/* FIXME: Race condition here:
+				 * If an interrupt comes before we can mark the Irp
+				 * as pending, it might be possible to complete the
+				 * Irp before pending it, leading to a crash! */
 				WaitingIrp = InterlockedCompareExchangePointer(
-					&DeviceExtension->WaitOnMaskIrp,
+					(PVOID)&DeviceExtension->WaitOnMaskIrp,
 					Irp,
 					NULL);
 
@@ -841,11 +841,13 @@ SerialDeviceControl(
 				{
 					/* Unable to have a 2nd pending IRP for this IOCTL */
 					WARN_(SERIAL, "Unable to pend a second IRP for IOCTL_SERIAL_WAIT_ON_MASK\n");
-					Irp->IoStatus.Information = 0;
-					Irp->IoStatus.Status = STATUS_INVALID_PARAMETER;
-					IoCompleteRequest(Irp, IO_NO_INCREMENT);
+					Status = STATUS_INVALID_PARAMETER;
 				}
-				return STATUS_PENDING;
+				else
+				{
+					Status = STATUS_PENDING;
+					/* FIXME: immediately return if a wait event already occurred */
+				}
 			}
 			break;
 		}

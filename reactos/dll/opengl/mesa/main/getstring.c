@@ -22,7 +22,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+
+#include "glheader.h"
+#include "context.h"
+#include "get.h"
+#include "enums.h"
+#include "extensions.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+
 
 /**
  * Query string-valued state.  The return value should _not_ be freed by

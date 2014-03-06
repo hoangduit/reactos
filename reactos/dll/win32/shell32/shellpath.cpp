@@ -26,8 +26,6 @@
 
 #include "precomp.h"
 
-#include <sddl.h>
-
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 /*
@@ -1813,7 +1811,7 @@ HRESULT WINAPI SHGetFolderLocation(
         }
     }
     if(*ppidl)
-        hr = S_OK;
+        hr = NOERROR;
 
     TRACE("-- (new pidl %p)\n",*ppidl);
     return hr;

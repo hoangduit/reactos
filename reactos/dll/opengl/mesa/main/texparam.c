@@ -29,7 +29,21 @@
  * glTexParameter-related functions
  */
 
-#include <precomp.h>
+
+#include "main/glheader.h"
+#include "main/colormac.h"
+#include "main/context.h"
+#include "main/enums.h"
+#include "main/formats.h"
+#include "main/image.h"
+#include "main/macros.h"
+#include "main/mfeatures.h"
+#include "main/mtypes.h"
+#include "main/state.h"
+#include "main/texparam.h"
+#include "main/teximage.h"
+#include "main/texstate.h"
+
 
 /**
  * Check if a coordinate wrap mode is supported for the texture target.

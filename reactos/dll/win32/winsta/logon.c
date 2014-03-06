@@ -6,7 +6,6 @@
  * NOTES:           This file contains exported functions relevant to
  *                  userinit, winlogon, lsass and friends in vista.
  */
-
 #include "winsta.h"
 
 VOID

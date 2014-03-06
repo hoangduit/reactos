@@ -20,7 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <config.h>
 #include "d3d9_private.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(d3d9);
 
 static void STDMETHODCALLTYPE d3d9_null_wined3d_object_destroyed(void *parent) {}
 
@@ -224,6 +227,11 @@ static void wined3d_swapchain_desc_from_present_parameters(struct wined3d_swapch
     swapchain_desc->refresh_rate = present_parameters->FullScreen_RefreshRateInHz;
     swapchain_desc->swap_interval = present_parameters->PresentationInterval;
     swapchain_desc->auto_restore_display_mode = TRUE;
+}
+
+static inline struct d3d9_device *impl_from_IDirect3DDevice9Ex(IDirect3DDevice9Ex *iface)
+{
+    return CONTAINING_RECORD(iface, struct d3d9_device, IDirect3DDevice9Ex_iface);
 }
 
 static HRESULT WINAPI d3d9_device_QueryInterface(IDirect3DDevice9Ex *iface, REFIID riid, void **out)
@@ -499,7 +507,7 @@ static HRESULT WINAPI DECLSPEC_HOTPATCH d3d9_device_CreateAdditionalSwapChain(ID
 
     wined3d_swapchain_desc_from_present_parameters(&desc, present_parameters);
     if (SUCCEEDED(hr = d3d9_swapchain_create(device, &desc, &object)))
-        *swapchain = (IDirect3DSwapChain9 *)&object->IDirect3DSwapChain9Ex_iface;
+        *swapchain = &object->IDirect3DSwapChain9_iface;
     present_parameters_from_wined3d_swapchain_desc(present_parameters, &desc);
 
     return hr;
@@ -519,8 +527,8 @@ static HRESULT WINAPI DECLSPEC_HOTPATCH d3d9_device_GetSwapChain(IDirect3DDevice
     if ((wined3d_swapchain = wined3d_device_get_swapchain(device->wined3d_device, swapchain_idx)))
     {
        swapchain_impl = wined3d_swapchain_get_parent(wined3d_swapchain);
-       *swapchain = (IDirect3DSwapChain9 *)&swapchain_impl->IDirect3DSwapChain9Ex_iface;
-       IDirect3DSwapChain9Ex_AddRef(*swapchain);
+       *swapchain = &swapchain_impl->IDirect3DSwapChain9_iface;
+       IDirect3DSwapChain9_AddRef(*swapchain);
        hr = D3D_OK;
     }
     else
@@ -734,15 +742,8 @@ static HRESULT WINAPI d3d9_device_CreateTexture(IDirect3DDevice9Ex *iface,
     TRACE("iface %p, width %u, height %u, levels %u, usage %#x, format %#x, pool %#x, texture %p, shared_handle %p.\n",
             iface, width, height, levels, usage, format, pool, texture, shared_handle);
 
-    *texture = NULL;
     if (shared_handle)
     {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared or user memory texture on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
         if (pool == D3DPOOL_SYSTEMMEM)
         {
             if (levels != 1)
@@ -750,14 +751,7 @@ static HRESULT WINAPI d3d9_device_CreateTexture(IDirect3DDevice9Ex *iface,
             set_mem = TRUE;
         }
         else
-        {
-            if (pool != D3DPOOL_DEFAULT)
-            {
-                WARN("Trying to create a shared texture in pool %#x.\n", pool);
-                return D3DERR_INVALIDCALL;
-            }
             FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-        }
     }
 
     object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
@@ -779,9 +773,7 @@ static HRESULT WINAPI d3d9_device_CreateTexture(IDirect3DDevice9Ex *iface,
 
         resource = wined3d_texture_get_sub_resource(object->wined3d_texture, 0);
         surface = wined3d_resource_get_parent(resource);
-        wined3d_surface_update_desc(surface->wined3d_surface, width, height,
-                wined3dformat_from_d3dformat(format), WINED3D_MULTISAMPLE_NONE, 0,
-                *shared_handle, 0);
+        wined3d_surface_set_mem(surface->wined3d_surface, *shared_handle, 0);
     }
 
     TRACE("Created texture %p.\n", object);
@@ -803,22 +795,8 @@ static HRESULT WINAPI d3d9_device_CreateVolumeTexture(IDirect3DDevice9Ex *iface,
     TRACE("usage %#x, format %#x, pool %#x, texture %p, shared_handle %p.\n",
             usage, format, pool, texture, shared_handle);
 
-    *texture = NULL;
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared volume texture on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
-        if (pool != D3DPOOL_DEFAULT)
-        {
-            WARN("Trying to create a shared volume texture in pool %#x.\n", pool);
-            return D3DERR_INVALIDCALL;
-        }
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
     if (!object)
@@ -849,22 +827,8 @@ static HRESULT WINAPI d3d9_device_CreateCubeTexture(IDirect3DDevice9Ex *iface,
     TRACE("iface %p, edge_length %u, levels %u, usage %#x, format %#x, pool %#x, texture %p, shared_handle %p.\n",
             iface, edge_length, levels, usage, format, pool, texture, shared_handle);
 
-    *texture = NULL;
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared cube texture on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
-        if (pool != D3DPOOL_DEFAULT)
-        {
-            WARN("Trying to create a shared cube texture in pool %#x.\n", pool);
-            return D3DERR_INVALIDCALL;
-        }
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
     if (!object)
@@ -896,20 +860,7 @@ static HRESULT WINAPI d3d9_device_CreateVertexBuffer(IDirect3DDevice9Ex *iface, 
             iface, size, usage, fvf, pool, buffer, shared_handle);
 
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared vertex buffer on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
-        if (pool != D3DPOOL_DEFAULT)
-        {
-            WARN("Trying to create a shared vertex buffer in pool %#x.\n", pool);
-            return D3DERR_NOTAVAILABLE;
-        }
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
     if (!object)
@@ -941,20 +892,7 @@ static HRESULT WINAPI d3d9_device_CreateIndexBuffer(IDirect3DDevice9Ex *iface, U
             iface, size, usage, format, pool, buffer, shared_handle);
 
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared index buffer on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
-        if (pool != D3DPOOL_DEFAULT)
-        {
-            WARN("Trying to create a shared index buffer in pool %#x.\n", pool);
-            return D3DERR_NOTAVAILABLE;
-        }
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
     if (!object)
@@ -976,7 +914,7 @@ static HRESULT WINAPI d3d9_device_CreateIndexBuffer(IDirect3DDevice9Ex *iface, U
 
 static HRESULT d3d9_device_create_surface(struct d3d9_device *device, UINT width, UINT height,
         D3DFORMAT format, DWORD flags, IDirect3DSurface9 **surface, UINT usage, D3DPOOL pool,
-        D3DMULTISAMPLE_TYPE multisample_type, DWORD multisample_quality, void *user_mem)
+        D3DMULTISAMPLE_TYPE multisample_type, DWORD multisample_quality)
 {
     struct wined3d_resource *sub_resource;
     struct wined3d_resource_desc desc;
@@ -1002,7 +940,7 @@ static HRESULT d3d9_device_create_surface(struct d3d9_device *device, UINT width
 
     wined3d_mutex_lock();
 
-    if (FAILED(hr = wined3d_texture_create(device->wined3d_device, &desc,
+    if (FAILED(hr = wined3d_texture_create_2d(device->wined3d_device, &desc,
             1, flags, NULL, &d3d9_null_wined3d_parent_ops, &texture)))
     {
         wined3d_mutex_unlock();
@@ -1017,10 +955,6 @@ static HRESULT d3d9_device_create_surface(struct d3d9_device *device, UINT width
     *surface = &surface_impl->IDirect3DSurface9_iface;
     IDirect3DSurface9_AddRef(*surface);
     wined3d_texture_decref(texture);
-
-    if (user_mem)
-        wined3d_surface_update_desc(surface_impl->wined3d_surface, width, height,
-                desc.format, multisample_type, multisample_quality, user_mem, 0);
 
     wined3d_mutex_unlock();
 
@@ -1039,23 +973,14 @@ static HRESULT WINAPI d3d9_device_CreateRenderTarget(IDirect3DDevice9Ex *iface, 
             iface, width, height, format, multisample_type, multisample_quality,
             lockable, surface, shared_handle);
 
-    *surface = NULL;
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared render target on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     if (lockable)
         flags |= WINED3D_SURFACE_MAPPABLE;
 
     return d3d9_device_create_surface(device, width, height, format, flags, surface,
-            D3DUSAGE_RENDERTARGET, D3DPOOL_DEFAULT, multisample_type, multisample_quality, NULL);
+            D3DUSAGE_RENDERTARGET, D3DPOOL_DEFAULT, multisample_type, multisample_quality);
 }
 
 static HRESULT WINAPI d3d9_device_CreateDepthStencilSurface(IDirect3DDevice9Ex *iface, UINT width, UINT height,
@@ -1070,23 +995,14 @@ static HRESULT WINAPI d3d9_device_CreateDepthStencilSurface(IDirect3DDevice9Ex *
             iface, width, height, format, multisample_type, multisample_quality,
             discard, surface, shared_handle);
 
-    *surface = NULL;
     if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared depth stencil on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-    }
 
     if (discard)
         flags |= WINED3D_SURFACE_DISCARD;
 
     return d3d9_device_create_surface(device, width, height, format, flags, surface,
-            D3DUSAGE_DEPTHSTENCIL, D3DPOOL_DEFAULT, multisample_type, multisample_quality, NULL);
+            D3DUSAGE_DEPTHSTENCIL, D3DPOOL_DEFAULT, multisample_type, multisample_quality);
 }
 
 
@@ -1271,44 +1187,23 @@ static HRESULT WINAPI d3d9_device_CreateOffscreenPlainSurface(IDirect3DDevice9Ex
         HANDLE *shared_handle)
 {
     struct d3d9_device *device = impl_from_IDirect3DDevice9Ex(iface);
-    void *user_mem = NULL;
 
     TRACE("iface %p, width %u, height %u, format %#x, pool %#x, surface %p, shared_handle %p.\n",
             iface, width, height, format, pool, surface, shared_handle);
 
-    *surface = NULL;
+    if (shared_handle)
+        FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
+
     if (pool == D3DPOOL_MANAGED)
     {
         WARN("Attempting to create a managed offscreen plain surface.\n");
         return D3DERR_INVALIDCALL;
     }
-
-    if (shared_handle)
-    {
-        if (!device->d3d_parent->extended)
-        {
-            WARN("Trying to create a shared or user memory surface on a non-ex device.\n");
-            return E_NOTIMPL;
-        }
-
-        if (pool == D3DPOOL_SYSTEMMEM)
-            user_mem = *shared_handle;
-        else
-        {
-            if (pool != D3DPOOL_DEFAULT)
-            {
-                WARN("Trying to create a shared surface in pool %#x.\n", pool);
-                return D3DERR_INVALIDCALL;
-            }
-            FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
-        }
-    }
-
     /* FIXME: Offscreen surfaces are supposed to be always lockable,
      * regardless of the pool they're created in. Should we set dynamic usage
      * here? */
     return d3d9_device_create_surface(device, width, height, format,
-            WINED3D_SURFACE_MAPPABLE, surface, 0, pool, D3DMULTISAMPLE_NONE, 0, user_mem);
+            WINED3D_SURFACE_MAPPABLE, surface, 0, pool, D3DMULTISAMPLE_NONE, 0);
 }
 
 static HRESULT WINAPI d3d9_device_SetRenderTarget(IDirect3DDevice9Ex *iface, DWORD idx, IDirect3DSurface9 *surface)
@@ -1323,12 +1218,6 @@ static HRESULT WINAPI d3d9_device_SetRenderTarget(IDirect3DDevice9Ex *iface, DWO
     {
         WARN("Invalid index %u specified.\n", idx);
         return D3DERR_INVALIDCALL;
-    }
-
-    if (!idx && !surface_impl)
-    {
-         WARN("Trying to set render target 0 to NULL.\n");
-         return D3DERR_INVALIDCALL;
     }
 
     wined3d_mutex_lock();
@@ -2477,7 +2366,7 @@ static struct wined3d_vertex_declaration *device_get_fvf_declaration(struct d3d9
     fvf_decls[low].fvf = fvf;
     ++device->fvf_decl_count;
 
-    TRACE("Returning %p. %u declarations in array.\n", wined3d_declaration, device->fvf_decl_count);
+    TRACE("Returning %p. %u declatations in array.\n", wined3d_declaration, device->fvf_decl_count);
 
     return wined3d_declaration;
 }
@@ -3149,7 +3038,6 @@ static HRESULT WINAPI d3d9_device_CreateRenderTargetEx(IDirect3DDevice9Ex *iface
             iface, width, height, format, multisample_type, multisample_quality,
             lockable, surface, shared_handle, usage);
 
-    *surface = NULL;
     if (shared_handle)
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
 
@@ -3175,7 +3063,6 @@ static HRESULT WINAPI d3d9_device_CreateDepthStencilSurfaceEx(IDirect3DDevice9Ex
             iface, width, height, format, multisample_type, multisample_quality,
             discard, surface, shared_handle, usage);
 
-    *surface = NULL;
     if (shared_handle)
         FIXME("Resource sharing not implemented, *shared_handle %p.\n", *shared_handle);
 
@@ -3411,15 +3298,16 @@ static void CDECL device_parent_mode_changed(struct wined3d_device_parent *devic
     TRACE("device_parent %p.\n", device_parent);
 }
 
-static HRESULT CDECL device_parent_surface_created(struct wined3d_device_parent *device_parent,
-        void *container_parent, struct wined3d_surface *surface, void **parent,
-        const struct wined3d_parent_ops **parent_ops)
+static HRESULT CDECL device_parent_create_texture_surface(struct wined3d_device_parent *device_parent,
+        void *container_parent, const struct wined3d_resource_desc *desc, UINT sub_resource_idx,
+        DWORD flags, struct wined3d_surface **surface)
 {
     struct d3d9_device *device = device_from_device_parent(device_parent);
     struct d3d9_surface *d3d_surface;
+    HRESULT hr;
 
-    TRACE("device_parent %p, container_parent %p, surface %p, parent %p, parent_ops %p.\n",
-            device_parent, container_parent, surface, parent, parent_ops);
+    TRACE("device_parent %p, container_parent %p, desc %p, sub_resource_idx %u, flags %#x, surface %p.\n",
+            device_parent, container_parent, desc, sub_resource_idx, flags, surface);
 
     if (!(d3d_surface = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*d3d_surface))))
     {
@@ -3427,9 +3315,19 @@ static HRESULT CDECL device_parent_surface_created(struct wined3d_device_parent 
         return D3DERR_OUTOFVIDEOMEMORY;
     }
 
-    surface_init(d3d_surface, surface, device, parent_ops);
-    *parent = d3d_surface;
+    if (FAILED(hr = surface_init(d3d_surface, device, desc->width, desc->height,
+            d3dformat_from_wined3dformat(desc->format), flags, desc->usage, desc->pool,
+            desc->multisample_type, desc->multisample_quality)))
+    {
+        WARN("Failed to initialize surface, hr %#x.\n", hr);
+        HeapFree(GetProcessHeap(), 0, d3d_surface);
+        return hr;
+    }
+
     TRACE("Created surface %p.\n", d3d_surface);
+
+    *surface = d3d_surface->wined3d_surface;
+    wined3d_surface_incref(*surface);
 
     d3d_surface->container = container_parent;
     IDirect3DDevice9Ex_Release(d3d_surface->parent_device);
@@ -3438,31 +3336,7 @@ static HRESULT CDECL device_parent_surface_created(struct wined3d_device_parent 
     IDirect3DSurface9_Release(&d3d_surface->IDirect3DSurface9_iface);
     d3d_surface->forwardReference = container_parent;
 
-    return D3D_OK;
-}
-
-static HRESULT CDECL device_parent_volume_created(struct wined3d_device_parent *device_parent,
-        void *container_parent, struct wined3d_volume *volume, void **parent,
-        const struct wined3d_parent_ops **parent_ops)
-{
-    struct d3d9_volume *d3d_volume;
-
-    TRACE("device_parent %p, container_parent %p, volume %p, parent %p, parent_ops %p.\n",
-            device_parent, container_parent, volume, parent, parent_ops);
-
-    if (!(d3d_volume = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*d3d_volume))))
-        return E_OUTOFMEMORY;
-
-    volume_init(d3d_volume, volume, parent_ops);
-    *parent = d3d_volume;
-    TRACE("Created volume %p.\n", d3d_volume);
-
-    d3d_volume->container = container_parent;
-
-    IDirect3DVolume9_Release(&d3d_volume->IDirect3DVolume9_iface);
-    d3d_volume->forwardReference = container_parent;
-
-    return D3D_OK;
+    return hr;
 }
 
 static HRESULT CDECL device_parent_create_swapchain_surface(struct wined3d_device_parent *device_parent,
@@ -3482,7 +3356,7 @@ static HRESULT CDECL device_parent_create_swapchain_surface(struct wined3d_devic
 
     texture_desc = *desc;
     texture_desc.resource_type = WINED3D_RTYPE_TEXTURE;
-    if (FAILED(hr = wined3d_texture_create(device->wined3d_device, &texture_desc, 1,
+    if (FAILED(hr = wined3d_texture_create_2d(device->wined3d_device, &texture_desc, 1,
             WINED3D_SURFACE_MAPPABLE, container_parent, &d3d9_null_wined3d_parent_ops, &texture)))
     {
         WARN("Failed to create texture, hr %#x.\n", hr);
@@ -3496,6 +3370,48 @@ static HRESULT CDECL device_parent_create_swapchain_surface(struct wined3d_devic
     d3d_surface = wined3d_surface_get_parent(*surface);
     d3d_surface->forwardReference = NULL;
     d3d_surface->parent_device = &device->IDirect3DDevice9Ex_iface;
+
+    return hr;
+}
+
+static HRESULT CDECL device_parent_create_volume(struct wined3d_device_parent *device_parent,
+        void *container_parent, UINT width, UINT height, UINT depth, UINT level,
+        enum wined3d_format_id format, enum wined3d_pool pool, DWORD usage, struct wined3d_volume **volume)
+{
+    struct d3d9_device *device = device_from_device_parent(device_parent);
+    struct d3d9_volume *object;
+    HRESULT hr;
+
+    TRACE("device_parent %p, container_parent %p, width %u, height %u, depth %u, "
+            "format %#x, pool %#x, usage %#x, volume %p\n",
+            device_parent, container_parent, width, height, depth,
+            format, pool, usage, volume);
+
+    /* Allocate the storage for the device */
+    object = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*object));
+    if (!object)
+    {
+        FIXME("Allocation of memory failed\n");
+        *volume = NULL;
+        return D3DERR_OUTOFVIDEOMEMORY;
+    }
+
+    hr = volume_init(object, device, width, height, depth, level, usage, format, pool);
+    if (FAILED(hr))
+    {
+        WARN("Failed to initialize volume, hr %#x.\n", hr);
+        HeapFree(GetProcessHeap(), 0, object);
+        return hr;
+    }
+
+    *volume = object->wined3d_volume;
+    wined3d_volume_incref(*volume);
+    IDirect3DVolume9_Release(&object->IDirect3DVolume9_iface);
+
+    object->container = container_parent;
+    object->forwardReference = container_parent;
+
+    TRACE("Created volume %p.\n", object);
 
     return hr;
 }
@@ -3519,7 +3435,7 @@ static HRESULT CDECL device_parent_create_swapchain(struct wined3d_device_parent
 
     *swapchain = d3d_swapchain->wined3d_swapchain;
     wined3d_swapchain_incref(*swapchain);
-    IDirect3DSwapChain9Ex_Release(&d3d_swapchain->IDirect3DSwapChain9Ex_iface);
+    IDirect3DSwapChain9_Release(&d3d_swapchain->IDirect3DSwapChain9_iface);
 
     return hr;
 }
@@ -3528,9 +3444,9 @@ static const struct wined3d_device_parent_ops d3d9_wined3d_device_parent_ops =
 {
     device_parent_wined3d_device_created,
     device_parent_mode_changed,
-    device_parent_surface_created,
-    device_parent_volume_created,
     device_parent_create_swapchain_surface,
+    device_parent_create_texture_surface,
+    device_parent_create_volume,
     device_parent_create_swapchain,
 };
 

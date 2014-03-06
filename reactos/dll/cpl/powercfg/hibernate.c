@@ -9,6 +9,10 @@
  *                  Dmitry Chapyshev (lentind@yandex.ru)
  */
 
+//#ifndef NSTATUS
+//typedef long NTSTATUS;
+//#endif
+
 #include "powercfg.h"
 
 BOOLEAN Pos_InitData();

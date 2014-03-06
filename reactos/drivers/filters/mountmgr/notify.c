@@ -24,9 +24,9 @@
  *                   Alex Ionescu (alex.ionescu@reactos.org)
  */
 
-#include "mntmgr.h"
+/* INCLUDES *****************************************************************/
 
-#include <ioevent.h>
+#include "mntmgr.h"
 
 #define NDEBUG
 #include <debug.h>

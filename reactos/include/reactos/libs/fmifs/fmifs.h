@@ -148,7 +148,7 @@ QueryAvailableFileSystemFormat(
 	IN OUT PWCHAR FileSystem, /* FIXME: Probably one minimal size is mandatory, but which one? */
 	OUT UCHAR* Major,
 	OUT UCHAR* Minor,
-	OUT BOOLEAN* LatestVersion);
+	OUT BOOLEAN* LastestVersion);
 
 BOOL NTAPI
 QueryDeviceInformation(

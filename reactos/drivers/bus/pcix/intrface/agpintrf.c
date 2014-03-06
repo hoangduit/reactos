@@ -9,9 +9,6 @@
 /* INCLUDES *******************************************************************/
 
 #include <pci.h>
-
-#include <ntagp.h>
-
 #define NDEBUG
 #include <debug.h>
 

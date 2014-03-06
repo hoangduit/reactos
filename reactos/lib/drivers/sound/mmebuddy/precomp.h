@@ -1,10 +1,6 @@
-#ifndef _MMEBUDDY_PCH_
-#define _MMEBUDDY_PCH_
-
-#include <stdarg.h>
-#include <windef.h>
+#include <windows.h>
+#include <mmsystem.h>
 #include <mmddk.h>
+#include <ntddsnd.h>
 #include <sndtypes.h>
 #include <mmebuddy.h>
-
-#endif /* _MMEBUDDY_PCH_ */

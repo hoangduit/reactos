@@ -10,10 +10,6 @@
 
 #include "ws2_32.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <winnls.h>
-
 #ifndef BUFSIZ
 #define BUFSIZ 1024
 #endif/*BUFSIZ*/

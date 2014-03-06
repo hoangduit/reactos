@@ -11,11 +11,6 @@
 
 #include "usbhub.h"
 
-#include <wdmguid.h>
-
-#define NDEBUG
-#include <debug.h>
-
 #define IO_METHOD_FROM_CTL_CODE(ctlCode) (ctlCode&0x00000003)
 
 NTSTATUS

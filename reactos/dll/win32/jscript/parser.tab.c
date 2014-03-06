@@ -76,7 +76,13 @@
 /* Line 268 of yacc.c  */
 #line 19 "parser.y"
 
+
 #include "jscript.h"
+#include "engine.h"
+
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(jscript);
 
 static int parser_error(parser_ctx_t*,const char*);
 static void set_error(parser_ctx_t*,UINT);

@@ -16,8 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef _EXPLORER_H
-#define _EXPLORER_H
 
  //
  // Explorer clone - precompiled header support
@@ -30,12 +28,10 @@
 #define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES			1
 #define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT	1
 
-#include <stdarg.h>
-
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
@@ -43,6 +39,7 @@
 #include <winnls.h>
 #include <wincon.h>
 #include <ole2.h>
+#include <shlwapi.h>
 
 #include "utility/utility.h"
 
@@ -51,7 +48,3 @@
 
 #include "globals.h"
 #include "externals.h"
-
-#include "resource.h"
-
-#endif /* _EXPLORER_H */

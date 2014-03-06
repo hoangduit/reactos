@@ -493,3 +493,4 @@ NduUnbindAdapter(PNDIS_STATUS Status,
      * invalidating file handles pointer to this adapter for us */
     *Status = UnbindAdapterByContext(ProtocolBindingContext);
 }
+

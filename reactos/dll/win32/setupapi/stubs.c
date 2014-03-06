@@ -20,6 +20,8 @@
 
 #include "setupapi_private.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
+
 /***********************************************************************
  *		pSetupRegistryDelnode(SETUPAPI.@)
  */

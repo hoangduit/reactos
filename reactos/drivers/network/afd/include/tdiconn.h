@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef _MSC_VER
+#include <ntddtdi.h>
+#endif
+
 typedef VOID *PTDI_CONNECTION_INFO_PAIR;
 
 PTRANSPORT_ADDRESS TaCopyTransportAddress( PTRANSPORT_ADDRESS OtherAddress );

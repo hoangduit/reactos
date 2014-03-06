@@ -22,11 +22,13 @@
  *
  */
 
-#include <precomp.h>
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "compiler.h"
+#include "mm.h"
+
 
 void
 mmDumpMemInfo(const struct mem_block *heap)

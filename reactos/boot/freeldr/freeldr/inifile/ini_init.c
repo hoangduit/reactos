@@ -72,7 +72,7 @@ BOOLEAN IniFileInitialize(VOID)
     //
     // Allocate memory to cache the whole freeldr.ini
     //
-    FreeLoaderIniFileData = FrLdrTempAlloc(FreeLoaderIniFileSize, TAG_INI_FILE);
+    FreeLoaderIniFileData = MmHeapAlloc(FreeLoaderIniFileSize);
     if (!FreeLoaderIniFileData)
     {
         UiMessageBoxCritical("Out of memory while loading freeldr.ini.");
@@ -88,7 +88,7 @@ BOOLEAN IniFileInitialize(VOID)
     {
         UiMessageBoxCritical("Error while reading freeldr.ini.");
         ArcClose(FileId);
-        FrLdrTempFree(FreeLoaderIniFileData, TAG_INI_FILE);
+        MmHeapFree(FreeLoaderIniFileData);
         return FALSE;
     }
 
@@ -101,7 +101,7 @@ BOOLEAN IniFileInitialize(VOID)
     // Do some cleanup, and return
     //
     ArcClose(FileId);
-    FrLdrTempFree(FreeLoaderIniFileData, TAG_INI_FILE);
+    MmHeapFree(FreeLoaderIniFileData);
 
     return Success;
 }

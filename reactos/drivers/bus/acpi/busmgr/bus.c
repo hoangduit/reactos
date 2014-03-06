@@ -27,7 +27,12 @@
   * Copyright (C)2009  Samuel Serapion 
   */
 
-#include <precomp.h>
+#include <ntddk.h>
+
+#include <acpi.h>
+#include <acpi_bus.h>
+#include <acpi_drivers.h>
+#include <glue.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -1282,7 +1287,7 @@ acpi_bus_add (
 	case ACPI_BUS_TYPE_PROCESSOR:
 		hid = ACPI_PROCESSOR_HID;
 		uid = static_uid_buffer;
-		sprintf(uid, "_%d", (ProcessorCount++));
+		sprintf(uid, "%d", (ProcessorCount++));
 		break;
 	case ACPI_BUS_TYPE_SYSTEM:
 		hid = ACPI_SYSTEM_HID;

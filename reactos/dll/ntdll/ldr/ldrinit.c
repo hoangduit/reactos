@@ -10,8 +10,6 @@
 /* INCLUDES *****************************************************************/
 
 #include <ntdll.h>
-
-#include <wingdi.h>
 #include <callback.h>
 
 #define NDEBUG

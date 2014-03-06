@@ -1,7 +1,7 @@
 
 remove_definitions(-D_WIN32_WINNT=0x502 -D_WIN32_IE=0x600)
 
-add_definitions(-DUSE_WINE_TODOS)
+add_definitions(-D__ROS_LONG64__)
 
 list(APPEND SOURCE
     comboex.c

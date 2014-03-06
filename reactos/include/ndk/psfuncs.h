@@ -56,21 +56,19 @@ PsGetProcessWin32Process(
 );
 
 NTKERNELAPI
-NTSTATUS
+VOID
 NTAPI
 PsSetProcessWin32Process(
     _Inout_ PEPROCESS Process,
-    _In_opt_ PVOID Win32Process,
-    _In_opt_ PVOID OldWin32Process
+    _In_ PVOID Win32Process
 );
 
 NTKERNELAPI
-PVOID
+VOID
 NTAPI
 PsSetThreadWin32Thread(
     _Inout_ PETHREAD Thread,
-    _In_ PVOID Win32Thread,
-    _In_ PVOID OldWin32Thread
+    PVOID Win32Thread
 );
 
 NTKERNELAPI
@@ -149,13 +147,6 @@ PsGetCurrentProcessSessionId(
 //
 // Process Impersonation Functions
 //
-NTKERNELAPI
-BOOLEAN
-NTAPI
-PsIsThreadImpersonating(
-    _In_ PETHREAD Thread
-);
-
 NTKERNELAPI
 VOID
 NTAPI
@@ -282,28 +273,6 @@ NTAPI
 PsReturnProcessPagedPoolQuota(
     _In_ PEPROCESS Process,
     _In_ SIZE_T    Amount
-);
-
-NTKERNELAPI
-PVOID
-NTAPI
-PsGetProcessSecurityPort(
-    _In_ PEPROCESS Process
-);
-
-NTKERNELAPI
-NTSTATUS
-NTAPI
-PsSetProcessSecurityPort(
-    _Inout_ PEPROCESS Process,
-    _In_ PVOID SecurityPort
-);
-
-NTKERNELAPI
-HANDLE
-NTAPI
-PsGetCurrentThreadProcessId(
-    VOID
 );
 
 #endif

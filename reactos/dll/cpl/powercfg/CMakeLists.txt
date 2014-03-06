@@ -1,16 +1,12 @@
 
 spec2def(powercfg.cpl powercfg.spec)
 
-list(APPEND SOURCE
+add_library(powercfg SHARED
     powercfg.c
     powershemes.c
     alarms.c
     advanced.c
     hibernate.c
-    powercfg.h)
-
-add_library(powercfg SHARED
-    ${SOURCE}
     powercfg.rc
     ${CMAKE_CURRENT_BINARY_DIR}/powercfg.def)
 
@@ -26,5 +22,5 @@ add_importlibs(powercfg
     kernel32
     ntdll)
 
-add_pch(powercfg powercfg.h SOURCE)
+add_pch(powercfg powercfg.h)
 add_cd_file(TARGET powercfg DESTINATION reactos/system32 FOR all)

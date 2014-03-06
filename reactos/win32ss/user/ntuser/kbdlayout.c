@@ -9,9 +9,6 @@
  */
 
 #include <win32k.h>
-
-#include <winnls.h>
-
 DBG_DEFAULT_CHANNEL(UserKbdLayout);
 
 PKL gspklBaseLayout = NULL;

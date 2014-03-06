@@ -1714,7 +1714,7 @@ ObpCloseHandle(IN HANDLE Handle,
         return STATUS_INVALID_HANDLE;
 
     /* Check if we're dealing with a kernel handle */
-    if (ObpIsKernelHandle(Handle, AccessMode))
+    if (ObIsKernelHandle(Handle, AccessMode))
     {
         /* Use the kernel table and convert the handle */
         HandleTable = ObpKernelHandleTable;
@@ -2431,7 +2431,7 @@ ObOpenObjectByName(IN POBJECT_ATTRIBUTES ObjectAttributes,
 {
     PVOID Object = NULL;
     UNICODE_STRING ObjectName;
-    NTSTATUS Status, Status2;
+    NTSTATUS Status;
     POBJECT_HEADER ObjectHeader;
     PGENERIC_MAPPING GenericMapping = NULL;
     OB_OPEN_REASON OpenReason;
@@ -2490,7 +2490,7 @@ ObOpenObjectByName(IN POBJECT_ATTRIBUTES ObjectAttributes,
         PassedAccessState->SecurityDescriptor =
             TempBuffer->ObjectCreateInfo.SecurityDescriptor;
     }
-
+    
     /* Validate the access mask */
     Status = ObpValidateAccessMask(PassedAccessState);
     if (!NT_SUCCESS(Status))
@@ -2557,21 +2557,17 @@ ObOpenObjectByName(IN POBJECT_ATTRIBUTES ObjectAttributes,
     else
     {
         /* Create the actual handle now */
-        Status2 = ObpCreateHandle(OpenReason,
-                                  Object,
-                                  ObjectType,
-                                  PassedAccessState,
-                                  0,
-                                  TempBuffer->ObjectCreateInfo.Attributes,
-                                  &TempBuffer->LookupContext,
-                                  AccessMode,
-                                  NULL,
-                                  Handle);
-        if (!NT_SUCCESS(Status))
-        {
-            ObDereferenceObject(Object);
-            Status = Status2;
-        }
+        Status = ObpCreateHandle(OpenReason,
+                                 Object,
+                                 ObjectType,
+                                 PassedAccessState,
+                                 0,
+                                 TempBuffer->ObjectCreateInfo.Attributes,
+                                 &TempBuffer->LookupContext,
+                                 AccessMode,
+                                 NULL,
+                                 Handle);
+        if (!NT_SUCCESS(Status)) ObDereferenceObject(Object);
     }
 
 Cleanup:
@@ -3201,52 +3197,8 @@ ObSetHandleAttributes(IN HANDLE Handle,
                       IN POBJECT_HANDLE_ATTRIBUTE_INFORMATION HandleFlags,
                       IN KPROCESSOR_MODE PreviousMode)
 {
-    OBP_SET_HANDLE_ATTRIBUTES_CONTEXT SetHandleAttributesContext;
-    BOOLEAN Result, AttachedToSystemProcess = FALSE;
-    PHANDLE_TABLE HandleTable;
-    KAPC_STATE ApcState;
-    PAGED_CODE();
-
-    /* Check if this is a kernel handle */
-    if (ObpIsKernelHandle(Handle, PreviousMode))
-    {
-        /* Use the kernel table and convert the handle */
-        HandleTable = ObpKernelHandleTable;
-        Handle = ObKernelHandleToHandle(Handle);
-
-        /* Check if we're not in the system process */
-        if (PsGetCurrentProcess() != PsInitialSystemProcess)
-        {
-            /* Attach to the system process */
-            KeStackAttachProcess(&PsInitialSystemProcess->Pcb, &ApcState);
-            AttachedToSystemProcess = TRUE;
-        }
-    }
-    else
-    {
-        /* Get the current process' handle table */
-        HandleTable = PsGetCurrentProcess()->ObjectTable;
-    }
-
-    /* Initialize the handle attribute context */
-    SetHandleAttributesContext.PreviousMode = PreviousMode;
-    SetHandleAttributesContext.Information = *HandleFlags;
-
-    /* Invoke the ObpSetHandleAttributes callback */
-    Result = ExChangeHandle(HandleTable,
-                            Handle,
-                            ObpSetHandleAttributes,
-                            (ULONG_PTR)&SetHandleAttributesContext);
-
-    /* Did we attach to the system process? */
-    if (AttachedToSystemProcess)
-    {
-        /* Detach from it */
-        KeUnstackDetachProcess(&ApcState);
-    }
-
-    /* Return the result as an NTSTATUS value */
-    return Result ? STATUS_SUCCESS : STATUS_ACCESS_DENIED;
+    UNIMPLEMENTED;
+    return STATUS_NOT_IMPLEMENTED;
 }
 
 /*++
@@ -3412,12 +3364,13 @@ NtDuplicateObject(IN HANDLE SourceProcessHandle,
     return Status;
 }
 
+#undef ObIsKernelHandle
 BOOLEAN
 NTAPI
 ObIsKernelHandle(IN HANDLE Handle)
 {
-    /* Use the inlined version. We know we are in kernel mode. */
-    return ObpIsKernelHandle(Handle, KernelMode);
+    /* We know we're kernel mode, so just check for the kernel handle flag */
+    return (BOOLEAN)(((ULONG_PTR)Handle & KERNEL_HANDLE_FLAG) != 0);
 }
 
 /* EOF */

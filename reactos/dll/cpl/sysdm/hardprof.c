@@ -8,7 +8,6 @@
  */
 
 #include "precomp.h"
-
 #include <debug.h>
 
 typedef struct _PROFILE

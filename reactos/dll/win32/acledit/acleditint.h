@@ -1,7 +1,6 @@
-#ifndef _ACLEDIT_H
-#define _ACLEDIT_H
-
 #include <windef.h>
+
+#include "resource.h"
 
 extern HINSTANCE hDllInstance;
 
@@ -57,4 +56,4 @@ typedef DWORD (CALLBACK *PACL_CHANGE)(HWND hWnd,
                                       BOOL bApplyToSubObjects,
                                       LPDWORD lpdwChangeContextStatus);
 
-#endif /* _ACLEDIT_H */
+/* EOF */

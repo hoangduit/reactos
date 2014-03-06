@@ -18,9 +18,6 @@ PCONFIGURATION_COMPONENT_DATA FldrArcHwTreeRoot;
 
 /* FUNCTIONS ******************************************************************/
 
-#define TAG_HW_COMPONENT_DATA 'DCwH'
-#define TAG_HW_NAME 'mNwH'
-
 PVOID
 NTAPI
 FldrpHwHeapAlloc(IN SIZE_T Size)
@@ -28,7 +25,7 @@ FldrpHwHeapAlloc(IN SIZE_T Size)
     PVOID Buffer;
 
     /* Allocate memory from generic bootloader heap */
-    Buffer = FrLdrHeapAlloc(Size, 'pHwH');
+    Buffer = MmHeapAlloc(Size);
     return Buffer;
 }
 
@@ -43,7 +40,7 @@ FldrSetIdentifier(IN PCONFIGURATION_COMPONENT_DATA ComponentData,
 
     /* Allocate memory for the identifier */
     IdentifierLength = strlen(IdentifierString) + 1;
-    Identifier = FrLdrHeapAlloc(IdentifierLength, TAG_HW_NAME);
+    Identifier = MmHeapAlloc(IdentifierLength);
     if (!Identifier) return;
 
     /* Copy the identifier */
@@ -61,8 +58,7 @@ FldrCreateSystemKey(OUT PCONFIGURATION_COMPONENT_DATA *SystemNode)
     PCONFIGURATION_COMPONENT Component;
 
     /* Allocate the root */
-    FldrArcHwTreeRoot = FrLdrHeapAlloc(sizeof(CONFIGURATION_COMPONENT_DATA),
-                                       TAG_HW_COMPONENT_DATA);
+    FldrArcHwTreeRoot = MmHeapAlloc(sizeof(CONFIGURATION_COMPONENT_DATA));
     if (!FldrArcHwTreeRoot) return;
 
     /* Set it up */
@@ -129,8 +125,7 @@ FldrCreateComponentKey(IN PCONFIGURATION_COMPONENT_DATA SystemNode,
     PCONFIGURATION_COMPONENT Component;
 
     /* Allocate the node for this component */
-    ComponentData = FrLdrHeapAlloc(sizeof(CONFIGURATION_COMPONENT_DATA),
-                                   TAG_HW_COMPONENT_DATA);
+    ComponentData = MmHeapAlloc(sizeof(CONFIGURATION_COMPONENT_DATA));
     if (!ComponentData) return;
 
     /* Now save our parent */

@@ -16,5 +16,3 @@ void SaveDIBToFile(HBITMAP hBitmap, LPTSTR FileName, HDC hDC, LPSYSTEMTIME time,
                    int vRes);
 
 void LoadDIBFromFile(HBITMAP *hBitmap, LPTSTR name, LPSYSTEMTIME time, int *size, int *hRes, int *vRes);
-
-void ShowFileLoadError(LPTSTR name);

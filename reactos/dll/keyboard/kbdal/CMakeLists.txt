@@ -5,7 +5,7 @@ spec2def(kbdal.dll kbdal.spec)
 
 add_library(kbdal SHARED kbdal.c kbdal.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdal.def)
 
-set_module_type(kbdal kbdlayout)
+set_entrypoint(kbdal 0)
 
 add_dependencies(kbdal psdk)
 

@@ -1,5 +1,5 @@
 
-#include <precomp.h>
+#include "tiffiop.h"
 
 #if defined(JPEG_DUAL_MODE_8_12)
 

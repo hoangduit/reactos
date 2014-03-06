@@ -6,7 +6,6 @@
  *					an interactive way
  * PROGRAMMERS:     Lee Schroeder
  */
-
 #include "diskpart.h"
 
 BOOL convert_main(INT argc, LPWSTR *argv)

@@ -4,9 +4,6 @@
 
 #include "mmdrv.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /*
     Complete a partial wave buffer transaction
 */

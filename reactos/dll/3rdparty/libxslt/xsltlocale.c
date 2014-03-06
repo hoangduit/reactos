@@ -10,9 +10,14 @@
  * winapi port: Roumen Petrov
  */
 
-#include "precomp.h"
+#define IN_LIBXSLT
+#include "libxslt.h"
+
+#include <string.h>
+#include <libxml/xmlmemory.h>
 
 #include "xsltlocale.h"
+#include "xsltutils.h"
 
 #if defined(__GLIBC__) && __GLIBC__ == 2 && __GLIBC_MINOR__ <= 2
 #define newlocale __newlocale

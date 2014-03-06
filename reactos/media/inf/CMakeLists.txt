@@ -11,7 +11,6 @@ list(APPEND INF_FILES
     disk.inf
     display.inf
     fdc.inf
-    flpydisk.inf
     font.inf
     hal.inf
     hdc.inf

@@ -9,7 +9,6 @@
 /* INCLUDES ******************************************************************/
 
 #include <videoprt.h>
-
 #define NDEBUG
 #include <debug.h>
 

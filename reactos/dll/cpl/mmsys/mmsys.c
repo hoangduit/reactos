@@ -11,13 +11,6 @@
 
 #include "mmsys.h"
 
-#include <winsvc.h>
-#include <shlwapi.h>
-#include <debug.h>
-
-#include <initguid.h>
-#include <devguid.h>
-
 typedef enum
 {
     HWPD_STANDARDLIST = 0,

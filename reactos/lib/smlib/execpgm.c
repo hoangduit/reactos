@@ -4,7 +4,6 @@
  * FILE:            lib/smlib/execpgm.c
  * PURPOSE:         Call SM API SM_API_EXECPGM
  */
-
 #include "precomp.h"
 
 #define NDEBUG

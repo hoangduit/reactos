@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#pragma once
-
 VOID DIALOG_FileNew(VOID);
 VOID DIALOG_FileOpen(VOID);
 BOOL DIALOG_FileSave(VOID);

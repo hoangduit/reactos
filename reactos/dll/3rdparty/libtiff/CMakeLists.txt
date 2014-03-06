@@ -10,7 +10,7 @@ include_directories(
     ${REACTOS_SOURCE_DIR}/include/reactos/libs/libtiff
     ${REACTOS_SOURCE_DIR}/include/reactos/libs/zlib)
 
-list(APPEND SOURCE
+add_library(libtiff SHARED
     mkg3states.c
     tif_aux.c
     tif_close.c
@@ -48,15 +48,12 @@ list(APPEND SOURCE
     tif_warning.c
     tif_win32.c
     tif_write.c
-    tif_zip.c
-    precomp.h)
+    tif_zip.c)
 
-add_library(libtiff SHARED ${SOURCE})
 set_module_type(libtiff win32dll)
 target_link_libraries(libtiff zlib getopt)
 add_importlibs(libtiff user32 msvcrt kernel32 ntdll)
 add_dependencies(libtiff psdk)
-add_pch(libtiff precomp.h SOURCE)
 add_cd_file(TARGET libtiff DESTINATION reactos/system32 FOR all)
 
 if(NOT MSVC)

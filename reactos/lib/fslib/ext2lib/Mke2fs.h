@@ -5,16 +5,22 @@
  * HOMEPAGE:         http://ext2.yeah.net
  */
 
-#ifndef _MKE2FS_H_
-#define _MKE2FS_H_
-
 /* INCLUDES **************************************************************/
 
 #define NTOS_MODE_USER
+#include <ndk/iofuncs.h>
 #include <ndk/kefuncs.h>
+#include <ndk/obfuncs.h>
 #include <ndk/rtlfuncs.h>
+#include <fmifs/fmifs.h>
 
+#include "string.h"
+#include "ctype.h"
+
+#include "types.h"
 #include "ext2_fs.h"
+
+#include "getopt.h"
 
 /* DEFINITIONS ***********************************************************/
 
@@ -396,5 +402,3 @@ ULONG ext2_unix_time (LONGLONG n_time);
  */
 
 void uuid_generate(__u8 * uuid);
-
-#endif /* _MKE2FS_H_ */

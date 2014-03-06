@@ -4,7 +4,6 @@
  * FILE:        lib/ws2help/precomp.h
  * PURPOSE:     WinSock 2 Helper DLL
  */
-
 #ifndef __PRECOMP_H
 #define __PRECOMP_H
 
@@ -17,7 +16,6 @@
 #define INCL_WINSOCK_API_TYPEDEFS 1
 
 #include <stdarg.h>
-
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
@@ -25,7 +23,12 @@
 #include <ws2spi.h>
 
 /* NDK Headers */
-#include <ndk/rtlfuncs.h>
+#include <rtlfuncs.h>
+#include <iofuncs.h>
+
+/* Shared Winsock Helper headers */
+#include <ws2help.h>
+#include "wshdrv.h"
 
 /* Missing definition */
 #define SO_OPENTYPE 0x20
@@ -47,4 +50,6 @@ Ws2helpInitialize(VOID);
 #define WS2HELP_PROLOG() \
     (Ws2helpInitialized? ERROR_SUCCESS : Ws2helpInitialize())
 
-#endif /* __PRECOMP_H */
+#endif /* __WS2HELP_H */
+
+/* EOF */

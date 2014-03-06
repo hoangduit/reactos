@@ -21,9 +21,7 @@
 
 #include "setupapi_private.h"
 
-#include <pnp_c.h>
-
-#include "rpc_private.h"
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 
 /* Registry key and value names */
 static const WCHAR Backslash[] = {'\\', 0};

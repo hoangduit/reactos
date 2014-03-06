@@ -42,12 +42,6 @@
 
 #include "precomp.h"
 
-#include <ntddk.h>
-#include <debug.h>
-
-#include "ioctl.h"
-#include "readwrite.h"
-
 /*
  * Global controller info structures.  Each controller gets one.  Since the system
  * will probably have only one, with four being a very unlikely maximum, a static
@@ -1198,3 +1192,4 @@ DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 
     return STATUS_SUCCESS;
 }
+

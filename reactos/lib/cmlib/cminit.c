@@ -57,7 +57,7 @@ CmCreateRootNode(
 
    /* Write the name */
    KeyCell->NameLength = (USHORT)NameSize;
-   RtlCopyMemory(KeyCell->Name, Name, NameSize);
+   memcpy(KeyCell->Name, Name, NameSize);
 
    /* Return success */
    HvReleaseCell(Hive, RootCellIndex);

@@ -17,7 +17,9 @@ Revision History:
 
 --*/
 
-#include "cdrom.h"
+#include "ntddk.h"
+#include "classpnp.h"
+#include "trace.h"
 
 #ifdef ALLOC_DATA_PRAGMA
 #pragma data_seg("PAGE")

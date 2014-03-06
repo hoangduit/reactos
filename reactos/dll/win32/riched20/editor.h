@@ -18,41 +18,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef _RICHED20_EDITOR_H
-#define _RICHED20_EDITOR_H
-
-#include <config.h>
-
-#include <assert.h>
-#include <stdio.h>
-
-#ifndef _WIN32_IE
-#define _WIN32_IE 0x0400
-#endif
-
-#define WIN32_NO_STATUS
-#define _INC_WINDOWS
-#define COM_NO_WINDOWS_H
-
-#define COBJMACROS
-#define NONAMELESSUNION
-#define NONAMELESSSTRUCT
-
-#include <windef.h>
-#include <winbase.h>
-#include <wingdi.h>
-#include <winuser.h>
-#include <richedit.h>
-#include <ole2.h>
-#include <richole.h>
-#include <imm.h>
-#include <textserv.h>
-
-#include <wine/debug.h>
-#include <wine/list.h>
-#include <wine/unicode.h>
-
 #include "editstr.h"
+#include <wine/unicode.h>
 
 struct _RTF_Info;
 
@@ -378,5 +345,3 @@ LRESULT ME_StreamOut(ME_TextEditor *editor, DWORD dwFormat, EDITSTREAM *stream) 
 
 /* clipboard.c */
 HRESULT ME_GetDataObject(ME_TextEditor *editor, const ME_Cursor *start, int nChars, LPDATAOBJECT *lplpdataobj) DECLSPEC_HIDDEN;
-
-#endif /* _RICHED20_EDITOR_H */

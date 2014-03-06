@@ -28,7 +28,17 @@
  * Selection and feedback modes functions.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "colormac.h"
+#include "context.h"
+#include "enums.h"
+#include "feedback.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "main/dispatch.h"
+
 
 #if FEATURE_feedback
 

@@ -7,7 +7,7 @@
 
 #include "msgina.h"
 
-#include <wincon.h>
+WINE_DEFAULT_DEBUG_CHANNEL(msgina);
 
 static BOOL
 TUIInitialize(
@@ -235,20 +235,14 @@ TUILockedSAS(
     if (!ReadString(IDS_ASKFORPASSWORD, Password, 256, FALSE))
         return WLX_SAS_ACTION_NONE;
 
-    if (!ConnectToLsa(pgContext))
-        return WLX_SAS_ACTION_NONE;
-
-    if (!MyLogonUser(pgContext->LsaHandle,
-                     pgContext->AuthenticationPackage,
-                     UserName,
-                     NULL,
-                     Password,
-                     &hToken))
+    if (!LogonUserW(UserName, NULL, Password,
+        LOGON32_LOGON_UNLOCK,
+        LOGON32_PROVIDER_DEFAULT,
+        &hToken))
     {
-        WARN("LogonUserW() failed\n");
+        TRACE("LogonUserW() failed\n");
         return WLX_SAS_ACTION_NONE;
     }
-
     CloseHandle(hToken);
     return WLX_SAS_ACTION_UNLOCK_WKSTA;
 }

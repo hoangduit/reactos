@@ -7,7 +7,11 @@
  * PROGRAMMERS:     Eric Kohl
  */
 
+/* INCLUDES ****************************************************************/
+
 #include "lsasrv.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(lsasrv);
 
 /* FUNCTIONS ***************************************************************/
 

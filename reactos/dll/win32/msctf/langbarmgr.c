@@ -18,7 +18,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "msctf_internal.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+#define COBJMACROS
+
+#include <wine/debug.h>
+#include <winbase.h>
+#include <winreg.h>
+#include <shlwapi.h>
+
+#include <msctf.h>
+//#include "msctf_internal.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(msctf);
 
 typedef struct tagLangBarMgr {
     ITfLangBarMgr ITfLangBarMgr_iface;

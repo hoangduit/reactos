@@ -8,6 +8,7 @@
  *      06-09-2007  Created
  */
 
+#include "resource.h"
 #include "input.h"
 
 static HWND hLangList;

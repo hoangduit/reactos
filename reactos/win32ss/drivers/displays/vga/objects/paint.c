@@ -8,8 +8,6 @@
 
 #include <vgaddi.h>
 
-#include "brush.h"
-
 BOOL VGADDIFillSolid(SURFOBJ *Surface, RECTL Dimensions, ULONG iColor)
 {
     int x, y, x2, y2, w, h, j;

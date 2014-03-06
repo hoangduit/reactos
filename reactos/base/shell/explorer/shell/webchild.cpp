@@ -25,11 +25,18 @@
  // Martin Fuchs, 08.02.2004
  //
 
+
 #include <precomp.h>
+
+#include "../resource.h"
 
 #include "webchild.h"
 
+
 #include <comutil.h>
+
+//#include <mshtml.h>
+
 
 Variant::Variant(const VARIANT& var)
 {

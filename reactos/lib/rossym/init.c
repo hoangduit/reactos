@@ -18,3 +18,5 @@ RosSymInit(PROSSYM_CALLBACKS Callbacks)
 {
   RosSymCallbacks = *Callbacks;
 }
+
+/* EOF */

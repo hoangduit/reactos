@@ -20,3 +20,5 @@ NTSTATUS FASTCALL ConSrvInheritConsole(PCONSOLE_PROCESS_DATA ProcessData,
                                        PHANDLE pOutputHandle,
                                        PHANDLE pErrorHandle);
 VOID FASTCALL ConSrvRemoveConsole(PCONSOLE_PROCESS_DATA ProcessData);
+
+/* EOF */

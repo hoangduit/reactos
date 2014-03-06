@@ -247,7 +247,7 @@ VOID RunLoader(VOID)
     //
     // Create list of display names
     //
-    OperatingSystemDisplayNames = FrLdrTempAlloc(sizeof(PCSTR) * OperatingSystemCount, 'mNSO');
+    OperatingSystemDisplayNames = MmHeapAlloc(sizeof(PCSTR) * OperatingSystemCount);
     if (!OperatingSystemDisplayNames)
     {
         goto reboot;

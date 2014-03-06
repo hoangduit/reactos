@@ -7,11 +7,8 @@
  *                  Michael Martin (michael.martin@reactos.org)
  *                  Johannes Anderwald (johannes.anderwald@reactos.org)
  */
-
 #include "usbhub.h"
-
-#define NDEBUG
-#include <debug.h>
+#include <stdarg.h>
 
 VOID
 DumpDeviceDescriptor(PUSB_DEVICE_DESCRIPTOR DeviceDescriptor)

@@ -24,8 +24,6 @@
  *                  15-Feb-2004 vizzini - Created
  */
 
-#pragma once
-
 DRIVER_DISPATCH ReadWrite;
 
 NTSTATUS NTAPI
@@ -33,3 +31,4 @@ ReadWrite(PDEVICE_OBJECT DeviceObject, PIRP Irp);
 
 VOID NTAPI
 ReadWritePassive(PDRIVE_INFO DriveInfo, PIRP Irp);
+

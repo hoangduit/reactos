@@ -25,7 +25,13 @@
  *    Keith Whitwell <keith@tungstengraphics.com>
  */
 
-#include <precomp.h>
+#include "main/imports.h"
+#include "main/mtypes.h"
+#include "main/api_arrayelt.h"
+#include "main/bufferobj.h"
+#include "math/m_eval.h"
+#include "vbo.h"
+#include "vbo_context.h"
 
 #define NR_MAT_ATTRIBS 12
 

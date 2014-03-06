@@ -18,7 +18,7 @@
  *
  */
 #include <stdarg.h>
-
+#include <assert.h>
 #include "windef.h"
 #include "winbase.h"
 #include "wingdi.h"
@@ -33,7 +33,6 @@ static DSMENTRYPROC pDSM_Entry;
 static BOOL dsm_RegisterWindowClasses(void)
 {
     WNDCLASSA cls;
-    BOOL rc;
 
     cls.style = 0;
     cls.lpfnWndProc = DefWindowProc;
@@ -45,10 +44,9 @@ static BOOL dsm_RegisterWindowClasses(void)
     cls.hbrBackground = GetStockObject(WHITE_BRUSH);
     cls.lpszMenuName = NULL;
     cls.lpszClassName = "TWAIN_dsm_class";
+    if (!RegisterClassA(&cls)) return FALSE;
 
-    rc = RegisterClassA(&cls);
-    ok(rc, "RegisterClassA failed: le=%u\n", GetLastError());
-    return rc;
+    return TRUE;
 }
 
 
@@ -834,11 +832,7 @@ START_TEST(dsm)
     HANDLE hwnd;
     HMODULE htwain;
 
-    if (!dsm_RegisterWindowClasses())
-    {
-        skip("Could not register the test class, skipping tests\n");
-        return;
-    }
+    if (!dsm_RegisterWindowClasses()) assert(0);
 
     htwain = LoadLibraryA("twain_32.dll");
     if (! htwain)

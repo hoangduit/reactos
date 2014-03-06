@@ -57,8 +57,8 @@ BOOLEAN StopChecking = FALSE;
 
 /* TRAP EXIT CODE *************************************************************/
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 KiVdmTrap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Either the V8086 flag is on, or this is user-mode with a VDM */
@@ -66,16 +66,16 @@ KiVdmTrap(IN PKTRAP_FRAME TrapFrame)
             ((KiUserTrap(TrapFrame)) && (PsGetCurrentProcess()->VdmObjects)));
 }
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 KiV86Trap(IN PKTRAP_FRAME TrapFrame)
 {
     /* Check if the V8086 flag is on */
     return ((TrapFrame->EFlags & EFLAGS_V86_MASK) != 0);
 }
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 KiIsFrameEdited(IN PKTRAP_FRAME TrapFrame)
 {
     /* An edited frame changes esp. It is marked by clearing the bits
@@ -83,8 +83,8 @@ KiIsFrameEdited(IN PKTRAP_FRAME TrapFrame)
     return ((TrapFrame->SegCs & FRAME_EDITED) == 0);
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 KiCommonExit(IN PKTRAP_FRAME TrapFrame, BOOLEAN SkipPreviousMode)
 {
     /* Disable interrupts until we return */
@@ -128,9 +128,6 @@ KiEoiHelper(IN PKTRAP_FRAME TrapFrame)
 
     /* Check for edited frame */
     if (KiIsFrameEdited(TrapFrame)) KiEditedTrapReturn(TrapFrame);
-
-    /* Check if we have single stepping enabled */
-    if (TrapFrame->EFlags & EFLAGS_TF) KiTrapReturnNoSegments(TrapFrame);
 
     /* Exit the trap to kernel mode */
     KiTrapReturnNoSegmentsRet8(TrapFrame);
@@ -194,9 +191,6 @@ KiServiceExit2(IN PKTRAP_FRAME TrapFrame)
     /* Check for edited frame */
     if (KiIsFrameEdited(TrapFrame)) KiEditedTrapReturn(TrapFrame);
 
-    /* Check if we have single stepping enabled */
-    if (TrapFrame->EFlags & EFLAGS_TF) KiTrapReturnNoSegments(TrapFrame);
-
     /* Exit the trap to kernel mode */
     KiTrapReturnNoSegmentsRet8(TrapFrame);
 }
@@ -236,7 +230,7 @@ KiNpxHandler(IN PKTRAP_FRAME TrapFrame,
              IN PFX_SAVE_AREA SaveArea)
 {
     ULONG Cr0, Mask, Error, ErrorOffset, DataOffset;
-
+    
     /* Check for VDM trap */
     ASSERT((KiVdmTrap(TrapFrame)) == FALSE);
 
@@ -245,7 +239,7 @@ KiNpxHandler(IN PKTRAP_FRAME TrapFrame,
     {
         /* Kernel might've tripped a delayed error */
         SaveArea->Cr0NpxState |= CR0_TS;
-
+        
         /* Only valid if it happened during a restore */
         //if ((PVOID)TrapFrame->Eip == FrRestore)
         {
@@ -1455,16 +1449,7 @@ VOID
 FASTCALL
 KiCallbackReturnHandler(IN PKTRAP_FRAME TrapFrame)
 {
-    NTSTATUS Status;
-
-    /* Pass the register parameters to NtCallbackReturn.
-       Result pointer is in ecx, result length in edx, status in eax */
-    Status = NtCallbackReturn((PVOID)TrapFrame->Ecx,
-                              TrapFrame->Edx,
-                              TrapFrame->Eax);
-
-    /* If we got here, something went wrong. Return an error to the caller */
-    KiServiceExit(TrapFrame, Status);
+    UNIMPLEMENTED_DBGBREAK();
 }
 
 DECLSPEC_NORETURN
@@ -1521,9 +1506,9 @@ KiDbgPostServiceHook(ULONG SystemCallNumber, ULONG_PTR Result)
     return Result;
 }
 
-FORCEINLINE
 DECLSPEC_NORETURN
 VOID
+FORCEINLINE
 KiSystemCall(IN PKTRAP_FRAME TrapFrame,
              IN PVOID Arguments)
 {
@@ -1576,7 +1561,7 @@ KiSystemCall(IN PKTRAP_FRAME TrapFrame,
     /* Decode the system call number */
     Offset = (SystemCallNumber >> SERVICE_TABLE_SHIFT) & SERVICE_TABLE_MASK;
     Id = SystemCallNumber & SERVICE_NUMBER_MASK;
-
+    
     /* Get descriptor table */
     DescriptorTable = (PVOID)((ULONG_PTR)Thread->ServiceTable + Offset);
 

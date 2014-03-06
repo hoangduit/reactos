@@ -1,11 +1,7 @@
-#ifndef _FONTEXT_PCH_
-#define _FONTEXT_PCH_
-
-#include <stdarg.h>
-
-#define WIN32_NO_STATUS
 #define COBJMACROS
-
+#define WIN32_NO_STATUS
+#include <stdarg.h>
 #include <windef.h>
+#include <winbase.h>
 
-#endif /* _FONTEXT_PCH_ */
+#include <debug.h>

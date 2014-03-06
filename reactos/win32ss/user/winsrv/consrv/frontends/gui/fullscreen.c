@@ -8,10 +8,15 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <consrv.h>
+#include "consrv.h"
+#include "include/conio.h"
+#include "include/console.h"
+#include "include/settings.h"
+#include "guisettings.h"
 
 #define NDEBUG
 #include <debug.h>
+
 
 /* FUNCTIONS ******************************************************************/
 

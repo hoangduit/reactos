@@ -1,8 +1,5 @@
 #include "precomp.h"
 
-#include <ntifs.h>
-#include <ndk/halfuncs.h>
-
 /* PRIVATE FUNCTIONS *********************************************************/
 
 BOOLEAN
@@ -475,3 +472,4 @@ VidResetDisplay(IN BOOLEAN HalReset)
     InitializePalette();
     VidSolidColorFill(0, 0, 639, 479, 0);
 }
+

@@ -9,8 +9,6 @@
 
 #include "timedate.h"
 
-#include <windowsx.h>
-
 static const WCHAR szMonthCalWndClass[] = L"MonthCalWnd";
 
 #define MONTHCAL_HEADERBG   COLOR_INACTIVECAPTION

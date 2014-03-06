@@ -26,12 +26,6 @@
 extern "C" {
 #endif /* defined(__cplusplus) */
 
-#ifdef __cplusplus
-#define IID_PPV_ARG(Itype, ppType) IID_##Itype, reinterpret_cast<void**>((static_cast<Itype**>(ppType)))
-#else
-#define IID_PPV_ARG(Itype, ppType) IID_##Itype, (void**)(ppType)
-#endif
-
 /*****************************************************************************
  * New shellstate structure
  */
@@ -754,10 +748,6 @@ BOOL WINAPI ILGetDisplayNameEx(IShellFolder *psf, LPCITEMIDLIST pidl, LPVOID pat
 #define ILGDN_FORPARSING  0
 #define ILGDN_NORMAL      1
 #define ILGDN_INFOLDER    2
-
-BOOL WINAPI FileIconInit(BOOL bFullInit);
-void WINAPI ShellDDEInit(BOOL bInit);
-DWORD WINAPI WinList_Init(void);
 
 HANDLE WINAPI SHCreateDesktop(IShellDesktopTray*);
 BOOL WINAPI SHDesktopMessageLoop(HANDLE);

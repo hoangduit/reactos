@@ -462,9 +462,9 @@ static int AlertFileDoesNotExist(LPCTSTR szFileName)
    return(nResult);
 }
 
-static BOOL HandleCommandLine(LPTSTR cmdline)
+static void HandleCommandLine(LPTSTR cmdline)
 {
-    int opt_print = 0;
+    int opt_print=0;
 
     while (*cmdline == _T(' ') || *cmdline == _T('-') || *cmdline == _T('/'))
     {
@@ -480,7 +480,7 @@ static BOOL HandleCommandLine(LPTSTR cmdline)
         {
             case 'p':
             case 'P':
-                opt_print = 1;
+                opt_print=1;
                 break;
         }
     }
@@ -526,10 +526,7 @@ static BOOL HandleCommandLine(LPTSTR cmdline)
             DoOpenFile(file_name);
             InvalidateRect(Globals.hMainWnd, NULL, FALSE);
             if (opt_print)
-            {
                 DIALOG_FilePrint();
-                return FALSE;
-            }
         }
         else
         {
@@ -542,9 +539,7 @@ static BOOL HandleCommandLine(LPTSTR cmdline)
                 break;
             }
         }
-    }
-
-    return TRUE;
+     }
 }
 
 /***********************************************************************
@@ -559,10 +554,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE prev, LPTSTR cmdline, int sh
     HMONITOR    monitor;
     MONITORINFO info;
     INT         x, y;
-
+	
     static const TCHAR className[] = _T("NPClass");
     static const TCHAR winName[]   = _T("Notepad");
-
+	
     switch (GetUserDefaultUILanguage())
   {
     case MAKELANGID(LANG_HEBREW, SUBLANG_DEFAULT):
@@ -631,10 +626,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE prev, LPTSTR cmdline, int sh
 
     DIALOG_ViewStatusBar();
 
-    if (!HandleCommandLine(cmdline))
-    {
-        return 0;
-    }
+    HandleCommandLine(cmdline);
 
     hAccel = LoadAccelerators( hInstance, MAKEINTRESOURCE(ID_ACCEL) );
 

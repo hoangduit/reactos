@@ -83,10 +83,10 @@ GetEnvironmentVariableA(IN LPCSTR lpName,
     if ((NT_SUCCESS(Status)) && !(nSize)) Status = STATUS_BUFFER_TOO_SMALL;
 
     /* Check if we didn't have enough space */
-    if (Status == STATUS_BUFFER_TOO_SMALL)
+    if (!(NT_SUCCESS(Status)) && (Status == STATUS_BUFFER_TOO_SMALL))
     {
         /* Fixup the length that the API returned */
-        VarValueU.MaximumLength = VarValueU.Length + sizeof(UNICODE_NULL);
+        VarValueU.MaximumLength = VarValueU.Length + 2;
 
         /* Free old Unicode buffer */
         RtlFreeHeap(RtlGetProcessHeap(), 0, VarValueU.Buffer);
@@ -108,7 +108,6 @@ GetEnvironmentVariableA(IN LPCSTR lpName,
         {
             /* Set failure status */
             Status = STATUS_NO_MEMORY;
-            VarValueU.Buffer = NULL;
         }
     }
     else if (NT_SUCCESS(Status))
@@ -374,7 +373,7 @@ BOOL
 WINAPI
 FreeEnvironmentStringsA(IN LPSTR EnvironmentStrings)
 {
-    return RtlFreeHeap(RtlGetProcessHeap(), 0, EnvironmentStrings);
+    return (BOOL)RtlFreeHeap(RtlGetProcessHeap(), 0, EnvironmentStrings);
 }
 
 /*
@@ -384,7 +383,7 @@ BOOL
 WINAPI
 FreeEnvironmentStringsW(IN LPWSTR EnvironmentStrings)
 {
-    return RtlFreeHeap(RtlGetProcessHeap(), 0, EnvironmentStrings);
+    return (BOOL)RtlFreeHeap(RtlGetProcessHeap(), 0, EnvironmentStrings);
 }
 
 /*
@@ -444,7 +443,7 @@ ExpandEnvironmentStringsA(IN LPCSTR lpSrc,
     Status = RtlExpandEnvironmentStrings_U(NULL, &SourceU, &DestU, &Length);
 
     /* Check if we didn't have enough space */
-    if (Status == STATUS_BUFFER_TOO_SMALL)
+    if (!(NT_SUCCESS(Status)) && (Status == STATUS_BUFFER_TOO_SMALL))
     {
         /* Fixup the length that the API returned */
         DestU.MaximumLength = (SHORT)Length;
@@ -469,7 +468,6 @@ ExpandEnvironmentStringsA(IN LPCSTR lpSrc,
         {
             /* Set failure status */
             Status = STATUS_NO_MEMORY;
-            DestU.Buffer = NULL;
         }
     }
     else if (NT_SUCCESS(Status))
@@ -520,7 +518,8 @@ ExpandEnvironmentStringsW(IN LPCWSTR lpSrc,
     NTSTATUS Status;
     USHORT UniSize;
 
-    UniSize = min(nSize, UNICODE_STRING_MAX_CHARS - 2);
+    UniSize = UNICODE_STRING_MAX_CHARS - 2;
+    if (nSize <= UniSize) UniSize = (USHORT)nSize;
 
     RtlInitUnicodeString(&Source, (LPWSTR)lpSrc);
     RtlInitEmptyUnicodeString(&Destination, lpDst, UniSize * sizeof(WCHAR));

@@ -33,9 +33,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma code_seg("PAGE")
 #endif
 
-static
-NTSTATUS
-InstallSubdevice(PDEVICE_OBJECT DeviceObject, PIRP Irp, PWCHAR Name, REFGUID PortClassId, REFGUID MiniportClassId, PFNCREATEINSTANCE MiniportCreate, PUNKNOWN UnknownAdapter, PRESOURCELIST ResourceList, REFGUID PortInterfaceId, PUNKNOWN* OutPortUnknown)
+NTSTATUS InstallSubdevice(PDEVICE_OBJECT DeviceObject, PIRP Irp, PWCHAR Name, REFGUID PortClassId, REFGUID MiniportClassId, PFNCREATEINSTANCE MiniportCreate, PUNKNOWN UnknownAdapter, PRESOURCELIST ResourceList, REFGUID PortInterfaceId, PUNKNOWN* OutPortUnknown)
 {
 	PAGED_CODE();
 	DBGPRINT(("InstallSubdevice()"));
@@ -78,9 +76,8 @@ InstallSubdevice(PDEVICE_OBJECT DeviceObject, PIRP Irp, PWCHAR Name, REFGUID Por
 	return ntStatus;
 }
 
-static
-NTSTATUS
-ProcessResources(PRESOURCELIST ResourceList, PRESOURCELIST* UartResourceList)
+
+NTSTATUS ProcessResources(PRESOURCELIST ResourceList, PRESOURCELIST* UartResourceList)
 {
 	PAGED_CODE();
 	ASSERT(ResourceList);
@@ -110,9 +107,7 @@ ProcessResources(PRESOURCELIST ResourceList, PRESOURCELIST* UartResourceList)
 }
 
 
-NTSTATUS
-NTAPI
-StartDevice(PDEVICE_OBJECT DeviceObject, PIRP Irp, PRESOURCELIST ResourceList)
+NTSTATUS StartDevice(PDEVICE_OBJECT DeviceObject, PIRP Irp, PRESOURCELIST ResourceList)
 {
 	PAGED_CODE();
 	ASSERT(DeviceObject);
@@ -261,12 +256,10 @@ extern "C" NTSTATUS NTAPI AddDevice(PDRIVER_OBJECT DriverObject, PDEVICE_OBJECT 
 	PAGED_CODE();
 	DBGPRINT(("AddDevice()"));
 
-	return PcAddAdapterDevice(DriverObject, PhysicalDeviceObject, StartDevice, MAX_MINIPORTS, 0);
+	return PcAddAdapterDevice(DriverObject, PhysicalDeviceObject, (PCPFNSTARTDEVICE)StartDevice, MAX_MINIPORTS, 0);
 }
 
-static
-bool
-CopyResourceDescriptor(PIO_RESOURCE_DESCRIPTOR pInResDescriptor, PIO_RESOURCE_DESCRIPTOR pOutResDescriptor)
+bool CopyResourceDescriptor(PIO_RESOURCE_DESCRIPTOR pInResDescriptor, PIO_RESOURCE_DESCRIPTOR pOutResDescriptor)
 {
 	PAGED_CODE();
 	ASSERT(pInResDescriptor);
@@ -309,7 +302,7 @@ CopyResourceDescriptor(PIO_RESOURCE_DESCRIPTOR pInResDescriptor, PIO_RESOURCE_DE
 #endif
 }
 
-extern "C" NTSTATUS NTAPI AdapterDispatchPnp(PDEVICE_OBJECT pDeviceObject, PIRP pIrp)
+extern "C" NTSTATUS AdapterDispatchPnp(PDEVICE_OBJECT pDeviceObject, PIRP pIrp)
 {
 	PAGED_CODE();
 	ASSERT(pDeviceObject);
@@ -397,10 +390,7 @@ extern "C" NTSTATUS NTAPI AdapterDispatchPnp(PDEVICE_OBJECT pDeviceObject, PIRP 
 	return ntStatus;
 }
 
-extern "C"
-NTSTATUS
-NTAPI
-DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPathName)
+extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPathName)
 {
 	PAGED_CODE();
 	DBGPRINT(("DriverEntry()"));

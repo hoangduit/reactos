@@ -20,6 +20,8 @@
 
 #include "setupapi_private.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
+
 typedef struct {
     WCHAR   lpzName[20];
     LONGLONG dwFreeSpace;

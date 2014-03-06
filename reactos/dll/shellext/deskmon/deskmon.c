@@ -1,11 +1,7 @@
 #include "precomp.h"
 
-#include <tchar.h>
-
 #define NDEBUG
 #include <debug.h>
-
-#include "resource.h"
 
 static HINSTANCE hInstance;
 

@@ -15,13 +15,13 @@ list(APPEND SOURCE
     misc.c
     rw.c
     volinfo.c
-    cdfs.h)
+    cdfs.rc)
 
-add_library(cdfs SHARED ${SOURCE} cdfs.rc)
+add_library(cdfs SHARED ${SOURCE})
 
 set_module_type(cdfs kernelmodedriver)
 add_importlibs(cdfs ntoskrnl hal)
 
-add_pch(cdfs cdfs.h SOURCE)
+add_pch(cdfs cdfs.h)
 
 add_cd_file(TARGET cdfs DESTINATION reactos/system32/drivers NO_CAB FOR all)

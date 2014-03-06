@@ -20,7 +20,30 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <assert.h>
+#include <stdarg.h>
+//#include <stdio.h>
+
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+#define COBJMACROS
+#define NONAMELESSSTRUCT
+#define NONAMELESSUNION
+//#include "windef.h"
+//#include "winbase.h"
+//#include "winuser.h"
+#include <winternl.h>
+#include "mmddk.h"
+//#include "wingdi.h"
+//#include "mmreg.h"
+//#include "ks.h"
+//#include "ksmedia.h"
+#include <wine/debug.h>
+#include <dsound.h>
 #include "dsound_private.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(dsound);
 
 typedef struct IDirectSoundImpl {
     IUnknown            IUnknown_inner;
@@ -713,30 +736,6 @@ BOOL DSOUND_check_supported(IAudioClient *client, DWORD rate,
         CoTaskMemFree(junk);
 
     return hr == S_OK;
-}
-
-UINT DSOUND_create_timer(LPTIMECALLBACK cb, DWORD_PTR user)
-{
-    UINT triggertime = DS_TIME_DEL, res = DS_TIME_RES, id;
-    TIMECAPS time;
-
-    timeGetDevCaps(&time, sizeof(TIMECAPS));
-    TRACE("Minimum timer resolution: %u, max timer: %u\n", time.wPeriodMin, time.wPeriodMax);
-    if (triggertime < time.wPeriodMin)
-        triggertime = time.wPeriodMin;
-    if (res < time.wPeriodMin)
-        res = time.wPeriodMin;
-    if (timeBeginPeriod(res) == TIMERR_NOCANDO)
-        WARN("Could not set minimum resolution, don't expect sound\n");
-    id = timeSetEvent(triggertime, res, cb, user, TIME_PERIODIC | TIME_KILL_SYNCHRONOUS);
-    if (!id)
-    {
-        WARN("Timer not created! Retrying without TIME_KILL_SYNCHRONOUS\n");
-        id = timeSetEvent(triggertime, res, cb, user, TIME_PERIODIC);
-        if (!id)
-            ERR("Could not create timer, sound playback will not occur\n");
-    }
-    return id;
 }
 
 HRESULT DirectSoundDevice_Initialize(DirectSoundDevice ** ppDevice, LPCGUID lpcGUID)

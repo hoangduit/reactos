@@ -6,13 +6,36 @@
  * daniel@veillard.com
  */
 
-#include "precomp.h"
+#define IN_LIBXSLT
+#include "libxslt.h"
 
+#include <string.h>
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
 
+#ifdef HAVE_MATH_H
+#include <math.h>
+#endif
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+#ifdef HAVE_IEEEFP_H
+#include <ieeefp.h>
+#endif
+#ifdef HAVE_NAN_H
+#include <nan.h>
+#endif
+#ifdef HAVE_CTYPE_H
+#include <ctype.h>
+#endif
+
 #if defined(WIN32) && !defined(__CYGWIN__)
+//#include <windows.h>
 #ifndef INVALID_FILE_ATTRIBUTES
 #define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
 #endif
@@ -28,6 +51,16 @@
 #    define HAVE_STAT
 #  endif
 #endif
+
+#include <libxml/xmlmemory.h>
+#include <libxml/tree.h>
+#include <libxml/uri.h>
+#include "xslt.h"
+#include "xsltInternals.h"
+#include "xsltutils.h"
+#include "extensions.h"
+#include "security.h"
+
 
 struct _xsltSecurityPrefs {
     xsltSecurityCheck readFile;

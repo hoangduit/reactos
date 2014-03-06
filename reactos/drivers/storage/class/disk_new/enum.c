@@ -1244,3 +1244,4 @@ DiskReleasePartitioningLock(
     KeSetEvent(&(diskData->PartitioningEvent), IO_NO_INCREMENT, FALSE);
     return;
 }
+

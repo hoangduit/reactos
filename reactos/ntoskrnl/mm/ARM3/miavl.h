@@ -28,8 +28,8 @@
 #define PRTL_BALANCED_LINKS         PMMADDRESS_NODE
 #define MI_ASSERT(x)                ASSERT(x)
 
-FORCEINLINE
 VOID
+FORCEINLINE
 RtlpCopyAvlNodeData(IN PRTL_BALANCED_LINKS Node1,
                     IN PRTL_BALANCED_LINKS Node2)
 {
@@ -38,8 +38,8 @@ RtlpCopyAvlNodeData(IN PRTL_BALANCED_LINKS Node1,
     Node1->RightChild = Node2->RightChild;
 }
 
-FORCEINLINE
 RTL_GENERIC_COMPARE_RESULTS
+FORCEINLINE
 RtlpAvlCompareRoutine(IN PRTL_AVL_TABLE Table,
                       IN PVOID Buffer,
                       IN PVOID UserData)
@@ -60,73 +60,73 @@ RtlpAvlCompareRoutine(IN PRTL_AVL_TABLE Table,
     }
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 RtlSetParent(IN PRTL_BALANCED_LINKS Node,
              IN PRTL_BALANCED_LINKS Parent)
 {
     Node->u1.Parent = (PRTL_BALANCED_LINKS)((ULONG_PTR)Parent | (Node->u1.Balance & 0x3));
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 RtlSetBalance(IN PRTL_BALANCED_LINKS Node,
               IN SCHAR Balance)
 {
     Node->u1.Balance = Balance;
 }
 
-FORCEINLINE
 SCHAR
+FORCEINLINE
 RtlBalance(IN PRTL_BALANCED_LINKS Node)
 {
     return (SCHAR)Node->u1.Balance;
 }
 
-FORCEINLINE
 PRTL_BALANCED_LINKS
+FORCEINLINE
 RtlParentAvl(IN PRTL_BALANCED_LINKS Node)
 {
     return (PRTL_BALANCED_LINKS)((ULONG_PTR)Node->u1.Parent & ~3);
 }
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 RtlIsRootAvl(IN PRTL_BALANCED_LINKS Node)
 {
    return (RtlParentAvl(Node) == Node);
 }
 
-FORCEINLINE
 PRTL_BALANCED_LINKS
+FORCEINLINE
 RtlRightChildAvl(IN PRTL_BALANCED_LINKS Node)
 {
     return Node->RightChild;
 }
 
-FORCEINLINE
 PRTL_BALANCED_LINKS
+FORCEINLINE
 RtlLeftChildAvl(IN PRTL_BALANCED_LINKS Node)
 {
     return Node->LeftChild;
 }
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 RtlIsLeftChildAvl(IN PRTL_BALANCED_LINKS Node)
 {
    return (RtlLeftChildAvl(RtlParentAvl(Node)) == Node);
 }
 
-FORCEINLINE
 BOOLEAN
+FORCEINLINE
 RtlIsRightChildAvl(IN PRTL_BALANCED_LINKS Node)
 {
    return (RtlRightChildAvl(RtlParentAvl(Node)) == Node);
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 RtlInsertAsLeftChildAvl(IN PRTL_BALANCED_LINKS Parent,
                         IN PRTL_BALANCED_LINKS Node)
 {
@@ -134,8 +134,8 @@ RtlInsertAsLeftChildAvl(IN PRTL_BALANCED_LINKS Parent,
     RtlSetParent(Node, Parent);
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 RtlInsertAsRightChildAvl(IN PRTL_BALANCED_LINKS Parent,
                          IN PRTL_BALANCED_LINKS Node)
 {

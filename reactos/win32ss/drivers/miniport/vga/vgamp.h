@@ -23,9 +23,13 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <ntdef.h>
-#include <miniport.h>
-#include <video.h>
+#include "ntdef.h"
+#include "dderror.h"
+#include "devioctl.h"
+#include "miniport.h"
+#include "ntddvdeo.h"
+#include "video.h"
+#include "vgavideo.h"
 
 #define UNIMPLEMENTED \
    VideoPortDebugPrint(Error, "WARNING:  %s at %s:%d is UNIMPLEMENTED!\n",__FUNCTION__,__FILE__,__LINE__);

@@ -22,12 +22,23 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file pack.c
  * Image and pixel span packing and unpacking.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "colormac.h"
+#include "enums.h"
+#include "image.h"
+#include "imports.h"
+#include "macros.h"
+#include "mtypes.h"
+#include "pack.h"
+#include "pixeltransfer.h"
+#include "imports.h"
 
 /**
  * Flip the 8 bits in each byte of the given array.

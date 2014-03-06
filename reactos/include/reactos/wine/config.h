@@ -296,9 +296,6 @@
 /* Define to 1 if you have the <io.h> header file. */
 #define HAVE_IO_H 1
 
-/* Define to 1 if you have the `isfinite' function. */
-/* #undef HAVE_ISFINITE */
-
 /* Define to 1 if you have the `isinf' function. */
 /* #undef HAVE_ISINF */
 
@@ -1006,7 +1003,9 @@
 /* #undef HAVE_SYS_TIMES_H */
 
 /* Define to 1 if you have the <sys/time.h> header file. */
-#define HAVE_SYS_TIME_H 1
+#ifndef _MSC_VER
+  #define HAVE_SYS_TIME_H 1
+#endif
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
@@ -1054,7 +1053,9 @@
 /* #undef HAVE_UCONTEXT_H */
 
 /* Define to 1 if you have the <unistd.h> header file. */
+#ifndef _MSC_VER
 #define HAVE_UNISTD_H 1
+#endif
 
 /* Define to 1 if you have the `usleep' function. */
 /* #undef HAVE_USLEEP */

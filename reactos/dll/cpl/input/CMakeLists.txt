@@ -1,17 +1,13 @@
 
 spec2def(input.dll input.spec)
 
-list(APPEND SOURCE
+add_library(input SHARED
     input.c
     settings.c
     advsettings.c
     keysettings.c
     add.c
     changekeyseq.c
-    input.h)
-
-add_library(input SHARED
-    ${SOURCE}
     input.rc
     ${CMAKE_CURRENT_BINARY_DIR}/input.def)
 
@@ -25,5 +21,5 @@ add_importlibs(input
     gdi32
     kernel32)
 
-add_pch(input input.h SOURCE)
+add_pch(input input.h)
 add_cd_file(TARGET input DESTINATION reactos/system32 FOR all)

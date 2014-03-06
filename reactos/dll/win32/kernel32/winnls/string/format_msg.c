@@ -19,13 +19,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <k32.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
-#define NDEBUG
-#include <debug.h>
-DEBUG_CHANNEL(resource);
+#include "ntstatus.h"
+#define WIN32_NO_STATUS
+#include "windef.h"
+#include "winbase.h"
+#include "winerror.h"
+#include "winternl.h"
+#include "winuser.h"
+#include "winnls.h"
+#include "wine/unicode.h"
+#include "wine/debug.h"
 
 extern HMODULE kernel32_handle;
+
+#define HeapAlloc RtlAllocateHeap
+#define HeapReAlloc RtlReAllocateHeap
+#define HeapFree RtlFreeHeap
+WINE_DEFAULT_DEBUG_CHANNEL(resource);
 
 struct format_args
 {
@@ -63,7 +77,7 @@ static const WCHAR FMTWSTR[] = { '%','s',0 };
  */
 static LPWSTR load_message( HMODULE module, UINT id, WORD lang )
 {
-    MESSAGE_RESOURCE_ENTRY *mre;
+    const MESSAGE_RESOURCE_ENTRY *mre;
     WCHAR *buffer;
     NTSTATUS status;
 

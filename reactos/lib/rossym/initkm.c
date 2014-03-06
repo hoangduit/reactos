@@ -10,9 +10,12 @@
 #include <ntdef.h>
 #undef DECLSPEC_IMPORT
 #define DECLSPEC_IMPORT
-#include <wdm.h>
+#include <ntddk.h>
 #include <reactos/rossym.h>
 #include "rossympriv.h"
+
+#define NDEBUG
+#include <debug.h>
 
 #define TAG_ROSSYM 'MYSR'
 

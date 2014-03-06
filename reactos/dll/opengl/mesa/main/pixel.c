@@ -22,12 +22,22 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file pixel.c
  * Pixel transfer functions (glPixelZoom, glPixelMap, glPixelTransfer)
  */
 
-#include <precomp.h>
+#include "glheader.h"
+#include "bufferobj.h"
+#include "colormac.h"
+#include "context.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "pixel.h"
+#include "mtypes.h"
+#include "main/dispatch.h"
+
 
 #if FEATURE_pixel_transfer
 

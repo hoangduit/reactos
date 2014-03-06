@@ -14,8 +14,6 @@
 
 #include "services.h"
 
-#include <winuser.h>
-
 #define NDEBUG
 #include <debug.h>
 
@@ -895,7 +893,7 @@ ScmControlService(PSERVICE Service,
     DWORD dwError = ERROR_SUCCESS;
     BOOL bResult;
 #ifdef USE_ASYNCHRONOUS_IO
-    OVERLAPPED Overlapped = {0};
+    OVERLAPPED Overlapped = {0, 0, 0, 0, 0};
 #endif
 
     DPRINT("ScmControlService() called\n");
@@ -1113,7 +1111,7 @@ ScmSendStartCommand(PSERVICE Service,
     PWSTR pArgPtr;
     BOOL bResult;
 #ifdef USE_ASYNCHRONOUS_IO
-    OVERLAPPED Overlapped = {0};
+    OVERLAPPED Overlapped = {0, 0, 0, 0, 0};
 #endif
 
     DPRINT("ScmSendStartCommand() called\n");
@@ -1337,7 +1335,7 @@ ScmWaitForServiceConnect(PSERVICE Service)
     DWORD dwError = ERROR_SUCCESS;
     BOOL bResult;
 #ifdef USE_ASYNCHRONOUS_IO
-    OVERLAPPED Overlapped = {0};
+    OVERLAPPED Overlapped = {0, 0, 0, 0, 0};
 #endif
 
     DPRINT("ScmWaitForServiceConnect()\n");

@@ -10,9 +10,12 @@
 /* INCLUDES *******************************************************************/
 
 #include "consrv.h"
+#include "console.h"
+#include "include/conio.h"
 
 #define NDEBUG
 #include <debug.h>
+
 
 /* TYPES **********************************************************************/
 

@@ -1,11 +1,5 @@
 #include "precomp.h"
 
-#include <winnls.h>
-#include <winsock.h>
-#include <iphlpapi.h>
-#include <dhcpcsdk.h>
-#include <dhcpcapi.h>
-
 typedef struct
 {
     DWORD EnableSecurityFilters;

@@ -20,7 +20,17 @@
  */
 /* FIXME: critical sections */
 
-#include "strmbase_private.h"
+#define COBJMACROS
+
+#include "dshow.h"
+#include "uuids.h"
+
+#include "wine/debug.h"
+#include "wine/strmbase.h"
+
+#include <assert.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(strmbase);
 
 static const IMediaSeekingVtbl IMediaSeekingPassThru_Vtbl;
 static const IMediaPositionVtbl IMediaPositionPassThru_Vtbl;

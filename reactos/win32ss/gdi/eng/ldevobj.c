@@ -9,7 +9,6 @@
 #include <win32k.h>
 #define NDEBUG
 #include <debug.h>
-DBG_DEFAULT_CHANNEL(EngLDev);
 
 #ifndef RVA_TO_ADDR
 #define RVA_TO_ADDR(Base,Rva) ((PVOID)(((ULONG_PTR)(Base)) + (Rva)))
@@ -17,9 +16,9 @@ DBG_DEFAULT_CHANNEL(EngLDev);
 
 /** Globals *******************************************************************/
 
-static HSEMAPHORE ghsemLDEVList;
-static LIST_ENTRY gleLdevListHead;
-static LDEVOBJ *gpldevWin32k = NULL;
+HSEMAPHORE ghsemLDEVList;
+LDEVOBJ *gpldevHead = NULL;
+LDEVOBJ *gpldevWin32k = NULL;
 
 
 /** Private functions *********************************************************/
@@ -27,18 +26,14 @@ static LDEVOBJ *gpldevWin32k = NULL;
 INIT_FUNCTION
 NTSTATUS
 NTAPI
-InitLDEVImpl(VOID)
+InitLDEVImpl()
 {
     ULONG cbSize;
-
-    /* Initialize the LDEV list head */
-    InitializeListHead(&gleLdevListHead);
 
     /* Initialize the loader lock */
     ghsemLDEVList = EngCreateSemaphore();
     if (!ghsemLDEVList)
     {
-        ERR("Failed to create ghsemLDEVList\n");
         return STATUS_INSUFFICIENT_RESOURCES;
     }
 
@@ -53,8 +48,8 @@ InitLDEVImpl(VOID)
     }
 
     /* Initialize the LDEVOBJ for win32k */
-    gpldevWin32k->leLink.Flink = NULL;
-    gpldevWin32k->leLink.Blink = NULL;
+    gpldevWin32k->pldevNext = NULL;
+    gpldevWin32k->pldevPrev = NULL;
     gpldevWin32k->ldevtype = LDEV_DEVICE_DISPLAY;
     gpldevWin32k->cRefs = 1;
     gpldevWin32k->ulDriverVersion = GDI_ENGINE_VERSION;
@@ -74,10 +69,9 @@ InitLDEVImpl(VOID)
     return STATUS_SUCCESS;
 }
 
-static
 PLDEVOBJ
-LDEVOBJ_AllocLDEV(
-    _In_ LDEVTYPE ldevtype)
+NTAPI
+LDEVOBJ_AllocLDEV(LDEVTYPE ldevtype)
 {
     PLDEVOBJ pldev;
 
@@ -85,7 +79,7 @@ LDEVOBJ_AllocLDEV(
     pldev = ExAllocatePoolWithTag(PagedPool, sizeof(LDEVOBJ), GDITAG_LDEV);
     if (!pldev)
     {
-        ERR("Failed to allocate LDEVOBJ.\n");
+        DPRINT1("Failed to allocate LDEVOBJ.\n");
         return NULL;
     }
 
@@ -98,10 +92,9 @@ LDEVOBJ_AllocLDEV(
     return pldev;
 }
 
-static
 VOID
-LDEVOBJ_vFreeLDEV(
-    _In_ _Post_ptr_invalid_ PLDEVOBJ pldev)
+NTAPI
+LDEVOBJ_vFreeLDEV(PLDEVOBJ pldev)
 {
     /* Make sure we don't have a driver loaded */
     ASSERT(pldev && pldev->pGdiDriverInfo == NULL);
@@ -114,19 +107,19 @@ LDEVOBJ_vFreeLDEV(
 PDEVMODEINFO
 NTAPI
 LDEVOBJ_pdmiGetModes(
-    _In_ PLDEVOBJ pldev,
-    _In_ HANDLE hDriver)
+    PLDEVOBJ pldev,
+    HANDLE hDriver)
 {
     ULONG cbSize, cbFull;
     PDEVMODEINFO pdminfo;
 
-    TRACE("LDEVOBJ_pdmiGetModes(%p, %p)\n", pldev, hDriver);
+    DPRINT("LDEVOBJ_pdmiGetModes(%p, %p)\n", pldev, hDriver);
 
     /* Call the driver to get the required size */
     cbSize = pldev->pfn.GetModes(hDriver, 0, NULL);
     if (!cbSize)
     {
-        ERR("DrvGetModes returned 0\n");
+        DPRINT1("DrvGetModes returned 0\n");
         return NULL;
     }
 
@@ -137,7 +130,7 @@ LDEVOBJ_pdmiGetModes(
     pdminfo = ExAllocatePoolWithTag(PagedPool, cbFull, GDITAG_DEVMODE);
     if (!pdminfo)
     {
-        ERR("Could not allocate devmodeinfo\n");
+        DPRINT1("Could not allocate devmodeinfo\n");
         return NULL;
     }
 
@@ -149,7 +142,7 @@ LDEVOBJ_pdmiGetModes(
     if (!cbSize)
     {
         /* Could not get modes */
-        ERR("returned size %lu(%lu)\n", cbSize, pdminfo->cbdevmode);
+        DPRINT1("returned size %lu(%lu)\n", cbSize, pdminfo->cbdevmode);
         ExFreePoolWithTag(pdminfo, GDITAG_DEVMODE);
         pdminfo = NULL;
     }
@@ -157,11 +150,12 @@ LDEVOBJ_pdmiGetModes(
     return pdminfo;
 }
 
-static
+
 BOOL
+NTAPI
 LDEVOBJ_bLoadImage(
-    _Inout_ PLDEVOBJ pldev,
-    _In_ PUNICODE_STRING pustrPathName)
+    IN PLDEVOBJ pldev,
+    PUNICODE_STRING pstrPathName)
 {
     PSYSTEM_GDI_DRIVER_INFORMATION pDriverInfo;
     NTSTATUS Status;
@@ -171,28 +165,29 @@ LDEVOBJ_bLoadImage(
     ASSERT(pldev && pldev->pGdiDriverInfo == NULL);
 
     /* Allocate a SYSTEM_GDI_DRIVER_INFORMATION structure */
-    cbSize = sizeof(SYSTEM_GDI_DRIVER_INFORMATION) + pustrPathName->Length;
+    cbSize = sizeof(SYSTEM_GDI_DRIVER_INFORMATION) + pstrPathName->Length;
     pDriverInfo = ExAllocatePoolWithTag(PagedPool, cbSize, GDITAG_LDEV);
     if (!pDriverInfo)
     {
-        ERR("Failed to allocate SYSTEM_GDI_DRIVER_INFORMATION\n");
+        DPRINT1("Failed to allocate SYSTEM_GDI_DRIVER_INFORMATION\n");
         return FALSE;
     }
 
     /* Initialize the UNICODE_STRING and copy the driver name */
     RtlInitEmptyUnicodeString(&pDriverInfo->DriverName,
                               (PWSTR)(pDriverInfo + 1),
-                              pustrPathName->Length);
-    RtlCopyUnicodeString(&pDriverInfo->DriverName, pustrPathName);
+                              pstrPathName->Length);
+    RtlCopyUnicodeString(&pDriverInfo->DriverName, pstrPathName);
 
     /* Try to load the driver */
     Status = ZwSetSystemInformation(SystemLoadGdiDriverInformation,
                                     pDriverInfo,
                                     sizeof(SYSTEM_GDI_DRIVER_INFORMATION));
+
     if (!NT_SUCCESS(Status))
     {
-        ERR("Failed to load a GDI driver: '%wZ', Status = 0x%lx\n",
-            pustrPathName, Status);
+        DPRINT1("Failed to load a GDI driver: '%S', Status = 0x%lx\n",
+                pstrPathName->Buffer, Status);
 
         /* Free the allocated memory */
         ExFreePoolWithTag(pDriverInfo, GDITAG_LDEV);
@@ -206,10 +201,10 @@ LDEVOBJ_bLoadImage(
     return TRUE;
 }
 
-static
 VOID
+NTAPI
 LDEVOBJ_vUnloadImage(
-    _Inout_ PLDEVOBJ pldev)
+    IN PLDEVOBJ pldev)
 {
     NTSTATUS Status;
 
@@ -225,11 +220,11 @@ LDEVOBJ_vUnloadImage(
 
     /* Unload the driver */
     Status = ZwSetSystemInformation(SystemUnloadGdiDriverInformation,
-                                    &pldev->pGdiDriverInfo->SectionPointer,
+                                    &pldev->pGdiDriverInfo->ImageAddress,
                                     sizeof(HANDLE));
     if (!NT_SUCCESS(Status))
     {
-        ERR("Failed to unload the driver, this is bad.\n");
+        DPRINT1("Failed to unload the driver, this is bad.\n");
     }
 
     /* Free the driver info structure */
@@ -237,10 +232,10 @@ LDEVOBJ_vUnloadImage(
     pldev->pGdiDriverInfo = NULL;
 }
 
-static
 BOOL
-LDEVOBJ_bEnableDriver(
-    _Inout_ PLDEVOBJ pldev)
+NTAPI
+LDEVOBJ_bLoadDriver(
+    IN PLDEVOBJ pldev)
 {
     PFN_DrvEnableDriver pfnEnableDriver;
     DRVENABLEDATA ded;
@@ -254,7 +249,10 @@ LDEVOBJ_bEnableDriver(
     pfnEnableDriver = pldev->pGdiDriverInfo->EntryPoint;
     if (!pfnEnableDriver(GDI_ENGINE_VERSION, sizeof(ded), &ded))
     {
-        ERR("DrvEnableDriver failed\n");
+        DPRINT1("DrvEnableDriver failed\n");
+
+        /* Unload the image. */
+        LDEVOBJ_vUnloadImage(pldev);
         return FALSE;
     }
 
@@ -271,11 +269,12 @@ LDEVOBJ_bEnableDriver(
     return TRUE;
 }
 
-static
+
 PVOID
+NTAPI
 LDEVOBJ_pvFindImageProcAddress(
-    _In_ PLDEVOBJ pldev,
-    _In_z_ LPSTR pszProcName)
+    IN PLDEVOBJ pldev,
+    IN LPSTR    pszProcName)
 {
     PVOID pvImageBase;
     PIMAGE_EXPORT_DIRECTORY pExportDir;
@@ -319,17 +318,16 @@ LDEVOBJ_pvFindImageProcAddress(
 PLDEVOBJ
 NTAPI
 EngLoadImageEx(
-    _In_z_ LPWSTR pwszDriverName,
-    _In_ ULONG ldevtype)
+    LPWSTR pwszDriverName,
+    ULONG ldevtype)
 {
     WCHAR acwBuffer[MAX_PATH];
-    PLIST_ENTRY pleLink;
     PLDEVOBJ pldev;
     UNICODE_STRING strDriverName;
     SIZE_T cwcLength;
     LPWSTR pwsz;
 
-    TRACE("EngLoadImageEx(%ls, %lu)\n", pwszDriverName, ldevtype);
+    DPRINT("EngLoadImageEx(%ls, %lu)\n", pwszDriverName, ldevtype);
     ASSERT(pwszDriverName);
 
     /* Initialize buffer for the the driver name */
@@ -345,7 +343,7 @@ EngLoadImageEx(
     pwsz = pwszDriverName + cwcLength;
     while (pwsz > pwszDriverName)
     {
-        if ((*pwsz == L'\\') && (_wcsnicmp(pwsz, L"\\system32\\", 10) == 0))
+        if (_wcsnicmp(pwsz, L"\\system32\\", 10) == 0)
         {
             /* Driver name starts after system32 */
             pwsz += 10;
@@ -358,11 +356,12 @@ EngLoadImageEx(
     RtlAppendUnicodeToString(&strDriverName, pwsz);
 
     /* MSDN says "The driver must include this suffix in the pwszDriver string."
-       But in fact it's optional. The function can also load .sys files without
-       appending the .dll extension. */
-    if ((cwcLength < 4) ||
-        ((_wcsnicmp(pwszDriverName + cwcLength - 4, L".dll", 4) != 0) &&
-         (_wcsnicmp(pwszDriverName + cwcLength - 4, L".sys", 4) != 0)) )
+       But in fact it's optional.
+
+       ms win32k EngLoadImageEx loading .sys file without append .dll
+    */
+    if ( (_wcsnicmp(pwszDriverName + cwcLength - 4, L".dll", 4) != 0) &&
+         (_wcsnicmp(pwszDriverName + cwcLength - 4, L".sys", 4) != 0) )
     {
         /* Append the .dll suffix */
         RtlAppendUnicodeToString(&strDriverName, L".dll");
@@ -372,12 +371,8 @@ EngLoadImageEx(
     EngAcquireSemaphore(ghsemLDEVList);
 
     /* Search the List of LDEVS for the driver name */
-    for (pleLink = gleLdevListHead.Flink;
-         pleLink != &gleLdevListHead;
-         pleLink = pleLink->Flink)
+    for (pldev = gpldevHead; pldev != NULL; pldev = pldev->pldevNext)
     {
-        pldev = CONTAINING_RECORD(pleLink, LDEVOBJ, leLink);
-
         /* Check if the ldev is associated with a file */
         if (pldev->pGdiDriverInfo)
         {
@@ -391,13 +386,13 @@ EngLoadImageEx(
     }
 
     /* Did we find one? */
-    if (pleLink == &gleLdevListHead)
+    if (!pldev)
     {
         /* No, allocate a new LDEVOBJ */
         pldev = LDEVOBJ_AllocLDEV(ldevtype);
         if (!pldev)
         {
-            ERR("Could not allocate LDEV\n");
+            DPRINT1("Could not allocate LDEV\n");
             goto leave;
         }
 
@@ -406,7 +401,7 @@ EngLoadImageEx(
         {
             LDEVOBJ_vFreeLDEV(pldev);
             pldev = NULL;
-            ERR("LDEVOBJ_bLoadImage failed\n");
+            DPRINT1("LDEVOBJ_bLoadImage failed\n");
             goto leave;
         }
 
@@ -414,12 +409,9 @@ EngLoadImageEx(
         if (ldevtype != LDEV_IMAGE)
         {
             /* Load the driver */
-            if (!LDEVOBJ_bEnableDriver(pldev))
+            if (!LDEVOBJ_bLoadDriver(pldev))
             {
-                ERR("LDEVOBJ_bEnableDriver failed\n");
-
-                /* Unload the image. */
-                LDEVOBJ_vUnloadImage(pldev);
+                DPRINT1("LDEVOBJ_bLoadDriver failed\n");
                 LDEVOBJ_vFreeLDEV(pldev);
                 pldev = NULL;
                 goto leave;
@@ -427,7 +419,9 @@ EngLoadImageEx(
         }
 
         /* Insert the LDEV into the global list */
-        InsertHeadList(&gleLdevListHead, &pldev->leLink);
+        pldev->pldevPrev = NULL;
+        pldev->pldevNext = gpldevHead;
+        gpldevHead = pldev;
     }
 
     /* Increase ref count */
@@ -437,7 +431,8 @@ leave:
     /* Unlock loader */
     EngReleaseSemaphore(ghsemLDEVList);
 
-    TRACE("EngLoadImageEx returning %p\n", pldev);
+    DPRINT("EngLoadImageEx returning %p\n", pldev);
+
     return pldev;
 }
 
@@ -461,7 +456,7 @@ EngUnloadImage(
     PLDEVOBJ pldev = (PLDEVOBJ)hModule;
 
     /* Make sure the LDEV is in the list */
-    ASSERT((pldev->leLink.Flink != NULL) &&  (pldev->leLink.Blink != NULL));
+    ASSERT(pldev->pldevPrev || pldev->pldevNext);
 
     /* Lock loader */
     EngAcquireSemaphore(ghsemLDEVList);
@@ -473,7 +468,10 @@ EngUnloadImage(
     if (pldev->cRefs == 0)
     {
         /* Remove ldev from the list */
-        RemoveEntryList(&pldev->leLink);
+        if (pldev->pldevPrev)
+            pldev->pldevPrev->pldevNext = pldev->pldevNext;
+        if (pldev->pldevNext)
+            pldev->pldevNext->pldevPrev = pldev->pldevPrev;
 
         /* Unload the image and free the LDEV */
         LDEVOBJ_vUnloadImage(pldev);

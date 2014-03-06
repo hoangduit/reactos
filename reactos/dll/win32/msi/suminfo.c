@@ -18,9 +18,31 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+//#include <stdarg.h>
+
+#define COBJMACROS
+#define NONAMELESSUNION
+
+#include <windef.h>
+//#include "winbase.h"
+#include <winreg.h>
+//#include "winnls.h"
+//#include "shlwapi.h"
+#include <wine/debug.h>
+#include <wine/unicode.h>
+#include <objbase.h>
+//#include "objidl.h"
+#include <propvarutil.h>
+//#include "msi.h"
+//#include "msiquery.h"
+#include <msidefs.h>
 #include "msipriv.h"
 
-#include <propvarutil.h>
+#include <msiserver.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(msi);
 

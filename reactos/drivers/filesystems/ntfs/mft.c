@@ -31,7 +31,11 @@
 #define NDEBUG
 #include <debug.h>
 
+/* GLOBALS *****************************************************************/
+
+
 /* FUNCTIONS ****************************************************************/
+
 
 NTSTATUS
 NtfsOpenMft(PDEVICE_EXTENSION Vcb)

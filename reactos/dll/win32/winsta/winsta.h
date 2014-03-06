@@ -10,7 +10,9 @@
 #ifndef _WINSTA_H
 #define _WINSTA_H
 
+/* Default header set */
 #include <stdarg.h>
+//#include <time.h>
 
 #include <windef.h>
 #include <winbase.h>
@@ -23,4 +25,5 @@ WINE_DEFAULT_DEBUG_CHANNEL(winsta);
 /* WinSta calling convention */
 #define WINSTAAPI WINAPI
 
-#endif /* _WINSTA_H */
+#endif /* !def _WINSTA_H */
+

@@ -11,9 +11,6 @@
 
 #include "usbhub.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS NTAPI
 USBHUB_Create(
     IN PDEVICE_OBJECT DeviceObject,

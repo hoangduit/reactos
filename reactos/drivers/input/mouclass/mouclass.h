@@ -1,8 +1,10 @@
-#ifndef _MOUCLASS_PCH_
-#define _MOUCLASS_PCH_
-
 #include <ntifs.h>
-#include <ntddmou.h>
+#include <kbdmou.h>
+#include <ntddkbd.h>
+#include <stdio.h>
+#include <pseh/pseh2.h>
+
+#include <debug.h>
 
 #define MAX_PATH 260
 
@@ -79,5 +81,3 @@ DuplicateUnicodeString(
 	IN ULONG Flags,
 	IN PCUNICODE_STRING SourceString,
 	OUT PUNICODE_STRING DestinationString);
-
-#endif /* _MOUCLASS_PCH_ */

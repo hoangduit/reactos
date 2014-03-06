@@ -98,8 +98,8 @@ MiUnProtectFreeNonPagedPool(IN PVOID VirtualAddress,
     return UnprotectedPages ? TRUE : FALSE;
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 MiProtectedPoolUnProtectLinks(IN PLIST_ENTRY Links,
                               OUT PVOID* PoolFlink,
                               OUT PVOID* PoolBlink)
@@ -133,8 +133,8 @@ MiProtectedPoolUnProtectLinks(IN PLIST_ENTRY Links,
     }
 }
 
-FORCEINLINE
 VOID
+FORCEINLINE
 MiProtectedPoolProtectLinks(IN PVOID PoolFlink,
                             IN PVOID PoolBlink)
 {
@@ -724,9 +724,8 @@ MiAllocatePoolPages(IN POOL_TYPE PoolType,
                                  (FreeEntry->Size  << PAGE_SHIFT));
 
                 /* Remove the item from the list, depending if pool is protected */
-                if (MmProtectFreedNonPagedPool)
-                    MiProtectedPoolRemoveEntryList(&FreeEntry->List);
-                else
+                MmProtectFreedNonPagedPool ?
+                    MiProtectedPoolRemoveEntryList(&FreeEntry->List) :
                     RemoveEntryList(&FreeEntry->List);
 
                 //
@@ -739,9 +738,8 @@ MiAllocatePoolPages(IN POOL_TYPE PoolType,
                     if (i >= MI_MAX_FREE_PAGE_LISTS) i = MI_MAX_FREE_PAGE_LISTS - 1;
 
                     /* Insert the entry into the free list head, check for prot. pool */
-                    if (MmProtectFreedNonPagedPool)
-                        MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE);
-                    else
+                    MmProtectFreedNonPagedPool ?
+                        MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE) :
                         InsertTailList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List);
 
                     /* Is freed non paged pool protected? */
@@ -1087,9 +1085,8 @@ MiFreePoolPages(IN PVOID StartingVa)
         FreePages += FreeEntry->Size;
 
         /* Remove the item from the list, depending if pool is protected */
-        if (MmProtectFreedNonPagedPool)
-            MiProtectedPoolRemoveEntryList(&FreeEntry->List);
-        else
+        MmProtectFreedNonPagedPool ?
+            MiProtectedPoolRemoveEntryList(&FreeEntry->List) :
             RemoveEntryList(&FreeEntry->List);
     }
 
@@ -1168,9 +1165,8 @@ MiFreePoolPages(IN PVOID StartingVa)
         if (FreeEntry->Size < (MI_MAX_FREE_PAGE_LISTS - 1))
         {
             /* Remove the item from the list, depending if pool is protected */
-            if (MmProtectFreedNonPagedPool)
-                MiProtectedPoolRemoveEntryList(&FreeEntry->List);
-            else
+            MmProtectFreedNonPagedPool ?
+                MiProtectedPoolRemoveEntryList(&FreeEntry->List) :
                 RemoveEntryList(&FreeEntry->List);
 
             //
@@ -1185,9 +1181,8 @@ MiFreePoolPages(IN PVOID StartingVa)
             if (i >= MI_MAX_FREE_PAGE_LISTS) i = MI_MAX_FREE_PAGE_LISTS - 1;
 
             /* Insert the entry into the free list head, check for prot. pool */
-            if (MmProtectFreedNonPagedPool)
-                MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE);
-            else
+            MmProtectFreedNonPagedPool ?
+                MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE) :
                 InsertTailList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List);
         }
         else
@@ -1217,9 +1212,8 @@ MiFreePoolPages(IN PVOID StartingVa)
         if (i >= MI_MAX_FREE_PAGE_LISTS) i = MI_MAX_FREE_PAGE_LISTS - 1;
 
         /* Insert the entry into the free list head, check for prot. pool */
-        if (MmProtectFreedNonPagedPool)
-            MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE);
-        else
+        MmProtectFreedNonPagedPool ?
+            MiProtectedPoolInsertList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List, TRUE) :
             InsertTailList(&MmNonPagedPoolFreeListHead[i], &FreeEntry->List);
     }
 

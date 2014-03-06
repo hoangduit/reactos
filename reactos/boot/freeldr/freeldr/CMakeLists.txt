@@ -32,7 +32,6 @@ if((ARCH STREQUAL "arm") AND (SARCH STREQUAL "omap-zoom2"))
 endif()
 
 list(APPEND FREELDR_COMMON_SOURCE
-    include/freeldr.h
     cmdline.c
     debug.c
     linuxboot.c
@@ -63,6 +62,7 @@ list(APPEND FREELDR_COMMON_SOURCE
     reactos/registry.c
     reactos/arcname.c
     reactos/archwsup.c
+    reactos/binhive.c
     ui/directui.c
     ui/gui.c
     ui/minitui.c
@@ -122,7 +122,7 @@ if(ARCH STREQUAL "i386")
         windows/headless.c
         disk/scsiport.c)
     if(NOT MSVC)
-        list(APPEND FREELDR_COMMON_ASM_SOURCE arch/i386/drvmap.S)
+        list(APPEND FREELDR_COMMON_SOURCE arch/i386/drvmap.S)
     endif()
 elseif(ARCH STREQUAL "amd64")
     list(APPEND FREELDR_COMMON_ASM_SOURCE
@@ -130,8 +130,6 @@ elseif(ARCH STREQUAL "amd64")
         arch/amd64/int386.S
         arch/amd64/pnpbios.S)
     list(APPEND FREELDR_COMMON_SOURCE
-        arch/i386/custom.c
-        arch/i386/drivemap.c
         arch/i386/hardware.c
         arch/i386/hwacpi.c
         arch/i386/hwapm.c
@@ -153,9 +151,12 @@ else()
 #TBD
 endif()
 
-add_asm_files(freeldr_common_asm ${FREELDR_COMMON_ASM_SOURCE})
-add_library(freeldr_common ${FREELDR_COMMON_SOURCE} ${freeldr_common_asm})
-add_pch(freeldr_common include/freeldr.h FREELDR_COMMON_SOURCE)
+if(NOT MSVC)
+    add_library(freeldr_common OBJECT ${FREELDR_COMMON_SOURCE} ${FREELDR_COMMON_ASM_SOURCE})
+else()
+    add_asm_files(freeldr_common_asm ${FREELDR_COMMON_ASM_SOURCE})
+    add_library(freeldr_common ${FREELDR_COMMON_SOURCE} ${freeldr_common_asm})
+endif()
 add_dependencies(freeldr_common bugcodes)
 
 if(ARCH STREQUAL "i386" AND NOT MSVC)
@@ -171,20 +172,24 @@ if(NOT MSVC)
     list(APPEND FREELDR_BASE_SOURCE ${CMAKE_CURRENT_BINARY_DIR}/freeldr.def)
 endif()
 
-add_library(freeldr_pe SHARED ${FREELDR_BASE_SOURCE})
-add_library(freeldr_pe_dbg SHARED EXCLUDE_FROM_ALL ${FREELDR_BASE_SOURCE})
-
-if(NOT MSVC AND SEPARATE_DBG)
-    set_target_properties(freeldr_pe PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
-    set_target_properties(freeldr_pe_dbg PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+if(NOT MSVC)
+    add_library(freeldr_pe SHARED $<TARGET_OBJECTS:freeldr_common> ${FREELDR_BASE_SOURCE})
+    add_library(freeldr_pe_dbg SHARED EXCLUDE_FROM_ALL $<TARGET_OBJECTS:freeldr_common> ${FREELDR_BASE_SOURCE})
+    if(SEPARATE_DBG)
+        set_target_properties(freeldr_pe PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+        set_target_properties(freeldr_pe_dbg PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+    endif()
+else()
+    add_library(freeldr_pe SHARED ${FREELDR_BASE_SOURCE})
+    add_library(freeldr_pe_dbg SHARED EXCLUDE_FROM_ALL ${FREELDR_BASE_SOURCE})
 endif()
 
-if(MSVC)
-    add_target_link_flags(freeldr_pe "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text ")
-    add_target_link_flags(freeldr_pe_dbg "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
-else()
+if(NOT MSVC)
     add_target_link_flags(freeldr_pe "-Wl,--strip-all,--exclude-all-symbols,--file-alignment,0x1000,-T,${CMAKE_CURRENT_SOURCE_DIR}/freeldr_i386.lds")
     add_target_link_flags(freeldr_pe_dbg "-Wl,--exclude-all-symbols,--file-alignment,0x1000,-T,${CMAKE_CURRENT_SOURCE_DIR}/freeldr_i386.lds")
+else()
+    add_target_link_flags(freeldr_pe "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text ")
+    add_target_link_flags(freeldr_pe_dbg "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
 endif()
 
 set_image_base(freeldr_pe 0x10000)
@@ -200,8 +205,15 @@ if(ARCH STREQUAL "i386")
     target_link_libraries(freeldr_pe_dbg mini_hal)
 endif()
 
-target_link_libraries(freeldr_pe freeldr_common cportlib cmlib rtl libcntpr)
-target_link_libraries(freeldr_pe_dbg freeldr_common cportlib cmlib rtl libcntpr)
+if(MSVC)
+    target_link_libraries(freeldr_pe freeldr_common)
+    target_link_libraries(freeldr_pe_dbg freeldr_common)
+endif()
+
+target_link_libraries(freeldr_pe cportlib cmlib rtl libcntpr)
+target_link_libraries(freeldr_pe_dbg cportlib cmlib rtl libcntpr)
+
+# add_pch(freeldr_pe include/freeldr.h)
 
 add_dependencies(freeldr_pe asm)
 add_dependencies(freeldr_pe_dbg asm)
@@ -224,20 +236,24 @@ if(ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64")
     list(APPEND SETUPLDR_SOURCE windows/setupldr.c)
 endif()
 
-add_library(setupldr_pe SHARED ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
-add_library(setupldr_pe_dbg SHARED EXCLUDE_FROM_ALL ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
-
-if(NOT MSVC AND SEPARATE_DBG)
-    set_target_properties(setupldr_pe PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
-    set_target_properties(setupldr_pe_dbg PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+if(NOT MSVC)
+    add_library(setupldr_pe SHARED $<TARGET_OBJECTS:freeldr_common> ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
+    add_library(setupldr_pe_dbg SHARED EXCLUDE_FROM_ALL $<TARGET_OBJECTS:freeldr_common> ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
+    if(SEPARATE_DBG)
+        set_target_properties(setupldr_pe PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+        set_target_properties(setupldr_pe_dbg PROPERTIES LINKER_LANGUAGE LDR_PE_HELPER)
+    endif()
+else()
+    add_library(setupldr_pe SHARED ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
+    add_library(setupldr_pe_dbg SHARED EXCLUDE_FROM_ALL ${FREELDR_BASE_SOURCE} ${SETUPLDR_SOURCE})
 endif()
 
-if(MSVC)
-    add_target_link_flags(setupldr_pe "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
-    add_target_link_flags(setupldr_pe_dbg "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
-else()
+if(NOT MSVC)
     add_target_link_flags(setupldr_pe "-Wl,--strip-all,--exclude-all-symbols,--file-alignment,0x1000,-T,${CMAKE_CURRENT_SOURCE_DIR}/freeldr_i386.lds")
     add_target_link_flags(setupldr_pe_dbg "-Wl,--exclude-all-symbols,--file-alignment,0x1000,-T,${CMAKE_CURRENT_SOURCE_DIR}/freeldr_i386.lds")
+else()
+    add_target_link_flags(setupldr_pe "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
+    add_target_link_flags(setupldr_pe_dbg "/ignore:4078 /ignore:4254 /DRIVER /FIXED /ALIGN:0x400 /SECTION:.text,ERW /SECTION:.data,RW /MERGE:.text16=.text /MERGE:.data=.text /MERGE:.rdata=.text /MERGE:.bss=.text")
 endif()
 
 add_target_compile_definitions(setupldr_pe FREELDR_REACTOS_SETUP)
@@ -256,8 +272,13 @@ if(ARCH STREQUAL "i386")
     target_link_libraries(setupldr_pe_dbg mini_hal)
 endif()
 
-target_link_libraries(setupldr_pe freeldr_common cportlib cmlib rtl libcntpr)
-target_link_libraries(setupldr_pe_dbg freeldr_common cportlib cmlib rtl libcntpr)
+if(MSVC)
+    target_link_libraries(setupldr_pe freeldr_common)
+    target_link_libraries(setupldr_pe_dbg freeldr_common)
+endif()
+
+target_link_libraries(setupldr_pe cportlib cmlib rtl libcntpr)
+target_link_libraries(setupldr_pe_dbg cportlib cmlib rtl libcntpr)
 
 add_dependencies(setupldr_pe asm)
 add_dependencies(setupldr_pe_dbg asm)

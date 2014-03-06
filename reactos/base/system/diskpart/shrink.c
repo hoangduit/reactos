@@ -6,7 +6,6 @@
  *					an interactive way
  * PROGRAMMERS:     Lee Schroeder
  */
-
 #include "diskpart.h"
 
 BOOL shrink_main(INT argc, LPWSTR *argv)

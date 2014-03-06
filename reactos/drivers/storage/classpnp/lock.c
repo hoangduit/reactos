@@ -23,6 +23,8 @@ Revision History:
 --*/
 
 #include "classp.h"
+#include "debug.h"
+
 
 LONG LockHighWatermark = 0;
 LONG LockLowWatermark = 0;

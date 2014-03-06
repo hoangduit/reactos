@@ -23,7 +23,15 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "enums.h"
+#include "context.h"
+#include "hint.h"
+#include "imports.h"
+#include "mtypes.h"
+
+
 
 void GLAPIENTRY
 _mesa_Hint( GLenum target, GLenum mode )

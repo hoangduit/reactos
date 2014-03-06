@@ -4,20 +4,22 @@
  * FILE:        include/ws2_32.h
  * PURPOSE:     WinSock 2 DLL header
  */
-
 #ifndef __WS2_32_H
 #define __WS2_32_H
 
-#include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-
+#include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>
+#include <winnls.h>
 #include <winuser.h>
 #include <ws2spi.h>
+#include <ws2tcpip.h>
 #define NTOS_MODE_USER
 #include <ndk/rtlfuncs.h>
 
@@ -29,6 +31,7 @@
 
 #include "catalog.h"
 #include "handle.h"
+//#include "upcall.h"
 
 #define EXPORT WINAPI
 
@@ -126,3 +129,5 @@ void free_servent(struct servent* s);
 #endif /* LE */
 
 #endif /* __WS2_32_H */
+
+/* EOF */

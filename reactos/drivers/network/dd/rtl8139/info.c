@@ -391,3 +391,4 @@ MiniportSetInformation (
 
     return status;
 }
+

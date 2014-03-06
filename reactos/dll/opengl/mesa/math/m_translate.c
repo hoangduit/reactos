@@ -28,9 +28,13 @@
  */
 
 
-#include <precomp.h>
-
+#include "main/glheader.h"
+#include "main/macros.h"
 #include "main/mtypes.h"		/* GLchan hack */
+
+#include "m_translate.h"
+
+
 
 typedef void (*trans_1f_func)(GLfloat *to,
 			      CONST void *ptr,

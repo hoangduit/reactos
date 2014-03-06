@@ -5,7 +5,7 @@ spec2def(kbdmac.dll kbdmac.spec)
 
 add_library(kbdmac SHARED kbdmac.c kbdmac.rc ${CMAKE_CURRENT_BINARY_DIR}/kbdmac.def)
 
-set_module_type(kbdmac kbdlayout)
+set_entrypoint(kbdmac 0)
 
 add_dependencies(kbdmac psdk)
 

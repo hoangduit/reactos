@@ -16,7 +16,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "avifile_private.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+#include <assert.h>
+
+#include "extrachunk.h"
+#include <winbase.h>
+#include <wingdi.h>
+//#include "winuser.h"
+#include <vfw.h>
+
+#include <wine/debug.h>
+
+WINE_DEFAULT_DEBUG_CHANNEL(avifile);
 
 /* reads a chunk out of the extrachunk-structure */
 HRESULT ReadExtraChunk(const EXTRACHUNKS *extra,FOURCC ckid,LPVOID lpData,LPLONG size)

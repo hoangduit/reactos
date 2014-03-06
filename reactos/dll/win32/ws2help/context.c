@@ -9,8 +9,6 @@
 
 #include "precomp.h"
 
-#include <ws2help.h>
-
 /* DATA **********************************************************************/
 
 CRITICAL_SECTION WshHandleTableLock;

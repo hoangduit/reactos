@@ -22,6 +22,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(netapi32);
 
+
 /************************************************************
  * NetGroupAdd  (NETAPI32.@)
  *

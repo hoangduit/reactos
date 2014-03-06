@@ -8,8 +8,6 @@
 
 #include "audiosrv.h"
 
-#include <assert.h>
-
 static HANDLE audio_device_list_lock = NULL;
 
 BOOL

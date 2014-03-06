@@ -20,6 +20,8 @@
  *
 */
 
+#include "res.h"
+
 LANGUAGE LANG_GAELIC, SUBLANG_GAELIC
 
 STRINGTABLE

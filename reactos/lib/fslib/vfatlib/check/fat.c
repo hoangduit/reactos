@@ -11,7 +11,6 @@
 #define NDEBUG
 #include <debug.h>
 
-#include "check.h"
 
 //#pragma warning(disable: 4018)
 

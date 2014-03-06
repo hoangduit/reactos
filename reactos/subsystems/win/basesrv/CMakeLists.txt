@@ -10,13 +10,10 @@ list(APPEND SOURCE
     sndsntry.c
     vdm.c
     nls.c
-    basesrv.h)
-
-add_library(basesrv SHARED
-    ${SOURCE}
     basesrv.rc
     ${CMAKE_CURRENT_BINARY_DIR}/basesrv.def)
 
+add_library(basesrv SHARED ${SOURCE})
 set_module_type(basesrv win32dll UNICODE ENTRYPOINT DllMain 12)
 #############################################
 ## HACK FOR MSVC COMPILATION WITH win32dll ##
@@ -26,6 +23,6 @@ set_subsystem(basesrv console)
 target_link_libraries(basesrv ${PSEH_LIB})
 
 add_importlibs(basesrv csrsrv ntdll)
-add_pch(basesrv basesrv.h SOURCE)
+
 add_dependencies(basesrv bugcodes)
 add_cd_file(TARGET basesrv DESTINATION reactos/system32 FOR all)

@@ -12,6 +12,6 @@
 //typedef GUID UUID;
 
 /* Disk stuff */
-#include <arc/arc.h>
+typedef PVOID PLOADER_PARAMETER_BLOCK;
 #include <ntdddisk.h>
 #include <internal/hal.h>

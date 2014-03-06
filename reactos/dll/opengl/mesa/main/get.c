@@ -22,7 +22,17 @@
  * Author: Kristian Høgsberg <krh@bitplanet.net>
  */
 
-#include <precomp.h>
+#include "glheader.h"
+#include "context.h"
+#include "enable.h"
+#include "enums.h"
+#include "extensions.h"
+#include "get.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "mtypes.h"
+#include "state.h"
+#include "framebuffer.h"
 
 /* This is a table driven implemetation of the glGet*v() functions.
  * The basic idea is that most getters just look up an int somewhere

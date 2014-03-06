@@ -20,7 +20,22 @@
  *
  */
 
-#include "d3dx9_36_private.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+#define COM_NO_WINDOWS_H
+
+#include <config.h>
+//#include "wine/port.h"
+#include <initguid.h>
+
+#include <stdarg.h>
+
+#include <windef.h>
+#include <winbase.h>
+#include <wingdi.h>
+//#include "winuser.h"
+
+#include <d3dx9.h>
 
 /***********************************************************************
  * DllMain.

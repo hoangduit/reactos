@@ -20,6 +20,7 @@
  */
 
 #include "rpc_binding.h"
+//#include "wine/list.h"
 
 typedef struct _RpcAssoc
 {
@@ -46,9 +47,7 @@ typedef struct _RpcAssoc
 } RpcAssoc;
 
 RPC_STATUS RPCRT4_GetAssociation(LPCSTR Protseq, LPCSTR NetworkAddr, LPCSTR Endpoint, LPCWSTR NetworkOptions, RpcAssoc **assoc) DECLSPEC_HIDDEN;
-RPC_STATUS RpcAssoc_GetClientConnection(RpcAssoc *assoc, const RPC_SYNTAX_IDENTIFIER *InterfaceId,
-    const RPC_SYNTAX_IDENTIFIER *TransferSyntax, RpcAuthInfo *AuthInfo, RpcQualityOfService *QOS,
-    LPCWSTR CookieAuth, RpcConnection **Connection) DECLSPEC_HIDDEN;
+RPC_STATUS RpcAssoc_GetClientConnection(RpcAssoc *assoc, const RPC_SYNTAX_IDENTIFIER *InterfaceId, const RPC_SYNTAX_IDENTIFIER *TransferSyntax, RpcAuthInfo *AuthInfo, RpcQualityOfService *QOS, RpcConnection **Connection) DECLSPEC_HIDDEN;
 void RpcAssoc_ReleaseIdleConnection(RpcAssoc *assoc, RpcConnection *Connection) DECLSPEC_HIDDEN;
 ULONG RpcAssoc_Release(RpcAssoc *assoc) DECLSPEC_HIDDEN;
 RPC_STATUS RpcServerAssoc_GetAssociation(LPCSTR Protseq, LPCSTR NetworkAddr, LPCSTR Endpoint, LPCWSTR NetworkOptions, ULONG assoc_gid, RpcAssoc **assoc_out) DECLSPEC_HIDDEN;

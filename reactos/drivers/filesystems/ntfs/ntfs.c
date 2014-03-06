@@ -35,6 +35,7 @@
 
 PNTFS_GLOBAL_DATA NtfsGlobalData = NULL;
 
+
 /* FUNCTIONS ****************************************************************/
 
 /*

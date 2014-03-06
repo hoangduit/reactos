@@ -11,17 +11,19 @@
 
 #include "msgina.h"
 
+WINE_DEFAULT_DEBUG_CHANNEL(msgina);
+
 /*
  * @unimplemented
  */
 DWORD WINAPI
 ShellShutdownDialog(
-    HWND   hParent,
-    LPWSTR lpUsername,
-    BOOL   bHideLogoff)
+    HWND  hParent,
+    DWORD Unknown,
+    BOOL  bHideLogoff)
 {
     UNREFERENCED_PARAMETER(hParent);
-    UNREFERENCED_PARAMETER(lpUsername);
+    UNREFERENCED_PARAMETER(Unknown);
     UNREFERENCED_PARAMETER(bHideLogoff);
 
     /* Return values:

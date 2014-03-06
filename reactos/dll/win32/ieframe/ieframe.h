@@ -18,10 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef _IEFRAME_H_
-#define _IEFRAME_H_
-
-#include <stdio.h>
+#include <stdarg.h>
 
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
@@ -29,33 +26,25 @@
 
 #define COBJMACROS
 #define NONAMELESSUNION
-#define NONAMELESSSTRUCT
 
 #include <windef.h>
 #include <winbase.h>
 #include <wingdi.h>
-#include <winreg.h>
+//#include "winuser.h"
 #include <wincon.h>
+
+//#include "ole2.h"
+//#include "olectl.h"
 #include <shlobj.h>
 #include <mshtmhst.h>
-#include <mshtmdid.h>
-#include <exdispid.h>
+//#include "exdisp.h"
+#include <hlink.h>
 #include <htiface.h>
-#include <idispids.h>
-#include <intshcut.h>
-#include <perhist.h>
-#include <shellapi.h>
-#include <shlwapi.h>
-#include <shdeprecated.h>
+#include "shdeprecated.h"
 #include <docobjectservice.h>
 
 #include <wine/unicode.h>
 #include <wine/list.h>
-
-#include <wine/debug.h>
-WINE_DEFAULT_DEBUG_CHANNEL(ieframe);
-
-#include "resource.h"
 
 typedef struct ConnectionPoint ConnectionPoint;
 typedef struct DocHost DocHost;
@@ -403,5 +392,3 @@ static inline LPSTR co_strdupWtoA(LPCWSTR str)
         WideCharToMultiByte(CP_ACP, 0, str, -1, ret, len, 0, 0);
     return ret;
 }
-
-#endif /* _IEFRAME_H_ */

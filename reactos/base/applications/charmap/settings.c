@@ -9,9 +9,6 @@
 
 #include <precomp.h>
 
-#include <winreg.h>
-#include <windowsx.h>
-#include <tchar.h>
 
 const TCHAR g_szGeneralRegKey[] = _T("Software\\Microsoft\\CharMap");
 HWND hWnd;

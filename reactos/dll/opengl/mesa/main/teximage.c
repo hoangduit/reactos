@@ -28,7 +28,23 @@
  * Texture image-related functions.
  */
 
-#include <precomp.h>
+
+#include "glheader.h"
+#include "bufferobj.h"
+#include "context.h"
+#include "enums.h"
+#include "framebuffer.h"
+#include "hash.h"
+#include "image.h"
+#include "imports.h"
+#include "macros.h"
+#include "mfeatures.h"
+#include "state.h"
+#include "teximage.h"
+#include "texstate.h"
+#include "texpal.h"
+#include "mtypes.h"
+
 
 /**
  * State changes which we care about for glCopyTex[Sub]Image() calls.

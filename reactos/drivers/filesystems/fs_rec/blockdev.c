@@ -10,10 +10,6 @@
 /* INCLUDES *****************************************************************/
 
 #include "fs_rec.h"
-
-#include <ntdddisk.h>
-#include <ntddcdrm.h>
-
 #define NDEBUG
 #include <debug.h>
 
@@ -225,3 +221,4 @@ FsRecReadBlock(IN PDEVICE_OBJECT DeviceObject,
     /* All went well */
     return TRUE;
 }
+

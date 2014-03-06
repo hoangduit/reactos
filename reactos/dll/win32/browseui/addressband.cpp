@@ -21,7 +21,6 @@
 /*
 Implements the navigation band of the cabinet window
 */
-
 #include "precomp.h"
 
 /*

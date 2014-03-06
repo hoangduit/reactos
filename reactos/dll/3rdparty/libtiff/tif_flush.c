@@ -27,8 +27,7 @@
 /*
  * TIFF Library.
  */
-
-#include <precomp.h>
+#include "tiffiop.h"
 
 int
 TIFFFlush(TIFF* tif)

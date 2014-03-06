@@ -369,19 +369,19 @@
 @ stub RpcCertGeneratePrincipalNameW
 @ stdcall RpcCompleteAsyncCall(ptr ptr) RpcAsyncCompleteCall
 @ stdcall RpcEpRegisterA(ptr ptr ptr str)
-@ stdcall RpcEpRegisterNoReplaceA(ptr ptr ptr str)
-@ stdcall RpcEpRegisterNoReplaceW(ptr ptr ptr wstr)
+@ stub RpcEpRegisterNoReplaceA
+@ stub RpcEpRegisterNoReplaceW
 @ stdcall RpcEpRegisterW(ptr ptr ptr wstr)
 @ stdcall RpcEpResolveBinding(ptr ptr)
 @ stdcall RpcEpUnregister(ptr ptr ptr)
 @ stub RpcErrorAddRecord # wxp
 @ stub RpcErrorClearInformation # wxp
-@ stdcall RpcErrorEndEnumeration(ptr)
-@ stdcall RpcErrorGetNextRecord(ptr long ptr)
-@ stdcall RpcErrorLoadErrorInfo(ptr long ptr)
+@ stub RpcErrorEndEnumeration # wxp
+@ stub RpcErrorGetNextRecord # wxp
+@ stub RpcErrorLoadErrorInfo # wxp
 @ stub RpcErrorNumberOfRecords # wxp
 @ stub RpcErrorResetEnumeration # wxp
-@ stdcall RpcErrorSaveErrorInfo(ptr ptr ptr)
+@ stub RpcErrorSaveErrorInfo # wxp
 @ stdcall RpcErrorStartEnumeration(ptr)
 @ stub RpcFreeAuthorizationContext # wxp
 @ stdcall RpcGetAsyncCallStatus(ptr) RpcAsyncGetCallStatus
@@ -427,8 +427,8 @@
 @ stdcall RpcServerInqBindings(ptr)
 @ stub RpcServerInqCallAttributesA # wxp
 @ stub RpcServerInqCallAttributesW # wxp
-@ stdcall RpcServerInqDefaultPrincNameA(long ptr)
-@ stdcall RpcServerInqDefaultPrincNameW(long ptr)
+@ stub RpcServerInqDefaultPrincNameA
+@ stub RpcServerInqDefaultPrincNameW
 @ stub RpcServerInqIf
 @ stdcall RpcServerListen(long long long)
 @ stdcall RpcServerRegisterAuthInfoA(str  long ptr ptr)

@@ -21,7 +21,11 @@
  *
  */
 
+#include <config.h>
+#include <initguid.h>
 #include "d3d9_private.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(d3d9);
 
 static int D3DPERF_event_level = 0;
 
@@ -89,10 +93,12 @@ void* WINAPI Direct3DShaderValidatorCreate9(void)
 /*******************************************************************
  *       DllMain
  */
-BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, void *reserved)
+BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpv)
 {
-    if (reason == DLL_PROCESS_ATTACH)
-        DisableThreadLibraryCalls(inst);
+    /* At process attach */
+    TRACE("fdwReason=%d\n", fdwReason);
+    if (fdwReason == DLL_PROCESS_ATTACH)
+        DisableThreadLibraryCalls(hInstDLL);
 
     return TRUE;
 }
@@ -100,9 +106,8 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, void *reserved)
 /***********************************************************************
  *              D3DPERF_BeginEvent (D3D9.@)
  */
-int WINAPI D3DPERF_BeginEvent(D3DCOLOR color, const WCHAR *name)
-{
-    TRACE("color 0x%08x, name %s.\n", color, debugstr_w(name));
+int WINAPI D3DPERF_BeginEvent(D3DCOLOR color, LPCWSTR name) {
+    TRACE("(color %#x, name %s) : stub\n", color, debugstr_w(name));
 
     return D3DPERF_event_level++;
 }
@@ -146,15 +151,13 @@ BOOL WINAPI D3DPERF_QueryRepeatFrame(void) {
 /***********************************************************************
  *              D3DPERF_SetMarker (D3D9.@)
  */
-void WINAPI D3DPERF_SetMarker(D3DCOLOR color, const WCHAR *name)
-{
-    FIXME("color 0x%08x, name %s stub!\n", color, debugstr_w(name));
+void WINAPI D3DPERF_SetMarker(D3DCOLOR color, LPCWSTR name) {
+    FIXME("(color %#x, name %s) : stub\n", color, debugstr_w(name));
 }
 
 /***********************************************************************
  *              D3DPERF_SetRegion (D3D9.@)
  */
-void WINAPI D3DPERF_SetRegion(D3DCOLOR color, const WCHAR *name)
-{
-    FIXME("color 0x%08x, name %s stub!\n", color, debugstr_w(name));
+void WINAPI D3DPERF_SetRegion(D3DCOLOR color, LPCWSTR name) {
+    FIXME("(color %#x, name %s) : stub\n", color, debugstr_w(name));
 }

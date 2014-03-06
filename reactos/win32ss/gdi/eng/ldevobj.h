@@ -15,7 +15,8 @@ typedef enum
 
 typedef struct _LDEVOBJ
 {
-    LIST_ENTRY leLink;
+    struct _LDEVOBJ *pldevNext;
+    struct _LDEVOBJ *pldevPrev;
     SYSTEM_GDI_DRIVER_INFORMATION *pGdiDriverInfo;
     LDEVTYPE ldevtype;
     ULONG cRefs;
@@ -29,16 +30,36 @@ typedef struct _LDEVOBJ
 
 } LDEVOBJ, *PLDEVOBJ;
 
-INIT_FUNCTION
-NTSTATUS
+extern PLDEVOBJ gpldevHead;
+extern HSEMAPHORE ghsemDriverMgmt;
+
+PLDEVOBJ
 NTAPI
-InitLDEVImpl(VOID);
+LDEVOBJ_pldevLoadImage(
+    PUNICODE_STRING pusPathName,
+    LDEVTYPE ldevtype);
+
+BOOL
+NTAPI
+LDEVOBJ_bLoadDriver(
+    IN PLDEVOBJ pldev);
+
+PVOID
+NTAPI
+LDEVOBJ_pvFindImageProcAddress(
+    IN PLDEVOBJ pldev,
+    IN LPSTR    lpProcName);
 
 PDEVMODEINFO
 NTAPI
 LDEVOBJ_pdmiGetModes(
-    _In_ PLDEVOBJ pldev,
-    _In_ HANDLE hDriver);
+    PLDEVOBJ pldev,
+    HANDLE hDriver);
+
+INIT_FUNCTION
+NTSTATUS
+NTAPI
+InitLDEVImpl(VOID);
 
 PLDEVOBJ
 APIENTRY
@@ -54,6 +75,6 @@ EngGetLDEV(
 NTSTATUS
 APIENTRY
 DriverEntry (
-    _In_ PDRIVER_OBJECT	DriverObject,
-    _In_ PUNICODE_STRING RegistryPath);
+  IN	PDRIVER_OBJECT	DriverObject,
+  IN	PUNICODE_STRING	RegistryPath);
 

@@ -178,8 +178,8 @@ NtQueryDefaultLocale(IN BOOLEAN UserProfile,
         /* Check if we have a user profile */
         if (UserProfile)
         {
-            /* Return session wide thread locale */
-            *DefaultLocaleId = MmGetSessionLocaleId();
+            /* Return thread locale */
+            *DefaultLocaleId = PsDefaultThreadLocaleId;
         }
         else
         {
@@ -206,14 +206,11 @@ NtSetDefaultLocale(IN BOOLEAN UserProfile,
     OBJECT_ATTRIBUTES ObjectAttributes;
     UNICODE_STRING KeyName;
     UNICODE_STRING ValueName;
-    UNICODE_STRING LocaleString;
     HANDLE KeyHandle;
     ULONG ValueLength;
     WCHAR ValueBuffer[20];
     HANDLE UserKey;
     NTSTATUS Status;
-    UCHAR KeyValueBuffer[256];
-    PKEY_VALUE_PARTIAL_INFORMATION KeyValueInformation;
     PAGED_CODE();
 
     /* Check if we have a profile */
@@ -244,52 +241,12 @@ NtSetDefaultLocale(IN BOOLEAN UserProfile,
                               UserKey,
                               NULL);
 
-    /* Check if we don't have a default locale yet */
+    /* Check if we don' thave a default locale yet */
     if (!DefaultLocaleId)
     {
-        /* Open the key for reading */
-        Status = ZwOpenKey(&KeyHandle, KEY_QUERY_VALUE, &ObjectAttributes);
-        if (!NT_SUCCESS(Status))
-        {
-            KeyHandle = NULL;
-            goto Cleanup;
-        }
-
-        /* Query the key value */
-        KeyValueInformation = (PKEY_VALUE_PARTIAL_INFORMATION)KeyValueBuffer;
-        Status = ZwQueryValueKey(KeyHandle,
-                                 &ValueName,
-                                 KeyValuePartialInformation,
-                                 KeyValueInformation,
-                                 sizeof(KeyValueBuffer),
-                                 &ValueLength);
-        if (!NT_SUCCESS(Status))
-        {
-            goto Cleanup;
-        }
-
-        /* Check if this is a REG_DWORD */
-        if ((KeyValueInformation->Type == REG_DWORD) &&
-            (KeyValueInformation->DataLength == sizeof(ULONG)))
-        {
-            /* It contains the LCID as a DWORD */
-            DefaultLocaleId = *((ULONG*)KeyValueInformation->Data);
-        }
-        /* Otherwise check for a REG_SZ */
-        else if (KeyValueInformation->Type == REG_SZ)
-        {
-            /* Initialize a unicode string from the value data */
-            LocaleString.Buffer = (PWCHAR)KeyValueInformation->Data;
-            LocaleString.Length = (USHORT)KeyValueInformation->DataLength;
-            LocaleString.MaximumLength = LocaleString.Length;
-
-            /* Convert the hex string to a number */
-            RtlUnicodeStringToInteger(&LocaleString, 16, &DefaultLocaleId);
-        }
-        else
-        {
-            Status = STATUS_UNSUCCESSFUL;
-        }
+        DPRINT1("TODO\n");
+        Status = STATUS_SUCCESS;
+        ASSERT(FALSE);
     }
     else
     {
@@ -323,15 +280,10 @@ NtSetDefaultLocale(IN BOOLEAN UserProfile,
                                    REG_SZ,
                                    ValueBuffer,
                                    ValueLength);
+
+            /* And close the key */
+            ZwClose(KeyHandle);
         }
-    }
-
-Cleanup:
-
-    /* Close the locale key */
-    if (KeyHandle)
-    {
-        ObCloseHandle(KeyHandle, KernelMode);
     }
 
     /* Close the user key */
@@ -346,8 +298,8 @@ Cleanup:
         /* Check if it was for a user */
         if (UserProfile)
         {
-            /* Set the session wide thread locale */
-            MmSetSessionLocaleId(DefaultLocaleId);
+            /* Set thread locale */
+            PsDefaultThreadLocaleId = DefaultLocaleId;
         }
         else
         {
@@ -431,13 +383,13 @@ NtQueryDefaultUILanguage(OUT LANGID* LanguageId)
     }
     _SEH2_EXCEPT(ExSystemExceptionFilter())
     {
-        /* Return exception code */
-        return _SEH2_GetExceptionCode();
+        /* Get exception code */
+        Status = _SEH2_GetExceptionCode();
     }
     _SEH2_END;
 
-    /* Return success */
-    return STATUS_SUCCESS;
+    /* Return status */
+    return Status;
 }
 
 /*
@@ -447,29 +399,18 @@ NTSTATUS
 NTAPI
 NtSetDefaultUILanguage(IN LANGID LanguageId)
 {
-    NTSTATUS Status;
     PAGED_CODE();
 
-    /* Check if the caller specified a language id */
-    if (LanguageId)
+    /* Check if we don't have a default yet */
+    if (!LanguageId)
     {
-        /* Set the pending MUI language id */
-        Status = ExpSetCurrentUserUILanguage(L"MUILanguagePending", LanguageId);
-    }
-    else
-    {
-        /* Otherwise get the pending MUI language id */
-        Status = ExpGetCurrentUserUILanguage(L"MUILanguagePending", &LanguageId);
-        if (!NT_SUCCESS(Status))
-        {
-            return Status;
-        }
-
-        /* And apply it as actual */
-        Status = ExpSetCurrentUserUILanguage(L"MultiUILanguageId", LanguageId);
+        /* FIXME */
+        DPRINT1("TODO\n");
+        ASSERT(FALSE);
     }
 
-    return Status;
+    /* Otherwise, call the internal routine */
+    return ExpSetCurrentUserUILanguage(L"MUILanguagePending", LanguageId);
 }
 
 /* EOF */

@@ -23,6 +23,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 /**
  * \file s_texfetch.c
  *
@@ -31,7 +32,13 @@
  * \author Gareth Hughes
  */
 
-#include <precomp.h>
+
+#include "main/colormac.h"
+#include "main/macros.h"
+#include "main/teximage.h"
+#include "s_context.h"
+#include "s_texfetch.h"
+
 
 /**
  * Convert an 8-bit sRGB value from non-linear space to a

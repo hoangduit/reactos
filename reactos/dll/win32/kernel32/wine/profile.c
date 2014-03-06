@@ -19,11 +19,25 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <k32.h>
+//#include "config.h"
+//#include "wine/port.h"
 
-#define NDEBUG
-#include <debug.h>
-DEBUG_CHANNEL(profile);
+#include <string.h>
+#include <stdarg.h>
+
+#include "windef.h"
+#include "winbase.h"
+#include "winnls.h"
+#include "winerror.h"
+#include "winternl.h"
+#include "wine/unicode.h"
+#include "wine/library.h"
+#include "wine/debug.h"
+
+#define HeapAlloc RtlAllocateHeap
+#define HeapReAlloc RtlReAllocateHeap
+#define HeapFree RtlFreeHeap
+WINE_DEFAULT_DEBUG_CHANNEL(profile);
 
 static const char bom_utf8[] = {0xEF,0xBB,0xBF};
 
@@ -263,7 +277,7 @@ static inline int PROFILE_isspaceW(WCHAR c)
 	return isspaceW(c) || c == 0x1a;
 }
 
-static inline ENCODING PROFILE_DetectTextEncoding(void * buffer, int * len)
+static inline ENCODING PROFILE_DetectTextEncoding(const void * buffer, int * len)
 {
     int flags = IS_TEXT_UNICODE_SIGNATURE |
                 IS_TEXT_UNICODE_REVERSE_SIGNATURE |
@@ -470,7 +484,7 @@ static PROFILESECTION *PROFILE_Load(HANDLE hFile, ENCODING * pEncoding)
            prev_key   = key;
 
            TRACE("New key: name=%s, value=%s\n",
-               debugstr_w(key->name), key->value ? debugstr_w(key->value) : L"(none)");
+               debugstr_w(key->name), key->value ? debugstr_w(key->value) : "(none)");
         }
     }
     if (szFile != pBuffer)

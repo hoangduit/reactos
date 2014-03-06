@@ -1,8 +1,16 @@
-#ifndef _WDMAUD_PCH_
-#define _WDMAUD_PCH_
-
+#include <pseh/pseh2.h>
+#include <ntddk.h>
 #include <portcls.h>
+#include <ks.h>
+#define NDEBUG
+#include <debug.h>
+#include <ksmedia.h>
+#include <mmreg.h>
 #include <mmsystem.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <wchar.h>
+#include "mmixer.h"
 
 #include "interface.h"
 
@@ -312,4 +320,3 @@ VOID
 FreeItem(
     IN PVOID Item);
 
-#endif /* _WDMAUD_PCH_ */

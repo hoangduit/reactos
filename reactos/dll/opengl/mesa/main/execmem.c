@@ -30,7 +30,10 @@
  * \author Keith Whitwell
  */
 
-#include <precomp.h>
+
+#include "imports.h"
+
+
 
 #if defined(__linux__) || defined(__OpenBSD__) || defined(_NetBSD__) || defined(__sun)
 
@@ -41,6 +44,7 @@
 
 #include <unistd.h>
 #include <sys/mman.h>
+#include "mm.h"
 
 #ifdef MESA_SELINUX
 #include <selinux/selinux.h>

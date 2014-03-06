@@ -16,9 +16,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "netapi32.h"
+#define WIN32_NO_STATUS
+#include <config.h>
 
-#include <lmserver.h>
+#include <wine/debug.h>
+//#include "lm.h"
+#include "netbios.h"
+
+#define NTOS_MODE_USER
+#include <ndk/rtlfuncs.h>
+#include "netapi32.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(netbios);
 

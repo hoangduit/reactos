@@ -6,9 +6,8 @@ list(APPEND SOURCE
     connect.c
     execpgm.c
     lookupss.c
-    smclient.c
-    precomp.h)
-
+    smclient.c)
+    
 add_library(smlib ${SOURCE})
-add_pch(smlib precomp.h SOURCE)
+add_pch(smlib precomp.h)
 add_dependencies(smlib psdk)

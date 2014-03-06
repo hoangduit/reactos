@@ -18,9 +18,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include "precomp.h"
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
 
+#define COBJMACROS
+
+#include <config.h>
+
+//#include <stdarg.h>
+#ifdef HAVE_LIBXML2
+# include <libxml/parser.h>
+//# include <libxml/xmlerror.h>
+#endif
+
+#include <windef.h>
+#include <winbase.h>
+//#include "winuser.h"
+#include <ole2.h>
+#include <msxml6.h>
 #include <msxml2did.h>
+
+#include "msxml_private.h"
+
+#include <wine/debug.h>
 
 /* This file implements the object returned by childNodes property. Note that this is
  * not the IXMLDOMNodeList returned by XPath queries - it's implemented in selection.c.
@@ -30,6 +50,8 @@
  *  - note that an attribute node have a text child in DOM but not in the XPath data model
  *    thus the child is inaccessible by an XPath query
  */
+
+WINE_DEFAULT_DEBUG_CHANNEL(msxml);
 
 #ifdef HAVE_LIBXML2
 

@@ -57,9 +57,20 @@
  *    somehow.
  */
 
+#define WIN32_NO_STATUS
+#define _INC_WINDOWS
+
+#include <stdarg.h>
+
+//#include "winerror.h"
+#include <windef.h>
+#include <winbase.h>
+#include <objbase.h>
+#include <rpcproxy.h>
+#include <wine/debug.h>
 #include "dplayx_global.h"
 
-#include <rpcproxy.h>
+WINE_DEFAULT_DEBUG_CHANNEL(dplay);
 
 static HINSTANCE instance;
 

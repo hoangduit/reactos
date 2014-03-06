@@ -11,9 +11,6 @@
 
 #include "mmdrv.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /* Each session is tracked, but the list must be locked when in use  */
 
 SessionInfo* session_list = NULL;

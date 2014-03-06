@@ -7,10 +7,11 @@
  * PROGRAMMERS:     Eric Kohl
  */
 
+/* INCLUDES ****************************************************************/
+
 #include "samsrv.h"
 
-#include <ndk/cmfuncs.h>
-#include <ndk/obfuncs.h>
+WINE_DEFAULT_DEBUG_CHANNEL(samsrv);
 
 /* FUNCTIONS ***************************************************************/
 

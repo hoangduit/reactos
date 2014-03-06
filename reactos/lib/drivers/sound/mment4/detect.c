@@ -13,8 +13,6 @@
 
 #include "precomp.h"
 
-#include <mment4.h>
-
 /*
     This is the "nice" way to discover audio devices in NT4 - go into the
     service registry key and enumerate the Parameters\Device*\Devices

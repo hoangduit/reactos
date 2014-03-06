@@ -21,9 +21,6 @@
 
 #include "videoprt.h"
 
-#define NDEBUG
-#include <debug.h>
-
 /*
  * @implemented
  */

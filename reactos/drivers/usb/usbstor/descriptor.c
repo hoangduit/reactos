@@ -11,9 +11,6 @@
 
 #include "usbstor.h"
 
-#define NDEBUG
-#include <debug.h>
-
 NTSTATUS
 NTAPI
 USBSTOR_GetDescriptor(

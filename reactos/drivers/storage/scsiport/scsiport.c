@@ -29,20 +29,16 @@
 
 #include "precomp.h"
 
-#include <ntddk.h>
-#include <stdio.h>
-#include <scsi.h>
-#include <ntddscsi.h>
-#include <ntdddisk.h>
-
+#ifndef NDEBUG
 #define NDEBUG
+#endif
 #include <debug.h>
-
-#include "scsiport_int.h"
 
 ULONG InternalDebugLevel = 0x00;
 
 #undef ScsiPortMoveMemory
+
+/* TYPES *********************************************************************/
 
 /* GLOBALS *******************************************************************/
 
@@ -3286,7 +3282,7 @@ SpiAdapterControl(PDEVICE_OBJECT DeviceObject,
             break;
 
         ScatterGatherList->Length = Srb->DataTransferLength - TotalLength;
-        ScatterGatherList->PhysicalAddress = IoMapTransfer(DeviceExtension->AdapterObject,
+        ScatterGatherList->PhysicalAddress = IoMapTransfer(NULL,
                                                            Irp->MdlAddress,
                                                            MapRegisterBase,
                                                            DataVA + TotalLength,
@@ -6410,5 +6406,6 @@ ScsiPortConvertPhysicalAddressToUlong(IN SCSI_PHYSICAL_ADDRESS Address)
   DPRINT("ScsiPortConvertPhysicalAddressToUlong()\n");
   return(Address.u.LowPart);
 }
+
 
 /* EOF */

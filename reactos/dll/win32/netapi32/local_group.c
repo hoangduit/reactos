@@ -22,6 +22,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(netapi32);
 
+
 typedef enum _ENUM_PHASE
 {
     BuiltinPhase,

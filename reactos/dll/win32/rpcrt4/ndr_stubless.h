@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#pragma once
-
 #include <ndrtypes.h>
 
 /* there can't be any alignment with the structures in this file */
