@@ -11,6 +11,9 @@
 
 #include "usbccgp.h"
 
+#define NDEBUG
+#include <debug.h>
+
 NTSTATUS
 NTAPI
 USBCCGP_GetDescriptor(
@@ -542,4 +545,3 @@ USBCCGP_SelectConfiguration(
     //
     return Status;
 }
-

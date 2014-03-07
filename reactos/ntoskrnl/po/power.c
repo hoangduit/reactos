@@ -9,7 +9,6 @@
 
 /* INCLUDES ******************************************************************/
 
-#include "initguid.h"
 #include <ntoskrnl.h>
 #define NDEBUG
 #include <debug.h>
@@ -344,6 +343,10 @@ PoInitSystem(IN ULONG BootPhase)
     
     /* Initialize support for dope */
     KeInitializeSpinLock(&PopDopeGlobalLock);
+
+    /* Initialize support for shutdown waits and work-items */
+    PopInitShutdownList();
+
     return TRUE;
 }
 
@@ -443,17 +446,6 @@ PoShutdownBugCheck(IN BOOLEAN LogError,
                  BugCheckParameter2,
                  BugCheckParameter3,
                  BugCheckParameter4);
-}
-
-/*
- * @unimplemented
- */
-NTSTATUS
-NTAPI
-PoRequestShutdownEvent(OUT PVOID *Event)
-{
-    UNIMPLEMENTED;
-    return STATUS_NOT_IMPLEMENTED;
 }
 
 /*
@@ -635,19 +627,6 @@ NTAPI
 PoUnregisterSystemState(IN PVOID StateHandle)
 {
     UNIMPLEMENTED;
-}
-
-/*
- * @unimplemented
- */
-NTSTATUS
-NTAPI
-PoQueueShutdownWorkItem(IN PWORK_QUEUE_ITEM WorkItem)
-{
-    PAGED_CODE();
-
-    UNIMPLEMENTED;
-    return STATUS_NOT_IMPLEMENTED;
 }
 
 /*

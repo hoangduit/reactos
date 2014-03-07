@@ -19,24 +19,28 @@
 #ifndef __WINE_GP_PRIVATE_H_
 #define __WINE_GP_PRIVATE_H_
 
+#include <math.h>
+#include <stdarg.h>
+
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
 
-#include <math.h>
-#include <stdarg.h>
+#define NONAMELESSUNION
+#define COBJMACROS
 
 #include <windef.h>
-#include <wingdi.h>
 #include <winbase.h>
-//#include "winuser.h"
-
+#include <wingdi.h>
 #include <objbase.h>
-//#include "ocidl.h"
 #include <wincodecsdk.h>
+#include <gdiplus.h>
+
+#include <wine/unicode.h>
 #include <wine/list.h>
 
-#include <gdiplus.h>
+#include <wine/debug.h>
+WINE_DEFAULT_DEBUG_CHANNEL(gdiplus);
 
 #define GP_DEFAULT_PENSTYLE (PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_FLAT | PS_JOIN_MITER)
 #define MAX_ARC_PTS (13)
@@ -451,4 +455,4 @@ GpStatus gdip_format_string(HDC hdc,
 
 void get_log_fontW(const GpFont *, GpGraphics *, LOGFONTW *) DECLSPEC_HIDDEN;
 
-#endif
+#endif /* __WINE_GP_PRIVATE_H_ */

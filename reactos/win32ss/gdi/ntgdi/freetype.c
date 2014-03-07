@@ -11,6 +11,14 @@
 
 #include <win32k.h>
 
+#include FT_GLYPH_H
+#include FT_TYPE1_TABLES_H
+#include <tttables.h>
+#include <fttrigon.h>
+#include <ftbitmap.h>
+#include <ftoutln.h>
+#include <ftwinfnt.h>
+
 #define NDEBUG
 #include <debug.h>
 

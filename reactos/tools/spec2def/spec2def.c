@@ -7,12 +7,16 @@
 #define strcasecmp _stricmp
 #endif
 
+typedef struct _STRING
+{
+    const char *buf;
+    int len;
+} STRING, *PSTRING;
+
 typedef struct
 {
-    char *pcName;
-    int nNameLength;
-    char *pcRedirection;
-    int nRedirectionLength;
+    STRING strName;
+    STRING strTarget;
     int nCallingConvention;
     int nOrdinal;
     int nStackBytes;
@@ -32,21 +36,22 @@ enum _ARCH
 };
 
 typedef int (*PFNOUTLINE)(FILE *, EXPORT *);
-int gbKillAt = 0;
 int gbMSComp = 0;
 int gbImportLib = 0;
-int no_redirections = 0;
 int giArch = ARCH_X86;
 char *pszArchString = "i386";
 char *pszArchString2;
 char *pszDllName = 0;
 char *gpszUnderscore = "";
+int gbDebug;
+#define DbgPrint(...) (!gbDebug || fprintf(stderr, __VA_ARGS__))
 
 enum
 {
     FL_PRIVATE = 1,
     FL_STUB = 2,
     FL_NONAME = 4,
+    FL_ORDINAL = 8,
 };
 
 enum
@@ -101,12 +106,13 @@ CompareToken(const char *token, const char *comparand)
     return 1;
 }
 
-int
+const char *
 ScanToken(const char *token, char chr)
 {
     while (!IsSeparator(*token))
     {
-        if (*token++ == chr) return 1;
+        if (*token == chr) return token;
+        token++;
     }
     return 0;
 }
@@ -174,13 +180,13 @@ OutputLine_stub(FILE *file, EXPORT *pexp)
     }
 
     /* Check for C++ */
-    if (pexp->pcName[0] == '?')
+    if (pexp->strName.buf[0] == '?')
     {
         fprintf(file, "stub_function%d(", pexp->nNumber);
     }
     else
     {
-        fprintf(file, "%.*s(", pexp->nNameLength, pexp->pcName);
+        fprintf(file, "%.*s(", pexp->strName.len, pexp->strName.buf);
     }
 
     for (i = 0; i < pexp->nArgCount; i++)
@@ -199,8 +205,8 @@ OutputLine_stub(FILE *file, EXPORT *pexp)
         }
         fprintf(file, " a%d", i);
     }
-    fprintf(file, ")\n{\n\tDPRINT1(\"WARNING: calling stub %.*s(",
-            pexp->nNameLength, pexp->pcName);
+    fprintf(file, ")\n{\n\tDbgPrint(\"WARNING: calling stub %.*s(",
+            pexp->strName.len, pexp->strName.buf);
 
     for (i = 0; i < pexp->nArgCount; i++)
     {
@@ -261,7 +267,7 @@ int
 OutputLine_asmstub(FILE *fileDest, EXPORT *pexp)
 {
     /* Handle autoname */
-    if (pexp->nNameLength == 1 && pexp->pcName[0] == '@')
+    if (pexp->strName.len == 1 && pexp->strName.buf[0] == '@')
     {
         fprintf(fileDest, "PUBLIC %sordinal%d\n%sordinal%d: nop\n",
                 gpszUnderscore, pexp->nOrdinal, gpszUnderscore, pexp->nOrdinal);
@@ -269,33 +275,33 @@ OutputLine_asmstub(FILE *fileDest, EXPORT *pexp)
     else if (giArch != ARCH_X86)
     {
         fprintf(fileDest, "PUBLIC _stub_%.*s\n_stub_%.*s: nop\n",
-                pexp->nNameLength, pexp->pcName,
-                pexp->nNameLength, pexp->pcName);
+                pexp->strName.len, pexp->strName.buf,
+                pexp->strName.len, pexp->strName.buf);
     }
     else if (pexp->nCallingConvention == CC_STDCALL)
     {
         fprintf(fileDest, "PUBLIC __stub_%.*s@%d\n__stub_%.*s@%d: nop\n",
-                pexp->nNameLength, pexp->pcName, pexp->nStackBytes,
-                pexp->nNameLength, pexp->pcName, pexp->nStackBytes);
+                pexp->strName.len, pexp->strName.buf, pexp->nStackBytes,
+                pexp->strName.len, pexp->strName.buf, pexp->nStackBytes);
     }
     else if (pexp->nCallingConvention == CC_FASTCALL)
     {
         fprintf(fileDest, "PUBLIC @_stub_%.*s@%d\n@_stub_%.*s@%d: nop\n",
-                pexp->nNameLength, pexp->pcName, pexp->nStackBytes,
-                pexp->nNameLength, pexp->pcName, pexp->nStackBytes);
+                pexp->strName.len, pexp->strName.buf, pexp->nStackBytes,
+                pexp->strName.len, pexp->strName.buf, pexp->nStackBytes);
     }
     else if (pexp->nCallingConvention == CC_CDECL ||
              pexp->nCallingConvention == CC_STUB)
     {
         fprintf(fileDest, "PUBLIC __stub_%.*s\n__stub_%.*s: nop\n",
-                pexp->nNameLength, pexp->pcName,
-                pexp->nNameLength, pexp->pcName);
+                pexp->strName.len, pexp->strName.buf,
+                pexp->strName.len, pexp->strName.buf);
     }
     else if (pexp->nCallingConvention == CC_EXTERN)
     {
         fprintf(fileDest, "PUBLIC __stub_%.*s\n__stub_%.*s:\n",
-                pexp->nNameLength, pexp->pcName,
-                pexp->nNameLength, pexp->pcName);
+                pexp->strName.len, pexp->strName.buf,
+                pexp->strName.len, pexp->strName.buf);
     }
 
     return 1;
@@ -312,25 +318,151 @@ OutputHeader_def(FILE *file, char *libname)
 }
 
 void
-PrintName(FILE *fileDest, EXPORT *pexp, char *pszPrefix, int fRedir, int fDeco)
+PrintName(FILE *fileDest, EXPORT *pexp, PSTRING pstr, int fDeco)
 {
-    char *pcName = fRedir ? pexp->pcRedirection : pexp->pcName;
-    int nNameLength = fRedir ? pexp->nRedirectionLength : pexp->nNameLength;
+    const char *pcName = pstr->buf;
+    int nNameLength = pstr->len;
+    const char* pcDot, *pcAt;
 
-    /* Handle autoname */
-    if (nNameLength == 1 && pcName[0] == '@')
+    if ((giArch == ARCH_X86) && fDeco &&
+        ((pexp->nCallingConvention == CC_STDCALL) ||
+         (pexp->nCallingConvention == CC_FASTCALL)))
     {
-        fprintf(fileDest, "ordinal%d", pexp->nOrdinal);
+        /* Scan for a dll forwarding dot */
+        pcDot = ScanToken(pcName, '.');
+        if (pcDot)
+        {
+            /* First print the dll name, followed by a dot */
+            nNameLength = pcDot - pcName;
+            fprintf(fileDest, "%.*s.", nNameLength, pcName);
+
+            /* Now the actual function name */
+            pcName = pcDot + 1;
+            nNameLength = pexp->strTarget.len - nNameLength - 1;
+        }
+
+        /* Does the string already have decoration? */
+        pcAt = ScanToken(pcName, '@');
+        if (pcAt && (pcAt < (pcName + nNameLength)))
+        {
+            /* On GCC, we need to remove the leading stdcall underscore */
+            if (!gbMSComp && (pexp->nCallingConvention == CC_STDCALL))
+            {
+                pcName++;
+                nNameLength--;
+            }
+
+            /* Print the already decorated function name */
+            fprintf(fileDest, "%.*s", nNameLength, pcName);
+        }
+        else
+        {
+            /* Print the prefix, but skip it for (GCC && stdcall) */
+            if (gbMSComp || (pexp->nCallingConvention != CC_STDCALL))
+            {
+                fprintf(fileDest, "%c", pexp->nCallingConvention == CC_FASTCALL ? '@' : '_');
+            }
+
+            /* Print the name with trailing decoration */
+            fprintf(fileDest, "%.*s@%d", nNameLength, pcName, pexp->nStackBytes);
+        }
     }
     else
     {
-        if (fDeco && pexp->nCallingConvention == CC_FASTCALL)
-             fprintf(fileDest, "@");
-        fprintf(fileDest, "%s%.*s", pszPrefix, nNameLength, pcName);
-        if ((pexp->nCallingConvention == CC_STDCALL ||
-            pexp->nCallingConvention == CC_FASTCALL) && fDeco)
+        /* Print the undecorated function name */
+        fprintf(fileDest, "%.*s", nNameLength, pcName);
+    }
+}
+
+void
+OutputLine_def_MS(FILE *fileDest, EXPORT *pexp)
+{
+    PrintName(fileDest, pexp, &pexp->strName, 0);
+
+    if (gbImportLib)
+    {
+        /* Redirect to a stub function, to get the right decoration in the lib */
+        fprintf(fileDest, "=_stub_%.*s", pexp->strName.len, pexp->strName.buf);
+    }
+    else if (pexp->strTarget.buf)
+    {
+        if (pexp->strName.buf[0] == '?')
         {
-            fprintf(fileDest, "@%d", pexp->nStackBytes);
+            fprintf(stderr, "warning: ignoring C++ redirection %.*s -> %.*s\n",
+                    pexp->strName.len, pexp->strName.buf, pexp->strTarget.len, pexp->strTarget.buf);
+        }
+        else
+        {
+            fprintf(fileDest, "=");
+
+            /* If the original name was decorated, use decoration in the forwarder as well */
+            if ((giArch == ARCH_X86) && ScanToken(pexp->strName.buf, '@') &&
+                !ScanToken(pexp->strTarget.buf, '@') &&
+                ((pexp->nCallingConvention == CC_STDCALL) ||
+                (pexp->nCallingConvention == CC_FASTCALL)) )
+            {
+                PrintName(fileDest, pexp, &pexp->strTarget, 1);
+            }
+            else
+            {
+                /* Write the undecorated redirection name */
+                fprintf(fileDest, "%.*s", pexp->strTarget.len, pexp->strTarget.buf);
+            }
+        }
+    }
+    else if (((pexp->uFlags & FL_STUB) || (pexp->nCallingConvention == CC_STUB)) &&
+             (pexp->strName.buf[0] == '?'))
+    {
+        /* C++ stubs are forwarded to C stubs */
+        fprintf(fileDest, "=stub_function%d", pexp->nNumber);
+    }
+}
+
+void
+OutputLine_def_GCC(FILE *fileDest, EXPORT *pexp)
+{
+    /* Print the function name, with decoration for export libs */
+    PrintName(fileDest, pexp, &pexp->strName, gbImportLib);
+    DbgPrint("Generating def line for '%.*s'\n", pexp->strName.len, pexp->strName.buf);
+
+    /* Check if this is a forwarded export */
+    if (pexp->strTarget.buf)
+    {
+        int fIsExternal = !!ScanToken(pexp->strTarget.buf, '.');
+        DbgPrint("Got redirect '%.*s'\n", pexp->strTarget.len, pexp->strTarget.buf);
+
+        /* print the target name, don't decorate if it is external */
+        fprintf(fileDest, "=");
+        PrintName(fileDest, pexp, &pexp->strTarget, !fIsExternal);
+    }
+    else if (((pexp->uFlags & FL_STUB) || (pexp->nCallingConvention == CC_STUB)) &&
+             (pexp->strName.buf[0] == '?'))
+    {
+        /* C++ stubs are forwarded to C stubs */
+        fprintf(fileDest, "=stub_function%d", pexp->nNumber);
+    }
+
+    /* Special handling for stdcall and fastcall */
+    if ((giArch == ARCH_X86) &&
+        ((pexp->nCallingConvention == CC_STDCALL) ||
+         (pexp->nCallingConvention == CC_FASTCALL)))
+    {
+        /* Is this the import lib? */
+        if (gbImportLib)
+        {
+            /* Is the name in the spec file decorated? */
+            const char* pcDeco = ScanToken(pexp->strName.buf, '@');
+            if (pcDeco && (pcDeco < pexp->strName.buf + pexp->strName.len))
+            {
+                /* Write the name including the leading @  */
+                fprintf(fileDest, "==%.*s", pexp->strName.len, pexp->strName.buf);
+            }
+        }
+        else if (!pexp->strTarget.buf)
+        {
+            /* Write a forwarder to the actual decorated symbol */
+            fprintf(fileDest, "=");
+            PrintName(fileDest, pexp, &pexp->strName, 1);
         }
     }
 }
@@ -340,52 +472,19 @@ OutputLine_def(FILE *fileDest, EXPORT *pexp)
 {
     fprintf(fileDest, " ");
 
-    PrintName(fileDest, pexp, "", 0, (giArch == ARCH_X86) && !gbKillAt);
+    if (gbMSComp)
+        OutputLine_def_MS(fileDest, pexp);
+    else
+        OutputLine_def_GCC(fileDest, pexp);
 
-    if (gbImportLib)
-    {
-        fprintf(fileDest, "=");
-        PrintName(fileDest, pexp, "_stub_", 0, 0);
-    }
-    else if (pexp->pcRedirection)
-    {
-        if (gbMSComp && (pexp->pcName[0] == '?'))
-        {
-            fprintf(stderr, "warning: ignoring C++ redirection %.*s -> %.*s\n",
-                    pexp->nNameLength, pexp->pcName, pexp->nRedirectionLength, pexp->pcRedirection);
-        }
-        else
-        {
-            int fDeco;
-
-            fDeco = ((giArch == ARCH_X86) && !ScanToken(pexp->pcRedirection, '.'));
-            fprintf(fileDest, "=");
-            PrintName(fileDest, pexp, "", 1, fDeco && !gbMSComp);
-        }
-    }
-    else if (((pexp->uFlags & FL_STUB) || (pexp->nCallingConvention == CC_STUB)) &&
-             (pexp->pcName[0] == '?'))
-    {
-        /* C++ stubs are forwarded to C stubs */
-        fprintf(fileDest, "=");
-        fprintf(fileDest, "stub_function%d", pexp->nNumber);
-    }
-    else if ((giArch == ARCH_X86) && gbKillAt && !gbMSComp &&
-             (pexp->nCallingConvention == CC_STDCALL ||
-              pexp->nCallingConvention == CC_FASTCALL))
-    {
-        fprintf(fileDest, "=");
-        PrintName(fileDest, pexp, "", 0, 1);
-    }
-
-    if (pexp->nOrdinal != -1)
+    if (pexp->uFlags & FL_ORDINAL)
     {
         fprintf(fileDest, " @%d", pexp->nOrdinal);
     }
 
-    if (pexp->nCallingConvention == CC_EXTERN)
+    if (pexp->uFlags & FL_NONAME)
     {
-        fprintf(fileDest, " DATA");
+        fprintf(fileDest, " NONAME");
     }
 
     if (pexp->uFlags & FL_PRIVATE)
@@ -393,9 +492,9 @@ OutputLine_def(FILE *fileDest, EXPORT *pexp)
         fprintf(fileDest, " PRIVATE");
     }
 
-    if (pexp->uFlags & FL_NONAME)
+    if (pexp->nCallingConvention == CC_EXTERN)
     {
-        fprintf(fileDest, " NONAME");
+        fprintf(fileDest, " DATA");
     }
 
     fprintf(fileDest, "\n");
@@ -410,6 +509,7 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
     int nLine;
     EXPORT exp;
     int included;
+    char namebuffer[16];
 
     //fprintf(stderr, "info: line %d, pcStart:'%.30s'\n", nLine, pcStart);
 
@@ -423,6 +523,10 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         exp.nArgCount = 0;
         exp.uFlags = 0;
         exp.nNumber++;
+
+
+        //if (!strncmp(pcLine, "22 stdcall @(long) MPR_Alloc",28))
+        //    gbDebug = 1;
 
         //fprintf(stderr, "info: line %d, token:'%d, %.20s'\n",
         //        nLine, TokenLength(pcLine), pcLine);
@@ -438,8 +542,13 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         //        nLine, TokenLength(pc), pc);
 
         /* Now we should get either an ordinal or @ */
-        if (*pc == '@') exp.nOrdinal = -1;
-        else exp.nOrdinal = atol(pc);
+        if (*pc == '@')
+            exp.nOrdinal = -1;
+        else
+        {
+            exp.nOrdinal = atol(pc);
+            exp.uFlags |= FL_ORDINAL;
+        }
 
         /* Go to next token (type) */
         if (!(pc = NextToken(pc)))
@@ -448,7 +557,7 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
             return -10;
         }
 
-        //fprintf(stderr, "info: Token:'%.10s'\n", pc);
+        //fprintf(stderr, "info: Token:'%.*s'\n", TokenLength(pc), pc);
 
         /* Now we should get the type */
         if (CompareToken(pc, "stdcall"))
@@ -478,7 +587,7 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         }
         else
         {
-            fprintf(stderr, "error: line %d, expected type, got '%.*s' %d\n",
+            fprintf(stderr, "error: line %d, expected callconv, got '%.*s' %d\n",
                     nLine, TokenLength(pc), pc, *pc);
             return -11;
         }
@@ -524,10 +633,13 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
             {
                 exp.uFlags |= FL_PRIVATE;
             }
-            else if (CompareToken(pc, "-noname") ||
-                     CompareToken(pc, "-ordinal"))
+            else if (CompareToken(pc, "-noname"))
             {
-                exp.uFlags |= FL_NONAME;
+                exp.uFlags |= FL_ORDINAL | FL_NONAME;
+            }
+            else if (CompareToken(pc, "-ordinal"))
+            {
+                exp.uFlags |= FL_ORDINAL;
             }
             else if (CompareToken(pc, "-stub"))
             {
@@ -555,8 +667,17 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         if (!included) continue;
 
         /* Get name */
-        exp.pcName = pc;
-        exp.nNameLength = TokenLength(pc);
+        exp.strName.buf = pc;
+        exp.strName.len = TokenLength(pc);
+
+        /* Check for autoname */
+        if ((exp.strName.len == 1) && (exp.strName.buf[0] == '@'))
+        {
+            sprintf(namebuffer, "ordinal%d", exp.nOrdinal);
+            exp.strName.len = strlen(namebuffer);
+            exp.strName.buf = namebuffer;
+            exp.uFlags |= FL_ORDINAL | FL_NONAME;
+        }
 
         /* Handle parameters */
         exp.nStackBytes = 0;
@@ -649,12 +770,14 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
             else
             {
                 /* Check for stdcall name */
-                char *p = strchr(pc, '@');
-                if (p && (p - pc < exp.nNameLength))
+                const char *p = ScanToken(pc, '@');
+                if (p && (p - pc < exp.strName.len))
                 {
                     int i;
-                    exp.nNameLength = (int)(p - pc);
-                    if (exp.nNameLength < 1)
+
+                    /* Truncate the name to before the @ */
+                    exp.strName.len = (int)(p - pc);
+                    if (exp.strName.len < 1)
                     {
                         fprintf(stderr, "error, @ in line %d\n", nLine);
                         return -1;
@@ -673,8 +796,8 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         pc = NextToken(pc);
         if (pc)
         {
-            exp.pcRedirection = pc;
-            exp.nRedirectionLength = TokenLength(pc);
+            exp.strTarget.buf = pc;
+            exp.strTarget.len = TokenLength(pc);
 
             /* Check syntax (end of line) */
             if (NextToken(pc))
@@ -685,11 +808,19 @@ ParseFile(char* pcStart, FILE *fileDest, PFNOUTLINE OutputLine)
         }
         else
         {
-            exp.pcRedirection = 0;
-            exp.nRedirectionLength = 0;
+            exp.strTarget.buf = 0;
+            exp.strTarget.len = 0;
+        }
+
+        /* Check for no-name without ordinal */
+        if ((exp.uFlags & FL_ORDINAL) && (exp.nOrdinal == -1))
+        {
+            fprintf(stderr, "error: line %d, ordinal export without ordinal!\n", nLine);
+            return -1;
         }
 
         OutputLine(fileDest, &exp);
+        gbDebug = 0;
     }
 
     return 0;
@@ -706,8 +837,7 @@ void usage(void)
            "  -s=<file>   generates a stub file\n"
            "  --ms        msvc compatibility\n"
            "  -n=<name>   name of the dll\n"
-           "  --kill-at   removes @xx decorations from exports\n"
-           "  -r          removes redirections from def file\n"
+           "  --implib    generate a def file for an import library\n"
            "  -a=<arch>   Set architecture to <arch>. (i386, x86_64, arm)\n");
 }
 
@@ -752,20 +882,11 @@ int main(int argc, char *argv[])
         }
         else if ((strcasecmp(argv[i], "--implib") == 0))
         {
-            no_redirections = 1;
             gbImportLib = 1;
-        }
-        else if ((strcasecmp(argv[i], "--kill-at") == 0))
-        {
-            gbKillAt = 1;
         }
         else if ((strcasecmp(argv[i], "--ms") == 0))
         {
             gbMSComp = 1;
-        }
-        else if ((strcasecmp(argv[i], "-r") == 0))
-        {
-            no_redirections = 1;
         }
         else if (argv[i][1] == 'a' && argv[i][2] == '=')
         {

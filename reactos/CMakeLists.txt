@@ -25,6 +25,11 @@ set(CMAKE_SKIP_PREPROCESSED_SOURCE_RULES TRUE)
 set(CMAKE_SKIP_ASSEMBLY_SOURCE_RULES TRUE)
 set(CMAKE_COLOR_MAKEFILE OFF)
 #set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
+set(CMAKE_SKIP_INSTALL_RULES ON)
+
+if(NOT CMAKE_VERSION STREQUAL "2.8.12.1-ReactOS")
+    set(CMAKE_DISABLE_NINJA_DEPSLOG TRUE)
+endif()
 
 if(NOT ARCH)
     set(ARCH i386)
@@ -129,6 +134,12 @@ else()
         add_definitions(-D_WINKD_=1)
     endif()
 
+    if((NOT DEFINED PCH) AND (CMAKE_VERSION STREQUAL "2.8.12.1-ReactOS") AND (NOT CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+        set(PCH 1)
+    else()
+        set(PCH 0)
+    endif()
+
     # Version Options
     add_definitions(-DWINVER=0x502
                     -D_WIN32_IE=0x600
@@ -197,12 +208,6 @@ else()
 
     if(ARCH STREQUAL "arm")
         include_directories(${REACTOS_SOURCE_DIR}/include/reactos/arm)
-    endif()
-
-    if(MSVC)
-        include_directories(include/crt/msc)
-    else()
-        include_directories(include/crt/mingw32)
     endif()
 
     add_dependency_header()

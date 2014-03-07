@@ -340,7 +340,8 @@ IopLoadServiceModule(
        Status = IopOpenRegistryKeyEx(&CCSKey, NULL, &CCSName, KEY_READ);
        if (!NT_SUCCESS(Status))
        {
-           DPRINT1("ZwOpenKey() failed with Status %08X\n", Status);
+           DPRINT1("IopOpenRegistryKeyEx() failed for '%wZ' with Status %08X\n",
+                   &CCSName, Status);
            return Status;
        }
 
@@ -348,7 +349,8 @@ IopLoadServiceModule(
        Status = IopOpenRegistryKeyEx(&ServiceKey, CCSKey, ServiceName, KEY_READ);
        if (!NT_SUCCESS(Status))
        {
-           DPRINT1("ZwOpenKey() failed with Status %08X\n", Status);
+           DPRINT1("IopOpenRegistryKeyEx() failed for '%wZ' with Status %08X\n",
+                   ServiceName, Status);
            ZwClose(CCSKey);
            return Status;
        }
@@ -818,14 +820,16 @@ LdrProcessDriverModule(PLDR_DATA_TABLE_ENTRY LdrEntry,
 NTSTATUS
 NTAPI
 INIT_FUNCTION
-IopInitializeBuiltinDriver(IN PLDR_DATA_TABLE_ENTRY LdrEntry)
+IopInitializeBuiltinDriver(IN PLDR_DATA_TABLE_ENTRY BootLdrEntry)
 {
     PDEVICE_NODE DeviceNode;
     PDRIVER_OBJECT DriverObject;
     NTSTATUS Status;
     PWCHAR FileNameWithoutPath;
     LPWSTR FileExtension;
-    PUNICODE_STRING ModuleName = &LdrEntry->BaseDllName;
+    PUNICODE_STRING ModuleName = &BootLdrEntry->BaseDllName;
+    PLDR_DATA_TABLE_ENTRY LdrEntry;
+    PLIST_ENTRY NextEntry;
     UNICODE_STRING ServiceName;
 
    /*
@@ -868,6 +872,22 @@ IopInitializeBuiltinDriver(IN PLDR_DATA_TABLE_ENTRY LdrEntry)
       DPRINT1("Driver '%wZ' load failed, status (%x)\n", ModuleName, Status);
       return(Status);
    }
+
+   /* Lookup the new Ldr entry in PsLoadedModuleList */
+   NextEntry = PsLoadedModuleList.Flink;
+   while (NextEntry != &PsLoadedModuleList)
+   {
+      LdrEntry = CONTAINING_RECORD(NextEntry,
+                                   LDR_DATA_TABLE_ENTRY,
+                                   InLoadOrderLinks);
+      if (RtlEqualUnicodeString(ModuleName, &LdrEntry->BaseDllName, TRUE))
+      {
+            break;
+      }
+
+      NextEntry = NextEntry->Flink;
+   }
+   NT_ASSERT(NextEntry != &PsLoadedModuleList);
 
    /*
     * Initialize the driver

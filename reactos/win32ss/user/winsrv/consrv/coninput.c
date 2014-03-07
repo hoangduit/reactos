@@ -10,14 +10,9 @@
 /* INCLUDES *******************************************************************/
 
 #include "consrv.h"
-#include "include/conio.h"
-#include "include/term.h"
-#include "handle.h"
-#include "lineinput.h"
 
 #define NDEBUG
 #include <debug.h>
-
 
 /* GLOBALS ********************************************************************/
 
@@ -45,7 +40,7 @@ static NTSTATUS
 WaitBeforeReading(IN PGET_INPUT_INFO InputInfo,
                   IN PCSR_API_MESSAGE ApiMessage,
                   IN CSR_WAIT_FUNCTION WaitFunction OPTIONAL,
-                  IN BOOL CreateWaitBlock OPTIONAL)
+                  IN BOOLEAN CreateWaitBlock OPTIONAL)
 {
     if (CreateWaitBlock)
     {
@@ -74,7 +69,7 @@ WaitBeforeReading(IN PGET_INPUT_INFO InputInfo,
 static NTSTATUS
 ReadChars(IN PGET_INPUT_INFO InputInfo,
           IN PCSR_API_MESSAGE ApiMessage,
-          IN BOOL CreateWaitBlock OPTIONAL);
+          IN BOOLEAN CreateWaitBlock OPTIONAL);
 
 // Wait function CSR_WAIT_FUNCTION
 static BOOLEAN
@@ -123,9 +118,7 @@ ReadCharsThread(IN PLIST_ENTRY WaitList,
      * If we go there, that means we are notified for some new input.
      * The console is therefore already locked.
      */
-    Status = ReadChars(InputInfo,
-                       WaitApiMessage,
-                       FALSE);
+    Status = ReadChars(InputInfo, WaitApiMessage, FALSE);
 
 Quit:
     if (Status != STATUS_PENDING)
@@ -148,7 +141,7 @@ ConDrvReadConsole(IN PCONSOLE Console,
 static NTSTATUS
 ReadChars(IN PGET_INPUT_INFO InputInfo,
           IN PCSR_API_MESSAGE ApiMessage,
-          IN BOOL CreateWaitBlock OPTIONAL)
+          IN BOOLEAN CreateWaitBlock OPTIONAL)
 {
     NTSTATUS Status;
     PCONSOLE_READCONSOLE ReadConsoleRequest = &((PCONSOLE_API_MESSAGE)ApiMessage)->Data.ReadConsoleRequest;
@@ -188,9 +181,8 @@ ReadChars(IN PGET_INPUT_INFO InputInfo,
 
 static NTSTATUS
 ReadInputBuffer(IN PGET_INPUT_INFO InputInfo,
-                IN BOOL Wait,
                 IN PCSR_API_MESSAGE ApiMessage,
-                IN BOOL CreateWaitBlock OPTIONAL);
+                IN BOOLEAN CreateWaitBlock OPTIONAL);
 
 // Wait function CSR_WAIT_FUNCTION
 static BOOLEAN
@@ -204,7 +196,6 @@ ReadInputBufferThread(IN PLIST_ENTRY WaitList,
                       IN ULONG WaitFlags)
 {
     NTSTATUS Status;
-    PCONSOLE_GETINPUT GetInputRequest = &((PCONSOLE_API_MESSAGE)WaitApiMessage)->Data.GetInputRequest;
     PGET_INPUT_INFO InputInfo = (PGET_INPUT_INFO)WaitContext;
 
     PVOID InputHandle = WaitArgument2;
@@ -240,10 +231,7 @@ ReadInputBufferThread(IN PLIST_ENTRY WaitList,
      * If we go there, that means we are notified for some new input.
      * The console is therefore already locked.
      */
-    Status = ReadInputBuffer(InputInfo,
-                             GetInputRequest->bRead,
-                             WaitApiMessage,
-                             FALSE);
+    Status = ReadInputBuffer(InputInfo, WaitApiMessage, FALSE);
 
 Quit:
     if (Status != STATUS_PENDING)
@@ -258,16 +246,16 @@ Quit:
 NTSTATUS NTAPI
 ConDrvGetConsoleInput(IN PCONSOLE Console,
                       IN PCONSOLE_INPUT_BUFFER InputBuffer,
+                      IN BOOLEAN KeepEvents,
                       IN BOOLEAN WaitForMoreEvents,
                       IN BOOLEAN Unicode,
                       OUT PINPUT_RECORD InputRecord,
                       IN ULONG NumEventsToRead,
-                      OUT PULONG NumEventsRead);
+                      OUT PULONG NumEventsRead OPTIONAL);
 static NTSTATUS
 ReadInputBuffer(IN PGET_INPUT_INFO InputInfo,
-                IN BOOL Wait,   // TRUE --> Read ; FALSE --> Peek
                 IN PCSR_API_MESSAGE ApiMessage,
-                IN BOOL CreateWaitBlock OPTIONAL)
+                IN BOOLEAN CreateWaitBlock OPTIONAL)
 {
     NTSTATUS Status;
     PCONSOLE_GETINPUT GetInputRequest = &((PCONSOLE_API_MESSAGE)ApiMessage)->Data.GetInputRequest;
@@ -277,7 +265,8 @@ ReadInputBuffer(IN PGET_INPUT_INFO InputInfo,
 
     Status = ConDrvGetConsoleInput(InputBuffer->Header.Console,
                                    InputBuffer,
-                                   Wait,
+                                   (GetInputRequest->wFlags & CONSOLE_READ_KEEPEVENT) != 0,
+                                   (GetInputRequest->wFlags & CONSOLE_READ_CONTINUE ) == 0,
                                    GetInputRequest->Unicode,
                                    GetInputRequest->InputRecord,
                                    GetInputRequest->Length,
@@ -336,9 +325,7 @@ CSR_API(SrvReadConsole)
     InputInfo.HandleEntry   = HandleEntry;
     InputInfo.InputBuffer   = InputBuffer;
 
-    Status = ReadChars(&InputInfo,
-                       ApiMessage,
-                       TRUE);
+    Status = ReadChars(&InputInfo, ApiMessage, TRUE);
 
     ConSrvReleaseInputBuffer(InputBuffer, TRUE);
 
@@ -358,6 +345,9 @@ CSR_API(SrvGetConsoleInput)
 
     DPRINT("SrvGetConsoleInput\n");
 
+    if (GetInputRequest->wFlags & ~(CONSOLE_READ_KEEPEVENT | CONSOLE_READ_CONTINUE))
+        return STATUS_INVALID_PARAMETER;
+
     if (!CsrValidateMessageBuffer(ApiMessage,
                                   (PVOID*)&GetInputRequest->InputRecord,
                                   GetInputRequest->Length,
@@ -375,10 +365,7 @@ CSR_API(SrvGetConsoleInput)
     InputInfo.HandleEntry   = HandleEntry;
     InputInfo.InputBuffer   = InputBuffer;
 
-    Status = ReadInputBuffer(&InputInfo,
-                             GetInputRequest->bRead,
-                             ApiMessage,
-                             TRUE);
+    Status = ReadInputBuffer(&InputInfo, ApiMessage, TRUE);
 
     ConSrvReleaseInputBuffer(InputBuffer, TRUE);
 
@@ -391,6 +378,7 @@ NTSTATUS NTAPI
 ConDrvWriteConsoleInput(IN PCONSOLE Console,
                         IN PCONSOLE_INPUT_BUFFER InputBuffer,
                         IN BOOLEAN Unicode,
+                        IN BOOLEAN AppendToEnd,
                         IN PINPUT_RECORD InputRecord,
                         IN ULONG NumEventsToWrite,
                         OUT PULONG NumEventsWritten OPTIONAL);
@@ -420,6 +408,7 @@ CSR_API(SrvWriteConsoleInput)
     Status = ConDrvWriteConsoleInput(InputBuffer->Header.Console,
                                      InputBuffer,
                                      WriteInputRequest->Unicode,
+                                     WriteInputRequest->AppendToEnd,
                                      WriteInputRequest->InputRecord,
                                      WriteInputRequest->Length,
                                      &NumEventsWritten);

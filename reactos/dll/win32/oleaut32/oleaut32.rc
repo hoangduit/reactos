@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-//#include "windef.h"
-//#include "winbase.h"
-//#include "resource.h"
+#include <windef.h>
+
+#include "resource.h"
 
 #ifdef LANGUAGE_BG_BG
     #include "lang/oleaut32_Bg.rc"
@@ -96,6 +96,9 @@
 #ifdef LANGUAGE_SL_SI
     #include "lang/oleaut32_Si.rc"
 #endif
+#ifdef LANGUAGE_SQ_AL
+    #include "lang/oleaut32_Sq.rc"
+#endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/oleaut32_Uk.rc"
 #endif
@@ -113,8 +116,8 @@
 /* @makedep: oleaut32.rgs */
 1 WINE_REGISTRY oleaut32.rgs
 
-2 WINE_REGISTRY oleaut32_oaidl.rgs
-3 WINE_REGISTRY oleaut32_ocidl.rgs
+2 WINE_REGISTRY "oleaut32_oaidl.rgs"
+3 WINE_REGISTRY "oleaut32_ocidl.rgs"
 
 #define WINE_FILEDESCRIPTION_STR "Wine OLE dll"
 #define WINE_FILENAME_STR "oleaut32.dll"

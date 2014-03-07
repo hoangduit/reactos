@@ -21,6 +21,9 @@
 //#include "windef.h"
 //#include "oleacc.h"
 
+1 TYPELIB "oleacc_classes.tlb"
+1 WINE_REGISTRY "oleacc_classes.rgs"
+
 #ifdef LANGUAGE_EN_US
     #include "lang/oleacc_En.rc"
 #endif
@@ -64,6 +67,9 @@
 #endif
 #ifdef LANGUAGE_SL_SI
     #include "lang/oleacc_Si.rc"
+#endif
+#ifdef LANGUAGE_SQ_AL
+    #include "lang/oleacc_Sq.rc"
 #endif
 #ifdef LANGUAGE_UK_UA
     #include "lang/oleacc_Uk.rc"

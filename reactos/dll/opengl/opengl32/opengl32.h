@@ -5,7 +5,8 @@
  * PURPOSE:              OpenGL32 lib, general header
  */
 
-#pragma once
+#ifndef _OPENGL32_PCH_
+#define _OPENGL32_PCH_
 
 #define WIN32_NO_STATUS
 #include <stdarg.h>
@@ -15,6 +16,8 @@
 #include <wingdi.h>
 #include <winddi.h>
 #include <GL/gl.h>
+
+#include <wine/debug.h>
 
 #include "icd.h"
 
@@ -166,3 +169,5 @@ PROC sw_GetProcAddress(LPCSTR name);
 BOOL sw_CopyContext(DHGLRC dhglrcSrc, DHGLRC dhglrcDst, UINT mask);
 BOOL sw_ShareLists(DHGLRC dhglrcSrc, DHGLRC dhglrcDst);
 BOOL sw_SwapBuffers(HDC hdc, struct wgl_dc_data* dc_data);
+
+#endif /* _OPENGL32_PCH_ */
