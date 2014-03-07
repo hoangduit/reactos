@@ -1031,10 +1031,10 @@
 @ stdcall PsSetProcessPriorityByClass(ptr ptr)
 @ stdcall PsSetProcessPriorityClass(ptr long)
 @ stdcall PsSetProcessSecurityPort(ptr ptr)
-@ stdcall PsSetProcessWin32Process(ptr ptr)
+@ stdcall PsSetProcessWin32Process(ptr ptr ptr)
 @ stdcall PsSetProcessWindowStation(ptr ptr)
 @ stdcall PsSetThreadHardErrorsAreDisabled(ptr long)
-@ stdcall PsSetThreadWin32Thread(ptr ptr)
+@ stdcall PsSetThreadWin32Thread(ptr ptr ptr)
 @ stdcall PsTerminateSystemThread(long)
 @ extern PsThreadType _PsThreadType
 ;PsWrapApcWow64Thread
@@ -1373,9 +1373,9 @@
 @ stdcall SeRegisterLogonSessionTerminatedRoutine(ptr)
 @ stdcall SeReleaseSecurityDescriptor(ptr long long)
 @ stdcall SeReleaseSubjectContext(ptr)
-;@ cdecl -arch=x86_64 SeReportSecurityEvent
+@ stdcall SeReportSecurityEvent(long ptr ptr ptr)
 @ stdcall SeSetAccessStateGenericMapping(ptr ptr)
-;SeSetAuditParameter
+@ stdcall SeSetAuditParameter(ptr long long ptr)
 @ stdcall SeSetSecurityDescriptorInfo(ptr ptr ptr ptr long ptr)
 @ stdcall SeSetSecurityDescriptorInfoEx(ptr ptr ptr ptr long long ptr)
 @ stdcall SeSinglePrivilegeCheck(long long long)

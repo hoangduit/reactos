@@ -16,7 +16,7 @@ include_directories(
 spec2def(shell32.dll shell32.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
-    authors.cpp
+    #authors.cpp
     autocomplete.cpp
     brsfolder.cpp
     changenotify.cpp
@@ -72,20 +72,15 @@ list(APPEND SOURCE
     folder_options.cpp
     filedefext.cpp
     drvdefext.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/shell32_stubs.c
-    ${CMAKE_CURRENT_BINARY_DIR}/shell32.def)
+    precomp.h)
 
 add_library(shell32 SHARED
     ${SOURCE}
-    shell32.rc)
+    shell32.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/shell32_stubs.c
+    ${CMAKE_CURRENT_BINARY_DIR}/shell32.def)
 
-if(NOT MSVC)
-    # FIXME: http://www.cmake.org/Bug/view.php?id=12998
-    #allow_warnings(shell32)
-    set_source_files_properties(${SOURCE} PROPERTIES COMPILE_FLAGS "-Wno-error")
-endif()
-
-set_module_type(shell32 win32dll UNICODE)
+set_module_type(shell32 win32dll UNICODE HOTPATCHABLE)
 
 target_link_libraries(shell32
     atlnew
@@ -112,5 +107,5 @@ add_importlibs(shell32
     ntdll)
 
 add_dependencies(shell32 shdocvw_v1)
-add_pch(shell32 precomp.h)
+add_pch(shell32 precomp.h SOURCE)
 add_cd_file(TARGET shell32 DESTINATION reactos/system32 FOR all)

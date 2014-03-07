@@ -23,12 +23,9 @@
  */
 
 #include "devenum_private.h"
-//#include "oleauto.h"
+
 #include <ocidl.h>
-
-#include <wine/debug.h>
-
-WINE_DEFAULT_DEBUG_CHANNEL(devenum);
+#include <oleauto.h>
 
 typedef struct
 {

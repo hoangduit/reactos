@@ -1,5 +1,7 @@
 #include <user32.h>
 
+#include <ndk/cmfuncs.h>
+
 #include <wine/debug.h>
 WINE_DEFAULT_DEBUG_CHANNEL(user32);
 
@@ -417,6 +419,6 @@ User32CallSetWndIconsFromKernel(PVOID Arguments, ULONG ArgumentLength)
   }
   Common->hIconSmWindows = hIconSmWindows;
   Common->hIconWindows = hIconWindows;
-
+  ERR("hIconSmWindows %p hIconWindows %p \n",hIconSmWindows,hIconWindows);
   return ZwCallbackReturn(Arguments, ArgumentLength, STATUS_SUCCESS);
 }

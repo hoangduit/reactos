@@ -575,6 +575,7 @@ co_MsqInsertMouseMessage(MSG* Msg, DWORD flags, ULONG_PTR dwExtraInfo, BOOL Hook
    {
        pti = pwnd->head.pti;
        MessageQueue = pti->MessageQueue;
+       // MessageQueue->ptiMouse = pti;
 
        if ( pti->TIF_flags & TIF_INCLEANUP || MessageQueue->QF_flags & QF_INDESTROY)
        {
@@ -631,7 +632,11 @@ co_MsqInsertMouseMessage(MSG* Msg, DWORD flags, ULONG_PTR dwExtraInfo, BOOL Hook
        }
        else
        {
-           //if (!IntGetCaptureWindow()) ptiLastInput = pti;
+           if (!IntGetCaptureWindow())
+           {
+             // ERR("ptiLastInput is set\n");
+             // ptiLastInput = pti; // Once this is set during Reboot or Shutdown, this prevents the exit window having foreground.
+           }
            TRACE("Posting mouse message to hwnd=%p!\n", UserHMGetHandle(pwnd));
            MsqPostMessage(pti, Msg, TRUE, QS_MOUSEBUTTON, 0);
        }
@@ -1102,15 +1107,17 @@ co_MsqSendMessage(PTHREADINFO ptirec,
    }
    else
    {
-      PVOID WaitObjects[2];
+      PVOID WaitObjects[3];
 
-      WaitObjects[0] = &CompletionEvent;
-      WaitObjects[1] = pti->pEventQueueServer;
+      WaitObjects[0] = &CompletionEvent;       // Wait 0
+      WaitObjects[1] = pti->pEventQueueServer; // Wait 1
+      WaitObjects[2] = ptirec->pEThread;       // Wait 2
+
       do
       {
          UserLeaveCo();
 
-         WaitStatus = KeWaitForMultipleObjects(2, WaitObjects, WaitAny, UserRequest,
+         WaitStatus = KeWaitForMultipleObjects(3, WaitObjects, WaitAny, UserRequest,
                                                UserMode, FALSE, (uTimeout ? &Timeout : NULL), NULL);
 
          UserEnterCo();
@@ -1158,14 +1165,33 @@ co_MsqSendMessage(PTHREADINFO ptirec,
             TRACE("MsqSendMessage timed out 2\n");
             break;
          }
+         // Receiving thread passed on and left us hanging with issues still pending.
+         if ( WaitStatus == STATUS_WAIT_2 )
+         {
+            ERR("Receiving Thread woken up dead!\n");
+            Entry = pti->DispatchingMessagesHead.Flink;
+            while (Entry != &pti->DispatchingMessagesHead)
+            {
+               if ((PUSER_SENT_MESSAGE) CONTAINING_RECORD(Entry, USER_SENT_MESSAGE, DispatchingListEntry)
+                     == Message)
+               {
+                  Message->CompletionEvent = NULL;
+                  Message->Result = NULL;
+                  RemoveEntryList(&Message->DispatchingListEntry);
+                  Message->DispatchingListEntry.Flink = NULL;
+                  break;
+               }
+               Entry = Entry->Flink;
+            }
+         }
          while (co_MsqDispatchOneSentMessage(pti))
             ;
       }
-      while (NT_SUCCESS(WaitStatus) && STATUS_WAIT_0 != WaitStatus);
+      while (NT_SUCCESS(WaitStatus) && WaitStatus == STATUS_WAIT_1);
    }
 
    if(WaitStatus != STATUS_TIMEOUT)
-      *uResult = (STATUS_WAIT_0 == WaitStatus ? Result : -1);
+      if (uResult) *uResult = (STATUS_WAIT_0 == WaitStatus ? Result : -1);
 
    return WaitStatus;
 }
@@ -1214,7 +1240,7 @@ MsqPostMessage(PTHREADINFO pti,
    Message->dwQEvent = dwQEvent;
    Message->QS_Flags = MessageBits;
    Message->pti = pti;
-   MsqWakeQueue(pti, MessageBits, (MessageBits & QS_TIMER ? FALSE : TRUE));
+   MsqWakeQueue(pti, MessageBits, TRUE);
 }
 
 VOID FASTCALL
@@ -1317,7 +1343,7 @@ BOOL co_IntProcessMouseMessage(MSG* msg, BOOL* RemoveMessages, UINT first, UINT 
     USHORT hittest;
     EVENTMSG event;
     MOUSEHOOKSTRUCT hook;
-    BOOL eatMsg;
+    BOOL eatMsg = FALSE;
 
     PWND pwndMsg, pwndDesktop;
     PUSER_MESSAGE_QUEUE MessageQueue;
@@ -1342,9 +1368,8 @@ BOOL co_IntProcessMouseMessage(MSG* msg, BOOL* RemoveMessages, UINT first, UINT 
         if (pwndMsg) UserReferenceObject(pwndMsg);
     }
     else
-    {   // Fix wine Msg test_HTTRANSPARENT. Start with a NULL window.
-        // http://www.winehq.org/pipermail/wine-patches/2012-August/116776.html
-        pwndMsg = co_WinPosWindowFromPoint(NULL, &msg->pt, &hittest);
+    {
+        pwndMsg = co_WinPosWindowFromPoint(NULL, &msg->pt, &hittest, TRUE);
     }
 
     TRACE("Got mouse message for %p, hittest: 0x%x\n", msg->hwnd, hittest);
@@ -1366,10 +1391,6 @@ BOOL co_IntProcessMouseMessage(MSG* msg, BOOL* RemoveMessages, UINT first, UINT 
     }
 
     msg->hwnd = UserHMGetHandle(pwndMsg);
-
-#if 0
-    if (!check_hwnd_filter( msg, hwnd_filter )) RETURN(FALSE);
-#endif
 
     pt = msg->pt;
     message = msg->message;
@@ -1522,8 +1543,6 @@ BOOL co_IntProcessMouseMessage(MSG* msg, BOOL* RemoveMessages, UINT first, UINT 
         RETURN(TRUE);
     }
 
-    eatMsg = FALSE;
-
     if ((msg->message == WM_LBUTTONDOWN) ||
         (msg->message == WM_RBUTTONDOWN) ||
         (msg->message == WM_MBUTTONDOWN) ||
@@ -1540,10 +1559,7 @@ BOOL co_IntProcessMouseMessage(MSG* msg, BOOL* RemoveMessages, UINT first, UINT 
         if (pwndMsg != MessageQueue->spwndActive)
         {
             PWND pwndTop = pwndMsg;
-            while (pwndTop && ((pwndTop->style & (WS_POPUP|WS_CHILD)) == WS_CHILD))
-            {
-                pwndTop = pwndTop->spwndParent;
-            }
+            pwndTop = IntGetNonChildAncestor(pwndTop);
 
             if (pwndTop && pwndTop != pwndDesktop)
             {
@@ -1753,6 +1769,7 @@ co_MsqPeekHardwareMessage(IN PTHREADINFO pti,
         if (IsListEmpty(CurrentEntry)) break;
         if (!CurrentMessage) break;
         CurrentEntry = CurrentMessage->ListEntry.Flink;
+        if (!CurrentEntry) break; //// Fix CORE-6734 reported crash.
 /*
  MSDN:
  1: any window that belongs to the current thread, and any messages on the current thread's message queue whose hwnd value is NULL.
@@ -1784,8 +1801,7 @@ co_MsqPeekHardwareMessage(IN PTHREADINFO pti,
               break;
            }
         }
-        CurrentMessage = CONTAINING_RECORD(CurrentEntry, USER_MESSAGE,
-                                          ListEntry);
+        CurrentMessage = CONTAINING_RECORD(CurrentEntry, USER_MESSAGE, ListEntry);
     }
     while(CurrentEntry != ListHead);
 

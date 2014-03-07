@@ -1,14 +1,15 @@
+#ifndef _BROWSEUI_PCH_
+#define _BROWSEUI_PCH_
+
+#include <stdarg.h>
+
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-#include <stdarg.h>
+
 #include <windef.h>
 #include <winbase.h>
-#include <winreg.h>
-#include <wingdi.h>
-#include <winnls.h>
 #include <wincon.h>
-#include <shellapi.h>
 #include <shlobj.h>
 #include <tlogstg.h>
 #include <shlobj_undoc.h>
@@ -22,7 +23,6 @@
 #include <exdispid.h>
 #include <shlwapi.h>
 #include <shlwapi_undoc.h>
-#include <htiframe.h>
 #include <wine/debug.h>
 
 #include "resource.h"
@@ -38,5 +38,7 @@
 #include "commonbrowser.h"
 #include "globalfoldersettings.h"
 #include "regtreeoptions.h"
-#include "newatlinterfaces.h"
-//#include "utility.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(browseui);
+
+#endif /* _BROWSEUI_PCH_ */

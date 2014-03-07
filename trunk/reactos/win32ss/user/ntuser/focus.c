@@ -112,14 +112,15 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
 
       /* Send palette messages */
       if (gpsi->PUSIFlags & PUSIF_PALETTEDISPLAY &&
-          co_IntPostOrSendMessage(UserHMGetHandle(Window), WM_QUERYNEWPALETTE, 0, 0))
+          //co_IntPostOrSendMessage(UserHMGetHandle(Window), WM_QUERYNEWPALETTE, 0, 0))
+          co_IntSendMessage(UserHMGetHandle(Window), WM_QUERYNEWPALETTE, 0, 0))
       {
          UserSendNotifyMessage( HWND_BROADCAST,
                                 WM_PALETTEISCHANGING,
                                (WPARAM)UserHMGetHandle(Window),
                                 0);
       }
-      //// Fixes bug 7089.
+      //// Fixes CORE-6434.
       if (!(Window->style & WS_CHILD))
       {
          PWND pwndTemp = co_GetDesktopWindow(Window)->spwndChild;
@@ -136,6 +137,31 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
                co_WinPosSetWindowPos(Window, HWND_TOP, 0, 0, 0, 0, flags);
             }
          }
+      }
+      ////
+      //// CORE-1161 and CORE-6651
+      if (Window->spwndPrev)
+      {
+         HWND *phwndTopLevel, *phwndCurrent;
+         PWND pwndCurrent, pwndDesktop;
+
+         pwndDesktop = UserGetDesktopWindow();
+         if (Window->spwndParent == pwndDesktop )
+         {
+            phwndTopLevel = IntWinListChildren(pwndDesktop);
+            phwndCurrent = phwndTopLevel;
+            while(*phwndCurrent)
+            {
+                pwndCurrent = UserGetWindowObject(*phwndCurrent);
+
+                if (pwndCurrent && pwndCurrent->spwndOwner == Window )
+                {
+                    co_WinPosSetWindowPos(pwndCurrent, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE|SWP_NOACTIVATE);
+                }
+                phwndCurrent++;
+            }
+            ExFreePool(phwndTopLevel);
+          }
       }
       ////
       OldTID = WindowPrev ? IntGetWndThreadId(WindowPrev) : NULL;
@@ -184,7 +210,7 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
                   }
                }
             }
-            ExFreePool(List);//ExFreePoolWithTag(List, USERTAG_WINDOWLIST);
+            ExFreePoolWithTag(List, USERTAG_WINDOWLIST);
          }
       }
       if (WindowPrev)
@@ -202,8 +228,6 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
       }
 
       co_IntMakeWindowActive(Window);
-
-      /* FIXME: IntIsWindow */
 
       co_IntSendMessageNoWait( UserHMGetHandle(Window),
                                WM_NCACTIVATE,
@@ -251,12 +275,14 @@ IntSendFocusMessages( PTHREADINFO pti, PWND pWnd)
    {
       if (pWndPrev)
       {
-         co_IntPostOrSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, (WPARAM)UserHMGetHandle(pWnd), 0);
+         //co_IntPostOrSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, (WPARAM)UserHMGetHandle(pWnd), 0);
+         co_IntSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, (WPARAM)UserHMGetHandle(pWnd), 0);
       }
       if (ThreadQueue->spwndFocus == pWnd)
       {
          IntNotifyWinEvent(EVENT_OBJECT_FOCUS, pWnd, OBJID_CLIENT, CHILDID_SELF, 0);
-         co_IntPostOrSendMessage(UserHMGetHandle(pWnd), WM_SETFOCUS, (WPARAM)(pWndPrev ? UserHMGetHandle(pWndPrev) : NULL), 0);
+         //co_IntPostOrSendMessage(UserHMGetHandle(pWnd), WM_SETFOCUS, (WPARAM)(pWndPrev ? UserHMGetHandle(pWndPrev) : NULL), 0);
+         co_IntSendMessage(UserHMGetHandle(pWnd), WM_SETFOCUS, (WPARAM)(pWndPrev ? UserHMGetHandle(pWndPrev) : NULL), 0);
       }
    }
    else
@@ -264,31 +290,10 @@ IntSendFocusMessages( PTHREADINFO pti, PWND pWnd)
       if (pWndPrev)
       {
          IntNotifyWinEvent(EVENT_OBJECT_FOCUS, NULL, OBJID_CLIENT, CHILDID_SELF, 0);
-         co_IntPostOrSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, 0, 0);
+         //co_IntPostOrSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, 0, 0);
+         co_IntSendMessage(UserHMGetHandle(pWndPrev), WM_KILLFOCUS, 0, 0);
       }
    }
-}
-
-HWND FASTCALL
-IntFindChildWindowToOwner(PWND Root, PWND Owner)
-{
-   HWND Ret;
-   PWND Child, OwnerWnd;
-
-   for(Child = Root->spwndChild; Child; Child = Child->spwndNext)
-   {
-       OwnerWnd = Child->spwndOwner;
-      if(!OwnerWnd)
-         continue;
-
-      if(OwnerWnd == Owner)
-      {
-         Ret = Child->head.h;
-         return Ret;
-      }
-   }
-
-   return NULL;
 }
 
 VOID FASTCALL
@@ -517,13 +522,35 @@ co_IntSetForegroundAndFocusWindow(
    return Ret && fgRet;
 }
 
+/*
+  Revision 7888, activate modal dialog when clicking on a disabled window.
+*/
+HWND FASTCALL
+IntFindChildWindowToOwner(PWND Root, PWND Owner)
+{
+   HWND Ret;
+   PWND Child, OwnerWnd;
+
+   for(Child = Root->spwndChild; Child; Child = Child->spwndNext)
+   {
+       OwnerWnd = Child->spwndOwner;
+      if(!OwnerWnd)
+         continue;
+
+      if(OwnerWnd == Owner)
+      {
+         Ret = Child->head.h;
+         return Ret;
+      }
+   }
+   return NULL;
+}
+
 BOOL FASTCALL
 co_IntMouseActivateWindow(PWND Wnd)
 {
    HWND Top;
-   PWND TopWindow;
    USER_REFERENCE_ENTRY Ref;
-
    ASSERT_REFS_CO(Wnd);
 
    if (Wnd->style & WS_DISABLED)
@@ -533,6 +560,7 @@ co_IntMouseActivateWindow(PWND Wnd)
       PWND DesktopWindow = UserGetDesktopWindow();
       if (DesktopWindow)
       {
+         ERR("Window Diabled\n");
          Top = IntFindChildWindowToOwner(DesktopWindow, Wnd);
          if ((TopWnd = ValidateHwndNoErr(Top)))
          {
@@ -545,15 +573,8 @@ co_IntMouseActivateWindow(PWND Wnd)
       }
       return FALSE;
    }
-
-   TopWindow = UserGetAncestor(Wnd, GA_ROOT);
-   //if (TopWindow) {ERR("MAW 2 pWnd %p hWnd %p\n",TopWindow,TopWindow->head.h);}
-   if (!TopWindow) return FALSE;
-
-   /* TMN: Check return value from this function? */
-   UserRefObjectCo(TopWindow, &Ref);
-   co_IntSetForegroundAndFocusWindow(TopWindow, TRUE);
-   UserDerefObjectCo(TopWindow);
+   ERR("Mouse Active\n");
+   co_IntSetForegroundAndFocusWindow(Wnd, TRUE);
    return TRUE;
 }
 
@@ -702,20 +723,20 @@ co_IntSetActiveWindow(PWND Wnd OPTIONAL, BOOL bMouse, BOOL bFocus, BOOL Async)
    InAAPM = co_IntSendActivateMessages(WndPrev, Wnd, bMouse, Async);
 
    /* now change focus if necessary */
+   //// Fixes CORE-6452 allows setting focus on window.
    if (bFocus && !(ThreadQueue->QF_flags & QF_FOCUSNULLSINCEACTIVE))
    {
       /* Do not change focus if the window is no longer active */
-      if (ThreadQueue->spwndActive == Wnd)
+      if (pti->MessageQueue->spwndActive != IntGetNonChildAncestor(pti->MessageQueue->spwndFocus))
       {
-         if (!ThreadQueue->spwndFocus ||
-             !Wnd ||
-              UserGetAncestor(ThreadQueue->spwndFocus, GA_ROOT) != Wnd)
-         {
-            co_UserSetFocus(Wnd);
-         }
+         PWND pWndSend = pti->MessageQueue->spwndActive;
+         // Clear focus if the active window is minimized.
+         if (pWndSend && pti->MessageQueue->spwndActive->style & WS_MINIMIZE) pWndSend = NULL;
+         // Send focus messages and if so, set the focus.
+         IntSendFocusMessages( pti, pWndSend);
       }
    }
-
+   ////
    if (InAAPM)
    {
       pti->TIF_flags &= ~TIF_INACTIVATEAPPMSG;
@@ -786,12 +807,13 @@ co_UserSetFocus(PWND Window)
       }
 
       /* Check if we can set the focus to this window */
-      for (pwndTop = Window; pwndTop != NULL; pwndTop = pwndTop->spwndParent)
+      //// Fixes wine win test_SetParent both "todo" line 3710 and 3720...
+      for (pwndTop = Window; pwndTop; pwndTop = pwndTop->spwndParent)
       {
          if (pwndTop->style & (WS_MINIMIZED|WS_DISABLED)) return 0;
          if ((pwndTop->style & (WS_POPUP|WS_CHILD)) != WS_CHILD) break;
       }
-
+      ////
       if (co_HOOK_CallHooks( WH_CBT, HCBT_SETFOCUS, (WPARAM)Window->head.h, (LPARAM)hWndPrev))
       {
          ERR("SetFocus 1 WH_CBT Call Hook return!\n");
@@ -933,7 +955,8 @@ co_UserSetCapture(HWND hWnd)
    {
       if (ThreadQueue->MenuOwner && Window) ThreadQueue->QF_flags |= QF_CAPTURELOCKED;
 
-      co_IntPostOrSendMessage(hWndPrev, WM_CAPTURECHANGED, 0, (LPARAM)hWnd);
+      //co_IntPostOrSendMessage(hWndPrev, WM_CAPTURECHANGED, 0, (LPARAM)hWnd);
+      co_IntSendMessage(hWndPrev, WM_CAPTURECHANGED, 0, (LPARAM)hWnd);
 
       ThreadQueue->QF_flags &= ~QF_CAPTURELOCKED;
    }

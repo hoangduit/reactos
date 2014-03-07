@@ -24,9 +24,14 @@
  * PROGRAMER:         Eric Kohl
  */
 
-/* INCLUDES *****************************************************************/
-
 #include "precomp.h"
+
+#define NTOS_MODE_USER
+#include <ndk/rtlfuncs.h>
+#include <ntsam.h>
+#include <sam_c.h>
+
+#include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(samlib);
 
@@ -39,6 +44,12 @@ NTSTATUS
 WINAPI
 SystemFunction007(PUNICODE_STRING string,
                   LPBYTE hash);
+
+NTSTATUS
+WINAPI
+SystemFunction012(const BYTE *in,
+                  const BYTE *key,
+                  LPBYTE out);
 
 /* GLOBALS *******************************************************************/
 
@@ -249,6 +260,13 @@ SamChangePasswordUser(IN SAM_HANDLE UserHandle,
     BOOLEAN NewLmPasswordPresent = FALSE;
     NTSTATUS Status;
 
+    ENCRYPTED_LM_OWF_PASSWORD OldLmEncryptedWithNewLm;
+    ENCRYPTED_LM_OWF_PASSWORD NewLmEncryptedWithOldLm;
+    ENCRYPTED_LM_OWF_PASSWORD OldNtEncryptedWithNewNt;
+    ENCRYPTED_LM_OWF_PASSWORD NewNtEncryptedWithOldNt;
+    PENCRYPTED_LM_OWF_PASSWORD pOldLmEncryptedWithNewLm = NULL;
+    PENCRYPTED_LM_OWF_PASSWORD pNewLmEncryptedWithOldLm = NULL;
+
     /* Calculate the NT hash for the old password */
     Status = SystemFunction007(OldPassword,
                                (LPBYTE)&OldNtPassword);
@@ -307,15 +325,57 @@ SamChangePasswordUser(IN SAM_HANDLE UserHandle,
         }
     }
 
+    if (OldLmPasswordPresent && NewLmPasswordPresent)
+    {
+        Status = SystemFunction012((const BYTE *)&OldLmPassword,
+                                   (const BYTE *)&NewLmPassword,
+                                   (LPBYTE)&OldLmEncryptedWithNewLm);
+        if (!NT_SUCCESS(Status))
+        {
+            TRACE("SystemFunction012 failed (Status 0x%08lx)\n", Status);
+            return Status;
+        }
+
+        Status = SystemFunction012((const BYTE *)&NewLmPassword,
+                                   (const BYTE *)&OldLmPassword,
+                                   (LPBYTE)&NewLmEncryptedWithOldLm);
+        if (!NT_SUCCESS(Status))
+        {
+            TRACE("SystemFunction012 failed (Status 0x%08lx)\n", Status);
+            return Status;
+        }
+
+        pOldLmEncryptedWithNewLm = &OldLmEncryptedWithNewLm;
+        pNewLmEncryptedWithOldLm = &NewLmEncryptedWithOldLm;
+    }
+
+    Status = SystemFunction012((const BYTE *)&OldNtPassword,
+                               (const BYTE *)&NewNtPassword,
+                               (LPBYTE)&OldNtEncryptedWithNewNt);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SystemFunction012 failed (Status 0x%08lx)\n", Status);
+        return Status;
+    }
+
+    Status = SystemFunction012((const BYTE *)&NewNtPassword,
+                               (const BYTE *)&OldNtPassword,
+                               (LPBYTE)&NewNtEncryptedWithOldNt);
+    if (!NT_SUCCESS(Status))
+    {
+        TRACE("SystemFunction012 failed (Status 0x%08lx)\n", Status);
+        return Status;
+    }
+
     RpcTryExcept
     {
         Status = SamrChangePasswordUser((SAMPR_HANDLE)UserHandle,
                                         OldLmPasswordPresent && NewLmPasswordPresent,
-                                        &OldLmPassword,
-                                        &NewLmPassword,
+                                        pOldLmEncryptedWithNewLm,
+                                        pNewLmEncryptedWithOldLm,
                                         TRUE,
-                                        &OldNtPassword,
-                                        &NewNtPassword,
+                                        &OldNtEncryptedWithNewNt,
+                                        &NewNtEncryptedWithOldNt,
                                         FALSE,
                                         NULL,
                                         FALSE,
@@ -1609,23 +1669,19 @@ SamQuerySecurityObject(IN SAM_HANDLE ObjectHandle,
                        IN SECURITY_INFORMATION SecurityInformation,
                        OUT PSECURITY_DESCRIPTOR *SecurityDescriptor)
 {
-    SAMPR_SR_SECURITY_DESCRIPTOR LocalSecurityDescriptor;
-    PSAMPR_SR_SECURITY_DESCRIPTOR pLocalSecurityDescriptor;
+    PSAMPR_SR_SECURITY_DESCRIPTOR SamSecurityDescriptor = NULL;
     NTSTATUS Status;
 
     TRACE("SamQuerySecurityObject(%p %lu %p)\n",
           ObjectHandle, SecurityInformation, SecurityDescriptor);
 
-    LocalSecurityDescriptor.Length = 0;
-    LocalSecurityDescriptor.SecurityDescriptor = NULL;
+    *SecurityDescriptor = NULL;
 
     RpcTryExcept
     {
-        pLocalSecurityDescriptor = &LocalSecurityDescriptor;
-
         Status = SamrQuerySecurityObject((SAMPR_HANDLE)ObjectHandle,
                                          SecurityInformation,
-                                         &pLocalSecurityDescriptor);
+                                         &SamSecurityDescriptor);
     }
     RpcExcept(EXCEPTION_EXECUTE_HANDLER)
     {
@@ -1633,7 +1689,17 @@ SamQuerySecurityObject(IN SAM_HANDLE ObjectHandle,
     }
     RpcEndExcept;
 
-    *SecurityDescriptor = LocalSecurityDescriptor.SecurityDescriptor;
+    TRACE("SamSecurityDescriptor: %p\n", SamSecurityDescriptor);
+
+    if (SamSecurityDescriptor != NULL)
+    {
+        TRACE("SamSecurityDescriptor->Length: %lu\n", SamSecurityDescriptor->Length);
+        TRACE("SamSecurityDescriptor->SecurityDescriptor: %p\n", SamSecurityDescriptor->SecurityDescriptor);
+
+        *SecurityDescriptor = SamSecurityDescriptor->SecurityDescriptor;
+
+        midl_user_free(SamSecurityDescriptor);
+    }
 
     return Status;
 }

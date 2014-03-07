@@ -24,21 +24,43 @@ add_compile_flags("/X /GR- /EHs-c- /GS- /Zl /W3")
 
 # HACK: for VS 11+ we need to explicitly disable SSE, which is off by
 # default for older compilers. See CORE-6507
-if (MSVC_VERSION GREATER 1699 AND ARCH STREQUAL "i386")
+if(MSVC_VERSION GREATER 1699 AND ARCH STREQUAL "i386")
     add_compile_flags("/arch:IA32")
 endif ()
 
-# C++ exception specification ignored... yeah we don't care
+# VS 12+ requires /FS when used in parallel compilations
+if(MSVC_VERSION GREATER 1799 AND NOT MSVC_IDE)
+    add_compile_flags("/FS")
+endif ()
+
+# Disable overly sensitive warnings as well as those that generally aren't
+# useful to us.
+# - TODO: C4018: signed/unsigned mismatch
+# - TODO: C4244: integer truncation
+# - C4290: C++ exception specification ignored
+#add_compile_flags("/wd4018 /wd4244 /wd4290")
 add_compile_flags("/wd4290")
 
 # The following warnings are treated as errors:
+# - C4013: implicit function declaration
+# - C4020: too many actual parameters
+# - C4022: pointer type mismatch for parameter
+# - TODO: C4028: formal parameter different from declaration
 # - C4047: different level of indirection
-# - C4090: different 'modifier' qualifiers (for C programs only;
+# - TODO: C4090: different 'modifier' qualifiers (for C programs only;
 #          for C++ programs, the compiler error C2440 is issued)
 # - C4098: void function returning a value
+# - C4113: parameter lists differ
+# - C4129: unrecognized escape sequence
+# - TODO: C4133: incompatible types
+# - C4229: modifiers on data are ignored
 # - C4700: uninitialized variable usage
-##add_compile_flags("/we4047 /we4090 /we4098 /we4700")
-add_compile_flags("/we4047 /we4098 /we4700")
+# - C4603: macro is not defined or definition is different after precompiled header use
+add_compile_flags("/we4013 /we4020 /we4022 /we4047 /we4098 /we4113 /we4129 /we4229 /we4700 /we4603")
+
+# Enable warnings above the default level, but don't treat them as errors:
+# - C4115: named type definition in parentheses
+add_compile_flags("/w14115")
 
 # Debugging
 #if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -63,13 +85,19 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO /INCREMENTAL:
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO /INCREMENTAL:NO /SAFESEH:NO /NODEFAULTLIB /RELEASE")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /MANIFEST:NO /INCREMENTAL:NO /SAFESEH:NO /NODEFAULTLIB /RELEASE")
 
+if(CMAKE_DISABLE_NINJA_DEPSLOG)
+    set(cl_includes_flag "")
+else()
+    set(cl_includes_flag "/showIncludes")
+endif()
+
 if(MSVC_IDE AND (CMAKE_VERSION MATCHES "ReactOS"))
     # for VS builds we'll only have en-US in resource files
     add_definitions(/DLANGUAGE_EN_US)
 else()
     set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> /nologo <FLAGS> <DEFINES> ${I18N_DEFS} /fo<OBJECT> <SOURCE>")
     set(CMAKE_ASM_COMPILE_OBJECT
-        "cl /nologo /X /I${REACTOS_SOURCE_DIR}/include/asm /I${REACTOS_BINARY_DIR}/include/asm <FLAGS> <DEFINES> /D__ASM__ /D_USE_ML /EP /c <SOURCE> > <OBJECT>.tmp"
+        "cl ${cl_includes_flag} /nologo /X /I${REACTOS_SOURCE_DIR}/include/asm /I${REACTOS_BINARY_DIR}/include/asm <FLAGS> <DEFINES> /D__ASM__ /D_USE_ML /EP /c <SOURCE> > <OBJECT>.tmp"
         "<CMAKE_ASM_COMPILER> /nologo /Cp /Fo<OBJECT> /c /Ta <OBJECT>.tmp")
 endif()
 
@@ -92,8 +120,54 @@ set(CMAKE_RC_CREATE_SHARED_LIBRARY ${CMAKE_C_CREATE_SHARED_LIBRARY})
 set(CMAKE_ASM_CREATE_SHARED_LIBRARY ${CMAKE_C_CREATE_SHARED_LIBRARY})
 set(CMAKE_ASM_CREATE_STATIC_LIBRARY ${CMAKE_C_CREATE_STATIC_LIBRARY})
 
-macro(add_pch _target_name _FILE)
-endmacro()
+if(PCH)
+    macro(add_pch _target _pch _sources)
+
+        # Workaround for the MSVC toolchain (MSBUILD) /MP bug
+        set(_temp_gch ${CMAKE_CURRENT_BINARY_DIR}/${_target}.pch)
+        if(MSVC_IDE)
+            file(TO_NATIVE_PATH ${_temp_gch} _gch)
+        else()
+            set(_gch ${_temp_gch})
+        endif()
+
+        if(IS_CPP)
+            set(_pch_language CXX)
+            set(_cl_lang_flag "/TP")
+        else()
+            set(_pch_language C)
+            set(_cl_lang_flag "/TC")
+        endif()
+
+        if(MSVC_IDE)
+            set(_pch_path_name_flag "/Fp${_gch}")
+        endif()
+
+        # Build the precompiled header
+        # HEADER_FILE_ONLY FALSE: force compiling the header
+        set_source_files_properties(${_pch} PROPERTIES
+            HEADER_FILE_ONLY FALSE
+            LANGUAGE ${_pch_language}
+            COMPILE_FLAGS "${_cl_lang_flag} /Yc /Fp${_gch}"
+            OBJECT_OUTPUTS ${_gch})
+
+        # Prevent a race condition related to writing to the PDB files between the PCH and the excluded list of source files
+        get_target_property(_target_sources ${_target} SOURCES)
+        list(REMOVE_ITEM _target_sources ${_pch})
+        foreach(_target_src ${_target_sources})
+            set_property(SOURCE ${_target_src} APPEND PROPERTY OBJECT_DEPENDS ${_gch})
+        endforeach()
+
+        # Use the precompiled header with the specified source files, skipping the pch itself
+        list(REMOVE_ITEM ${_sources} ${_pch})
+        foreach(_src ${${_sources}})
+            set_property(SOURCE ${_src} APPEND_STRING PROPERTY COMPILE_FLAGS " /FI${_gch} /Yu${_gch} ${_pch_path_name_flag}")
+        endforeach()
+    endmacro()
+else()
+    macro(add_pch _target _pch _sources)
+    endmacro()
+endif()
 
 function(set_entrypoint _module _entrypoint)
     if(${_entrypoint} STREQUAL "0")
@@ -110,10 +184,10 @@ function(set_entrypoint _module _entrypoint)
 endfunction()
 
 function(set_subsystem MODULE SUBSYSTEM)
-    if(NOT CMAKE_C_COMPILER_VERSION VERSION_LESS 17)
-        add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.01")
+    if(ARCH STREQUAL "amd64")
+        add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.02")
     else()
-        add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM}")
+        add_target_link_flags(${MODULE} "/SUBSYSTEM:${SUBSYSTEM},5.01")
     endif()
 endfunction()
 
@@ -162,7 +236,7 @@ function(generate_import_lib _libname _dllname _spec_file)
     # Generate the asm stub file and the def file for import library
     add_custom_command(
         OUTPUT ${_asm_stubs_file} ${_def_file}
-        COMMAND native-spec2def --ms --kill-at -a=${SPEC2DEF_ARCH} --implib -n=${_dllname} -d=${_def_file} -l=${_asm_stubs_file} ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
+        COMMAND native-spec2def --ms -a=${SPEC2DEF_ARCH} --implib -n=${_dllname} -d=${_def_file} -l=${_asm_stubs_file} ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file} native-spec2def)
 
     if(MSVC_IDE)
@@ -219,7 +293,7 @@ function(spec2def _dllname _spec_file)
     #generate def for the DLL and C stubs file
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_file}.def ${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c
-        COMMAND native-spec2def --ms --kill-at -a=${SPEC2DEF_ARCH} -n=${_dllname} -d=${CMAKE_CURRENT_BINARY_DIR}/${_file}.def -s=${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
+        COMMAND native-spec2def --ms -a=${SPEC2DEF_ARCH} -n=${_dllname} -d=${CMAKE_CURRENT_BINARY_DIR}/${_file}.def -s=${CMAKE_CURRENT_BINARY_DIR}/${_file}_stubs.c ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_spec_file} native-spec2def)
 
     if(__add_importlib)
@@ -277,9 +351,9 @@ macro(add_asm_files _target)
         get_directory_property(_defines COMPILE_DEFINITIONS)
         foreach(_source_file ${ARGN})
             get_filename_component(_source_file_base_name ${_source_file} NAME_WE)
+            get_filename_component(_source_file_full_path ${_source_file} ABSOLUTE)
             set(_preprocessed_asm_file ${CMAKE_CURRENT_BINARY_DIR}/asm/${_source_file_base_name}_${_target}.tmp)
             set(_object_file ${CMAKE_CURRENT_BINARY_DIR}/asm/${_source_file_base_name}_${_target}.obj)
-            set(_source_file_full_path ${CMAKE_CURRENT_SOURCE_DIR}/${_source_file})
             get_source_file_property(_defines_semicolon_list ${_source_file_full_path} COMPILE_DEFINITIONS)
             unset(_source_file_defines)
             foreach(_define ${_defines_semicolon_list})

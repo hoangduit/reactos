@@ -8,8 +8,12 @@
  *                  Johannes Anderwald (johannes.anderwald@reactos.org)
  */
 
-#define INITGUID
 #include "usbhub.h"
+
+#include <stdio.h>
+
+#define NDEBUG
+#include <debug.h>
 
 NTSTATUS
 QueryStatusChangeEndpoint(
@@ -845,6 +849,12 @@ CreateDeviceIds(
     // use first interface descriptor available
     //
     InterfaceDescriptor = USBD_ParseConfigurationDescriptorEx(ConfigurationDescriptor, ConfigurationDescriptor, 0, -1, -1, -1, -1);
+    if (InterfaceDescriptor == NULL)
+    {
+         DPRINT1("Error USBD_ParseConfigurationDescriptorEx failed to parse interface descriptor\n");
+         return STATUS_INVALID_PARAMETER;
+    }
+
     ASSERT(InterfaceDescriptor);
 
     //

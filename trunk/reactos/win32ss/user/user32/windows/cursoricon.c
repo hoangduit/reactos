@@ -376,7 +376,7 @@ static BOOL CURSORICON_GetResCursorEntry( LPCVOID dir, DWORD size, int n,
                                           int *width, int *height, int *bits )
 {
     const CURSORICONDIR *resdir = dir;
-    const CURSORDIR *cursor;
+    const CURSORRESDIR *cursor;
 
     if ( resdir->idCount <= n )
         return FALSE;
@@ -1252,7 +1252,7 @@ BOOL WINAPI DrawIcon( HDC hdc, INT x, INT y, HICON hIcon )
 /***********************************************************************
  *		ShowCursor (USER32.@)
  */
-INT WINAPI /*DECLSPEC_HOTPATCH*/ ShowCursor( BOOL bShow )
+INT WINAPI DECLSPEC_HOTPATCH ShowCursor( BOOL bShow )
 {
     return NtUserxShowCursor(bShow);
 }
@@ -2112,6 +2112,7 @@ CursorIconToCursor(HICON hIcon,
  */
 BOOL
 WINAPI
+DECLSPEC_HOTPATCH
 SetCursorPos(int X, int Y)
 {
     return NtUserxSetCursorPos(X,Y);
@@ -2122,6 +2123,7 @@ SetCursorPos(int X, int Y)
  */
 BOOL
 WINAPI
+DECLSPEC_HOTPATCH
 GetCursorPos(LPPOINT lpPoint)
 {
     BOOL res;
@@ -2205,5 +2207,12 @@ User32CallCopyImageFromKernel(PVOID Arguments, ULONG ArgumentLength)
                      Common->fuFlags);
 
   return ZwCallbackReturn(&Result, sizeof(HANDLE), STATUS_SUCCESS);
+}
+
+HCURSOR
+WINAPI
+GetCursorFrameInfo(HCURSOR hCursor, DWORD reserved, DWORD istep, PINT rate_jiffies, DWORD *num_steps)
+{
+   return NtUserGetCursorFrameInfo(hCursor, istep, rate_jiffies, num_steps);
 }
 

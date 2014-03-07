@@ -11,6 +11,9 @@
 
 #include "srv.h"
 
+#include <winreg.h>
+#include <ndk/cmfuncs.h>
+
 #define NDEBUG
 #include <debug.h>
 
@@ -676,37 +679,10 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
             if (NT_SUCCESS(Status)) ServerString[-1] = ANSI_NULL;
 
             /* Load it */
-			if (CsrDebug & 1) DPRINT1("CSRSS: Loading ServerDll=%s:%s\n", ParameterValue, EntryPoint);
-			{
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-				RtlInitUnicodeString(&MyString, L"CsrLoadServerDll: before\n");
-				ZwDisplayString(&MyString);
-
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
-			Status = CsrLoadServerDll(ParameterValue, EntryPoint, DllIndex);
-
-			{
-				LARGE_INTEGER MyDelay;
-
-				UNICODE_STRING MyString;
-				MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-				RtlInitUnicodeString(&MyString, L"CsrLoadServerDll: after\n");
-				ZwDisplayString(&MyString);
-
-
-				NtDelayExecution(TRUE, &MyDelay);
-			}
-
-			if (!NT_SUCCESS(Status))
-			{
+            if (CsrDebug & 1) DPRINT1("CSRSS: Loading ServerDll=%s:%s\n", ParameterValue, EntryPoint);
+            Status = CsrLoadServerDll(ParameterValue, EntryPoint, DllIndex);
+            if (!NT_SUCCESS(Status))
+            {
                 DPRINT1("CSRSS: *** Failed loading ServerDll=%s (Status == 0x%x)\n",
                         ParameterValue, Status);
                 return Status;
@@ -1034,31 +1010,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
     }
 
     /* Parse the command line */
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrParseServerCommandLine: before\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-	Status = CsrParseServerCommandLine(ArgumentCount, Arguments);
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrParseServerCommandLine: before\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
+    Status = CsrParseServerCommandLine(ArgumentCount, Arguments);
     if (!NT_SUCCESS(Status))
     {
         DPRINT1("CSRSRV:%s: CsrParseServerCommandLine failed (Status=0x%08lx)\n",

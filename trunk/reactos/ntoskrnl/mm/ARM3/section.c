@@ -198,7 +198,7 @@ MiMakeProtectionMask(IN ULONG Protect)
         }
 
         /* This actually turns on guard page in this scenario! */
-        ProtectMask |= MM_DECOMMIT;
+        ProtectMask |= MM_GUARDPAGE;
     }
 
     /* Check for nocache option */
@@ -1080,6 +1080,116 @@ MiMapViewInSystemSpace(IN PVOID Section,
     return STATUS_SUCCESS;
 }
 
+VOID
+NTAPI
+MiSetControlAreaSymbolsLoaded(IN PCONTROL_AREA ControlArea)
+{
+    KIRQL OldIrql;
+
+    ASSERT(KeGetCurrentIrql() <= APC_LEVEL);
+
+    OldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
+    ControlArea->u.Flags.DebugSymbolsLoaded |= 1;
+
+    ASSERT(OldIrql <= APC_LEVEL);
+    KeReleaseQueuedSpinLock(LockQueuePfnLock, OldIrql);
+    ASSERT(KeGetCurrentIrql() <= APC_LEVEL);
+}
+
+VOID
+NTAPI
+MiLoadUserSymbols(IN PCONTROL_AREA ControlArea,
+                  IN PVOID BaseAddress,
+                  IN PEPROCESS Process)
+{
+    NTSTATUS Status;
+    ANSI_STRING FileNameA;
+    PLIST_ENTRY NextEntry;
+    PUNICODE_STRING FileName;
+    PIMAGE_NT_HEADERS NtHeaders;
+    PLDR_DATA_TABLE_ENTRY LdrEntry;
+
+    FileName = &ControlArea->FilePointer->FileName;
+    if (FileName->Length == 0)
+    {
+        return;
+    }
+
+    /* Acquire module list lock */
+    KeEnterCriticalRegion();
+    ExAcquireResourceExclusiveLite(&PsLoadedModuleResource, TRUE);
+
+    /* Browse list to try to find current module */
+    for (NextEntry = MmLoadedUserImageList.Flink;
+         NextEntry != &MmLoadedUserImageList;
+         NextEntry = NextEntry->Flink)
+    {
+        /* Get the entry */
+        LdrEntry = CONTAINING_RECORD(NextEntry,
+                                     LDR_DATA_TABLE_ENTRY,
+                                     InLoadOrderLinks);
+
+        /* If already in the list, increase load count */
+        if (LdrEntry->DllBase == BaseAddress)
+        {
+            ++LdrEntry->LoadCount;
+            break;
+        }
+    }
+
+    /* Not in the list, we'll add it */
+    if (NextEntry == &MmLoadedUserImageList)
+    {
+        /* Allocate our element, taking to the name string and its null char */
+        LdrEntry = ExAllocatePoolWithTag(NonPagedPool, FileName->Length + sizeof(UNICODE_NULL) + sizeof(*LdrEntry), 'bDmM');
+        if (LdrEntry)
+        {
+            memset(LdrEntry, 0, FileName->Length + sizeof(UNICODE_NULL) + sizeof(*LdrEntry));
+
+            _SEH2_TRY
+            {
+                /* Get image checksum and size */
+                NtHeaders = RtlImageNtHeader(BaseAddress);
+                if (NtHeaders)
+                {
+                    LdrEntry->SizeOfImage = NtHeaders->OptionalHeader.SizeOfImage;
+                    LdrEntry->CheckSum = NtHeaders->OptionalHeader.CheckSum;
+                }
+            }
+            _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
+            {
+                ExFreePoolWithTag(LdrEntry, 'bDmM');
+                _SEH2_YIELD(return);
+            }
+            _SEH2_END;
+
+            /* Fill all the details */
+            LdrEntry->DllBase = BaseAddress;
+            LdrEntry->FullDllName.Buffer = (PVOID)((ULONG_PTR)LdrEntry + sizeof(*LdrEntry));
+            LdrEntry->FullDllName.Length = FileName->Length;
+            LdrEntry->FullDllName.MaximumLength = FileName->Length + sizeof(UNICODE_NULL);
+            memcpy(LdrEntry->FullDllName.Buffer, FileName->Buffer, FileName->Length);
+            LdrEntry->FullDllName.Buffer[LdrEntry->FullDllName.Length / sizeof(WCHAR)] = UNICODE_NULL;
+            LdrEntry->LoadCount = 1;
+
+            /* Insert! */
+            InsertHeadList(&MmLoadedUserImageList, &LdrEntry->InLoadOrderLinks);
+        }
+    }
+
+    /* Release locks */
+    ExReleaseResourceLite(&PsLoadedModuleResource);
+    KeLeaveCriticalRegion();
+
+    /* Load symbols */
+    Status = RtlUnicodeStringToAnsiString(&FileNameA, FileName, TRUE);
+    if (NT_SUCCESS(Status))
+    {
+        DbgLoadImageSymbols(&FileNameA, BaseAddress, (ULONG_PTR)Process);
+        RtlFreeAnsiString(&FileNameA);
+    }
+}
+
 NTSTATUS
 NTAPI
 MiMapViewOfDataSection(IN PCONTROL_AREA ControlArea,
@@ -1804,10 +1914,7 @@ MiFlushTbAndCapture(IN PMMVAD FoundVad,
     //
     // Write the new PTE, making sure we are only changing the bits
     //
-    ASSERT(PointerPte->u.Hard.Valid == 1);
-    ASSERT(TempPte.u.Hard.Valid == 1);
-    ASSERT(PointerPte->u.Hard.PageFrameNumber == TempPte.u.Hard.PageFrameNumber);
-    *PointerPte = TempPte;
+    MI_UPDATE_VALID_PTE(PointerPte, TempPte);
 
     //
     // Flush the TLB
@@ -2011,12 +2118,14 @@ MiRemoveMappedPtes(IN PVOID BaseAddress,
                    IN PCONTROL_AREA ControlArea,
                    IN PMMSUPPORT Ws)
 {
-    PMMPTE PointerPte;//, FirstPte;
+    PMMPTE PointerPte, ProtoPte;//, FirstPte;
     PMMPDE PointerPde, SystemMapPde;
     PMMPFN Pfn1, Pfn2;
     MMPTE PteContents;
     KIRQL OldIrql;
     DPRINT("Removing mapped view at: 0x%p\n", BaseAddress);
+
+    ASSERT(Ws == NULL);
 
     /* Get the PTE and loop each one */
     PointerPte = MiAddressToPte(BaseAddress);
@@ -2068,8 +2177,15 @@ MiRemoveMappedPtes(IN PVOID BaseAddress,
             /* Windows ASSERT */
             ASSERT((PteContents.u.Long == 0) || (PteContents.u.Soft.Prototype == 1));
 
-            /* But not handled in ARM3 */
-            ASSERT(PteContents.u.Soft.Prototype == 0);
+            /* Check if this is a prototype pointer PTE */
+            if (PteContents.u.Soft.Prototype == 1)
+            {
+                /* Get the prototype PTE */
+                ProtoPte = MiProtoPteToPte(&PteContents);
+
+                /* We don't support anything else atm */
+                ASSERT(ProtoPte->u.Long == 0);
+            }
         }
 
         /* Make the PTE into a zero PTE */
@@ -2146,9 +2262,6 @@ MiUnmapViewInSystemSpace(IN PMMSESSION Session,
     ULONG Size;
     PCONTROL_AREA ControlArea;
     PAGED_CODE();
-
-    /* Only global mappings supported for now */
-    ASSERT(Session == &MmSession);
 
     /* Remove this mapping */
     KeAcquireGuardedMutex(Session->SystemSpaceViewLockPointer);
@@ -2673,6 +2786,12 @@ MmMapViewInSessionSpace(IN PVOID Section,
 {
     PAGED_CODE();
 
+    // HACK
+    if (MiIsRosSectionObject(Section))
+    {
+        return MmMapViewInSystemSpace(Section, MappedBase, ViewSize);
+    }
+
     /* Process must be in a session */
     if (PsGetCurrentProcess()->ProcessInSession == FALSE)
     {
@@ -2696,6 +2815,12 @@ NTAPI
 MmUnmapViewInSessionSpace(IN PVOID MappedBase)
 {
     PAGED_CODE();
+
+    // HACK
+    if (!MI_IS_SESSION_ADDRESS(MappedBase))
+    {
+        return MmUnmapViewInSystemSpace(MappedBase);
+    }
 
     /* Process must be in a session */
     if (PsGetCurrentProcess()->ProcessInSession == FALSE)
@@ -2880,6 +3005,7 @@ MmCommitSessionMappedView(IN PVOID MappedBase,
     ASSERT(TempPte.u.Long != 0);
 
     /* Loop all prototype PTEs to be committed */
+    PointerPte = ProtoPte;
     while (PointerPte < LastProtoPte)
     {
         /* Make sure the PTE is already invalid */

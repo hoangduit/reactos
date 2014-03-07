@@ -328,7 +328,7 @@ DEFINE_SAFE_CONVERT_UTOX(ULongToUInt, ULONG, UINT)
 DEFINE_SAFE_CONVERT_UTOX(ULongToIntPtr, ULONG, INT_PTR)
 DEFINE_SAFE_CONVERT_UTOX(ULongToUIntPtr, ULONG, UINT_PTR)
 DEFINE_SAFE_CONVERT_UTOX(ULongToLongPtr, ULONG, LONG_PTR)
-DEFINE_SAFE_CONVERT_UTOX(ULongPtrToULong, ULONG_PTR, ULONGLONG)
+DEFINE_SAFE_CONVERT_UTOX(ULongPtrToULong, ULONG_PTR, ULONG)
 DEFINE_SAFE_CONVERT_UTOX(ULongLongToUInt, ULONGLONG, UINT)
 DEFINE_SAFE_CONVERT_UTOX(ULongLongToULong, ULONGLONG, ULONG)
 DEFINE_SAFE_CONVERT_UTOX(ULongLongToULongPtr, ULONGLONG, ULONG_PTR)
@@ -343,7 +343,8 @@ INTSAFE_NAME(_Name)( \
     _In_ _TypeFrom Input, \
     _Out_ _Deref_out_range_(==, Input) _TypeTo *pOutput) \
 { \
-    if ((Input >= 0) && ((_TypeTo)Input <= _TypeTo ## _MAX)) \
+    if ((Input >= 0) && \
+        ((sizeof(_TypeFrom) <= sizeof(_TypeTo)) || (Input <= (_TypeFrom)_TypeTo ## _MAX))) \
     { \
         *pOutput = (_TypeTo)Input; \
         return INTSAFE_SUCCESS; \

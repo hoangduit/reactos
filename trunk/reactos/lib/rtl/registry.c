@@ -10,6 +10,9 @@
 /* INCLUDES *****************************************************************/
 
 #include <rtl.h>
+
+#include <ndk/cmfuncs.h>
+
 #define NDEBUG
 #include <debug.h>
 
@@ -208,7 +211,7 @@ RtlpCallQueryRegistryRoutine(IN PRTL_QUERY_REGISTRY_TABLE QueryTable,
 
             /* Check if we have space to copy the data */
             RequiredLength = KeyValueInfo->NameLength + sizeof(UNICODE_NULL);
-            if (SpareLength < RequiredLength)
+            if ((SpareData > DataEnd) || (SpareLength < RequiredLength))
             {
                 /* Fail and return the missing length */
                 *InfoSize = (ULONG)(SpareData - (PCHAR)KeyValueInfo) + RequiredLength;
@@ -661,8 +664,13 @@ RtlWriteRegistryValue(IN ULONG RelativeTo,
                            ValueData,
                            ValueLength);
 
-    /* All went well, close the handle and return status */
-    ZwClose(KeyHandle);
+    /* Did the caller pass a key handle? */
+    if (!(RelativeTo & RTL_REGISTRY_HANDLE))
+    {
+        /* We opened the key in RtlpGetRegistryHandle, so close it now */
+        ZwClose(KeyHandle);
+    }
+
     return Status;
 }
 

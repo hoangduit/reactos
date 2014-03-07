@@ -12,6 +12,7 @@ KMT_TESTFUNC Test_FindFile;
 KMT_TESTFUNC Test_IoDeviceObject;
 KMT_TESTFUNC Test_RtlAvlTree;
 KMT_TESTFUNC Test_RtlException;
+KMT_TESTFUNC Test_RtlIntSafe;
 KMT_TESTFUNC Test_RtlMemory;
 KMT_TESTFUNC Test_RtlRegistry;
 KMT_TESTFUNC Test_RtlSplayTree;
@@ -20,11 +21,12 @@ KMT_TESTFUNC Test_RtlUnicodeString;
 /* tests with a leading '-' will not be listed */
 const KMT_TEST TestList[] =
 {
-    { "Example",            Test_Example },
+    { "-Example",           Test_Example },
     { "FindFile",           Test_FindFile },
     { "IoDeviceObject",     Test_IoDeviceObject },
     { "RtlAvlTree",         Test_RtlAvlTree },
     { "RtlException",       Test_RtlException },
+    { "RtlIntSafe",         Test_RtlIntSafe },
     { "RtlMemory",          Test_RtlMemory },
     { "RtlRegistry",        Test_RtlRegistry },
     { "RtlSplayTree",       Test_RtlSplayTree },

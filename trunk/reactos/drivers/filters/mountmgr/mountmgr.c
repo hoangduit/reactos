@@ -24,8 +24,6 @@
  *                   Alex Ionescu (alex.ionescu@reactos.org)
  */
 
-/* INCLUDES *****************************************************************/
-
 #include "mntmgr.h"
 
 #define NDEBUG
@@ -42,7 +40,6 @@ static const WCHAR Cunc[] = L"\\??\\C:";
 
 /*
  * TODO:
- * - MountMgrQueryDosVolumePath
  * - MountMgrQueryDosVolumePaths
  * - MountMgrQueryVolumePaths
  * - MountMgrValidateBackPointer
