@@ -12,10 +12,28 @@
 
 #include "excpt.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* CLANG must safe non-volatiles, because it uses a return-twice algorithm */
 #if defined(__clang__) && !defined(_SEH3$_FRAME_ALL_NONVOLATILES)
 #define _SEH3$_FRAME_ALL_NONVOLATILES 1
 #endif
+
+enum
+{
+    _SEH3$_NESTED_HANDLER = 0,
+    _SEH3$_CPP_HANDLER = 1,
+    _SEH3$_CLANG_HANDLER = 2,
+#ifdef __clang__
+    _SEH3$_HANDLER_TYPE = _SEH3$_CLANG_HANDLER,
+#elif defined(__cplusplus)
+    _SEH3$_HANDLER_TYPE = _SEH3$_CPP_HANDLER,
+#else
+    _SEH3$_HANDLER_TYPE = _SEH3$_NESTED_HANDLER,
+#endif
+};
 
 typedef struct _SEH3$_SCOPE_TABLE
 {
@@ -94,6 +112,9 @@ void * __cdecl __attribute__((error("Can only be used inside an exception filter
 /* CLANG specific definitions! */
 #ifdef __clang__
 
+/* CLANG thinks it is smart and optimizes the alloca away if it is 0 and with it the use of a frame register */
+#define _SEH3$_EnforceFramePointer() asm volatile ("#\n" : : "m"(*(char*)__builtin_alloca(4)) : "%esp", "memory")
+
 /* CLANG doesn't have asm goto! */
 #define _SEH3$_ASM_GOTO(_Label, ...)
 
@@ -137,34 +158,30 @@ _SEH3$_RegisterTryLevelWithNonVolatiles(
 
 #else /* !__clang__ */
 
+/* This will make GCC use ebp, even if it was disabled by -fomit-frame-pointer */
+#define _SEH3$_EnforceFramePointer() asm volatile ("#\n" : : "m"(*(char*)__builtin_alloca(0)) : "%esp", "memory")
+
 #define _SEH3$_ASM_GOTO(_Label, ...) asm goto ("#\n" : : : "memory", ## __VA_ARGS__ : _Label)
 
 /* This is an asm wrapper around _SEH3$_RegisterFrame */
 #define _SEH3$_RegisterFrame_(_TrylevelFrame, _DataTable) \
-    asm goto ("leal %1, %%edx\n" \
+    asm goto ("leal %0, %%eax\n" \
+              "leal %1, %%edx\n" \
               "call __SEH3$_RegisterFrame\n" \
               : \
-              : "a" (_TrylevelFrame), "m" (*(_DataTable)) \
+              : "m" (*(_TrylevelFrame)), "m" (*(_DataTable)) \
               : "ecx", "edx", "memory" \
               : _SEH3$_l_HandlerTarget)
 
 /* This is an asm wrapper around _SEH3$_RegisterTryLevel */
 #define _SEH3$_RegisterTryLevel_(_TrylevelFrame, _DataTable) \
-    asm goto ("leal %1, %%edx\n" \
+    asm goto ("leal %0, %%eax\n" \
+              "leal %1, %%edx\n" \
               "call __SEH3$_RegisterTryLevel\n" \
               : \
-              : "a" (_TrylevelFrame), "m" (*(_DataTable)) \
+              : "m" (*(_TrylevelFrame)), "m" (*(_DataTable)) \
               : "ecx", "edx", "memory" \
               : _SEH3$_l_HandlerTarget)
-
-/* Define the registers that get clobbered, when reaching the __except block.
-   We specify ebp on optimized builds without frame pointer, since it will be
-   used by GCC as a general purpose register then. */
-#if defined(__OPTIMIZE__) && defined(_ALLOW_OMIT_FRAME_POINTER)
-#define _SEH3$_CLOBBER_ON_EXCEPTION "ebp", "ebx", "ecx", "edx", "esi", "edi", "flags", "memory"
-#else
-#define _SEH3$_CLOBBER_ON_EXCEPTION "ebx", "ecx", "edx", "esi", "edi", "flags", "memory"
-#endif
 
 /* This construct scares GCC so much, that it will stop moving code
    around into places that are never executed. */
@@ -174,7 +191,7 @@ _SEH3$_RegisterTryLevelWithNonVolatiles(
         _SEH3$_ASM_GOTO(_SEH3$_l_HandlerTarget); \
         _SEH3$_ASM_GOTO(_SEH3$_l_OnException); \
         asm volatile ("#" : "=a"(plabel) : "p"(&&_SEH3$_l_BeforeTry), "p"(&&_SEH3$_l_HandlerTarget), "p"(&&_SEH3$_l_OnException) \
-                      : _SEH3$_CLOBBER_ON_EXCEPTION ); \
+                      : "ebx", "ecx", "edx", "esi", "edi", "flags", "memory" ); \
         goto _SEH3$_l_OnException;
 
 #endif /* __clang__ */
@@ -193,6 +210,46 @@ _SEH3$_Unregister(
 #define _SEH3$_DEFINE_CLEANUP_FUNC(_Name)
 #define _SEH3$_DECLARE_FILTER_FUNC(_Name)
 #define _SEH3$_DEFINE_DUMMY_FINALLY(_Name)
+
+/* The "nested" functions are a piece of code with a ret instruction at the end */
+#define _SEH3$_NESTED_FUNC_OPEN() \
+    { \
+        int SavedEsp, result = 0; \
+\
+        /* Save esp */ \
+        asm volatile ("movl %%esp, %[SavedEsp]\n" : : [SavedEsp]"m"(SavedEsp));
+
+#define _SEH3$_NESTED_FUNC_CLOSE() \
+        /* Restore esp and return to the caller */ \
+        asm volatile ("movl %[SavedEsp], %%esp\nret\n" \
+            : : "a"(result), [SavedEsp]"irm"(SavedEsp)); \
+    }
+
+/* The filter function */
+#define _SEH3$_DEFINE_FILTER_FUNC(_Name, expression) \
+    _SEH3$_NESTED_FUNC_OPEN() \
+    { \
+        /* Evaluate the filter expression */ \
+        result = (expression); \
+    } \
+    _SEH3$_NESTED_FUNC_CLOSE()
+
+#define _SEH3$_FINALLY_FUNC_OPEN(_Name) \
+    _SEH3$_NESTED_FUNC_OPEN() \
+        /* This construct makes sure that the finally function returns */ \
+        /* a proper value at the end */ \
+        for (; ; (void)({asm volatile ("movl %[SavedEsp], %%esp\nret\n" \
+            : : "a"(result), [SavedEsp]"irm"(SavedEsp)); 0;}))
+
+#define _SEH3$_FILTER(_Filter, _FilterExpression) (&&_SEH3$_l_FilterOrFinally)
+#define _SEH3$_FINALLY(_Finally) 0
+
+#define _SEH3$_DECLARE_EXCEPT_INTRINSICS()
+
+/* Since we cannot use nested functions, we declare these globally as macros */
+#define _abnormal_termination() (_SEH3$_TrylevelFrame.ScopeTable != 0)
+#define _exception_code() (_SEH3$_TrylevelFrame.ExceptionPointers->ExceptionRecord->ExceptionCode)
+#define _exception_info() (_SEH3$_TrylevelFrame.ExceptionPointers)
 
 #else /* __cplusplus || __clang__ */
 
@@ -233,10 +290,16 @@ _SEH3$_Unregister(
     _SEH3$_NESTED_FUNC_OPEN(_Name) \
         /* Declare the intrinsics for the finally function */ \
         inline __attribute__((always_inline, gnu_inline)) \
-        int _abnormal_termination() { return (_SEH3$_TrylevelFrame.ScopeTable != 0); }
+        int _abnormal_termination() { return (_SEH3$_TrylevelFrame.ScopeTable != 0); } \
+\
+        /* This construct makes sure that the finally function returns */ \
+        /* a proper value at the end */ \
+        for (; ; (void)({return 0; 0;}))
 
 #define _SEH3$_FILTER(_Filter, _FilterExpression) \
     (__builtin_constant_p(_FilterExpression) ? (void*)(unsigned long)(unsigned char)(unsigned long)(_FilterExpression) : _Filter)
+
+#define _SEH3$_FINALLY(_Finally) (_Finally)
 
 #define _SEH3$_DEFINE_DUMMY_FINALLY(_Name) \
     auto inline __attribute__((always_inline,gnu_inline)) int _Name(int Action) { (void)Action; return 0; }
@@ -271,6 +334,10 @@ _SEH3$_Unregister(
         __label__ _SEH3$_l_EndTry; \
         __label__ _SEH3$_l_HandlerTarget; \
         __label__ _SEH3$_l_OnException; \
+        __label__ _SEH3$_l_BeforeFilterOrFinally; \
+        __label__ _SEH3$_l_FilterOrFinally; \
+        (void)&&_SEH3$_l_BeforeFilterOrFinally; \
+        (void)&&_SEH3$_l_FilterOrFinally; \
 \
         /* Count the try level. Outside of any __try, _SEH3$_TryLevel is 0 */ \
         enum { \
@@ -304,24 +371,30 @@ _SEH3$_Unregister(
         _SEH3$_DECLARE_FILTER_FUNC(_SEH3$_FilterFunction); \
 \
         /* Create a static data table that contains the jump target and filter function */ \
-        static const SEH3$_SCOPE_TABLE _SEH3$_ScopeTable = { &&_SEH3$_l_HandlerTarget, _SEH3$_FILTER(&_SEH3$_FilterFunction, (__VA_ARGS__)) }; \
+        static const SEH3$_SCOPE_TABLE _SEH3$_ScopeTable = { &&_SEH3$_l_HandlerTarget, _SEH3$_FILTER(&_SEH3$_FilterFunction, (__VA_ARGS__)), _SEH3$_TryLevel, _SEH3$_HANDLER_TYPE }; \
 \
         /* Register the registration record. */ \
         if (_SEH3$_TryLevel == 1) _SEH3$_RegisterFrame_(&_SEH3$_TrylevelFrame, &_SEH3$_ScopeTable); \
         else _SEH3$_RegisterTryLevel_(&_SEH3$_TrylevelFrame, &_SEH3$_ScopeTable); \
 \
-        /* Emit the filter function */ \
-        _SEH3$_DEFINE_FILTER_FUNC(_SEH3$_FilterFunction, (__VA_ARGS__)) \
-\
         /* Define an empty inline finally function */ \
         _SEH3$_DEFINE_DUMMY_FINALLY(_SEH3$_FinallyFunction) \
 \
         /* Allow intrinsics for __except to be used */ \
-        _SEH3$_DECLARE_EXCEPT_INTRINSICS() \
+        _SEH3$_DECLARE_EXCEPT_INTRINSICS(); \
 \
         goto _SEH3$_l_DoTry; \
 \
+    _SEH3$_l_BeforeFilterOrFinally: (void)0; \
+        /* Make sure the filter function doesn't use esp */ \
+        _SEH3$_EnforceFramePointer(); \
+\
+    _SEH3$_l_FilterOrFinally: (void)0; \
+        /* Emit the filter function */ \
+        _SEH3$_DEFINE_FILTER_FUNC(_SEH3$_FilterFunction, (__VA_ARGS__)) \
+\
     _SEH3$_l_HandlerTarget: (void)0; \
+        _SEH3$_EnforceFramePointer(); \
 \
         if (1) \
         { \
@@ -346,7 +419,7 @@ _SEH3$_Unregister(
         _SEH3$_DECLARE_FILTER_FUNC(_SEH3$_FinallyFunction); \
 \
         /* Create a static data table that contains the finally function */ \
-        static const SEH3$_SCOPE_TABLE _SEH3$_ScopeTable = { 0, &_SEH3$_FinallyFunction }; \
+        static const SEH3$_SCOPE_TABLE _SEH3$_ScopeTable = { 0, _SEH3$_FINALLY(&_SEH3$_FinallyFunction) }; \
 \
         /* Register the registration record. */ \
         if (_SEH3$_TryLevel == 1) _SEH3$_RegisterFrame_(&_SEH3$_TrylevelFrame, &_SEH3$_ScopeTable); \
@@ -355,11 +428,11 @@ _SEH3$_Unregister(
         goto _SEH3$_l_DoTry; \
 \
     _SEH3$_l_HandlerTarget: (void)0; \
+        _SEH3$_EnforceFramePointer(); \
 \
-        _SEH3$_FINALLY_FUNC_OPEN(_SEH3$_FinallyFunction) \
-            /* This construct makes sure that the finally function returns */ \
-            /* a proper value at the end */ \
-            for (; ; (void)({return 0; 0;}))
+    _SEH3$_l_BeforeFilterOrFinally: (void)0; \
+    _SEH3$_l_FilterOrFinally: (void)0; \
+        _SEH3$_FINALLY_FUNC_OPEN(_SEH3$_FinallyFunction)
 
 
 #define _SEH3_END \
@@ -369,7 +442,7 @@ _SEH3$_Unregister(
 \
     _SEH3$_l_OnException: (void)0; \
         /* Force GCC to create proper code pathes */ \
-        _SEH3$_SCARE_GCC() \
+        _SEH3$_SCARE_GCC(); \
 \
     _SEH3$_l_EndTry:(void)0; \
         _SEH3$_ASM_GOTO(_SEH3$_l_OnException); \
@@ -383,3 +456,8 @@ _SEH3$_Unregister(
 #define _SEH3_LEAVE goto _SEH3$_l_AfterTry
 
 #define _SEH3_VOLATILE volatile
+
+
+#ifdef __cplusplus
+}; // extern "C"
+#endif
