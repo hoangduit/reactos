@@ -10,8 +10,6 @@
 /* INCLUDES *******************************************************************/
 
 #define NTOS_MODE_USER
-#include <ndk/exfuncs.h> // -JCJ
-#include <ndk/kefuncs.h> // -JCJ
 #include <ndk/psfuncs.h>
 #include <ndk/rtlfuncs.h>
 
@@ -59,9 +57,8 @@ _main(int argc,
                                      ProcessUserModeIOPL,
                                      NULL,
                                      0);
-
-	if (!NT_SUCCESS(Status))
-	{
+    if (!NT_SUCCESS(Status))
+    {
         /* Raise a hard error */
         DPRINT1("CSRSS: Could not raise IOPL, Status: 0x%08lx\n", Status);
 #if 0
@@ -74,32 +71,8 @@ _main(int argc,
 #endif
     }
 
-	/* Initialize CSR through CSRSRV */
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization: before\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-	Status = CsrServerInitialization(argc, argv);
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-		MyDelay.QuadPart = -1LL * 1000000LL * 10LL; // 1 second relative to now	
-
-		RtlInitUnicodeString(&MyString, L"CsrServerInitialization: after\n");
-		ZwDisplayString(&MyString);
-
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
+    /* Initialize CSR through CSRSRV */
+    Status = CsrServerInitialization(argc, argv);
     if (!NT_SUCCESS(Status))
     {
         /* Kill us */

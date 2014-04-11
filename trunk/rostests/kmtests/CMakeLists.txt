@@ -22,11 +22,16 @@ list(APPEND COMMON_SOURCE
 # kmtest_drv.sys driver
 #
 list(APPEND KMTEST_DRV_SOURCE
+    kmtest_drv/guid.c
     kmtest_drv/kmtest_drv.c
     kmtest_drv/testlist.c
 
     example/Example.c
     example/KernelType.c
+    npfs/NpfsConnect.c
+    npfs/NpfsCreate.c
+    npfs/NpfsHelpers.c
+    npfs/NpfsReadWrite.c
     ntos_ex/ExCallback.c
     ntos_ex/ExDoubleList.c
     ntos_ex/ExFastMutex.c

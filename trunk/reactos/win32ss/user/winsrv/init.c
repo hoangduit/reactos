@@ -20,10 +20,6 @@
 #define NDEBUG
 #include <debug.h>
 
-#include <ndk/exfuncs.h> //-JCJ
-#include <ndk/rtlfuncs.h>//-JCJ
-#include <ndk/kefuncs.h>//-JCJ
-
 
 /* ENTRY-POINT ****************************************************************/
 
@@ -49,21 +45,6 @@ DllMain(IN HINSTANCE hInstanceDll,
     UNREFERENCED_PARAMETER(hInstanceDll);
     UNREFERENCED_PARAMETER(dwReason);
     UNREFERENCED_PARAMETER(lpReserved);
-
-	{
-		LARGE_INTEGER MyDelay;
-
-		UNICODE_STRING MyString;
-
-		MyDelay.QuadPart = -3LL * 1000000LL * 10LL; // 3 second relative to now	
-
-
-		RtlInitUnicodeString(&MyString, L"winsrv::DllMain: ");
-		ZwDisplayString(&MyString);
-
-		NtDelayExecution(TRUE, &MyDelay);
-	}
-
 
     if (DLL_PROCESS_ATTACH == dwReason)
     {

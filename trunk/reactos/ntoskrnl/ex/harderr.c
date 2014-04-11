@@ -526,8 +526,8 @@ NtRaiseHardError(IN NTSTATUS ErrorStatus,
     ULONG ParamSize = 0;
     KPROCESSOR_MODE PreviousMode = ExGetPreviousMode();
 
-	/* Validate parameter count */
-	if (NumberOfParameters > MAXIMUM_HARDERROR_PARAMETERS)
+    /* Validate parameter count */
+    if (NumberOfParameters > MAXIMUM_HARDERROR_PARAMETERS)
     {
         /* Fail */
         return STATUS_INVALID_PARAMETER_2;

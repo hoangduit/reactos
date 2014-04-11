@@ -30,7 +30,8 @@ COLORREF RGBFromAttrib2(PCONSOLE Console, WORD Attribute)
 }
 
 VOID
-GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
+GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
+                          PGUI_CONSOLE_DATA GuiData)
 {
     /*
      * This function supposes that the system clipboard was opened.
@@ -72,21 +73,25 @@ GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
     size += 1; /* Null-termination */
     size *= sizeof(WCHAR);
 
-    /* Allocate memory, it will be passed to the system and may not be freed here */
+    /* Allocate some memory area to be given to the clipboard, so it will not be freed here */
     hData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size);
     if (hData == NULL) return;
 
     data = GlobalLock(hData);
-    if (data == NULL) return;
+    if (data == NULL)
+    {
+        GlobalFree(hData);
+        return;
+    }
 
     DPRINT("Copying %dx%d selection\n", selWidth, selHeight);
     dstPos = data;
 
     for (yPos = 0; yPos < selHeight; yPos++)
     {
-        ptr = ConioCoordToPointer(Buffer, 
+        ptr = ConioCoordToPointer(Buffer,
                                   Console->Selection.srSelection.Left,
-                                  yPos + Console->Selection.srSelection.Top);
+                                  Console->Selection.srSelection.Top + yPos);
         /* Copy only the characters, leave attributes alone */
         for (xPos = 0; xPos < selWidth; xPos++)
         {
@@ -121,7 +126,8 @@ GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
 }
 
 VOID
-GuiPasteToTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
+GuiPasteToTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
+                         PGUI_CONSOLE_DATA GuiData)
 {
     /*
      * This function supposes that the system clipboard was opened.
@@ -133,7 +139,7 @@ GuiPasteToTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer)
     LPWSTR str;
     WCHAR CurChar = 0;
 
-    SHORT VkKey; // MAKEWORD(low = vkey_code, high = shift_state);
+    USHORT VkKey; // MAKEWORD(low = vkey_code, high = shift_state);
     INPUT_RECORD er;
 
     hData = GetClipboardData(CF_UNICODETEXT);
