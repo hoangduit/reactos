@@ -922,7 +922,7 @@ GUILoggedOnSAS(
 
 
 static
-INT
+BOOL
 DoLogon(
     IN HWND hwndDlg,
     IN OUT PGINA_CONTEXT pgContext)
@@ -930,7 +930,7 @@ DoLogon(
     LPWSTR UserName = NULL;
     LPWSTR Password = NULL;
     LPWSTR Domain = NULL;
-    INT result = WLX_SAS_ACTION_NONE;
+    BOOL result = FALSE;
     NTSTATUS Status, SubStatus = STATUS_SUCCESS;
 
     if (GetTextboxText(hwndDlg, IDC_USERNAME, &UserName) && *UserName == '\0')
@@ -943,19 +943,26 @@ DoLogon(
         goto done;
 
     Status = DoLoginTasks(pgContext, UserName, Domain, Password, &SubStatus);
-    if (!NT_SUCCESS(Status))
+    if (Status == STATUS_LOGON_FAILURE)
     {
-TRACE("DoLoginTasks failed! Status 0x%08lx  SubStatus 0x%08lx\n", Status, SubStatus);
+        ResourceMessageBox(pgContext,
+                           hwndDlg,
+                           MB_OK | MB_ICONEXCLAMATION,
+                           IDS_LOGONTITLE,
+                           IDS_LOGONWRONGUSERORPWD);
+        goto done;
+    }
+    else if (Status == STATUS_ACCOUNT_RESTRICTION)
+    {
+        TRACE("DoLoginTasks failed! Status 0x%08lx  SubStatus 0x%08lx\n", Status, SubStatus);
 
         if (SubStatus == STATUS_ACCOUNT_DISABLED)
         {
-TRACE("Account disabled!\n");
-            pgContext->pWlxFuncs->WlxMessageBox(pgContext->hWlx,
-                                                hwndDlg,
-                                                L"Account disabled!",
-                                                L"Logon error",
-                                                MB_OK | MB_ICONERROR);
-
+            ResourceMessageBox(pgContext,
+                               hwndDlg,
+                               MB_OK | MB_ICONEXCLAMATION,
+                               IDS_LOGONTITLE,
+                               IDS_LOGONUSERDISABLED);
             goto done;
         }
         else if (SubStatus == STATUS_ACCOUNT_LOCKED_OUT)
@@ -979,6 +986,13 @@ TRACE("Other error!\n");
             goto done;
         }
     }
+    else if (!NT_SUCCESS(Status))
+    {
+TRACE("DoLoginTasks failed! Status 0x%08lx\n", Status);
+
+        goto done;
+    }
+
 
     if (!CreateProfile(pgContext, UserName, Domain, Password))
     {
@@ -989,7 +1003,7 @@ TRACE("Other error!\n");
     ZeroMemory(pgContext->Password, 256 * sizeof(WCHAR));
     wcscpy(pgContext->Password, Password);
 
-    result = WLX_SAS_ACTION_LOGON;
+    result = TRUE;
 
 done:
     if (UserName != NULL)
@@ -1060,7 +1074,8 @@ LoggedOutWindowProc(
             switch (LOWORD(wParam))
             {
                 case IDOK:
-                    EndDialog(hwndDlg, DoLogon(hwndDlg, pgContext));
+                    if (DoLogon(hwndDlg, pgContext))
+                        EndDialog(hwndDlg, WLX_SAS_ACTION_LOGON);
                     return TRUE;
 
                 case IDCANCEL:

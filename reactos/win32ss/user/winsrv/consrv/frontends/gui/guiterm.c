@@ -231,7 +231,7 @@ GuiSendMenuEvent(PCONSOLE Console, UINT CmdId)
     er.EventType = MENU_EVENT;
     er.Event.MenuEvent.dwCommandId = CmdId;
 
-    DPRINT1("Menu item ID: %d\n", CmdId);
+    DPRINT("Menu item ID: %d\n", CmdId);
     ConioProcessInputEvent(Console, &er);
 }
 
@@ -1162,7 +1162,42 @@ GuiConsoleHandleMouse(PGUI_CONSOLE_DATA GuiData, UINT msg, WPARAM wParam, LPARAM
 
             case WM_LBUTTONDBLCLK:
             {
-                DPRINT1("Handle left-double-click for selecting a word\n");
+                PCONSOLE_SCREEN_BUFFER Buffer = GuiData->ActiveBuffer;
+
+                if (GetType(Buffer) == TEXTMODE_BUFFER)
+                {
+#define IS_WHITESPACE(c)    \
+    ((c) == L'\0' || (c) == L' ' || (c) == L'\t' || (c) == L'\r' || (c) == L'\n')
+
+                    PTEXTMODE_SCREEN_BUFFER TextBuffer = (PTEXTMODE_SCREEN_BUFFER)Buffer;
+                    COORD cL, cR;
+                    PCHAR_INFO ptrL, ptrR;
+
+                    /* Starting point */
+                    cL = cR = PointToCoord(GuiData, lParam);
+                    ptrL = ptrR = ConioCoordToPointer(TextBuffer, cL.X, cL.Y);
+
+                    /* Enlarge the selection by checking for whitespace */
+                    while ((0 < cL.X) && !IS_WHITESPACE(ptrL->Char.UnicodeChar)
+                                      && !IS_WHITESPACE((ptrL-1)->Char.UnicodeChar))
+                    {
+                        --cL.X;
+                        --ptrL;
+                    }
+                    while ((cR.X < TextBuffer->ScreenBufferSize.X - 1) &&
+                           !IS_WHITESPACE(ptrR->Char.UnicodeChar)      &&
+                           !IS_WHITESPACE((ptrR+1)->Char.UnicodeChar))
+                    {
+                        ++cR.X;
+                        ++ptrR;
+                    }
+
+                    Console->Selection.dwSelectionAnchor = cL;
+                    Console->dwSelectionCursor           = cR;
+
+                    GuiConsoleUpdateSelection(Console, &Console->dwSelectionCursor);
+                }
+
                 break;
             }
 
@@ -1333,8 +1368,12 @@ Quit:
         return 0;
 }
 
-VOID GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer);
-VOID GuiCopyFromGraphicsBuffer(PGRAPHICS_SCREEN_BUFFER Buffer);
+VOID
+GuiCopyFromTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
+                          PGUI_CONSOLE_DATA GuiData);
+VOID
+GuiCopyFromGraphicsBuffer(PGRAPHICS_SCREEN_BUFFER Buffer,
+                          PGUI_CONSOLE_DATA GuiData);
 
 static VOID
 GuiConsoleCopy(PGUI_CONSOLE_DATA GuiData)
@@ -1346,11 +1385,11 @@ GuiConsoleCopy(PGUI_CONSOLE_DATA GuiData)
 
         if (GetType(Buffer) == TEXTMODE_BUFFER)
         {
-            GuiCopyFromTextModeBuffer((PTEXTMODE_SCREEN_BUFFER)Buffer);
+            GuiCopyFromTextModeBuffer((PTEXTMODE_SCREEN_BUFFER)Buffer, GuiData);
         }
         else /* if (GetType(Buffer) == GRAPHICS_BUFFER) */
         {
-            GuiCopyFromGraphicsBuffer((PGRAPHICS_SCREEN_BUFFER)Buffer);
+            GuiCopyFromGraphicsBuffer((PGRAPHICS_SCREEN_BUFFER)Buffer, GuiData);
         }
 
         CloseClipboard();
@@ -1361,8 +1400,12 @@ GuiConsoleCopy(PGUI_CONSOLE_DATA GuiData)
     }
 }
 
-VOID GuiPasteToTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer);
-VOID GuiPasteToGraphicsBuffer(PGRAPHICS_SCREEN_BUFFER Buffer);
+VOID
+GuiPasteToTextModeBuffer(PTEXTMODE_SCREEN_BUFFER Buffer,
+                         PGUI_CONSOLE_DATA GuiData);
+VOID
+GuiPasteToGraphicsBuffer(PGRAPHICS_SCREEN_BUFFER Buffer,
+                         PGUI_CONSOLE_DATA GuiData);
 
 static VOID
 GuiConsolePaste(PGUI_CONSOLE_DATA GuiData)
@@ -1373,11 +1416,11 @@ GuiConsolePaste(PGUI_CONSOLE_DATA GuiData)
 
         if (GetType(Buffer) == TEXTMODE_BUFFER)
         {
-            GuiPasteToTextModeBuffer((PTEXTMODE_SCREEN_BUFFER)Buffer);
+            GuiPasteToTextModeBuffer((PTEXTMODE_SCREEN_BUFFER)Buffer, GuiData);
         }
         else /* if (GetType(Buffer) == GRAPHICS_BUFFER) */
         {
-            GuiPasteToGraphicsBuffer((PGRAPHICS_SCREEN_BUFFER)Buffer);
+            GuiPasteToGraphicsBuffer((PGRAPHICS_SCREEN_BUFFER)Buffer, GuiData);
         }
 
         CloseClipboard();
@@ -1713,7 +1756,7 @@ GuiConsoleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             PCONSOLE_SCREEN_BUFFER ActiveBuffer = GuiData->ActiveBuffer;
 
-            DPRINT1("WM_PALETTECHANGED called\n");
+            DPRINT("WM_PALETTECHANGED called\n");
 
             /*
              * Protects against infinite loops:
@@ -1730,12 +1773,12 @@ GuiConsoleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
              */
             if ((HWND)wParam == hWnd) break;
 
-            DPRINT1("WM_PALETTECHANGED ok\n");
+            DPRINT("WM_PALETTECHANGED ok\n");
 
             // if (GetType(ActiveBuffer) == GRAPHICS_BUFFER)
             if (ActiveBuffer->PaletteHandle)
             {
-                DPRINT1("WM_PALETTECHANGED changing palette\n");
+                DPRINT("WM_PALETTECHANGED changing palette\n");
 
                 /* Specify the use of the system palette for the framebuffer */
                 SetSystemPaletteUse(GuiData->hMemDC, ActiveBuffer->PaletteUsage);
@@ -1744,7 +1787,7 @@ GuiConsoleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 RealizePalette(GuiData->hMemDC);
             }
 
-            DPRINT1("WM_PALETTECHANGED quit\n");
+            DPRINT("WM_PALETTECHANGED quit\n");
 
             break;
         }
@@ -1909,6 +1952,8 @@ GuiConsoleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 EnableMenuItem(hMenu, ID_SYSTEM_EDIT_COPY , MF_BYCOMMAND |
                                ((Console->Selection.dwFlags & CONSOLE_SELECTION_IN_PROGRESS) &&
                                 (Console->Selection.dwFlags & CONSOLE_SELECTION_NOT_EMPTY) ? MF_ENABLED : MF_GRAYED));
+                // FIXME: Following whether the active screen buffer is text-mode
+                // or graphics-mode, search for CF_UNICODETEXT or CF_BITMAP formats.
                 EnableMenuItem(hMenu, ID_SYSTEM_EDIT_PASTE, MF_BYCOMMAND |
                                (!(Console->Selection.dwFlags & CONSOLE_SELECTION_IN_PROGRESS) &&
                                 IsClipboardFormatAvailable(CF_UNICODETEXT) ? MF_ENABLED : MF_GRAYED));

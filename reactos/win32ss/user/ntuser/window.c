@@ -931,7 +931,7 @@ IntGetSystemMenu(PWND Window, BOOL bRevert, BOOL RetMenu)
          if(NewMenu)
          {
             Window->SystemMenu = NewMenu->MenuInfo.Self;
-            NewMenu->MenuInfo.Flags |= MF_SYSMENU;
+            NewMenu->MenuInfo.Flags |= MNF_SYSDESKMN;
             NewMenu->MenuInfo.Wnd = Window->head.h;
             ret = NewMenu;
             //IntReleaseMenuObject(NewMenu);
@@ -950,7 +950,7 @@ IntGetSystemMenu(PWND Window, BOOL bRevert, BOOL RetMenu)
             UserDestroyMenu(hSysMenu);
             return NULL;
          }
-         SysMenu->MenuInfo.Flags |= MF_SYSMENU;
+         SysMenu->MenuInfo.Flags |= MNF_SYSDESKMN;
          SysMenu->MenuInfo.Wnd = Window->head.h;
          hNewMenu = co_IntLoadSysMenuTemplate();
          if(!hNewMenu)
@@ -970,13 +970,14 @@ IntGetSystemMenu(PWND Window, BOOL bRevert, BOOL RetMenu)
          NewMenu = IntCloneMenu(Menu);
          if(NewMenu)
          {
-            NewMenu->MenuInfo.Flags |= MF_SYSMENU | MF_POPUP;
+            NewMenu->MenuInfo.Flags |= MNF_SYSDESKMN | MNF_POPUP;
+            NewMenu->MenuInfo.dwStyle = MNS_CHECKORBMP;
             IntReleaseMenuObject(NewMenu);
             UserSetMenuDefaultItem(NewMenu, SC_CLOSE, FALSE);
 
             ItemInfo.cbSize = sizeof(MENUITEMINFOW);
             ItemInfo.fMask = MIIM_FTYPE | MIIM_STRING | MIIM_STATE | MIIM_SUBMENU;
-            ItemInfo.fType = MF_POPUP;
+            ItemInfo.fType = 0;
             ItemInfo.fState = MFS_ENABLED;
             ItemInfo.dwTypeData = NULL;
             ItemInfo.cch = 0;
@@ -1352,7 +1353,7 @@ co_IntSetParent(PWND Wnd, PWND WndNewParent)
    co_WinPosSetWindowPos( Wnd,
                          (0 == (Wnd->ExStyle & WS_EX_TOPMOST) ? HWND_TOP : HWND_TOPMOST),
                           pt.x, pt.y, 0, 0, swFlags);
-   //ERR("IntSetParent SetWindowPos 2\n");
+   //ERR("IntSetParent SetWindowPos 2 X %d Y %d\n",pt.x, pt.y);
    if (WasVisible) co_WinPosShowWindow(Wnd, SW_SHOWNORMAL);
 
    return WndOldParent;
@@ -1426,7 +1427,7 @@ IntSetSystemMenu(PWND Window, PMENU_OBJECT Menu)
       OldMenu = IntGetMenuObject(Window->SystemMenu);
       if(OldMenu)
       {
-         OldMenu->MenuInfo.Flags &= ~ MF_SYSMENU;
+         OldMenu->MenuInfo.Flags &= ~ MNF_SYSDESKMN;
          IntReleaseMenuObject(OldMenu);
       }
    }
@@ -1435,7 +1436,7 @@ IntSetSystemMenu(PWND Window, PMENU_OBJECT Menu)
    {
       /* FIXME: Check window style, propably return FALSE? */
       Window->SystemMenu = Menu->MenuInfo.Self;
-      Menu->MenuInfo.Flags |= MF_SYSMENU;
+      Menu->MenuInfo.Flags |= MNF_SYSDESKMN;
    }
    else
       Window->SystemMenu = (HMENU)0;
@@ -1741,12 +1742,12 @@ IntFixWindowCoordinates(CREATESTRUCTW* Cs, PWND ParentWindow, DWORD* dwShowMode)
 
 /* Allocates and initializes a window */
 PWND FASTCALL IntCreateWindow(CREATESTRUCTW* Cs,
-                                        PLARGE_STRING WindowName,
-                                        PCLS Class,
-                                        PWND ParentWindow,
-                                        PWND OwnerWindow,
-                                        PVOID acbiBuffer,
-                                        PDESKTOP pdeskCreated)
+                              PLARGE_STRING WindowName,
+                              PCLS Class,
+                              PWND ParentWindow,
+                              PWND OwnerWindow,
+                              PVOID acbiBuffer,
+                              PDESKTOP pdeskCreated)
 {
    PWND pWnd = NULL;
    HWND hWnd;
@@ -1758,8 +1759,9 @@ PWND FASTCALL IntCreateWindow(CREATESTRUCTW* Cs,
    pti = pdeskCreated ? gptiDesktopThread : GetW32ThreadInfo();
 
    if (!(Cs->dwExStyle & WS_EX_LAYOUTRTL))
-   {
-      if (ParentWindow)
+   {      // Need both here for wine win.c test_CreateWindow.
+      //if (Cs->hwndParent && ParentWindow)
+      if (ParentWindow) // It breaks more tests..... WIP.
       {
          if ( (Cs->style & (WS_CHILD|WS_POPUP)) == WS_CHILD &&
               ParentWindow->ExStyle & WS_EX_LAYOUTRTL &&
@@ -2570,6 +2572,16 @@ NtUserCreateWindowEx(
     lstrClassName.Buffer = NULL;
 
     ASSERT(plstrWindowName);
+
+    if ( (dwStyle & (WS_POPUP|WS_CHILD)) != WS_CHILD) 
+    {
+        /* check hMenu is valid handle */
+        if (hMenu && !ValidateHandle(hMenu, TYPE_MENU))
+        {
+            /* error is set in ValidateHandle */
+            return NULL;
+        }
+    } 
 
     /* Copy the window name to kernel mode */
     Status = ProbeAndCaptureLargeString(&lstrWindowName, plstrWindowName);

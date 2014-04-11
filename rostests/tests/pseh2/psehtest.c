@@ -22,6 +22,10 @@
 
 #include <pseh/pseh2.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define STANDALONE
 #include <wine/test.h>
 
@@ -54,7 +58,11 @@ extern int return_minusone_4(void *, int);
 
 extern void set_positive(int *);
 
-static int call_test(int (*)(void));
+//static int call_test(int (*)(void));
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #define DEFINE_TEST(NAME_) static int NAME_(void)
 
@@ -2439,6 +2447,15 @@ DEFINE_TEST(test_unvolatile_2)
     return (val == 3) || (val == 4) || (val == 5);
 }
 
+/* This test is mainly for documentation purpose. As can be seen it doesn't
+   provide a satisfying result. In fact the compiler could do even more
+   crazy things like reusing val1 between the assignment to 0 and the last
+   assignment to 3. This DOES happen with C++ and it's NOT a PSEH bug, but
+   rather an unavoidable consequence of how the compiler works.
+   The conclusion: Do not use assignments to a variable inside a __try block
+   that is being used later inside the __except block, unless it is declared
+   volatile! */
+#ifndef __cplusplus
 DEFINE_TEST(test_unvolatile_3)
 {
     int register val1 = 0, val2 = 0;
@@ -2485,6 +2502,26 @@ DEFINE_TEST(test_unvolatile_3)
         return TRUE;
 
     return FALSE;
+}
+#endif // __cplusplus
+
+DEFINE_TEST(test_unvolatile_4)
+{
+    unsigned result = 0xdeadbeef;
+
+    _SEH2_TRY
+    {
+        *(char*)0x80000000 = 1;
+    }
+    _SEH2_EXCEPT(result == 0xdeadbeef)
+    {
+        result = 2;
+    }
+    _SEH2_END;
+
+    result = (result == 0xdeadbeef) ? 0 : result + 1;
+
+    return result == 3;
 }
 
 DEFINE_TEST(test_finally_goto)
@@ -2813,7 +2850,10 @@ void testsuite_syntax(void)
 
 		USE_TEST(test_unvolatile),
 		USE_TEST(test_unvolatile_2),
+#ifndef __cplusplus
 		USE_TEST(test_unvolatile_3),
+#endif
+		USE_TEST(test_unvolatile_4),
 		USE_TEST(test_finally_goto),
 		USE_TEST(test_nested_exception),
 		USE_TEST(test_PSEH3_bug),
