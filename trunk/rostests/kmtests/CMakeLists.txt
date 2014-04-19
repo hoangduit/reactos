@@ -30,8 +30,10 @@ list(APPEND KMTEST_DRV_SOURCE
     example/KernelType.c
     npfs/NpfsConnect.c
     npfs/NpfsCreate.c
+    npfs/NpfsFileInfo.c
     npfs/NpfsHelpers.c
     npfs/NpfsReadWrite.c
+    npfs/NpfsVolumeInfo.c
     ntos_ex/ExCallback.c
     ntos_ex/ExDoubleList.c
     ntos_ex/ExFastMutex.c
