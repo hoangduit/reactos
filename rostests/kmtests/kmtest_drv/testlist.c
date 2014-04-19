@@ -40,7 +40,9 @@ KMT_TESTFUNC Test_KernelType;
 KMT_TESTFUNC Test_MmSection;
 KMT_TESTFUNC Test_NpfsConnect;
 KMT_TESTFUNC Test_NpfsCreate;
+KMT_TESTFUNC Test_NpfsFileInfo;
 KMT_TESTFUNC Test_NpfsReadWrite;
+KMT_TESTFUNC Test_NpfsVolumeInfo;
 KMT_TESTFUNC Test_ObReference;
 KMT_TESTFUNC Test_ObType;
 KMT_TESTFUNC Test_ObTypeClean;
@@ -94,7 +96,9 @@ const KMT_TEST TestList[] =
     { "MmSection",                          Test_MmSection },
     { "NpfsConnect",                        Test_NpfsConnect },
     { "NpfsCreate",                         Test_NpfsCreate },
+    { "NpfsFileInfo",                       Test_NpfsFileInfo },
     { "NpfsReadWrite",                      Test_NpfsReadWrite },
+    { "NpfsVolumeInfo",                     Test_NpfsVolumeInfo },
     { "ObReference",                        Test_ObReference },
     { "ObType",                             Test_ObType },
     { "-ObTypeClean",                       Test_ObTypeClean },
