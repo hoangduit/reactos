@@ -27,55 +27,55 @@ reactos/tools/wpp                 # Synced to Wine-1.7.1
 
 The following libraries are shared with Wine.
 
-reactos/dll/directx/wine/amstream       # Synced to Wine-1.7.1
-reactos/dll/directx/wine/d3d8           # Synced to Wine-1.7.11
-reactos/dll/directx/wine/d3d9           # Synced to Wine-1.7.11
-reactos/dll/directx/wine/d3dcompiler_43 # Synced to Wine-1.7.1
-reactos/dll/directx/wine/d3dx9_24 => 43 # Synced to Wine-1.7.1
-reactos/dll/directx/wine/d3dxof         # Synced to Wine-1.7.1
-reactos/dll/directx/wine/ddraw          # Synced to Wine-1.7.11
-reactos/dll/directx/wine/devenum        # Synced to Wine-1.7.1
-reactos/dll/directx/wine/dinput         # Synced to Wine-1.7.1
-reactos/dll/directx/wine/dinput8        # Synced to Wine-1.7.1
-reactos/dll/directx/wine/dmusic         # Synced to Wine-1.7.1
+reactos/dll/directx/wine/amstream       # Synced to Wine-1.7.17
+reactos/dll/directx/wine/d3d8           # Synced to Wine-1.7.17
+reactos/dll/directx/wine/d3d9           # Synced to Wine-1.7.17
+reactos/dll/directx/wine/d3dcompiler_43 # Synced to Wine-1.7.17
+reactos/dll/directx/wine/d3dx9_24 => 43 # Synced to Wine-1.7.17
+reactos/dll/directx/wine/d3dxof         # Synced to Wine-1.7.17
+reactos/dll/directx/wine/ddraw          # Synced to Wine-1.7.17
+reactos/dll/directx/wine/devenum        # Synced to Wine-1.7.17
+reactos/dll/directx/wine/dinput         # Synced to Wine-1.7.17
+reactos/dll/directx/wine/dinput8        # Synced to Wine-1.7.17
+reactos/dll/directx/wine/dmusic         # Synced to Wine-1.7.17
 reactos/dll/directx/wine/dplay          # Synced to Wine-1.7.1
-reactos/dll/directx/wine/dplayx         # Synced to Wine-1.7.1
+reactos/dll/directx/wine/dplayx         # Synced to Wine-1.7.17
 reactos/dll/directx/wine/dsound         # Synced to Wine-1.5.26
-reactos/dll/directx/wine/dxdiagn        # Synced to Wine-1.7.1
-reactos/dll/directx/wine/dxgi           # Synced to Wine-1.7.1
+reactos/dll/directx/wine/dxdiagn        # Synced to Wine-1.7.17
+reactos/dll/directx/wine/dxgi           # Synced to Wine-1.7.17
 reactos/dll/directx/wine/msdmo          # Synced to Wine-1.7.1
-reactos/dll/directx/wine/qedit          # Synced to Wine-1.7.1
-reactos/dll/directx/wine/quartz         # Synced to Wine-1.7.1
-reactos/dll/directx/wine/wined3d        # Synced to Wine-1.7.11
+reactos/dll/directx/wine/qedit          # Synced to Wine-1.7.17
+reactos/dll/directx/wine/quartz         # Synced to Wine-1.7.17
+reactos/dll/directx/wine/wined3d        # Synced to Wine-1.7.17
 
 reactos/dll/win32/activeds         # Synced to Wine-1.7.1
-reactos/dll/win32/actxprxy         # Synced to Wine-1.7.1
+reactos/dll/win32/actxprxy         # Synced to Wine-1.7.17
 reactos/dll/win32/advpack          # Synced to Wine-1.7.1
 reactos/dll/win32/atl              # Synced to Wine-1.7.1
 reactos/dll/win32/atl100           # Synced to Wine-1.7.1
 reactos/dll/win32/atl80            # Synced to Wine-1.7.1
-reactos/dll/win32/avifil32         # Synced to Wine-1.7.1
-reactos/dll/win32/bcrypt           # Synced to Wine-1.7.1
+reactos/dll/win32/avifil32         # Synced to Wine-1.7.17
+reactos/dll/win32/bcrypt           # Synced to Wine-1.7.17
 reactos/dll/win32/browseui         # Out of sync
-reactos/dll/win32/cabinet          # Synced to Wine-1.7.1
+reactos/dll/win32/cabinet          # Synced to Wine-1.7.17
 reactos/dll/win32/clusapi          # Synced to Wine-1.7.1
 reactos/dll/win32/comcat           # Synced to Wine-1.7.1
-reactos/dll/win32/comctl32         # Synced to Wine 1.7.1
-reactos/dll/win32/comdlg32         # Synced to Wine 1.7.1
+reactos/dll/win32/comctl32         # Synced to Wine 1.7.17
+reactos/dll/win32/comdlg32         # Synced to Wine 1.7.17
 reactos/dll/win32/compstui         # Synced to Wine-1.7.1
 reactos/dll/win32/credui           # Synced to Wine-1.7.1
-reactos/dll/win32/crypt32          # Synced to Wine-1.7.1
+reactos/dll/win32/crypt32          # Synced to Wine-1.7.17
 reactos/dll/win32/cryptdlg         # Synced to Wine-1.7.1
 reactos/dll/win32/cryptdll         # Synced to Wine-1.7.1
-reactos/dll/win32/cryptnet         # Synced to Wine-1.7.1
+reactos/dll/win32/cryptnet         # Synced to Wine-1.7.17
 reactos/dll/win32/cryptui          # Synced to Wine-1.7.1
 reactos/dll/win32/dbghelp          # Synced to Wine-1.7.1
 reactos/dll/win32/dciman32         # Synced to Wine-1.7.1
-reactos/dll/win32/dwmapi           # Synced to Wine-1.7.1
+reactos/dll/win32/dwmapi           # Synced to Wine-1.7.17
 reactos/dll/win32/faultrep         # Synced to Wine-1.7.1
 reactos/dll/win32/fusion           # Synced to Wine-1.7.1
-reactos/dll/win32/gdiplus          # Synced to Wine-1.7.1
-reactos/dll/win32/hhctrl.ocx       # Synced to Wine-1.7.1
+reactos/dll/win32/gdiplus          # Synced to Wine-1.7.17
+reactos/dll/win32/hhctrl.ocx       # Synced to Wine-1.7.17
 reactos/dll/win32/hlink            # Synced to Wine-1.7.1
 reactos/dll/win32/hnetcfg          # Synced to Wine-1.7.1
 reactos/dll/win32/httpapi          # Synced to Wine-1.7.1
@@ -167,7 +167,7 @@ reactos/dll/win32/riched20         # Synced to Wine-1.7.1
 reactos/dll/win32/riched32         # Synced to Wine-1.7.1
 reactos/dll/win32/rpcrt4           # Synced to Wine-1.7.1
 reactos/dll/win32/rsabase          # Synced to Wine-1.7.1
-reactos/dll/win32/rsaenh           # Synced to Wine-1.7.1
+reactos/dll/win32/rsaenh           # Synced to Wine-1.7.17
 reactos/dll/win32/sccbase          # Synced to Wine-1.7.1
 reactos/dll/win32/schannel         # Synced to Wine-1.7.1
 reactos/dll/win32/scrrun           # Synced to Wine-1.7.1
@@ -220,7 +220,7 @@ reactos/dll/win32/xinput1_1        # Synced to Wine-1.7.1
 reactos/dll/win32/xinput1_2        # Synced to Wine-1.7.1
 reactos/dll/win32/xinput1_3        # Synced to Wine-1.7.1
 reactos/dll/win32/xinput9_1_0      # Synced to Wine-1.7.1
-reactos/dll/win32/xmllite          # Synced to Wine-1.7.1
+reactos/dll/win32/xmllite          # Synced to Wine-1.7.17
 
 reactos/dll/cpl/inetcpl            # Synced to Wine-1.7.1
 
@@ -246,7 +246,7 @@ In addition the following libs, dlls and source files are mostly based on code p
 from Winehq CVS. If you are looking to update something in these files
 check Wine current souces first as it may already be fixed.
 
-reactos/lib/3rdparty/strmbase             # Synced to Wine-1.7.1
+reactos/lib/3rdparty/strmbase             # Synced to Wine-1.7.17
 
 advapi32 -
   reactos/dll/win32/advapi32/crypt/*.c          # Synced to Wine-1.7.1
