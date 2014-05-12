@@ -83,10 +83,13 @@ int *__p___mb_cur_max(void);
 /* values for wxflag in file descriptor */
 #define WX_OPEN           0x01
 #define WX_ATEOF          0x02
+#define WX_READNL         0x04  /* read started with \n */
 #define WX_READEOF        0x04  /* like ATEOF, but for underlying file rather than buffer */
+#define WX_PIPE           0x08
 #define WX_READCR         0x08  /* underlying file is at \r */
 #define WX_DONTINHERIT    0x10
 #define WX_APPEND         0x20
+#define WX_NOSEEK         0x40
 #define WX_TEXT           0x80
 
 /* FIXME: this should be allocated dynamically */
@@ -1400,9 +1403,12 @@ char * CDECL _mktemp(char *pattern)
   int id;
   char letter = 'a';
 
+  if(!pattern)
+      return NULL;
+
   while(*pattern)
     numX = (*pattern++ == 'X')? numX + 1 : 0;
-  if (numX < 5)
+  if (numX < 6)
     return NULL;
   pattern--;
   id = GetCurrentProcessId();
@@ -1417,8 +1423,7 @@ char * CDECL _mktemp(char *pattern)
   do
   {
     *pattern = letter++;
-    if (GetFileAttributesA(retVal) == INVALID_FILE_ATTRIBUTES &&
-        GetLastError() == ERROR_FILE_NOT_FOUND)
+    if (GetFileAttributesA(retVal) == INVALID_FILE_ATTRIBUTES)
       return retVal;
   } while(letter <= 'z');
   return NULL;
@@ -1553,8 +1558,7 @@ int CDECL _sopen_s( int *fd, const char *path, int oflags, int shflags, int pmod
 
   if (!fd)
   {
-    MSVCRT_INVALID_PMT("null out fd pointer");
-    *_errno() = EINVAL;
+    MSVCRT_INVALID_PMT("null out fd pointer", EINVAL);
     return EINVAL;
   }
 
@@ -1672,8 +1676,7 @@ int CDECL _wsopen_s( int *fd, const wchar_t* path, int oflags, int shflags, int 
 
   if (!fd)
   {
-    MSVCRT_INVALID_PMT("null out fd pointer");
-    *_errno() = EINVAL;
+    MSVCRT_INVALID_PMT("null out fd pointer", EINVAL);
     return EINVAL;
   }
 
@@ -1837,6 +1840,7 @@ int CDECL _wcreat(const wchar_t *path, int flags)
  */
 int CDECL _open_osfhandle(intptr_t handle, int oflags)
 {
+  DWORD flags;
   int fd;
 
   /* _O_RDONLY (0) always matches, so set the read flag
@@ -1848,8 +1852,23 @@ int CDECL _open_osfhandle(intptr_t handle, int oflags)
   if (!(oflags & (_O_BINARY | _O_TEXT)))
       oflags |= _O_BINARY;
 
-  fd = alloc_fd((HANDLE)handle, split_oflags(oflags));
-  TRACE(":handle (%ld) fd (%d) flags 0x%08x\n", handle, fd, oflags);
+  flags = GetFileType((HANDLE)handle);
+  if (flags==FILE_TYPE_UNKNOWN && GetLastError()!=NO_ERROR)
+  {
+    _dosmaperr(GetLastError());
+    return -1;
+  }
+
+  if (flags == FILE_TYPE_CHAR)
+    flags = WX_NOSEEK;
+  else if (flags == FILE_TYPE_PIPE)
+    flags = WX_PIPE;
+  else
+    flags = 0;
+  flags |= split_oflags(oflags);
+
+  fd = alloc_fd((HANDLE)handle, flags);
+  TRACE(":handle (%ld) fd (%d) flags 0x%08x\n", handle, fd, flags);
   return fd;
 }
 
@@ -2243,6 +2262,11 @@ int CDECL _filbuf(FILE* file)
 {
     unsigned char c;
     _lock_file(file);
+
+    if(file->_flag & _IOSTRG) {
+        _unlock_file(file);
+        return EOF;
+    }
 
     /* Allocate buffer if needed */
     if(file->_bufsiz == 0 && !(file->_flag & _IONBF))
@@ -2896,8 +2920,6 @@ int CDECL fsetpos(FILE* file, const fpos_t *pos)
  */
 __int64 CDECL _ftelli64(FILE* file)
 {
-    /* TODO: just call fgetpos and return lower half of result */
-    int off=0;
     __int64 pos;
 
     _lock_file(file);
@@ -2907,26 +2929,50 @@ __int64 CDECL _ftelli64(FILE* file)
         return -1;
     }
     if(file->_bufsiz)  {
-        if( file->_flag & _IOWRT ) {
-            off = file->_ptr - file->_base;
+        if(file->_flag & _IOWRT) {
+            pos += file->_ptr - file->_base;
+
+            if(get_ioinfo(file->_file)->wxflag & WX_TEXT) {
+                char *p;
+
+                for(p=file->_base; p<file->_ptr; p++)
+                    if(*p == '\n')
+                        pos++;
+            }
+        } else if(!file->_cnt) { /* nothing to do */
+        } else if(_lseeki64(file->_file, 0, SEEK_END)==pos) {
+            int i;
+
+            pos -= file->_cnt;
+            if(get_ioinfo(file->_file)->wxflag & WX_TEXT) {
+                for(i=0; i<file->_cnt; i++)
+                    if(file->_ptr[i] == '\n')
+                        pos--;
+            }
         } else {
-            off = -file->_cnt;
-            if (get_ioinfo(file->_file)->wxflag & WX_TEXT) {
-                /* Black magic correction for CR removal */
-                int i;
-                for (i=0; i<file->_cnt; i++) {
-                    if (file->_ptr[i] == '\n')
-                        off--;
-                }
-                /* Black magic when reading CR at buffer boundary*/
-                if(get_ioinfo(file->_file)->wxflag & WX_READCR)
-                    off--;
+            char *p;
+
+            if(_lseeki64(file->_file, pos, SEEK_SET) != pos) {
+                _unlock_file(file);
+                return -1;
+            }
+
+            pos -= file->_bufsiz;
+            pos += file->_ptr - file->_base;
+
+            if(get_ioinfo(file->_file)->wxflag & WX_TEXT) {
+                if(get_ioinfo(file->_file)->wxflag & WX_READNL)
+                    pos--;
+
+                for(p=file->_base; p<file->_ptr; p++)
+                    if(*p == '\n')
+                        pos++;
             }
         }
     }
 
     _unlock_file(file);
-    return off + pos;
+    return pos;
 }
 
 /*********************************************************************
@@ -3300,16 +3346,20 @@ FILE* CDECL tmpfile(void)
   FILE* file = NULL;
 
   LOCK_FILES();
-  fd = _open(filename, _O_CREAT | _O_BINARY | _O_RDWR | _O_TEMPORARY);
+  fd = _open(filename, _O_CREAT | _O_BINARY | _O_RDWR | _O_TEMPORARY,
+          _S_IREAD | _S_IWRITE);
   if (fd != -1 && (file = alloc_fp()))
   {
-    if (init_fp(file, fd, _O_RDWR) == -1)
+    if (init_fp(file, fd, _IORW) == -1)
     {
         file->_flag = 0;
         file = NULL;
     }
     else file->_tmpfname = _strdup(filename);
   }
+
+  if(fd != -1 && !file)
+      _close(fd);
   UNLOCK_FILES();
   return file;
 }
