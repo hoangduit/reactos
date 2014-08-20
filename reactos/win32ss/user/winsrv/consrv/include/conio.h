@@ -12,30 +12,32 @@
 
 #include "rect.h"
 
-#define CSR_DEFAULT_CURSOR_SIZE 25
-
 /* Default attributes */
 #define DEFAULT_SCREEN_ATTRIB   (FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED)
 #define DEFAULT_POPUP_ATTRIB    (FOREGROUND_BLUE | FOREGROUND_RED   | \
                                  BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY)
 
+
 /* Object type magic numbers */
 typedef enum _CONSOLE_IO_OBJECT_TYPE
 {
-//  ANY_TYPE_BUFFER = 0x00, // --> Match any types of IO handles
-    TEXTMODE_BUFFER = 0x01, // --> Output-type handles for text SBs
-    GRAPHICS_BUFFER = 0x02, // --> Output-type handles for graphics SBs
+    UNKNOWN         = 0x00, // --> Unknown object
+    TEXTMODE_BUFFER = 0x01, // --> Output-type object for text SBs
+    GRAPHICS_BUFFER = 0x02, // --> Output-type object for graphics SBs
     SCREEN_BUFFER   = 0x03, // --> Any SB type
-    INPUT_BUFFER    = 0x04  // --> Input-type handles
+    INPUT_BUFFER    = 0x04, // --> Input-type object
+    ANY_TYPE_BUFFER = 0x07, // --> Any IO object
 } CONSOLE_IO_OBJECT_TYPE;
 
 typedef struct _CONSOLE_IO_OBJECT
 {
     CONSOLE_IO_OBJECT_TYPE Type;
+
     struct _CONSOLE* /* PCONSOLE */ Console;
+    LONG ReferenceCount;    /* Is incremented each time a console object gets referenced */
+
     LONG AccessRead, AccessWrite;
     LONG ExclusiveRead, ExclusiveWrite;
-    LONG HandleCount;
 } CONSOLE_IO_OBJECT, *PCONSOLE_IO_OBJECT;
 
 
@@ -260,7 +262,6 @@ typedef enum _CONSOLE_STATE
 
 // HACK!!
 struct _CONSOLE;
-struct _WINSRV_CONSOLE;
 /* HACK: */ typedef struct _CONSOLE *PCONSOLE;
 #include "conio_winsrv.h"
 
@@ -282,7 +283,7 @@ typedef struct _CONSOLE
     CONSOLE_INPUT_BUFFER InputBuffer;       /* Input buffer of the console */
     UINT InputCodePage;
 
-    /** Put those things in CONSOLE_INPUT_BUFFER ?? **/
+    /** Put those things in CONSOLE_INPUT_BUFFER in PWINSRV_CONSOLE ?? **/
     PWCHAR  LineBuffer;                     /* Current line being input, in line buffered mode */
     ULONG   LineMaxSize;                    /* Maximum size of line in characters (including CR+LF) */
     ULONG   LineSize;                       /* Current size of line */
@@ -291,9 +292,10 @@ typedef struct _CONSOLE
     BOOLEAN LineUpPressed;
     BOOLEAN LineInsertToggle;               /* Replace character over cursor instead of inserting */
     ULONG   LineWakeupMask;                 /* Bitmap of which control characters will end line input */
-    /*************************************************/
 
+    /** In PWINSRV_CONSOLE ?? **/
     BOOLEAN InsertMode;
+    /*************************************************/
 
 /******************************* Screen buffers *******************************/
     LIST_ENTRY BufferList;                  /* List of all screen buffers for this console */
@@ -309,11 +311,7 @@ typedef struct _CONSOLE
     COORD   ConsoleSize;                    /* The current size of the console, for text-mode only */
     BOOLEAN FixedSize;                      /* TRUE if the console is of fixed size */
 
-    COLORREF Colors[16];                    /* Colour palette */
-
 } CONSOLE; // , *PCONSOLE;
-
-// #include "conio_winsrv.h"
 
 /* console.c */
 VOID NTAPI
@@ -321,18 +319,11 @@ ConDrvPause(PCONSOLE Console);
 VOID NTAPI
 ConDrvUnpause(PCONSOLE Console);
 
-PCONSOLE_PROCESS_DATA NTAPI
-ConSrvGetConsoleLeaderProcess(IN PCONSOLE Console);
 NTSTATUS
 ConSrvConsoleCtrlEvent(IN ULONG CtrlEvent,
                        IN PCONSOLE_PROCESS_DATA ProcessData);
-NTSTATUS NTAPI
-ConSrvConsoleProcessCtrlEvent(IN PCONSOLE Console,
-                              IN ULONG ProcessGroupId,
-                              IN ULONG CtrlEvent);
 
 /* coninput.c */
-VOID NTAPI ConioProcessKey(PCONSOLE Console, MSG* msg);
 NTSTATUS
 ConioAddInputEvents(PCONSOLE Console,
                     PINPUT_RECORD InputRecords,
@@ -369,7 +360,5 @@ NTSTATUS ConioWriteConsole(PCONSOLE Console,
                            PWCHAR Buffer,
                            DWORD Length,
                            BOOL Attrib);
-DWORD ConioEffectiveCursorSize(PCONSOLE Console,
-                                        DWORD Scale);
 
 /* EOF */

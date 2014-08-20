@@ -17,9 +17,6 @@
 #include "guiterm.h"
 #include "guisettings.h"
 
-VOID GuiConsoleMoveWindow(PGUI_CONSOLE_DATA GuiData);
-VOID SwitchFullScreen(PGUI_CONSOLE_DATA GuiData, BOOL FullScreen);
-
 /* FUNCTIONS ******************************************************************/
 
 BOOL
@@ -98,8 +95,8 @@ GuiConsoleReadUserSettings(IN OUT PGUI_CONSOLE_INFO TermInfo,
         }
         else if (!wcscmp(szValueName, L"FontSize"))
         {
-            TermInfo->FontSize.X = LOWORD(Value);
-            TermInfo->FontSize.Y = HIWORD(Value);
+            TermInfo->FontSize.X = LOWORD(Value); // Width
+            TermInfo->FontSize.Y = HIWORD(Value); // Height
             RetVal = TRUE;
         }
         else if (!wcscmp(szValueName, L"FontWeight"))
@@ -161,7 +158,7 @@ do {                                                                            
     SetConsoleSetting(L"FaceName", REG_SZ, (wcslen(TermInfo->FaceName) + 1) * sizeof(WCHAR), TermInfo->FaceName, L'\0'); // wcsnlen
     SetConsoleSetting(L"FontFamily", REG_DWORD, sizeof(DWORD), &TermInfo->FontFamily, FF_DONTCARE);
 
-    Storage = MAKELONG(TermInfo->FontSize.X, TermInfo->FontSize.Y);
+    Storage = MAKELONG(TermInfo->FontSize.X, TermInfo->FontSize.Y); // Width, Height
     SetConsoleSetting(L"FontSize", REG_DWORD, sizeof(DWORD), &Storage, 0);
 
     SetConsoleSetting(L"FontWeight", REG_DWORD, sizeof(DWORD), &TermInfo->FontWeight, FW_DONTCARE);
@@ -197,17 +194,16 @@ GuiConsoleGetDefaultSettings(IN OUT PGUI_CONSOLE_INFO TermInfo,
      * 1. Load the default values
      */
     // wcsncpy(TermInfo->FaceName, L"DejaVu Sans Mono", LF_FACESIZE);
-    // TermInfo->FontSize = MAKELONG(12, 8); // 0x0008000C; // font is 8x12
+    // TermInfo->FontSize = MAKELONG(8, 12); // 0x000C0008; // font is 8x12
     // TermInfo->FontSize = MAKELONG(16, 16); // font is 16x16
-    // TermInfo->FontWeight = FW_NORMAL;
 
     wcsncpy(TermInfo->FaceName, L"VGA", LF_FACESIZE); // HACK: !!
     // TermInfo->FaceName[0] = L'\0';
     TermInfo->FontFamily = FF_DONTCARE;
     TermInfo->FontSize.X = 0;
     TermInfo->FontSize.Y = 0;
-    TermInfo->FontWeight = FW_DONTCARE;
-    TermInfo->UseRasterFonts = TRUE;
+    TermInfo->FontWeight = FW_NORMAL; // HACK: !!
+    // TermInfo->FontWeight = FW_DONTCARE;
 
     TermInfo->FullScreen   = FALSE;
     TermInfo->ShowWindow   = SW_SHOWNORMAL;
@@ -231,7 +227,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
                                 BOOL Defaults)
 {
     NTSTATUS Status;
-    PCONSOLE Console = GuiData->Console;
+    PCONSRV_CONSOLE Console = GuiData->Console;
     PCONSOLE_SCREEN_BUFFER ActiveBuffer = GuiData->ActiveBuffer;
     PCONSOLE_PROCESS_DATA ProcessData;
     HANDLE hSection = NULL, hClientSection = NULL;
@@ -333,7 +329,6 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
         GuiInfo->FontFamily = GuiData->GuiInfo.FontFamily;
         GuiInfo->FontSize   = GuiData->GuiInfo.FontSize;
         GuiInfo->FontWeight = GuiData->GuiInfo.FontWeight;
-        GuiInfo->UseRasterFonts = GuiData->GuiInfo.UseRasterFonts;
         GuiInfo->FullScreen = GuiData->GuiInfo.FullScreen;
         GuiInfo->AutoPosition = GuiData->GuiInfo.AutoPosition;
         GuiInfo->WindowOrigin = GuiData->GuiInfo.WindowOrigin;
@@ -426,7 +421,7 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
                      BOOL SaveSettings)
 {
     NTSTATUS Status = STATUS_SUCCESS;
-    PCONSOLE Console = GuiData->Console;
+    PCONSRV_CONSOLE Console = GuiData->Console;
     PCONSOLE_PROCESS_DATA ProcessData;
     HANDLE hSection = NULL;
     ULONG ViewSize = 0;
@@ -501,6 +496,15 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
 
             // memcpy(&GuiData->GuiInfo, GuiInfo, sizeof(GUI_CONSOLE_INFO));
 
+            /* Change the font */
+            InitFonts(GuiData,
+                      GuiInfo->FaceName,
+                      GuiInfo->FontFamily,
+                      GuiInfo->FontSize,
+                      GuiInfo->FontWeight);
+           // HACK, needed because changing font may change the size of the window
+           /**/TermResizeTerminal(Console);/**/
+
             /* Move the window to the user's values */
             GuiData->GuiInfo.AutoPosition = GuiInfo->AutoPosition;
             GuiData->GuiInfo.WindowOrigin = GuiInfo->WindowOrigin;
@@ -561,7 +565,7 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
                                HANDLE hClientSection)
 {
     NTSTATUS Status = STATUS_SUCCESS;
-    PCONSOLE Console = GuiData->Console;
+    PCONSRV_CONSOLE Console = GuiData->Console;
     PCONSOLE_PROCESS_DATA ProcessData;
     HANDLE hSection = NULL;
     ULONG ViewSize = 0;
@@ -655,7 +659,6 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
         GuiInfo.FullScreen = !!pConInfo->FullScreen;
         GuiInfo.AutoPosition = !!pConInfo->AutoPosition;
         GuiInfo.WindowOrigin = pConInfo->WindowPosition;
-        // BOOL  GuiInfo.UseRasterFonts = pConInfo->
         // WORD  GuiInfo.ShowWindow = pConInfo->
 
 
@@ -674,6 +677,15 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
             /* Set the terminal informations */
 
             // memcpy(&GuiData->GuiInfo, &GuiInfo, sizeof(GUI_CONSOLE_INFO));
+
+            /* Change the font */
+            InitFonts(GuiData,
+                      GuiInfo.FaceName,
+                      GuiInfo.FontFamily,
+                      GuiInfo.FontSize,
+                      GuiInfo.FontWeight);
+           // HACK, needed because changing font may change the size of the window
+           /**/TermResizeTerminal(Console);/**/
 
             /* Move the window to the user's values */
             GuiData->GuiInfo.AutoPosition = GuiInfo.AutoPosition;

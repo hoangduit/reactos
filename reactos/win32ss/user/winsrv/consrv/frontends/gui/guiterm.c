@@ -160,7 +160,7 @@ GuiConsoleNotifyWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case PM_CREATE_CONSOLE:
         {
             PGUI_CONSOLE_DATA GuiData = (PGUI_CONSOLE_DATA)lParam;
-            PCONSOLE Console = GuiData->Console;
+            PCONSRV_CONSOLE Console = GuiData->Console;
             RECT rcWnd;
 
             DPRINT("PM_CREATE_CONSOLE -- creating window\n");
@@ -394,9 +394,9 @@ GuiInit(VOID)
 static VOID NTAPI
 GuiDeinitFrontEnd(IN OUT PFRONTEND This);
 
-NTSTATUS NTAPI
+static NTSTATUS NTAPI
 GuiInitFrontEnd(IN OUT PFRONTEND This,
-                IN PCONSOLE Console)
+                IN PCONSRV_CONSOLE Console)
 {
     PGUI_INIT_INFO GuiInitInfo;
     PCONSOLE_INFO  ConsoleInfo;
@@ -486,13 +486,15 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
      * Set up GUI data
      */
 
+    // Font data
     Length = min(wcslen(TermInfo.FaceName) + 1, LF_FACESIZE); // wcsnlen
     wcsncpy(GuiData->GuiInfo.FaceName, TermInfo.FaceName, LF_FACESIZE);
     GuiData->GuiInfo.FaceName[Length] = L'\0';
     GuiData->GuiInfo.FontFamily     = TermInfo.FontFamily;
     GuiData->GuiInfo.FontSize       = TermInfo.FontSize;
     GuiData->GuiInfo.FontWeight     = TermInfo.FontWeight;
-    GuiData->GuiInfo.UseRasterFonts = TermInfo.UseRasterFonts;
+
+    // Display
     GuiData->GuiInfo.FullScreen     = TermInfo.FullScreen;
     GuiData->GuiInfo.ShowWindow     = TermInfo.ShowWindow;
     GuiData->GuiInfo.AutoPosition   = TermInfo.AutoPosition;
