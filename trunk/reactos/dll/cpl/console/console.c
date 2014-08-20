@@ -117,8 +117,8 @@ InitConsoleDefaults(PCONSOLE_PROPS pConInfo)
     GuiInfo->FontFamily = FF_DONTCARE;
     GuiInfo->FontSize.X = 0;
     GuiInfo->FontSize.Y = 0;
-    GuiInfo->FontWeight = FW_DONTCARE;
-    GuiInfo->UseRasterFonts = TRUE;
+    GuiInfo->FontWeight = FW_NORMAL; // HACK: !!
+    // GuiInfo->FontWeight = FW_DONTCARE;
 
     GuiInfo->FullScreen   = FALSE;
     GuiInfo->ShowWindow   = SW_SHOWNORMAL;
