@@ -6,21 +6,41 @@ IDR_MAINMENU MENU
 BEGIN
     POPUP "文件(&F)"
     BEGIN
-        MENUITEM "打开... (&O)", IDM_OPEN_FILE
-        MENUITEM "关闭(&C)", IDM_CLOSE_FILE
+        MENUITEM "打开... (&O)\tCtrl+O", IDM_OPEN_FILE
+        MENUITEM "关闭(&C)\tCtrl+W", IDM_CLOSE_FILE
         MENUITEM SEPARATOR
         MENUITEM "退出(&E)", IDM_EXIT
     END
-    POPUP "&Device"
+    POPUP "播放(&P)"
     BEGIN
-        MENUITEM "&Properties", IDM_DEVPROPS
+        MENUITEM "播放/暂停(&P)\tCtrl+P", IDC_PLAY
+        MENUITEM "停止(&S)\tCtrl+S", IDC_STOP
         MENUITEM SEPARATOR
-        MENUITEM "&Volume Control", IDM_VOLUMECTL
+        MENUITEM "重复(&R)\tCtrl+T", IDM_REPEAT
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        MENUITEM "单窗模式(&M)", IDM_SWITCHVIEW
+    END
+    POPUP "设备(&D)"
+    BEGIN
+        MENUITEM "属性(&P)", IDM_DEVPROPS
+        MENUITEM SEPARATOR
+        MENUITEM "音量控制(&V)", IDM_VOLUMECTL
     END
     POPUP "帮助(&H)"
     BEGIN
         MENUITEM "关于... (&A)", IDM_ABOUT
     END
+END
+
+ID_ACCELERATORS ACCELERATORS
+BEGIN
+    "^O", IDM_OPEN_FILE
+    "^W", IDM_CLOSE_FILE
+    "^P", IDC_PLAY
+    "^S", IDC_STOP
+    "^T", IDM_REPEAT
 END
 
 STRINGTABLE
@@ -35,6 +55,6 @@ BEGIN
     IDS_TOOLTIP_FORWARD "向前跳过"
     IDS_APPTITLE "ReactOS 多媒体播放器"
     IDS_PLAY "播放"
-    IDS_DEFAULTMCIERRMSG "No description is available for this error"
-    IDS_UNKNOWNFILEEXT "Cannot determine the device type from the given filename extension."
+    IDS_DEFAULTMCIERRMSG "该错误没有可用的描述."
+    IDS_UNKNOWNFILEEXT "该设备类型从给定的文件扩展名无法断定."
 END

@@ -4,7 +4,7 @@
 [Section]
 Name = ReactOS Build Environment AMD64 Addon
 Version = 1.3
-Licence = GPL
+License = GPL
 Description = Allows you to build the ReactOS AMD64 Source. For more instructions see ReactOS wiki.
 Size = 15.83 MB
 Category = 7
@@ -39,7 +39,7 @@ Description = Permite compilarea surselor ReactOS pentru AMD64. Pentru instrucț
 Size = 15,83 Mo
 
 [Section.041f]
-Name = ReactOS Derleme Ortamı AMD64 Eklentisi
+Name = ReactOS Yapma Ortamı AMD64 Eklentisi
 Description = ReactOS AMD64 Kaynak Kodları'nı derlemenize olanak sağlar. Daha çok açıklama için ReactOS Wiki'ye bakınız.
 Size = 15,83 MB
 

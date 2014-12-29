@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/conoutput.c
+ * FILE:            consrv/conoutput.c
  * PURPOSE:         General Console Output Functions
  * PROGRAMMERS:     Jeffrey Morlan
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -16,6 +16,16 @@
 
 /* PUBLIC SERVER APIS *********************************************************/
 
+/*
+ * FIXME: This function MUST be moved fro condrv/conoutput.c because only
+ * consrv knows how to manipulate VDM screenbuffers.
+ */
+NTSTATUS NTAPI
+ConDrvWriteConsoleOutputVDM(IN PCONSOLE Console,
+                            IN PTEXTMODE_SCREEN_BUFFER Buffer,
+                            IN PCHAR_CELL CharInfo/*Buffer*/,
+                            IN COORD CharInfoSize,
+                            IN PSMALL_RECT WriteRegion);
 NTSTATUS NTAPI
 ConDrvInvalidateBitMapRect(IN PCONSOLE Console,
                            IN PCONSOLE_SCREEN_BUFFER Buffer,
@@ -32,6 +42,18 @@ CSR_API(SrvInvalidateBitMapRect)
                                    InvalidateDIBitsRequest->OutputHandle,
                                    &Buffer, GENERIC_READ, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
+
+    /* In text-mode only, draw the VDM buffer if present */
+    if (GetType(Buffer) == TEXTMODE_BUFFER && Buffer->Header.Console->VDMBuffer)
+    {
+        PTEXTMODE_SCREEN_BUFFER TextBuffer = (PTEXTMODE_SCREEN_BUFFER)Buffer;
+
+        /*Status =*/ ConDrvWriteConsoleOutputVDM(Buffer->Header.Console,
+                                                 TextBuffer,
+                                                 Buffer->Header.Console->VDMBuffer,
+                                                 Buffer->Header.Console->VDMBufferSize,
+                                                 &InvalidateDIBitsRequest->Region);
+    }
 
     Status = ConDrvInvalidateBitMapRect(Buffer->Header.Console,
                                         Buffer,
@@ -169,7 +191,8 @@ CSR_API(SrvCreateConsoleScreenBuffer)
 {
     NTSTATUS Status = STATUS_INVALID_PARAMETER;
     PCONSOLE_CREATESCREENBUFFER CreateScreenBufferRequest = &((PCONSOLE_API_MESSAGE)ApiMessage)->Data.CreateScreenBufferRequest;
-    PCONSOLE_PROCESS_DATA ProcessData = ConsoleGetPerProcessData(CsrGetClientThread()->Process);
+    PCSR_PROCESS Process = CsrGetClientThread()->Process;
+    PCONSOLE_PROCESS_DATA ProcessData = ConsoleGetPerProcessData(Process);
     PCONSRV_CONSOLE Console;
     PCONSOLE_SCREEN_BUFFER Buff;
 
@@ -252,7 +275,8 @@ CSR_API(SrvCreateConsoleScreenBuffer)
     }
 
     Status = ConDrvCreateScreenBuffer(&Buff,
-                                      Console,
+                                      (PCONSOLE)Console,
+                                      Process->ProcessHandle,
                                       CreateScreenBufferRequest->ScreenBufferType,
                                       ScreenBufferInfo);
     if (!NT_SUCCESS(Status)) goto Quit;
@@ -417,7 +441,9 @@ DoWriteConsole(IN PCSR_API_MESSAGE ApiMessage,
     {
         if (CreateWaitBlock)
         {
-            if (!CsrCreateWait(&ScreenBuffer->Header.Console->WriteWaitQueue,
+            PCONSRV_CONSOLE Console = (PCONSRV_CONSOLE)ScreenBuffer->Header.Console;
+
+            if (!CsrCreateWait(&Console->WriteWaitQueue,
                                WriteConsoleThread,
                                ClientThread,
                                ApiMessage,

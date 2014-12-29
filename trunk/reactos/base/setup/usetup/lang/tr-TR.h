@@ -1,4 +1,4 @@
-/* TRANSLATOR: 2013 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
+/* TRANSLATOR: 2013, 2014 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
 
 #pragma once
 
@@ -97,7 +97,7 @@ static MUI_ENTRY trTRWelcomePageEntries[] =
     {
         8,
         19,
-        "\x07  ReactOS Ruhsatlama Istçlahlarç ve Koüullarç'nç gîrÅntÅlemek iáin L'ye basçnçz.",
+        "\x07  ReactOS Ruhsatlama Istçlahlarç ve ûartlarç'nç gîrÅntÅlemek iáin L'ye basçnçz.",
         TEXT_STYLE_NORMAL
     },
     {
@@ -255,7 +255,7 @@ static MUI_ENTRY trTRLicensePageEntries[] =
     {
         8,
         10,
-        "kçsçmlarçn koüullarç altçnda ruhsatlanmçütçr.",
+        "kçsçmlarçn üartlarç altçnda ruhsatlanmçütçr.",
         TEXT_STYLE_NORMAL
     },
     {
@@ -315,7 +315,7 @@ static MUI_ENTRY trTRLicensePageEntries[] =
     {
         8,
         23,
-        "Bu îzgÅr yazçlçmdçr, áoßaltma koüullarç iáin kaynaßa bakçnçz.",
+        "Bu îzgÅr yazçlçmdçr, áoßaltma üartlarç iáin kaynaßa bakçnçz.",
         TEXT_STYLE_NORMAL
     },
     {
@@ -617,7 +617,7 @@ static MUI_ENTRY trTRQuitPageEntries[] =
     {
         10,
         9,
-        "CD-ROM'larç áçkarçnçz.",
+        "CD-ROM'larç áçkartçnçz.",
         TEXT_STYLE_NORMAL
     },
     {
@@ -714,7 +714,7 @@ static MUI_ENTRY trTRSuccessPageEntries[] =
     {
         10,
         9,
-        "CD-ROM'larç áçkarçnçz.",
+        "CD-ROM'larç áçkartçnçz.",
         TEXT_STYLE_NORMAL
     },
     {
@@ -1481,8 +1481,10 @@ MUI_ERROR trTRErrorEntries[] =
         "Giriü = Bilgisayarç Yeniden Baülat"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Seáili bîlÅmde yeterli boü alan yok.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * SÅrdÅrmek iáin bir dÅßmeye basçnçz.",
         NULL
     },
@@ -1496,19 +1498,6 @@ MUI_ERROR trTRErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "Bir diskte birden áok geniületilmiü bîlÅm oluüturamazsçnçz.\n"
-        "\n"
-        "  * SÅrdÅrmek iáin bir dÅßmeye basçnçz."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "Bir geniületilmiü bîlÅm arkasçnda bir bîlÅm oluüturamazsçnçz.\n"
-        "\n"
-        "  * SÅrdÅrmek iáin bir dÅßmeye basçnçz."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "Bir geniületilmiü bîlÅm, her zaman bir bîlÅm\n"
-        "tablosunda son bîlÅm olmalçdçr.\n"
         "\n"
         "  * SÅrdÅrmek iáin bir dÅßmeye basçnçz."
     },
@@ -1639,7 +1628,7 @@ MUI_STRING trTRStrings[] =
     {STRING_CHOOSE_NEW_LOGICAL_PARTITION,
     "özerinde bir mantçklçk bîlÅm oluüturmayç seátiniz:"},
     {STRING_HDDSIZE,
-    "LÅtfen yeni bîlÅmÅn bÅyÅklÅßÅnÅ megabayt olarak giriniz."},
+    "LÅtfen yeni bîlÅmÅn bÅyÅklÅßÅnÅ megaáoklu olarak giriniz."},
     {STRING_CREATEPARTITION,
     "   Giriü = BîlÅm Oluütur   Äçkçü = òptal   F3 = Äçk"},
     {STRING_PARTFORMAT,
@@ -1693,27 +1682,27 @@ MUI_STRING trTRStrings[] =
     {STRING_KEEPFORMAT,
     " ûimdiki kÅtÅk dizgesini koru. (Deßiüiklik yok.) "},
     {STRING_HDINFOPARTCREATE,
-    "%I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu), %wZ Åzerinde."},
+    "%I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu), %wZ Åzerinde."},
     {STRING_HDDINFOUNK1,
-    "%I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu)."},
+    "%I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu)."},
     {STRING_HDDINFOUNK2,
     "   %c%c  TÅr  %lu    %I64u %s"},
     {STRING_HDINFOPARTDELETE,
-    "özerinde: %I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu), %wZ Åzerinde."},
+    "özerinde: %I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu), %wZ Åzerinde."},
     {STRING_HDDINFOUNK3,
-    "özerinde: %I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu)."},
+    "özerinde: %I64u %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu)."},
     {STRING_HDINFOPARTZEROED,
-    "SÉbit Disk %lu (%I64u %s), Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu (%wZ)."},
+    "SÉbit Disk %lu (%I64u %s), Giriü=%hu, Veriyolu=%hu, Kimlik=%hu (%wZ)."},
     {STRING_HDDINFOUNK4,
     "%c%c  TÅr  %lu    %I64u %s"},
     {STRING_HDINFOPARTEXISTS,
-    "özerinde: SÉbit Disk %lu (%I64u %s), Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu (%wZ)."},
+    "özerinde: SÉbit Disk %lu (%I64u %s), Giriü=%hu, Veriyolu=%hu, Kimlik=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sTÅr  %-3u%s                       %6lu %s"},
+    "%c%c %c %sTÅr  %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
-    "%6lu %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu), %S Åzerinde"},
+    "%6lu %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu), %S Åzerinde"},
     {STRING_HDDINFOUNK6,
-    "%6lu %s  SÉbit Disk %lu  (Giriü=%hu, Veri Yolu=%hu, Kimlik=%hu)"},
+    "%6lu %s  SÉbit Disk %lu  (Giriü=%hu, Veriyolu=%hu, Kimlik=%hu)"},
     {STRING_NEWPARTITION,
     "Kur, Åzerinde bir yeni bîlÅm oluüturdu:"},
     {STRING_UNPSPACE,

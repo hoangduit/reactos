@@ -4,8 +4,14 @@
 #include <ntifs.h>
 #include <ntdddisk.h>
 #include <dos.h>
+#include <pseh/pseh2.h>
 
 #define USE_ROS_CC_AND_FS
+#if 0
+#ifndef _MSC_VER
+#define ENABLE_SWAPOUT
+#endif
+#endif
 
 #define ROUND_DOWN(n, align) \
     (((ULONG)n) & ~((align) - 1l))
@@ -270,6 +276,7 @@ typedef struct DEVICE_EXTENSION
     ULONG HashTableSize;
     struct _HASHENTRY **FcbHashTable;
 
+    PDEVICE_OBJECT VolumeDevice;
     PDEVICE_OBJECT StorageDevice;
     PFILE_OBJECT FATFileObject;
     FATINFO FatInfo;
@@ -295,6 +302,13 @@ typedef struct DEVICE_EXTENSION
     /* Notifications */
     LIST_ENTRY NotifyList;
     PNOTIFY_SYNC NotifySync;
+
+    /* Incremented on IRP_MJ_CREATE, decremented on IRP_MJ_CLOSE */
+    ULONG OpenHandleCount;
+
+    /* VPBs for dismount */
+    PVPB IoVPB;
+    PVPB SpareVPB;
 } DEVICE_EXTENSION, VCB, *PVCB;
 
 typedef struct
@@ -459,6 +473,13 @@ typedef struct _VFAT_DIRENTRY_CONTEXT
     UNICODE_STRING ShortNameU;
 } VFAT_DIRENTRY_CONTEXT, *PVFAT_DIRENTRY_CONTEXT;
 
+typedef struct _VFAT_MOVE_CONTEXT
+{
+    ULONG FirstCluster;
+    ULONG FileSize;
+    USHORT CreationDate;
+    USHORT CreationTime;
+} VFAT_MOVE_CONTEXT, *PVFAT_MOVE_CONTEXT;
 
 /* blockdev.c */
 
@@ -593,7 +614,8 @@ VfatAddEntry(
     PVFATFCB* Fcb,
     PVFATFCB ParentFcb,
     ULONG RequestedOptions,
-    UCHAR ReqAttr);
+    UCHAR ReqAttr,
+    PVFAT_MOVE_CONTEXT MoveContext);
 
 NTSTATUS
 VfatUpdateEntry(
@@ -602,7 +624,8 @@ VfatUpdateEntry(
 NTSTATUS
 VfatDelEntry(
     PDEVICE_EXTENSION,
-    PVFATFCB);
+    PVFATFCB,
+    PVFAT_MOVE_CONTEXT);
 
 BOOLEAN
 vfatFindDirSpace(
@@ -610,6 +633,20 @@ vfatFindDirSpace(
     PVFATFCB pDirFcb,
     ULONG nbSlots,
     PULONG start);
+
+NTSTATUS
+vfatRenameEntry(
+    IN PDEVICE_EXTENSION DeviceExt,
+    IN PVFATFCB pFcb,
+    IN PUNICODE_STRING FileName,
+    IN BOOLEAN CaseChangeOnly);
+
+NTSTATUS
+VfatMoveEntry(
+    IN PDEVICE_EXTENSION DeviceExt,
+    IN PVFATFCB pFcb,
+    IN PUNICODE_STRING FileName,
+    IN PVFATFCB ParentFcb);
 
 /* ea.h */
 
@@ -746,6 +783,14 @@ vfatNewFCB(
     PDEVICE_EXTENSION pVCB,
     PUNICODE_STRING pFileNameU);
 
+NTSTATUS
+vfatUpdateFCB(
+    PDEVICE_EXTENSION pVCB,
+    PVFATFCB Fcb,
+    PUNICODE_STRING LongName,
+    PUNICODE_STRING ShortName,
+    PVFATFCB ParentFcb);
+
 VOID
 vfatDestroyFCB(
     PVFATFCB pFCB);
@@ -761,11 +806,6 @@ vfatGrabFCB(
 
 VOID
 vfatReleaseFCB(
-    PDEVICE_EXTENSION pVCB,
-    PVFATFCB pFCB);
-
-VOID
-vfatAddFCBToTable(
     PDEVICE_EXTENSION pVCB,
     PVFATFCB pFCB);
 
@@ -893,6 +933,11 @@ VfatLockUserBuffer(
     IN PIRP,
     IN ULONG,
     IN LOCK_OPERATION);
+
+BOOLEAN
+VfatCheckForDismount(
+    IN PDEVICE_EXTENSION DeviceExt,
+    IN BOOLEAN Create);
 
 /* pnp.c */
 

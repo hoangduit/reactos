@@ -1,4 +1,4 @@
-/* TRANSLATOR: 2013 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
+/* TRANSLATOR: 2013, 2014 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
 
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 
@@ -34,9 +34,9 @@ BEGIN
     IDS_LOADINGYOURPERSONALSETTINGS "Şahsî Ayarlarınız Yükleniyor..."
     IDS_CLOSINGNETWORKCONNECTIONS "Ağ Bağlantıları Kapatılıyor..."
     IDS_REACTOSISSHUTTINGDOWN "ReactOS Kapatılıyor..."
-    IDS_PREPARETOSTANDBY "Beklemeye Anıklanıyor..."
+    IDS_PREPARETOSTANDBY "Uykuya Anıklanıyor..."
     IDS_PREPARETOHIBERNATE "Anıkta Beklemeye Anıklanıyor..."
-    IDS_SAVEYOURSETTINGS "Ayarlarınız Kaydediliyor..."
+    IDS_SAVEYOURSETTINGS "Ayarlarınız Saklanıyor..."
     IDS_REACTOSISSTARTINGUP "ReactOS Başlatılıyor..."
 END
 

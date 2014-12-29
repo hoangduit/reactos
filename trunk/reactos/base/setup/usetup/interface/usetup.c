@@ -30,6 +30,7 @@
 
 #include "bootsup.h"
 #include "chkdsk.h"
+#include "cmdcons.h"
 #include "format.h"
 #include "drivesup.h"
 #include "settings.h"
@@ -930,17 +931,14 @@ IntroPage(PINPUT_RECORD Ir)
         else if (Ir->Event.KeyEvent.uChar.AsciiChar == 0x0D) /* ENTER */
         {
             return INSTALL_INTRO_PAGE;
-            break;
         }
         else if (toupper(Ir->Event.KeyEvent.uChar.AsciiChar) == 'R') /* R */
         {
             return REPAIR_INTRO_PAGE;
-            break;
         }
         else if (toupper(Ir->Event.KeyEvent.uChar.AsciiChar) == 'L') /* R */
         {
             return LICENSE_PAGE;
-            break;
         }
     }
 
@@ -965,7 +963,6 @@ LicensePage(PINPUT_RECORD Ir)
         if (Ir->Event.KeyEvent.uChar.AsciiChar == 0x0D)  /* ENTER */
         {
             return INTRO_PAGE;
-            break;
         }
     }
 
@@ -993,7 +990,7 @@ RepairIntroPage(PINPUT_RECORD Ir)
         }
         else if (toupper(Ir->Event.KeyEvent.uChar.AsciiChar) == 'R')  /* R */
         {
-            return INTRO_PAGE;
+            return RECOVERY_PAGE;
         }
         else if ((Ir->Event.KeyEvent.uChar.AsciiChar == 0x00) &&
                  (Ir->Event.KeyEvent.wVirtualKeyCode == VK_ESCAPE))  /* ESC */
@@ -1428,28 +1425,18 @@ LayoutSettingsPage(PINPUT_RECORD Ir)
 }
 
 
-#if 0
 static BOOL
 IsDiskSizeValid(PPARTENTRY PartEntry)
 {
-    ULONGLONG m1, m2;
+    ULONGLONG size;
 
-    /*  check for unpartitioned space  */
-    m1 = PartEntry->UnpartitionedLength;
-    m1 = (m1 + (1 << 19)) >> 20;  /* in MBytes (rounded) */
+    size = PartEntry->SectorCount.QuadPart * PartEntry->DiskEntry->BytesPerSector;
+    size = (size + 524288) / 1048576;  /* in MBytes */
 
-    if( m1 > RequiredPartitionDiskSpace)
-    {
-        return TRUE;
-    }
-
-    /* check for partitioned space */
-    m2 = PartEntry->PartInfo[0].PartitionLength.QuadPart;
-    m2 = (m2 + (1 << 19)) >> 20;  /* in MBytes (rounded) */
-    if (m2 < RequiredPartitionDiskSpace)
+    if (size < RequiredPartitionDiskSpace)
     {
         /* partition is too small so ask for another partion */
-        DPRINT1("Partition is too small(unpartitioned: %I64u MB, partitioned: %I64u MB), required disk space is %lu MB\n", m1, m2, RequiredPartitionDiskSpace);
+        DPRINT1("Partition is too small (size: %I64u MB), required disk space is %lu MB\n", size, RequiredPartitionDiskSpace);
         return FALSE;
     }
     else
@@ -1457,7 +1444,6 @@ IsDiskSizeValid(PPARTENTRY PartEntry)
         return TRUE;
     }
 }
-#endif
 
 
 static PAGE_NUMBER
@@ -1516,16 +1502,16 @@ SelectPartitionPage(PINPUT_RECORD Ir)
         {
             if (AutoPartition)
             {
-#if 0
-                if (!IsDiskSizeValid(PartitionList->CurrentPartition))
-                {
-                    MUIDisplayError(ERROR_INSUFFICIENT_DISKSPACE, Ir, POPUP_WAIT_ANY_KEY);
-                    return SELECT_PARTITION_PAGE; /* let the user select another partition */
-                }
-#endif
                 CreatePrimaryPartition(PartitionList,
                                        PartitionList->CurrentPartition->SectorCount.QuadPart,
                                        TRUE);
+
+                if (!IsDiskSizeValid(PartitionList->CurrentPartition))
+                {
+                    MUIDisplayError(ERROR_INSUFFICIENT_PARTITION_SIZE, Ir, POPUP_WAIT_ANY_KEY,
+                                    RequiredPartitionDiskSpace);
+                    return SELECT_PARTITION_PAGE; /* let the user select another partition */
+                }
 
                 DestinationDriveLetter = (WCHAR)PartitionList->CurrentPartition->DriveLetter;
 
@@ -1534,13 +1520,13 @@ SelectPartitionPage(PINPUT_RECORD Ir)
         }
         else
         {
-#if 0
             if (!IsDiskSizeValid(PartitionList->CurrentPartition))
             {
-                MUIDisplayError(ERROR_INSUFFICIENT_DISKSPACE, Ir, POPUP_WAIT_ANY_KEY);
+                MUIDisplayError(ERROR_INSUFFICIENT_PARTITION_SIZE, Ir, POPUP_WAIT_ANY_KEY,
+                                RequiredPartitionDiskSpace);
                 return SELECT_PARTITION_PAGE; /* let the user select another partition */
             }
-#endif
+
             DestinationDriveLetter = (WCHAR)PartitionList->CurrentPartition->DriveLetter;
 
             return SELECT_FILE_SYSTEM_PAGE;
@@ -1612,13 +1598,6 @@ SelectPartitionPage(PINPUT_RECORD Ir)
         }
         else if (Ir->Event.KeyEvent.wVirtualKeyCode == VK_RETURN)  /* ENTER */
         {
-#if 0
-            if (!IsDiskSizeValid(PartitionList->CurrentPartition))
-            {
-                MUIDisplayError(ERROR_INSUFFICIENT_DISKSPACE, Ir, POPUP_WAIT_ANY_KEY);
-                return SELECT_PARTITION_PAGE; /* let the user select another partition */
-            }
-#endif
             if (IsContainerPartition(PartitionList->CurrentPartition->PartitionType))
                 continue; //return SELECT_PARTITION_PAGE;
 
@@ -1628,6 +1607,13 @@ SelectPartitionPage(PINPUT_RECORD Ir)
                 CreatePrimaryPartition(PartitionList,
                                        0ULL,
                                        TRUE);
+            }
+
+            if (!IsDiskSizeValid(PartitionList->CurrentPartition))
+            {
+                MUIDisplayError(ERROR_INSUFFICIENT_PARTITION_SIZE, Ir, POPUP_WAIT_ANY_KEY,
+                                RequiredPartitionDiskSpace);
+                return SELECT_PARTITION_PAGE; /* let the user select another partition */
             }
 
             DestinationDriveLetter = (WCHAR)PartitionList->CurrentPartition->DriveLetter;
@@ -1848,6 +1834,7 @@ CreatePrimaryPartitionPage(PINPUT_RECORD Ir)
     ULONGLONG DiskSize;
     ULONGLONG SectorCount;
     PCHAR Unit;
+    NTSTATUS Status;
 
     if (PartitionList == NULL ||
         PartitionList->CurrentDisk == NULL ||
@@ -1974,6 +1961,14 @@ CreatePrimaryPartitionPage(PINPUT_RECORD Ir)
                                    SectorCount,
                                    FALSE);
 
+            Status = WriteDirtyPartitions(PartitionList);
+            if (!NT_SUCCESS(Status))
+            {
+                DPRINT("WriteDirtyPartitions() failed\n");
+                MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
+                return QUIT_PAGE;
+            }
+
             return SELECT_PARTITION_PAGE;
         }
     }
@@ -1995,6 +1990,7 @@ CreateExtendedPartitionPage(PINPUT_RECORD Ir)
     ULONGLONG DiskSize;
     ULONGLONG SectorCount;
     PCHAR Unit;
+    NTSTATUS Status;
 
     if (PartitionList == NULL ||
         PartitionList->CurrentDisk == NULL ||
@@ -2120,6 +2116,14 @@ CreateExtendedPartitionPage(PINPUT_RECORD Ir)
             CreateExtendedPartition(PartitionList,
                                     SectorCount);
 
+            Status = WriteDirtyPartitions(PartitionList);
+            if (!NT_SUCCESS(Status))
+            {
+                DPRINT("WriteDirtyPartitions() failed\n");
+                MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
+                return QUIT_PAGE;
+            }
+
             return SELECT_PARTITION_PAGE;
         }
     }
@@ -2141,6 +2145,7 @@ CreateLogicalPartitionPage(PINPUT_RECORD Ir)
     ULONGLONG DiskSize;
     ULONGLONG SectorCount;
     PCHAR Unit;
+    NTSTATUS Status;
 
     if (PartitionList == NULL ||
         PartitionList->CurrentDisk == NULL ||
@@ -2266,6 +2271,14 @@ CreateLogicalPartitionPage(PINPUT_RECORD Ir)
             CreateLogicalPartition(PartitionList,
                                    SectorCount);
 
+            Status = WriteDirtyPartitions(PartitionList);
+            if (!NT_SUCCESS(Status))
+            {
+                DPRINT("WriteDirtyPartitions() failed\n");
+                MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
+                return QUIT_PAGE;
+            }
+
             return SELECT_PARTITION_PAGE;
         }
     }
@@ -2283,6 +2296,7 @@ DeletePartitionPage(PINPUT_RECORD Ir)
     ULONGLONG PartSize;
     PCHAR Unit;
     PCHAR PartType;
+    NTSTATUS Status;
 
     if (PartitionList == NULL ||
         PartitionList->CurrentDisk == NULL ||
@@ -2434,6 +2448,14 @@ DeletePartitionPage(PINPUT_RECORD Ir)
         else if (Ir->Event.KeyEvent.wVirtualKeyCode == 'D') /* D */
         {
             DeleteCurrentPartition(PartitionList);
+
+            Status = WriteDirtyPartitions(PartitionList);
+            if (!NT_SUCCESS(Status))
+            {
+                DPRINT("WriteDirtyPartitions() failed\n");
+                MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
+                return QUIT_PAGE;
+            }
 
             return SELECT_PARTITION_PAGE;
         }
@@ -2761,7 +2783,7 @@ FormatPartitionPage(PINPUT_RECORD Ir)
 #if 0
             else if (wcscmp(FileSystemList->Selected->FileSystem, L"EXT2") == 0)
             {
-                PartEntry->PartInfo[PartNum].PartitionType = PARTITION_EXT2;
+                PartEntry->PartitionType = PARTITION_EXT2;
                 DiskEntry->LayoutBuffer->PartitionEntry[PartEntry->PartitionIndex].PartitionType = PartEntry->PartitionType;
             }
 #endif
@@ -2806,9 +2828,10 @@ FormatPartitionPage(PINPUT_RECORD Ir)
 
             CheckActiveBootPartition(PartitionList);
 
-            if (WritePartitionsToDisk(PartitionList) == FALSE)
+            Status = WriteDirtyPartitions(PartitionList);
+            if (!NT_SUCCESS(Status))
             {
-                DPRINT("WritePartitionsToDisk() failed\n");
+                DPRINT("WriteDirtyPartitions() failed\n");
                 MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
                 return QUIT_PAGE;
             }
@@ -3720,6 +3743,7 @@ BootLoaderPage(PINPUT_RECORD Ir)
     BOOLEAN InstallOnFloppy;
     USHORT Line = 12;
     WCHAR PathBuffer[MAX_PATH];
+    NTSTATUS Status;
 
     CONSOLE_SetStatusText(MUIGetString(STRING_PLEASEWAIT));
 
@@ -3727,9 +3751,10 @@ BootLoaderPage(PINPUT_RECORD Ir)
     CheckActiveBootPartition(PartitionList);
 
     /* Update the partition table because we may have changed the active partition */
-    if (WritePartitionsToDisk(PartitionList) == FALSE)
+    Status = WriteDirtyPartitions(PartitionList);
+    if (!NT_SUCCESS(Status))
     {
-        DPRINT("WritePartitionsToDisk() failed\n");
+        DPRINT("WriteDirtyPartitions() failed\n");
         MUIDisplayError(ERROR_WRITE_PTABLE, Ir, POPUP_WAIT_ENTER);
         return QUIT_PAGE;
     }
@@ -4095,6 +4120,7 @@ RunUSetup(VOID)
     PAGE_NUMBER Page;
     LARGE_INTEGER Time;
     NTSTATUS Status;
+    BOOLEAN Old;
 
     NtQuerySystemTime(&Time);
 
@@ -4136,7 +4162,7 @@ RunUSetup(VOID)
     CONSOLE_SetCursorType(TRUE, FALSE);
 
     Page = START_PAGE;
-    while (Page != REBOOT_PAGE)
+    while (Page != REBOOT_PAGE && Page != RECOVERY_PAGE)
     {
         CONSOLE_ClearScreen();
         CONSOLE_Flush();
@@ -4284,10 +4310,14 @@ RunUSetup(VOID)
                 Page = QuitPage(&Ir);
                 break;
 
+            case RECOVERY_PAGE:
             case REBOOT_PAGE:
                 break;
         }
     }
+
+    if (Page == RECOVERY_PAGE)
+        RecoveryConsole();
 
     FreeConsole();
 
@@ -4296,7 +4326,9 @@ RunUSetup(VOID)
     NtDelayExecution(FALSE, &Time);
 
     /* Reboot */
+    RtlAdjustPrivilege(SE_SHUTDOWN_PRIVILEGE, TRUE, FALSE, &Old);
     NtShutdownSystem(ShutdownReboot);
+    RtlAdjustPrivilege(SE_SHUTDOWN_PRIVILEGE, Old, FALSE, &Old);
     NtTerminateProcess(NtCurrentProcess(), 0);
 }
 

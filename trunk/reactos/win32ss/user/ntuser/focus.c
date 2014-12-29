@@ -25,6 +25,9 @@ IsFGLocked(VOID)
    return (gppiLockSFW || guSFWLockCount);
 }
 
+/*
+  Get capture window via foreground Queue.
+*/
 HWND FASTCALL
 IntGetCaptureWindow(VOID)
 {
@@ -175,7 +178,7 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
    //ERR("SendActivateMessage Old -> %x, New -> %x\n", OldTID, NewTID);
 
    if (!(pti->TIF_flags & TIF_INACTIVATEAPPMSG) &&
-        (!WindowPrev || OldTID != NewTID) )
+        (OldTID != NewTID) )
    {
       PWND cWindow;
       HWND *List, *phWnd;
@@ -247,10 +250,17 @@ co_IntSendActivateMessages(PWND WindowPrev, PWND Window, BOOL MouseActivate, BOO
                                MAKEWPARAM(MouseActivate ? WA_CLICKACTIVE : WA_ACTIVE, Window->style & WS_MINIMIZE),
                               (LPARAM)(WindowPrev ? UserHMGetHandle(WindowPrev) : 0));
 
-      if (!Window->spwndOwner && !IntGetParent(Window))
+      if (Window->spwndParent == UserGetDesktopWindow() &&
+          Window->spwndOwner == NULL &&
+          (!(Window->ExStyle & WS_EX_TOOLWINDOW) ||
+           (Window->ExStyle & WS_EX_APPWINDOW)))
       {
          // FIXME lParam; The value is TRUE if the window is in full-screen mode, or FALSE otherwise.
          co_IntShellHookNotify(HSHELL_WINDOWACTIVATED, (WPARAM) UserHMGetHandle(Window), FALSE);
+      }
+      else
+      {
+          co_IntShellHookNotify(HSHELL_WINDOWACTIVATED, 0, FALSE);
       }
 
       Window->state &= ~WNDS_NONCPAINT;
@@ -524,62 +534,6 @@ co_IntSetForegroundAndFocusWindow(
    return Ret && fgRet;
 }
 
-/*
-  Revision 7888, activate modal dialog when clicking on a disabled window.
-*/
-HWND FASTCALL
-IntFindChildWindowToOwner(PWND Root, PWND Owner)
-{
-   HWND Ret;
-   PWND Child, OwnerWnd;
-
-   for(Child = Root->spwndChild; Child; Child = Child->spwndNext)
-   {
-      OwnerWnd = Child->spwndOwner;
-      if(!OwnerWnd)
-         continue;
-
-      if(OwnerWnd == Owner)
-      {
-         Ret = Child->head.h;
-         return Ret;
-      }
-   }
-   return NULL;
-}
-
-BOOL FASTCALL
-co_IntMouseActivateWindow(PWND Wnd)
-{
-   HWND Top;
-   USER_REFERENCE_ENTRY Ref;
-   ASSERT_REFS_CO(Wnd);
-
-   if (Wnd->style & WS_DISABLED)
-   {
-      BOOL Ret;
-      PWND TopWnd;
-      PWND DesktopWindow = UserGetDesktopWindow();
-      if (DesktopWindow)
-      {
-         ERR("Window Diabled\n");
-         Top = IntFindChildWindowToOwner(DesktopWindow, Wnd);
-         if ((TopWnd = ValidateHwndNoErr(Top)))
-         {
-            UserRefObjectCo(TopWnd, &Ref);
-            Ret = co_IntMouseActivateWindow(TopWnd);
-            UserDerefObjectCo(TopWnd);
-
-            return Ret;
-         }
-      }
-      return FALSE;
-   }
-   ERR("Mouse Active\n");
-   co_IntSetForegroundAndFocusWindow(Wnd, TRUE);
-   return TRUE;
-}
-
 BOOL FASTCALL
 co_IntSetActiveWindow(PWND Wnd OPTIONAL, BOOL bMouse, BOOL bFocus, BOOL Async)
 {
@@ -701,7 +655,7 @@ co_IntSetActiveWindow(PWND Wnd OPTIONAL, BOOL bMouse, BOOL bFocus, BOOL Async)
         (Wnd && !VerifyWnd(Wnd)) ||
         ThreadQueue != pti->MessageQueue )
    {
-      ERR("SetActiveWindow: Summery ERROR, active state changed!\n");
+      ERR("SetActiveWindow: Summary ERROR, active state changed!\n");
       return FALSE;
    }
 
@@ -753,6 +707,13 @@ co_IntSetActiveWindow(PWND Wnd OPTIONAL, BOOL bMouse, BOOL bFocus, BOOL Async)
 }
 
 BOOL FASTCALL
+co_IntMouseActivateWindow(PWND Wnd)
+{
+   TRACE("Mouse Active\n");
+   return co_IntSetForegroundAndFocusWindow(Wnd, TRUE);
+}
+
+BOOL FASTCALL
 UserSetActiveWindow(PWND Wnd)
 {
   if (Wnd) // Must have a window!
@@ -763,7 +724,7 @@ UserSetActiveWindow(PWND Wnd)
   }
   /*
      Yes your eye are not deceiving you~!
-  
+
      First part of wines Win.c test_SetActiveWindow:
 
      flush_events( TRUE );
@@ -937,6 +898,7 @@ co_UserSetCapture(HWND hWnd)
    {
       if (Window->head.pti->MessageQueue != ThreadQueue)
       {
+         ERR("Window Thread dos not match Current!\n");
          return NULL;
       }
    }
@@ -957,13 +919,10 @@ co_UserSetCapture(HWND hWnd)
    {
       if (ThreadQueue->MenuOwner && Window) ThreadQueue->QF_flags |= QF_CAPTURELOCKED;
 
-      //co_IntPostOrSendMessage(hWndPrev, WM_CAPTURECHANGED, 0, (LPARAM)hWnd);
       co_IntSendMessage(hWndPrev, WM_CAPTURECHANGED, 0, (LPARAM)hWnd);
 
       ThreadQueue->QF_flags &= ~QF_CAPTURELOCKED;
    }
-
-   ThreadQueue->spwndCapture = Window;
 
    if (hWnd == NULL) // Release mode.
    {

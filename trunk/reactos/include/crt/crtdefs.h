@@ -126,7 +126,7 @@
 #endif
 
 #ifndef UNALIGNED
-#if defined(__ia64__) || defined(__x86_64)
+#if defined(__ia64__) || defined(__x86_64) || defined(__arm__)
 #define UNALIGNED __unaligned
 #else
 #define UNALIGNED
@@ -316,7 +316,7 @@ extern "C" {
 
 #ifndef _WCHAR_T_DEFINED
 #define _WCHAR_T_DEFINED
-#ifndef __cplusplus
+#if defined(_MSC_VER) || !defined(__cplusplus)
   typedef unsigned short wchar_t;
 #endif
 #endif

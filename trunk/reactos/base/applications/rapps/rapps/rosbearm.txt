@@ -4,7 +4,7 @@
 [Section]
 Name = ReactOS Build Environment ARM Addon
 Version = 1.0
-Licence = GPL
+License = GPL
 Description = Allows you to build the ReactOS ARM Source. For more instructions see ReactOS wiki.
 Size = 11.15 MB
 Category = 7
@@ -39,7 +39,7 @@ Description = Permite compilarea surselor ReactOS pentru ARM. Pentru instrucțiu
 Size = 11,15 Mo
 
 [Section.041f]
-Name = ReactOS Derleme Ortamı ARM Eklentisi
+Name = ReactOS Yapma Ortamı ARM Eklentisi
 Description = ReactOS ARM Kaynak Kodları'nı derlemenize olanak sağlar. Daha çok açıklama için ReactOS Wiki'ye bakınız.
 Size = 11,15 MB
 

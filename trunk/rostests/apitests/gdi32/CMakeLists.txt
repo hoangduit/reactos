@@ -22,7 +22,10 @@ list(APPEND SOURCE
     EngCreateSemaphore.c
     EngDeleteSemaphore.c
     EngReleaseSemaphore.c
+    EnumFontFamilies.c
+    ExcludeClipRect.c
     ExtCreatePen.c
+    ExtCreateRegion.c
     GdiConvertBitmap.c
     GdiConvertBrush.c
     GdiConvertDC.c
@@ -35,6 +38,7 @@ list(APPEND SOURCE
     GdiGetLocalDC.c
     GdiReleaseLocalDC.c
     GdiSetAttrs.c
+    GetClipBox.c
     GetClipRgn.c
     GetCurrentObject.c
     GetDIBColorTable.c
@@ -46,6 +50,7 @@ list(APPEND SOURCE
     GetTextExtentExPoint.c
     GetTextFace.c
     MaskBlt.c
+    OffsetClipRgn.c
     PatBlt.c
     Rectangle.c
     SelectObject.c

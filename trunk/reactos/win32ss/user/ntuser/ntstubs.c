@@ -2,7 +2,7 @@
  * COPYRIGHT:        See COPYING in the top level directory
  * PROJECT:          ReactOS Win32k subsystem
  * PURPOSE:          Native User stubs
- * FILE:             subsystems/win32/win32k/ntuser/ntstubs.c
+ * FILE:             win32ss/user/ntuser/ntstubs.c
  * PROGRAMER:        Casper S. Hornstrup (chorns@users.sourceforge.net)
  */
 
@@ -168,19 +168,6 @@ NtUserGetAltTabInfo(
    return 0;
 }
 
-DWORD
-APIENTRY
-NtUserGetImeHotKey(
-   DWORD Unknown0,
-   DWORD Unknown1,
-   DWORD Unknown2,
-   DWORD Unknown3)
-{
-   STUB
-
-   return 0;
-}
-
 BOOL
 APIENTRY
 NtUserImpersonateDdeClientWindow(
@@ -293,18 +280,6 @@ NtUserModifyUserStartupInfoFlags(
 
 DWORD
 APIENTRY
-NtUserNotifyIMEStatus(
-   DWORD Unknown0,
-   DWORD Unknown1,
-   DWORD Unknown2)
-{
-   STUB
-
-   return 0;
-}
-
-DWORD
-APIENTRY
 NtUserQueryUserCounters(
    DWORD Unknown0,
    DWORD Unknown1,
@@ -348,21 +323,6 @@ NtUserSetDbgTag(
 
    return 0;
 }
-
-DWORD
-APIENTRY
-NtUserSetImeHotKey(
-   DWORD Unknown0,
-   DWORD Unknown1,
-   DWORD Unknown2,
-   DWORD Unknown3,
-   DWORD Unknown4)
-{
-   STUB
-
-   return 0;
-}
-
 
 DWORD
 APIENTRY
@@ -492,17 +452,6 @@ NtUserYieldTask(VOID)
    return 0;
 }
 
-
-DWORD
-APIENTRY
-NtUserCheckImeHotKey(
-    DWORD dwUnknown1,
-    DWORD dwUnknown2)
-{
-    STUB;
-    return 0;
-}
-
 NTSTATUS
 APIENTRY
 NtUserConsoleControl(
@@ -513,7 +462,7 @@ NtUserConsoleControl(
     NTSTATUS Status = STATUS_SUCCESS;
 
     /* Allow only Console Server to perform this operation (via CSRSS) */
-    if (gpepCSRSS != PsGetCurrentProcess())
+    if (PsGetCurrentProcess() != gpepCSRSS)
         return STATUS_ACCESS_DENIED;
 
     UserEnterExclusive();
@@ -609,34 +558,6 @@ NtUserDestroyInputContext(
 
 DWORD
 APIENTRY
-NtUserDisableThreadIme(
-    DWORD dwUnknown1)
-{
-    STUB;
-    return 0;
-}
-
-DWORD
-APIENTRY
-NtUserGetAppImeLevel(
-    DWORD dwUnknown1)
-{
-    STUB;
-    return 0;
-}
-
-DWORD
-APIENTRY
-NtUserGetImeInfoEx(
-    DWORD dwUnknown1,
-    DWORD dwUnknown2)
-{
-    STUB;
-    return 0;
-}
-
-DWORD
-APIENTRY
 NtUserGetRawInputBuffer(
     PRAWINPUT pData,
     PUINT pcbSize,
@@ -709,9 +630,9 @@ BOOL
 NTAPI
 NtUserNotifyProcessCreate(
     HANDLE NewProcessId,
-    HANDLE SourceThreadId,
-    DWORD dwUnknown,
-    ULONG CreateFlags)
+    HANDLE ParentThreadId,
+    ULONG  dwUnknown,
+    ULONG  CreateFlags)
 {
     STUB;
     return FALSE;
@@ -720,51 +641,104 @@ NtUserNotifyProcessCreate(
 NTSTATUS
 APIENTRY
 NtUserProcessConnect(
-    HANDLE Process,
-    PUSERCONNECT pUserConnect,
-    DWORD Size)
+    IN  HANDLE ProcessHandle,
+    OUT PUSERCONNECT pUserConnect,
+    IN  ULONG Size)
 {
-  NTSTATUS Status = STATUS_SUCCESS;
-  TRACE("NtUserProcessConnect\n");
-  if (pUserConnect && ( Size == sizeof(USERCONNECT) ))
-  {
-     PPROCESSINFO W32Process;
-     UserEnterShared();
-     GetW32ThreadInfo();
-     W32Process = PsGetCurrentProcessWin32Process();
-     _SEH2_TRY
-     {
+    NTSTATUS Status;
+    PEPROCESS Process = NULL;
+    PPROCESSINFO W32Process;
+
+    TRACE("NtUserProcessConnect\n");
+
+    if ( pUserConnect == NULL ||
+         Size         != sizeof(*pUserConnect) )
+    {
+        return STATUS_UNSUCCESSFUL;
+    }
+
+    /* Get the process object the user handle was referencing */
+    Status = ObReferenceObjectByHandle(ProcessHandle,
+                                       PROCESS_VM_OPERATION,
+                                       *PsProcessType,
+                                       UserMode,
+                                       (PVOID*)&Process,
+                                       NULL);
+    if (!NT_SUCCESS(Status)) return Status;
+
+    UserEnterShared();
+
+    /* Get Win32 process information */
+    W32Process = PsGetProcessWin32Process(Process);
+
+    _SEH2_TRY
+    {
+        // FIXME: Check that pUserConnect->ulVersion == USER_VERSION;
+
+        ProbeForWrite(pUserConnect, sizeof(*pUserConnect), sizeof(PVOID));
         pUserConnect->siClient.psi = gpsi;
         pUserConnect->siClient.aheList = gHandleTable;
-        pUserConnect->siClient.ulSharedDelta = (ULONG_PTR)W32Process->HeapMappings.KernelMapping -
-                                               (ULONG_PTR)W32Process->HeapMappings.UserMapping;
-     }
-     _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
-     {
+        pUserConnect->siClient.ulSharedDelta =
+            (ULONG_PTR)W32Process->HeapMappings.KernelMapping -
+            (ULONG_PTR)W32Process->HeapMappings.UserMapping;
+    }
+    _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
+    {
         Status = _SEH2_GetExceptionCode();
-     }
-     _SEH2_END
-     if (!NT_SUCCESS(Status))
-     {
+    }
+    _SEH2_END;
+
+    if (!NT_SUCCESS(Status))
         SetLastNtError(Status);
-     }
-     UserLeave();
-     return Status;
-  }
-  return STATUS_UNSUCCESSFUL;
+
+    UserLeave();
+
+    /* Dereference the process object */
+    ObDereferenceObject(Process);
+
+    return Status;
 }
 
-DWORD
+NTSTATUS
 APIENTRY
-NtUserQueryInformationThread(
-    DWORD dwUnknown1,
-    DWORD dwUnknown2,
-    DWORD dwUnknown3,
-    DWORD dwUnknown4,
-    DWORD dwUnknown5)
+NtUserQueryInformationThread(IN HANDLE ThreadHandle,
+                             IN USERTHREADINFOCLASS ThreadInformationClass,
+                             OUT PVOID ThreadInformation,
+                             IN ULONG ThreadInformationLength)
 {
-    STUB;
-    return 0;
+    NTSTATUS Status = STATUS_SUCCESS;
+    PETHREAD Thread;
+
+    /* Allow only CSRSS to perform this operation */
+    if (PsGetCurrentProcess() != gpepCSRSS)
+        return STATUS_ACCESS_DENIED;
+
+    UserEnterExclusive();
+
+    /* Get the Thread */
+    Status = ObReferenceObjectByHandle(ThreadHandle,
+                                       THREAD_QUERY_INFORMATION,
+                                       *PsThreadType,
+                                       UserMode,
+                                       (PVOID)&Thread,
+                                       NULL);
+    if (!NT_SUCCESS(Status)) goto Quit;
+
+    switch (ThreadInformationClass)
+    {
+        default:
+        {
+            STUB;
+            Status = STATUS_NOT_IMPLEMENTED;
+            break;
+        }
+    }
+
+    ObDereferenceObject(Thread);
+
+Quit:
+    UserLeave();
+    return Status;
 }
 
 DWORD
@@ -826,25 +800,6 @@ NtUserResolveDesktop(
 
 DWORD
 APIENTRY
-NtUserSetAppImeLevel(
-    DWORD dwUnknown1,
-    DWORD dwUnknown2)
-{
-    STUB;
-    return 0;
-}
-
-DWORD
-APIENTRY
-NtUserSetImeInfoEx(
-    DWORD dwUnknown1)
-{
-    STUB;
-    return 0;
-}
-
-DWORD
-APIENTRY
 NtUserSetInformationProcess(
     DWORD dwUnknown1,
     DWORD dwUnknown2,
@@ -861,22 +816,86 @@ NtUserSetInformationThread(IN HANDLE ThreadHandle,
                            IN USERTHREADINFOCLASS ThreadInformationClass,
                            IN PVOID ThreadInformation,
                            IN ULONG ThreadInformationLength)
-
 {
-    if (ThreadInformationClass == UserThreadInitiateShutdown)
+    NTSTATUS Status = STATUS_SUCCESS;
+    PETHREAD Thread;
+    HANDLE CsrPortHandle;
+
+    /* Allow only CSRSS to perform this operation */
+    if (PsGetCurrentProcess() != gpepCSRSS)
+        return STATUS_ACCESS_DENIED;
+
+    UserEnterExclusive();
+
+    /* Get the Thread */
+    Status = ObReferenceObjectByHandle(ThreadHandle,
+                                       THREAD_SET_INFORMATION,
+                                       *PsThreadType,
+                                       UserMode,
+                                       (PVOID)&Thread,
+                                       NULL);
+    if (!NT_SUCCESS(Status)) goto Quit;
+
+    switch (ThreadInformationClass)
     {
-        ERR("Shutdown initiated\n");
-    }
-    else if (ThreadInformationClass == UserThreadEndShutdown)
-    {
-        ERR("Shutdown ended\n");
-    }
-    else
-    {
-        STUB;
+        case UserThreadInitiateShutdown:
+        {
+            ERR("Shutdown initiated\n");
+            STUB;
+            Status = STATUS_NOT_IMPLEMENTED;
+            break;
+        }
+
+        case UserThreadEndShutdown:
+        {
+            ERR("Shutdown ended\n");
+            STUB;
+            Status = STATUS_NOT_IMPLEMENTED;
+            break;
+        }
+
+        case UserThreadCsrApiPort:
+        {
+            ERR("Set CSR API Port for Win32k\n");
+
+            if (ThreadInformationLength != sizeof(HANDLE))
+            {
+                Status = STATUS_INFO_LENGTH_MISMATCH;
+                break;
+            }
+
+            Status = STATUS_SUCCESS;
+            _SEH2_TRY
+            {
+                ProbeForRead(ThreadInformation, sizeof(HANDLE), sizeof(PVOID));
+                CsrPortHandle = *(PHANDLE)ThreadInformation;
+            }
+            _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
+            {
+                Status = _SEH2_GetExceptionCode();
+            }
+            _SEH2_END;
+
+            if (NT_SUCCESS(Status))
+            {
+                Status = InitCsrApiPort(CsrPortHandle);
+            }
+            break;
+        }
+
+        default:
+        {
+            STUB;
+            Status = STATUS_NOT_IMPLEMENTED;
+            break;
+        }
     }
 
-    return STATUS_SUCCESS;
+    ObDereferenceObject(Thread);
+
+Quit:
+    UserLeave();
+    return Status;
 }
 
 DWORD
@@ -1024,18 +1043,6 @@ NtUserFillWindow(HWND hWndPaint,
  */
 BOOL APIENTRY
 NtUserLockWindowUpdate(HWND hWnd)
-{
-   STUB
-
-   return 0;
-}
-
-/*
- * @unimplemented
- */
-DWORD APIENTRY
-NtUserSetImeOwnerWindow(DWORD Unknown0,
-                        DWORD Unknown1)
 {
    STUB
 

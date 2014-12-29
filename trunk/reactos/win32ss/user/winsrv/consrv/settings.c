@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/settings.c
+ * FILE:            consrv/settings.c
  * PURPOSE:         Console settings management
  * PROGRAMMERS:     Johannes Anderwald
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -404,7 +404,7 @@ ConSrvGetDefaultSettings(IN OUT PCONSOLE_INFO ConsoleInfo,
 
     ConsoleInfo->QuickEdit  = FALSE;
     ConsoleInfo->InsertMode = TRUE;
-    // ConsoleInfo->InputBufferSize;
+    // ConsoleInfo->InputBufferSize = 0;
 
     // Rule: ScreenBufferSize >= ConsoleSize
     ConsoleInfo->ScreenBufferSize.X = 80;

@@ -1498,8 +1498,10 @@ MUI_ERROR sqALErrorEntries[] =
         "ENTER = Ristarto kompjuterin"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Jo mjaft hapesir‰ e lir‰ n‰ particionin e p‰rzgjedhur.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Shtypni nj‰ tast cfar‰do p‰r t‰ vazhduar.",
         NULL
     },
@@ -1513,19 +1515,6 @@ MUI_ERROR sqALErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "You can not create more than one extended partition per disk.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "You can not create a partition behind an extended partition.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "An extended partition must always be the last\n"
-        "partition in a partition table.\n"
         "\n"
         "  * Press any key to continue."
     },
@@ -1728,7 +1717,7 @@ MUI_STRING sqALStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "on Harddisku %lu (%I64u %s), Port=%hu, Bus=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sTipi %-3u%s                       %6lu %s"},
+    "%c%c %c %sTipi %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  Harddisku %lu  (Port=%hu, Bus=%hu, Id=%hu) on %S"},
     {STRING_HDDINFOUNK6,

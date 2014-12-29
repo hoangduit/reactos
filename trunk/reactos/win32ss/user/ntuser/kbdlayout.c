@@ -16,6 +16,8 @@ DBG_DEFAULT_CHANNEL(UserKbdLayout);
 
 PKL gspklBaseLayout = NULL;
 PKBDFILE gpkfList = NULL;
+DWORD gSystemFS = 0;
+UINT gSystemCPCharSet = 0;
 
 typedef PVOID (*PFN_KBDLAYERDESCRIPTOR)(VOID);
 
@@ -247,6 +249,13 @@ UserLoadKbdLayout(PUNICODE_STRING pwszKLID, HKL hKL)
        pKl->CodePage = CP_ACP;
     }
 
+    // Set initial system character set and font signature.
+    if (gSystemFS == 0)
+    {
+       gSystemCPCharSet = pKl->iBaseCharset;
+       gSystemFS = pKl->dwFontSigs;
+    }
+
     return pKl;
 }
 
@@ -475,7 +484,10 @@ NtUserGetKeyboardLayoutList(
     UserEnterShared();
 
     if (!gspklBaseLayout)
+    {
+        UserLeave();
         return 0;
+    }
     pKl = gspklBaseLayout;
 
     if (nBuff == 0)

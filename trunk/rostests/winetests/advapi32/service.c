@@ -139,6 +139,7 @@ static void test_open_svc(void)
     ok(GetLastError() == ERROR_INVALID_ADDRESS   /* W2K, XP, W2K3, Vista */ ||
        GetLastError() == ERROR_INVALID_PARAMETER /* NT4 */,
        "Expected ERROR_INVALID_ADDRESS or ERROR_INVALID_PARAMETER, got %d\n", GetLastError());
+    CloseServiceHandle(scm_handle);
 
     /* Nonexistent service */
     scm_handle = OpenSCManagerA(NULL, NULL, SC_MANAGER_CONNECT);
@@ -189,7 +190,7 @@ static void test_open_svc(void)
 
 static void test_create_delete_svc(void)
 {
-    SC_HANDLE scm_handle, svc_handle1;
+    SC_HANDLE scm_handle, svc_handle1, svc_handle2;
     CHAR username[UNLEN + 1], domain[MAX_PATH];
     DWORD user_size = UNLEN + 1;
     CHAR account[UNLEN + 3];
@@ -413,6 +414,11 @@ static void test_create_delete_svc(void)
     SetLastError(0xdeadbeef);
     ret = DeleteService(svc_handle1);
     ok(ret, "Expected success, got error %u\n", GetLastError());
+
+    /* Service is marked for delete, but handle is still open. Try to open service again. */
+    svc_handle2 = OpenServiceA(scm_handle, servicename, GENERIC_READ);
+    ok(svc_handle2 != NULL, "got %p, error %u\n", svc_handle2, GetLastError());
+    CloseServiceHandle(svc_handle2);
 
     CloseServiceHandle(svc_handle1);
     CloseServiceHandle(scm_handle);
@@ -1843,8 +1849,9 @@ static void test_sequence(void)
             if (!is_nt4)
             {
                 retval = pGetSecurityInfo(svc_handle, SE_SERVICE, DACL_SECURITY_INFORMATION, NULL,
-                                          NULL, &dacl, NULL, NULL);
+                                          NULL, &dacl, NULL, &pSD);
                 ok(retval == ERROR_SUCCESS, "Expected GetSecurityInfo to succeed: result %d\n", retval);
+                LocalFree(pSD);
                 SetLastError(0xdeadbeef);
                 retval = pGetSecurityInfo(svc_handle, SE_SERVICE, DACL_SECURITY_INFORMATION, NULL,
                                           NULL, NULL, NULL, NULL);
@@ -2159,6 +2166,9 @@ static DWORD try_start_stop(SC_HANDLE svc_handle, const char* name, DWORD is_nt4
     DWORD le1, le2;
     SERVICE_STATUS status;
 
+#ifdef __REACTOS__
+    fprintf(stdout, "ROSTESTS-56: Hello sysreg, I am awake\n");
+#endif
     ret = StartServiceA(svc_handle, 0, NULL);
     le1 = GetLastError();
     ok(!ret, "%s: StartServiceA() should have failed\n", name);
@@ -2256,12 +2266,6 @@ static void test_start_stop(void)
         goto cleanup;
     }
 
-    if (!winetest_interactive)
-    {
-        skip("ROSTESTS-56: Skipping service start timeout tests!\n");
-        goto cleanup;
-    }
-
     /* Again with a process that exits right away */
     displayname = "Winetest Exit Service";
     ret = ChangeServiceConfigA(svc_handle, SERVICE_NO_CHANGE, SERVICE_NO_CHANGE, SERVICE_NO_CHANGE, cmd, NULL, NULL, NULL, NULL, NULL, displayname);
@@ -2348,19 +2352,9 @@ static void test_refcount(void)
     svc_handle5 = CreateServiceA(scm_handle, servicename, NULL, GENERIC_ALL,
                                  SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS,
                                  SERVICE_DISABLED, 0, pathname, NULL, NULL, NULL, NULL, NULL);
-    todo_wine
-    {
     ok(!svc_handle5, "Expected failure\n");
     ok(GetLastError() == ERROR_SERVICE_MARKED_FOR_DELETE,
        "Expected ERROR_SERVICE_MARKED_FOR_DELETE, got %d\n", GetLastError());
-    }
-
-    /* FIXME: Remove this when Wine is fixed */
-    if (svc_handle5)
-    {
-        DeleteService(svc_handle5);
-        CloseServiceHandle(svc_handle5);
-    }
 
     /* Close all the handles to the service and try again */
     ret = CloseServiceHandle(svc_handle4);

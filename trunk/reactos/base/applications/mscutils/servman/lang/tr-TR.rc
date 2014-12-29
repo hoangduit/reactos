@@ -1,4 +1,4 @@
-/* TRANSLATOR: 2013 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
+/* TRANSLATOR: 2013, 2014 Erdem Ersoy (eersoy93) (erdemersoy@live.com) */
 
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 
@@ -114,7 +114,7 @@ BEGIN
     CONTROL "", IDC_DEPEND_TREE2, "SysTreeView32", WS_BORDER | WS_CHILDWINDOW |
             WS_VISIBLE | WS_TABSTOP | TVS_HASBUTTONS | TVS_HASLINES |
             TVS_LINESATROOT | TVS_DISABLEDRAGDROP, 8, 151, 234, 67
-    LTEXT "Birtakım hizmetler, başka hizmetlere, dizge sürücülerine ve yükleme sıra öbeklerine bağımlıdır. Eğer bir dizge bileşeni, durdurulmuşsa ya da düzgün çalışmıyorsa bağımlı hizmetler etkilenebilir.", IDC_STATIC, 8, 7, 238, 26
+    LTEXT "Birtakım hizmetler, başka hizmetlere, dizge sürücülerine ve yükleme dizisi öbeklerine bağımlıdır. Eğer bir dizge bileşeni, durdurulmuşsa ya da düzgün çalışmıyorsa bağımlı hizmetler etkilenebilir.", IDC_STATIC, 8, 7, 238, 26
     LTEXT "Bu hizmet aşağıdaki bileşenlere bağımlıdır:", IDC_STATIC, 8, 57, 236, 9
     LTEXT "", IDC_DEPEND_SERVICE, 8, 38, 236, 13
 END
@@ -211,7 +211,7 @@ BEGIN
     IDS_NUM_SERVICES "Hizmet Sayısı: %d"
     IDS_STOP_DEPENDS "%s durduğunda bu hizmetler de duracaktır:"
     IDS_NO_DEPENDS "<Bağımlılık Yok>"
-    IDS_LICENSE "ÖNEMLİ: Aşağıdaki metin, özgün metnin resmî olmayan çevirisidir. Çeviri metniyle özgün metin arasında ayrım olabilir. Özgün metin, çeviri metninin altındadır.\r\n\r\n***\r\n\r\nBu izlence özgür yazılımdır; bunu, Özgür Yazılım Vakfı'nın yayımladığı GNU Umûmî Kamu Ruhsatı'nın, 2. sürümünün ya da daha sonraki bir sürümünün (Orası size bağlı.) koşulları altında yeniden dağıtabilir veyâ değiştirebilirsiniz.\r\n\r\nBu izlence, kullanışlı olabileceği beklentisiyle dağıtılmıştır ancak bu izlencenin HİÇBİR GÜVENCESİ YOKTUR, SATILABİLİRLİĞİN ve BELİRLİ BİR AMACA UYGUNLUĞUN demek istenilen güvencesi bile. Daha çok bilgi için GNU Umûmî Kamu Ruhsatı'na bakınız.\r\n\r\nBu izlenceyle birlikte GNU Umûmî Kamu Ruhsatı'nın bir kopyasını almış olmalısınız, eğer yoksa Özgür Yazılım Vakfı AŞ'ye (51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 ABD) yazınız.\r\n\r\n***\r\n\r\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\r\n\r\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\r\n\r\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
+    IDS_LICENSE "ÖNEMLİ: Aşağıdaki metin, özgün metnin resmî olmayan çevirisidir. Çeviri metniyle özgün metin arasında ayrım olabilir. Özgün metin, çeviri metninin altındadır.\r\n\r\n***\r\n\r\nBu izlence özgür yazılımdır; bunu, Özgür Yazılım Vakfı'nın yayımladığı GNU Umûmî Kamu Ruhsatı'nın, 2. sürümünün ya da daha sonraki bir sürümünün (Orası size bağlı.) şartları altında yeniden dağıtabilir veyâ değiştirebilirsiniz.\r\n\r\nBu izlence, kullanışlı olabileceği beklentisiyle dağıtılmıştır ancak bu izlencenin HİÇBİR GÜVENCESİ YOKTUR, SATILABİLİRLİĞİN ve BELİRLİ BİR AMACA UYGUNLUĞUN demek istenilen güvencesi bile. Daha çok bilgi için GNU Umûmî Kamu Ruhsatı'na bakınız.\r\n\r\nBu izlenceyle birlikte GNU Umûmî Kamu Ruhsatı'nın bir kopyasını almış olmalısınız, eğer yoksa Özgür Yazılım Vakfı AŞ'ye (51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 ABD) yazınız.\r\n\r\n***\r\n\r\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\r\n\r\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\r\n\r\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
 END
 
 STRINGTABLE
@@ -241,7 +241,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_HELP_OPTIONS "OLUŞTURMA SEÇENEKLERİ:\r\nÖNEMLİ: Seçenek adı, eşittir imini kapsar.\r\n type= <own|share|interact|kernel|filesys|rec>\r\n       (Ön tanımlı = own)\r\n start= <boot|system|auto|demand|disabled>\r\n       (Ön tanımlı = demand) \r\n error= <normal|severe|critical|ignore>\r\n       (Ön tanımlı = normal)\r\n group= <Yükleme sırası öbeği>\r\n tag= <yes|no>\r\n depend= <Bağımlılıklar (Ters bölü çizgisiyle birbirinden ayrılmalıdır.)>\r\n obj= <Hesap adı|Nesne adı>\r\n       (Ön tanımlı = LocalSystem)\r\n password= <Şifre>\r\n"
+    IDS_HELP_OPTIONS "OLUŞTURMA SEÇENEKLERİ:\r\nÖNEMLİ: Seçenek adı, eşittir imini kapsar.\r\n type= <own|share|interact|kernel|filesys|rec>\r\n       (Ön tanımlı = own)\r\n start= <boot|system|auto|demand|disabled>\r\n       (Ön tanımlı = demand) \r\n error= <normal|severe|critical|ignore>\r\n       (Ön tanımlı = normal)\r\n group= <Yükleme dizisi öbeği>\r\n tag= <yes|no>\r\n depend= <Bağımlılıklar (Ters bölü çizgisiyle birbirinden ayrılmalıdır.)>\r\n obj= <Hesap adı|Nesne adı>\r\n       (Ön tanımlı = LocalSystem)\r\n password= <Şifre>\r\n"
 END
 
 /* Hints */
@@ -260,19 +260,19 @@ BEGIN
     IDS_HINT_EDIT " Seçili hizmetin husûsiyetlerini düzenler."
     IDS_HINT_CREATE " Yeni bir hizmet oluşturur."
     IDS_HINT_DELETE " Seçili hizmeti siler."
-    IDS_HINT_PROP " Seçilen için husûsiyetler penceresini açar."
+    IDS_HINT_PROP " Şimdiki seçilen için husûsiyet penceresini açar."
     IDS_HINT_LARGE " Öğeleri büyük simgelerle görüntüler."
     IDS_HINT_SMALL " Öğeleri küçük simgelerle görüntüler."
     IDS_HINT_LIST " Öğeleri bir dizelge olarak görüntüler."
     IDS_HINT_DETAILS " Bir pencere içinde her bir öğe üzerine bilgi görüntüler."
     IDS_HINT_CUST " Görünümü husûsileştirir."
-    IDS_HINT_HELP " Yardım penceresini açar."
+    IDS_HINT_HELP " Yardım penceresini görüntüler."
     IDS_HINT_ABOUT " Hizmet Yöneticisi üzerine."
-    IDS_HINT_SYS_RESTORE " Bu pencereyi eski boyutlarına döndürür."
+    IDS_HINT_SYS_RESTORE " Bu pencereyi düzgülük boyutlarına döndürür."
     IDS_HINT_SYS_MOVE     " Bu pencereyi devindirir."
-    IDS_HINT_SYS_SIZE     " Bu pencerenin boyutlarını değiştirir."
-    IDS_HINT_SYS_MINIMIZE " Bu pencereyi simge durumuna küçültür."
-    IDS_HINT_SYS_MAXIMIZE " Bu pencereyi bu görüntülüğü kaplatana dek genişletir."
+    IDS_HINT_SYS_SIZE     " Bu pencereyi yeniden boyutlandırır."
+    IDS_HINT_SYS_MINIMIZE " Bu pencereyi bir simgeye küçültür."
+    IDS_HINT_SYS_MAXIMIZE " Bu pencereyi, bu görüntülüğü kaplatana dek genişletir."
     IDS_HINT_SYS_CLOSE    " Bu pencereyi kapatır."
 END
 

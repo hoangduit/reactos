@@ -52,6 +52,9 @@ unsigned char BitScanReverse(ULONG * const Index, unsigned long Mask);
 #define BitScanReverse64 _BitScanReverse64
 #endif
 
+typedef DWORD REGSAM;
+typedef LPVOID LPSECURITY_ATTRIBUTES;
+
 NTSTATUS NTAPI
 RtlAnsiStringToUnicodeString(
     IN OUT PUNICODE_STRING UniDest,
@@ -117,9 +120,12 @@ RegOpenKeyW(
 #include "registry.h"
 #include "binhive.h"
 
+#define OBJ_NAME_PATH_SEPARATOR           ((WCHAR)L'\\')
+
 #define HIVE_NO_FILE 2
 #define VERIFY_REGISTRY_HIVE(hive)
 extern LIST_ENTRY CmiHiveListHead;
 #define ABS_VALUE(V) (((V) < 0) ? -(V) : (V))
+#define PAGED_CODE()
 
 /* EOF */

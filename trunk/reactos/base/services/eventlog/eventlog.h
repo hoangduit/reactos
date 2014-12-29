@@ -18,6 +18,7 @@
 #include <ndk/rtlfuncs.h>
 #include <ndk/obfuncs.h>
 #include <eventlogrpc_s.h>
+#include <strsafe.h>
 
 typedef struct _IO_ERROR_LPC
 {
@@ -155,6 +156,8 @@ NTSTATUS
 LogfCreate(PLOGFILE *Logfile,
            WCHAR * LogName,
            PUNICODE_STRING FileName,
+           ULONG ulMaxSize,
+           ULONG ulRetention,
            BOOL Permanent,
            BOOL Backup);
 

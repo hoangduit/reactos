@@ -1339,6 +1339,11 @@ ScmWaitForServiceConnect(PSERVICE Service)
 #ifdef USE_ASYNCHRONOUS_IO
     OVERLAPPED Overlapped = {0};
 #endif
+#if 0
+    LPCWSTR lpErrorStrings[3];
+    WCHAR szBuffer1[20];
+    WCHAR szBuffer2[20];
+#endif
 
     DPRINT("ScmWaitForServiceConnect()\n");
 
@@ -1369,6 +1374,18 @@ ScmWaitForServiceConnect(PSERVICE Service)
                 {
                     DPRINT1("CancelIo() failed (Error: %lu)\n", GetLastError());
                 }
+
+#if 0
+                _ultow(PipeTimeout, szBuffer1, 10);
+                lpErrorStrings[0] = Service->lpDisplayName;
+                lpErrorStrings[1] = szBuffer1;
+
+                ScmLogEvent(EVENT_CONNECTION_TIMEOUT,
+                            EVENTLOG_ERROR_TYPE,
+                            2,
+                            lpErrorStrings);
+#endif
+                DPRINT1("Log EVENT_CONNECTION_TIMEOUT by %S\n", Service->lpDisplayName);
 
                 return ERROR_SERVICE_REQUEST_TIMEOUT;
             }
@@ -1425,6 +1442,17 @@ ScmWaitForServiceConnect(PSERVICE Service)
                     DPRINT1("CancelIo() failed (Error: %lu)\n", GetLastError());
                 }
 
+#if 0
+                _ultow(PipeTimeout, szBuffer1, 10);
+                lpErrorStrings[0] = szBuffer1;
+
+                ScmLogEvent(EVENT_READFILE_TIMEOUT,
+                            EVENTLOG_ERROR_TYPE,
+                            1,
+                            lpErrorStrings);
+#endif
+                DPRINT1("Log EVENT_READFILE_TIMEOUT by %S\n", Service->lpDisplayName);
+
                 return ERROR_SERVICE_REQUEST_TIMEOUT;
             }
             else if (dwError == WAIT_OBJECT_0)
@@ -1455,6 +1483,25 @@ ScmWaitForServiceConnect(PSERVICE Service)
             DPRINT1("ReadFile() failed (Error %lu)\n", dwError);
             return dwError;
         }
+    }
+
+    if (dwProcessId != Service->lpImage->dwProcessId)
+    {
+#if 0
+        _ultow(Service->lpImage->dwProcessId, szBuffer1, 10);
+        _ultow(dwProcessId, szBuffer2, 10);
+
+        lpErrorStrings[0] = Service->lpDisplayName;
+        lpErrorStrings[1] = szBuffer1;
+        lpErrorStrings[2] = szBuffer2;
+
+        ScmLogEvent(EVENT_SERVICE_DIFFERENT_PID_CONNECTED,
+                    EVENTLOG_WARNING_TYPE,
+                    3,
+                    lpErrorStrings);
+#endif
+
+        DPRINT1("Log EVENT_SERVICE_DIFFERENT_PID_CONNECTED by %S\n", Service->lpDisplayName);
     }
 
     DPRINT("ScmWaitForServiceConnect() done\n");
@@ -1578,7 +1625,7 @@ ScmLoadService(PSERVICE Service,
 {
     PSERVICE_GROUP Group = Service->lpGroup;
     DWORD dwError = ERROR_SUCCESS;
-    LPCWSTR ErrorLogStrings[2];
+    LPCWSTR lpErrorStrings[2];
     WCHAR szErrorBuffer[32];
 
     DPRINT("ScmLoadService() called\n");
@@ -1633,6 +1680,14 @@ ScmLoadService(PSERVICE Service,
         {
             Group->ServicesRunning = TRUE;
         }
+
+        /* Log a successful service start */
+        lpErrorStrings[0] = Service->lpDisplayName;
+        lpErrorStrings[1] = L"start";
+        ScmLogEvent(EVENT_SERVICE_CONTROL_SUCCESS,
+                    EVENTLOG_INFORMATION_TYPE,
+                    2,
+                    lpErrorStrings);
     }
     else
     {
@@ -1640,11 +1695,12 @@ ScmLoadService(PSERVICE Service,
         {
             /* Log a failed service start */
             swprintf(szErrorBuffer, L"%lu", dwError);
-            ErrorLogStrings[0] = Service->lpServiceName;
-            ErrorLogStrings[1] = szErrorBuffer;
-            ScmLogError(EVENT_SERVICE_START_FAILED,
+            lpErrorStrings[0] = Service->lpServiceName;
+            lpErrorStrings[1] = szErrorBuffer;
+            ScmLogEvent(EVENT_SERVICE_START_FAILED,
+                        EVENTLOG_ERROR_TYPE,
                         2,
-                        ErrorLogStrings);
+                        lpErrorStrings);
         }
 
 #if 0
@@ -1718,13 +1774,15 @@ done:
 VOID
 ScmAutoStartServices(VOID)
 {
-    DWORD dwError = ERROR_SUCCESS;
+    DWORD dwError;
     PLIST_ENTRY GroupEntry;
     PLIST_ENTRY ServiceEntry;
     PSERVICE_GROUP CurrentGroup;
     PSERVICE CurrentService;
     WCHAR szSafeBootServicePath[MAX_PATH];
+    DWORD SafeBootEnabled;
     HKEY hKey;
+    DWORD dwKeySize;
     ULONG i;
 
     /*
@@ -1732,6 +1790,30 @@ ScmAutoStartServices(VOID)
      * Therefore, no need to acquire the user service start lock.
      */
     ASSERT(ScmInitialize);
+
+    /*
+     * Retrieve the SafeBoot parameter.
+     */
+    dwError = RegOpenKeyExW(HKEY_LOCAL_MACHINE,
+                            L"SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Option",
+                            0,
+                            KEY_READ,
+                            &hKey);
+    if (dwError == ERROR_SUCCESS)
+    {
+        dwKeySize = sizeof(SafeBootEnabled);
+        dwError = RegQueryValueExW(hKey,
+                                   L"OptionValue",
+                                   0,
+                                   NULL,
+                                   (LPBYTE)&SafeBootEnabled,
+                                   &dwKeySize);
+        RegCloseKey(hKey);
+    }
+
+    /* Default to Normal boot if the value doesn't exist */
+    if (dwError != ERROR_SUCCESS)
+        SafeBootEnabled = 0;
 
     /* Acquire the service control critical section, to synchronize starts */
     EnterCriticalSection(&ControlServiceCriticalSection);
@@ -1746,7 +1828,7 @@ ScmAutoStartServices(VOID)
         wcscpy(szSafeBootServicePath,
                L"SYSTEM\\CurrentControlSet\\Control\\SafeBoot");
 
-        switch (GetSystemMetrics(SM_CLEANBOOT))
+        switch (SafeBootEnabled)
         {
             /* NOTE: Assumes MINIMAL (1) and DSREPAIR (3) load same items */
             case 1:
@@ -1759,7 +1841,7 @@ ScmAutoStartServices(VOID)
                 break;
         }
 
-        if (GetSystemMetrics(SM_CLEANBOOT))
+        if (SafeBootEnabled != 0)
         {
             /* If key does not exist then do not assume safe mode */
             dwError = RegOpenKeyExW(HKEY_LOCAL_MACHINE,
@@ -1972,14 +2054,13 @@ ScmInitNamedPipeCriticalSection(VOID)
                             &hKey);
    if (dwError == ERROR_SUCCESS)
    {
-        dwKeySize = sizeof(DWORD);
+        dwKeySize = sizeof(PipeTimeout);
         RegQueryValueExW(hKey,
                          L"ServicesPipeTimeout",
                          0,
                          NULL,
                          (LPBYTE)&PipeTimeout,
                          &dwKeySize);
-
        RegCloseKey(hKey);
    }
 }

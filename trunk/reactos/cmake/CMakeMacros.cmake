@@ -376,10 +376,17 @@ endfunction()
 function(create_iso_lists)
     # generate reactos.cab before anything else
     get_property(_filelist GLOBAL PROPERTY REACTOS_CAB_DEPENDS)
+
+    # begin with reactos.inf. We want this command to be always executed, so we pretend it generates another file although it will never do.
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/reactos.inf ${CMAKE_CURRENT_BINARY_DIR}/__some_non_existent_file
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.inf ${CMAKE_CURRENT_BINARY_DIR}/reactos.inf
+        DEPENDS ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.inf reactos_cab_inf)
+
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/reactos.cab
-        COMMAND native-cabman -C ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.dff -RC ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.inf -N -P ${REACTOS_SOURCE_DIR}
-    DEPENDS ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.inf native-cabman ${_filelist})
+        COMMAND native-cabman -C ${REACTOS_BINARY_DIR}/boot/bootdata/packages/reactos.dff -RC ${CMAKE_CURRENT_BINARY_DIR}/reactos.inf -N -P ${REACTOS_SOURCE_DIR}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/reactos.inf native-cabman ${_filelist})
 
     add_custom_target(reactos_cab DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/reactos.cab)
     add_dependencies(reactos_cab reactos_cab_inf)
@@ -511,24 +518,13 @@ function(set_module_type MODULE TYPE)
 
     # Set subsystem. Also take this as an occasion
     # to error out if someone gave a non existing type
-    if((${TYPE} STREQUAL nativecui) OR (${TYPE} STREQUAL nativedll) OR (${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver))
+    if((${TYPE} STREQUAL nativecui) OR (${TYPE} STREQUAL nativedll) 
+            OR (${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver) OR (${TYPE} STREQUAL kerneldll))
         set(__subsystem native)
     elseif(${TYPE} STREQUAL win32cui)
         set(__subsystem console)
     elseif(${TYPE} STREQUAL win32gui)
         set(__subsystem windows)
-    elseif(${TYPE} STREQUAL kbdlayout)
-        set_entrypoint(${MODULE} 0)
-        set_image_base(${MODULE} 0x5FFF0000)
-        set_subsystem(${MODULE} native)
-        if (MSVC)
-            # Merge the .text and .rdata section into the .data section
-            add_target_link_flags(${MODULE} "/ignore:4254 /SECTION:.data,ER /MERGE:.text=.data /MERGE:.rdata=.data /MERGE:.bss=.data /MERGE:.edata=.data")
-        else()
-            # Use a custom linker script
-            add_target_link_flags(${MODULE} "-Wl,-T,${CMAKE_SOURCE_DIR}/kbdlayout.lds")
-            add_dependencies(${MODULE} "${CMAKE_SOURCE_DIR}/kbdlayout.lds")
-        endif()
     elseif(NOT ((${TYPE} STREQUAL win32dll) OR (${TYPE} STREQUAL win32ocx)
             OR (${TYPE} STREQUAL cpl) OR (${TYPE} STREQUAL module)))
         message(FATAL_ERROR "Unknown type ${TYPE} for module ${MODULE}")
@@ -603,21 +599,23 @@ function(set_module_type MODULE TYPE)
 
     #set base address
     if(__module_IMAGEBASE)
-        set_image_base(${MODULE} __module_IMAGEBASE)
+        set_image_base(${MODULE} ${__module_IMAGEBASE})
     elseif(${TYPE} STREQUAL win32dll)
         if(DEFINED baseaddress_${MODULE})
             set_image_base(${MODULE} ${baseaddress_${MODULE}})
         else()
             message(STATUS "${MODULE} has no base address")
         endif()
-    elseif((${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver))
+    elseif((${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver) OR (${TYPE} STREQUAL kerneldll))
         set_image_base(${MODULE} 0x00010000)
     endif()
 
     # Now do some stuff which is specific to each type
-    if((${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver))
+    if((${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver) OR (${TYPE} STREQUAL kerneldll))
         add_dependencies(${MODULE} bugcodes)
-        set_target_properties(${MODULE} PROPERTIES SUFFIX ".sys")
+        if((${TYPE} STREQUAL kernelmodedriver) OR (${TYPE} STREQUAL wdmdriver))
+            set_target_properties(${MODULE} PROPERTIES SUFFIX ".sys")
+        endif()
     endif()
 
     if(${TYPE} STREQUAL win32ocx)
