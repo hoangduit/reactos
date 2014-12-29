@@ -434,7 +434,7 @@ PROS_VACB
 NTAPI
 CcRosLookupVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset)
+    LONGLONG FileOffset)
 {
     PLIST_ENTRY current_entry;
     PROS_VACB current;
@@ -442,7 +442,7 @@ CcRosLookupVacb (
 
     ASSERT(SharedCacheMap);
 
-    DPRINT("CcRosLookupVacb(SharedCacheMap 0x%p, FileOffset %lu)\n",
+    DPRINT("CcRosLookupVacb(SharedCacheMap 0x%p, FileOffset %I64u)\n",
            SharedCacheMap, FileOffset);
 
     KeAcquireGuardedMutex(&ViewLock);
@@ -483,14 +483,14 @@ NTSTATUS
 NTAPI
 CcRosMarkDirtyVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset)
+    LONGLONG FileOffset)
 {
     PROS_VACB Vacb;
     KIRQL oldIrql;
 
     ASSERT(SharedCacheMap);
 
-    DPRINT("CcRosMarkDirtyVacb(SharedCacheMap 0x%p, FileOffset %lu)\n",
+    DPRINT("CcRosMarkDirtyVacb(SharedCacheMap 0x%p, FileOffset %I64u)\n",
            SharedCacheMap, FileOffset);
 
     Vacb = CcRosLookupVacb(SharedCacheMap, FileOffset);
@@ -529,7 +529,7 @@ NTSTATUS
 NTAPI
 CcRosUnmapVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
+    LONGLONG FileOffset,
     BOOLEAN NowDirty)
 {
     PROS_VACB Vacb;
@@ -538,7 +538,7 @@ CcRosUnmapVacb (
 
     ASSERT(SharedCacheMap);
 
-    DPRINT("CcRosUnmapVacb(SharedCacheMap 0x%p, FileOffset %lu, NowDirty %u)\n",
+    DPRINT("CcRosUnmapVacb(SharedCacheMap 0x%p, FileOffset %I64u, NowDirty %u)\n",
            SharedCacheMap, FileOffset, NowDirty);
 
     Vacb = CcRosLookupVacb(SharedCacheMap, FileOffset);
@@ -580,9 +580,66 @@ CcRosUnmapVacb (
 
 static
 NTSTATUS
+CcRosMapVacb(
+    PROS_VACB Vacb)
+{
+    ULONG i;
+    NTSTATUS Status;
+    ULONG_PTR NumberOfPages;
+
+    /* Create a memory area. */
+    MmLockAddressSpace(MmGetKernelAddressSpace());
+    Status = MmCreateMemoryArea(MmGetKernelAddressSpace(),
+                                0, // nothing checks for VACB mareas, so set to 0
+                                &Vacb->BaseAddress,
+                                VACB_MAPPING_GRANULARITY,
+                                PAGE_READWRITE,
+                                (PMEMORY_AREA*)&Vacb->MemoryArea,
+                                FALSE,
+                                0,
+                                PAGE_SIZE);
+    MmUnlockAddressSpace(MmGetKernelAddressSpace());
+    if (!NT_SUCCESS(Status))
+    {
+        KeBugCheck(CACHE_MANAGER);
+    }
+
+    ASSERT(((ULONG_PTR)Vacb->BaseAddress % PAGE_SIZE) == 0);
+    ASSERT((ULONG_PTR)Vacb->BaseAddress > (ULONG_PTR)MmSystemRangeStart);
+
+    /* Create a virtual mapping for this memory area */
+    NumberOfPages = BYTES_TO_PAGES(VACB_MAPPING_GRANULARITY);
+    for (i = 0; i < NumberOfPages; i++)
+    {
+        PFN_NUMBER PageFrameNumber;
+
+        Status = MmRequestPageMemoryConsumer(MC_CACHE, TRUE, &PageFrameNumber);
+        if (PageFrameNumber == 0)
+        {
+            DPRINT1("Unable to allocate page\n");
+            KeBugCheck(MEMORY_MANAGEMENT);
+        }
+
+        Status = MmCreateVirtualMapping(NULL,
+                                        (PVOID)((ULONG_PTR)Vacb->BaseAddress + (i * PAGE_SIZE)),
+                                        PAGE_READWRITE,
+                                        &PageFrameNumber,
+                                        1);
+        if (!NT_SUCCESS(Status))
+        {
+            DPRINT1("Unable to create virtual mapping\n");
+            KeBugCheck(MEMORY_MANAGEMENT);
+        }
+    }
+
+    return STATUS_SUCCESS;
+}
+
+static
+NTSTATUS
 CcRosCreateVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
+    LONGLONG FileOffset,
     PROS_VACB *Vacb)
 {
     PROS_VACB current;
@@ -595,13 +652,14 @@ CcRosCreateVacb (
 
     DPRINT("CcRosCreateVacb()\n");
 
-    if (FileOffset >= SharedCacheMap->FileSize.u.LowPart)
+    if (FileOffset >= SharedCacheMap->FileSize.QuadPart)
     {
         *Vacb = NULL;
         return STATUS_INVALID_PARAMETER;
     }
 
     current = ExAllocateFromNPagedLookasideList(&VacbLookasideList);
+    current->BaseAddress = NULL;
     current->Valid = FALSE;
     current->Dirty = FALSE;
     current->PageOut = FALSE;
@@ -689,48 +747,29 @@ CcRosCreateVacb (
     InsertTailList(&VacbLruListHead, &current->VacbLruListEntry);
     KeReleaseGuardedMutex(&ViewLock);
 
-    MmLockAddressSpace(MmGetKernelAddressSpace());
-    current->BaseAddress = NULL;
-    Status = MmCreateMemoryArea(MmGetKernelAddressSpace(),
-                                0, // nothing checks for VACB mareas, so set to 0
-                                &current->BaseAddress,
-                                VACB_MAPPING_GRANULARITY,
-                                PAGE_READWRITE,
-                                (PMEMORY_AREA*)&current->MemoryArea,
-                                FALSE,
-                                0,
-                                PAGE_SIZE);
-    MmUnlockAddressSpace(MmGetKernelAddressSpace());
-    if (!NT_SUCCESS(Status))
-    {
-        KeBugCheck(CACHE_MANAGER);
-    }
-
-    /* Create a virtual mapping for this memory area */
     MI_SET_USAGE(MI_USAGE_CACHE);
 #if MI_TRACE_PFNS
-    PWCHAR pos = NULL;
-    ULONG len = 0;
     if ((SharedCacheMap->FileObject) && (SharedCacheMap->FileObject->FileName.Buffer))
     {
+        PWCHAR pos = NULL;
+        ULONG len = 0;
         pos = wcsrchr(SharedCacheMap->FileObject->FileName.Buffer, '\\');
         len = wcslen(pos) * sizeof(WCHAR);
         if (pos) snprintf(MI_PFN_CURRENT_PROCESS_NAME, min(16, len), "%S", pos);
     }
 #endif
 
-    MmMapMemoryArea(current->BaseAddress, VACB_MAPPING_GRANULARITY,
-                    MC_CACHE, PAGE_READWRITE);
+    Status = CcRosMapVacb(current);
 
-    return STATUS_SUCCESS;
+    return Status;
 }
 
 NTSTATUS
 NTAPI
 CcRosGetVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
-    PULONGLONG BaseOffset,
+    LONGLONG FileOffset,
+    PLONGLONG BaseOffset,
     PVOID* BaseAddress,
     PBOOLEAN UptoDate,
     PROS_VACB *Vacb)
@@ -781,7 +820,7 @@ NTSTATUS
 NTAPI
 CcRosRequestVacb (
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
+    LONGLONG FileOffset,
     PVOID* BaseAddress,
     PBOOLEAN UptoDate,
     PROS_VACB *Vacb)
@@ -789,13 +828,13 @@ CcRosRequestVacb (
  * FUNCTION: Request a page mapping for a shared cache map
  */
 {
-    ULONGLONG BaseOffset;
+    LONGLONG BaseOffset;
 
     ASSERT(SharedCacheMap);
 
     if (FileOffset % VACB_MAPPING_GRANULARITY != 0)
     {
-        DPRINT1("Bad fileoffset %x should be multiple of %x",
+        DPRINT1("Bad fileoffset %I64x should be multiple of %x",
                 FileOffset, VACB_MAPPING_GRANULARITY);
         KeBugCheck(CACHE_MANAGER);
     }
@@ -865,9 +904,13 @@ CcFlushCache (
 {
     PROS_SHARED_CACHE_MAP SharedCacheMap;
     LARGE_INTEGER Offset;
+    LONGLONG RemainingLength;
     PROS_VACB current;
     NTSTATUS Status;
     KIRQL oldIrql;
+
+    CCTRACE(CC_API_DEBUG, "SectionObjectPointers=%p FileOffset=%p Length=%lu\n",
+        SectionObjectPointers, FileOffset, Length);
 
     DPRINT("CcFlushCache(SectionObjectPointers 0x%p, FileOffset 0x%p, Length %lu, IoStatus 0x%p)\n",
            SectionObjectPointers, FileOffset, Length, IoStatus);
@@ -879,11 +922,12 @@ CcFlushCache (
         if (FileOffset)
         {
             Offset = *FileOffset;
+            RemainingLength = Length;
         }
         else
         {
-            Offset.QuadPart = (LONGLONG)0;
-            Length = SharedCacheMap->FileSize.u.LowPart;
+            Offset.QuadPart = 0;
+            RemainingLength = SharedCacheMap->FileSize.QuadPart;
         }
 
         if (IoStatus)
@@ -892,9 +936,9 @@ CcFlushCache (
             IoStatus->Information = 0;
         }
 
-        while (Length > 0)
+        while (RemainingLength > 0)
         {
-            current = CcRosLookupVacb(SharedCacheMap, Offset.u.LowPart);
+            current = CcRosLookupVacb(SharedCacheMap, Offset.QuadPart);
             if (current != NULL)
             {
                 if (current->Dirty)
@@ -915,14 +959,7 @@ CcFlushCache (
             }
 
             Offset.QuadPart += VACB_MAPPING_GRANULARITY;
-            if (Length > VACB_MAPPING_GRANULARITY)
-            {
-                Length -= VACB_MAPPING_GRANULARITY;
-            }
-            else
-            {
-                Length = 0;
-            }
+            RemainingLength -= min(RemainingLength, VACB_MAPPING_GRANULARITY);
         }
     }
     else
@@ -1175,6 +1212,9 @@ CcGetFileObjectFromSectionPtrs (
     IN PSECTION_OBJECT_POINTERS SectionObjectPointers)
 {
     PROS_SHARED_CACHE_MAP SharedCacheMap;
+
+    CCTRACE(CC_API_DEBUG, "SectionObjectPointers=%p\n", SectionObjectPointers);
+
     if (SectionObjectPointers && SectionObjectPointers->SharedCacheMap)
     {
         SharedCacheMap = SectionObjectPointers->SharedCacheMap;

@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/guisettings.h
+ * FILE:            consrv/guisettings.h
  * PURPOSE:         GUI front-end settings management
  * PROGRAMMERS:     Johannes Anderwald
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -76,7 +76,7 @@ typedef struct _CONSOLE_STATE_INFO
     COLORREF    ColorTable[16];
 
     ULONG       CodePage;
-    HWND        HWnd;
+    HWND        hWnd;
 
     WCHAR       ConsoleTitle[256];
 } CONSOLE_STATE_INFO, *PCONSOLE_STATE_INFO;

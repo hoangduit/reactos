@@ -6,6 +6,9 @@ typedef struct _THREADINFO *PTHREADINFO;
 struct _DESKTOP;
 struct _WND;
 struct tagPOPUPMENU;
+#ifndef HIMC
+typedef HANDLE HIMC;
+#endif
 
 #define FIRST_USER_HANDLE 0x0020  /* first possible value for low word of user handle */
 #define LAST_USER_HANDLE  0xffef  /* last possible value for low word of user handle */
@@ -172,7 +175,7 @@ typedef struct _THRDESKHEAD
 typedef struct _PROCDESKHEAD
 {
   HEAD;
-  DWORD hTaskWow;
+  DWORD_PTR hTaskWow;
   struct _DESKTOP *rpdesk;
   PVOID       pSelf;
 } PROCDESKHEAD, *PPROCDESKHEAD;
@@ -521,18 +524,24 @@ typedef struct _CLS
     INT cbclsExtra;
     INT cbwndExtra;
     HINSTANCE hModule;
+#ifdef NEW_CURSORICON
+    struct _CURICON_OBJECT* spicn;
+    struct _CURICON_OBJECT* spcur;
+#else
     HANDLE hIcon; /* FIXME - Use pointer! */
-    //PCURSOR spicn;
     HANDLE hCursor; /* FIXME - Use pointer! */
-    //PCURSOR spcur;
+#endif
     HBRUSH hbrBackground;
     PWSTR lpszMenuName;     // kernel use
     PSTR lpszAnsiClassName; // "
+#ifdef NEW_CURSORICON
+    struct _CURICON_OBJECT* spicnSm;
+#else
     HANDLE hIconSm; /* FIXME - Use pointer! */
-    //PCURSOR spicnSm;
 
     //// ReactOS dosn't suppot cache icons.
     HICON hIconSmIntern; /* Internal small icon, derived from hIcon */
+#endif
     ////
     UINT Unicode : 1; // !CSF_ANSIPROC
     UINT Global : 1;  // CS_GLOBALCLASS or CSF_SERVERSIDEPROC
@@ -673,7 +682,7 @@ typedef struct _WND
     /* Size of the extra data associated with the window. */
     ULONG cbwndExtra;
     struct _WND *spwndLastActive;
-    //HIMC hImc; // Input context associated with this window.
+    HIMC hImc; // Input context associated with this window.
     LONG dwUserData;
     PVOID pActCtx;
     //PD3DMATRIX pTransForm;
@@ -857,6 +866,8 @@ typedef LONG_PTR (NTAPI *PFN_FNID)(PWND, UINT, WPARAM, LPARAM, ULONG_PTR);
 #define COLOR_LAST COLOR_MENUBAR
 #define MAX_MB_STRINGS 11
 
+#define SRVINFO_DBCSENABLED 0x0002
+#define SRVINFO_IMM32   0x0004
 #define SRVINFO_APIHOOK 0x0010
 #define SRVINFO_METRICS 0x0020
 #define SRVINFO_KBDPREF 0x0080
@@ -963,6 +974,10 @@ typedef struct tagSERVERINFO
     PERUSERSERVERINFO;
 } SERVERINFO, *PSERVERINFO;
 
+#ifdef _M_IX86
+C_ASSERT(sizeof(SERVERINFO) <= PAGE_SIZE);
+#endif
+
 
 // Server event activity bits.
 #define SRV_EVENT_MENU            0x0001
@@ -1016,6 +1031,7 @@ typedef struct _SHAREDINFO
   WNDMSG      DefWindowSpecMsgs;
 } SHAREDINFO, *PSHAREDINFO;
 
+/* See also the USERSRV_API_CONNECTINFO #define in include/reactos/subsys/win/winmsg.h */
 typedef struct _USERCONNECT
 {
   ULONG ulVersion;
@@ -1023,6 +1039,14 @@ typedef struct _USERCONNECT
   DWORD dwDispatchCount;
   SHAREDINFO siClient;
 } USERCONNECT, *PUSERCONNECT;
+
+// WinNT 5.0 compatible user32 / win32k
+#define USER_VERSION    MAKELONG(0x0000, 0x0005)
+
+#if defined(_M_IX86)
+C_ASSERT(sizeof(USERCONNECT) == 0x124);
+#endif
+
 
 typedef struct tagGETCLIPBDATA
 {
@@ -1077,6 +1101,26 @@ typedef struct tagCURSORDATA
 #define CURSORF_SECRET       0x0080
 #define CURSORF_LINKED       0x0100
 #define CURSORF_CURRENT      0x0200
+
+typedef struct tagIMEINFOEX
+{
+    HKL hkl;
+    IMEINFO ImeInfo;
+    WCHAR wszUIClass[16];
+    ULONG fdwInitConvMode;
+    INT fInitOpen;
+    INT fLoadFlag;
+    DWORD dwProdVersion;
+    DWORD dwImeWinVersion;
+    WCHAR wszImeDescription[50];
+    WCHAR wszImeFile[80];
+    struct
+    {
+        INT fSysWow64Only:1;
+        INT fCUASLayer:1;
+    };
+} IMEINFOEX, *PIMEINFOEX;
+
 
 DWORD
 NTAPI
@@ -1349,7 +1393,7 @@ enum SimpleCallRoutines
 #if (WIN32K_VERSION >= NTDDI_VISTA)
 	NOPARAM_ROUTINE_HANDLESYSTHRDCREATFAIL,
 #else
-	NOPARAM_ROUTINE_GETREMOTEPROCID,
+	NOPARAM_ROUTINE_GETREMOTEPROCESSID,
 #endif
 	NOPARAM_ROUTINE_HIDECURSORNOCAPTURE,
 	NOPARAM_ROUTINE_LOADCURSANDICOS,
@@ -1598,7 +1642,7 @@ DWORD
 NTAPI
 NtUserCheckImeHotKey(
   DWORD dwUnknown1,
-  DWORD dwUnknown2);
+  LPARAM dwUnknown2);
 
 HWND NTAPI
 NtUserChildWindowFromPointEx(
@@ -2129,7 +2173,7 @@ NtUserGetImeHotKey(
 DWORD
 NTAPI
 NtUserGetImeInfoEx(
-    DWORD dwUnknown1,
+    PIMEINFOEX pImeInfoEx,
     DWORD dwUnknown2);
 
 DWORD
@@ -2290,7 +2334,8 @@ enum ThreadStateRoutines
     THREADSTATE_GETINPUTSTATE,
     THREADSTATE_UPTIMELASTREAD,
     THREADSTATE_FOREGROUNDTHREAD,
-    THREADSTATE_GETCURSOR
+    THREADSTATE_GETCURSOR,
+    THREADSTATE_GETMESSAGEEXTRAINFO
 };
 
 DWORD_PTR
@@ -2505,9 +2550,9 @@ BOOL
 NTAPI
 NtUserNotifyProcessCreate(
     HANDLE NewProcessId,
-    HANDLE SourceThreadId,
-    DWORD dwUnknown,
-    ULONG CreateFlags);
+    HANDLE ParentThreadId,
+    ULONG  dwUnknown,
+    ULONG  CreateFlags);
 
 VOID
 NTAPI
@@ -2591,18 +2636,18 @@ NtUserPrintWindow(
 NTSTATUS
 NTAPI
 NtUserProcessConnect(
-    IN  HANDLE Process,
+    IN  HANDLE ProcessHandle,
     OUT PUSERCONNECT pUserConnect,
-    IN  DWORD dwSize); // sizeof(USERCONNECT)
+    IN  ULONG Size); // sizeof(USERCONNECT)
 
-DWORD
+NTSTATUS
 NTAPI
 NtUserQueryInformationThread(
-    DWORD dwUnknown1,
-    DWORD dwUnknown2,
-    DWORD dwUnknown3,
-    DWORD dwUnknown4,
-    DWORD dwUnknown5);
+    IN HANDLE ThreadHandle,
+    IN USERTHREADINFOCLASS ThreadInformationClass,
+    OUT PVOID ThreadInformation,
+    IN ULONG ThreadInformationLength
+);
 
 DWORD
 NTAPI
@@ -2908,7 +2953,7 @@ NtUserSetImeHotKey(
 DWORD
 NTAPI
 NtUserSetImeInfoEx(
-    DWORD dwUnknown1);
+    PIMEINFOEX pImeInfoEx);
 
 DWORD
 NTAPI
@@ -3369,8 +3414,6 @@ typedef struct tagKMDDELPARAM
  */
 
 #define NOPARAM_ROUTINE_ISCONSOLEMODE         0xffff0001
-#define NOPARAM_ROUTINE_GETMESSAGEEXTRAINFO   0xffff0005
-#define ONEPARAM_ROUTINE_CSRSS_GUICHECK       0xffff0008
 #define ONEPARAM_ROUTINE_SWITCHCARETSHOWING   0xfffe0008
 #define ONEPARAM_ROUTINE_ENABLEPROCWNDGHSTING 0xfffe000d
 #define ONEPARAM_ROUTINE_GETDESKTOPMAPPING    0xfffe000e

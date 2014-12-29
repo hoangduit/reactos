@@ -1506,8 +1506,10 @@ MUI_ERROR frFRErrorEntries[] =
         "ENTRêE = RedÇmarrer l'ordinateur"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Pas assez d'espace libre dans la partition sÇlectionnÇe.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Appuyer sur une touche pour continuer.",
         NULL
     },
@@ -1521,19 +1523,6 @@ MUI_ERROR frFRErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "Impossible de crÇer plus d'une partition Çtendue par disque.\n"
-        "\n"
-        "  * Appuyer sur une touche pour continuer."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "Impossible de crÇer une partition prÇcÇdant une partition Çtendue.\n"
-        "\n"
-        "  * Appuyer sur une touche pour continuer."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "Une partition Çtendue doit toujours àtre placÇe en dernier\n"
-        "dans la table de partition.\n"
         "\n"
         "  * Appuyer sur une touche pour continuer."
     },
@@ -1735,7 +1724,7 @@ MUI_STRING frFRStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "sur Disque dur %lu (%I64u %s), Port=%hu, Bus=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sType %-3u%s                       %6lu %s"},
+    "%c%c %c %sType %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  Disque dur %lu  (Port=%hu, Bus=%hu, Id=%hu) sur %S"},
     {STRING_HDDINFOUNK6,

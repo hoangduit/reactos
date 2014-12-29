@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/frontends/gui/guiterm.c
+ * FILE:            consrv/frontends/gui/guiterm.c
  * PURPOSE:         GUI Terminal Front-End
  * PROGRAMMERS:     Gé van Geldorp
  *                  Johannes Anderwald
@@ -12,9 +12,6 @@
 /* INCLUDES *******************************************************************/
 
 #include <consrv.h>
-
-#define COBJMACROS
-#include <shlobj.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -30,11 +27,6 @@
 #define PM_DESTROY_CONSOLE      (WM_APP + 2)
 
 
-/* Not defined in any header file */
-extern VOID NTAPI PrivateCsrssManualGuiCheck(LONG Check);
-// See winsrv/usersrv/init.c line 234
-
-
 /* GLOBALS ********************************************************************/
 
 typedef struct _GUI_INIT_INFO
@@ -42,10 +34,12 @@ typedef struct _GUI_INIT_INFO
     PCONSOLE_INFO ConsoleInfo;
     PCONSOLE_START_INFO ConsoleStartInfo;
     ULONG ProcessId;
+    BOOLEAN IsWindowVisible;
 } GUI_INIT_INFO, *PGUI_INIT_INFO;
 
 static BOOL    ConsInitialized = FALSE;
-static HWND    NotifyWnd = NULL;
+static HANDLE  hInputThread = NULL;
+static DWORD   dwInputThreadId = 0;
 
 extern HICON   ghDefaultIcon;
 extern HICON   ghDefaultIconSm;
@@ -142,48 +136,56 @@ VOID
 SwitchFullScreen(PGUI_CONSOLE_DATA GuiData, BOOL FullScreen);
 VOID
 CreateSysMenu(HWND hWnd);
-static LRESULT CALLBACK
-GuiConsoleNotifyWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+
+static DWORD NTAPI
+GuiConsoleInputThread(PVOID Param)
 {
-    HWND NewWindow;
-    LONG WindowCount;
-    MSG Msg;
+    PHANDLE GraphicsStartupEvent = (PHANDLE)Param;
+    LONG WindowCount = 0;
+    MSG msg;
 
-    switch (msg)
+    /*
+     * This thread dispatches all the console notifications to the
+     * notification window. It is common for all the console windows.
+     */
+
+    /* The thread has been initialized, set the event */
+    NtSetEvent(*GraphicsStartupEvent, NULL);
+
+    while (GetMessageW(&msg, NULL, 0, 0))
     {
-        case WM_CREATE:
+        switch (msg.message)
         {
-            SetWindowLongW(hWnd, GWL_USERDATA, 0);
-            return 0;
-        }
-    
-        case PM_CREATE_CONSOLE:
-        {
-            PGUI_CONSOLE_DATA GuiData = (PGUI_CONSOLE_DATA)lParam;
-            PCONSRV_CONSOLE Console = GuiData->Console;
-            RECT rcWnd;
-
-            DPRINT("PM_CREATE_CONSOLE -- creating window\n");
-
-            NewWindow = CreateWindowExW(WS_EX_CLIENTEDGE,
-                                        GUI_CONWND_CLASS,
-                                        Console->Title.Buffer,
-                                        WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL,
-                                        CW_USEDEFAULT,
-                                        CW_USEDEFAULT,
-                                        CW_USEDEFAULT,
-                                        CW_USEDEFAULT,
-                                        NULL,
-                                        NULL,
-                                        ConSrvDllInstance,
-                                        (PVOID)GuiData);
-            if (NULL != NewWindow)
+            case PM_CREATE_CONSOLE:
             {
+                PGUI_CONSOLE_DATA GuiData = (PGUI_CONSOLE_DATA)msg.lParam;
+                PCONSRV_CONSOLE Console = GuiData->Console;
+                HWND NewWindow;
+                RECT rcWnd;
+
+                DPRINT("PM_CREATE_CONSOLE -- creating window\n");
+
+                NewWindow = CreateWindowExW(WS_EX_CLIENTEDGE,
+                                            GUI_CONWND_CLASS,
+                                            Console->Title.Buffer,
+                                            WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL,
+                                            CW_USEDEFAULT,
+                                            CW_USEDEFAULT,
+                                            CW_USEDEFAULT,
+                                            CW_USEDEFAULT,
+                                            GuiData->IsWindowVisible ? HWND_DESKTOP : HWND_MESSAGE,
+                                            NULL,
+                                            ConSrvDllInstance,
+                                            (PVOID)GuiData);
+                if (NewWindow == NULL)
+                {
+                    DPRINT1("Failed to create a new console window\n");
+                    continue;
+                }
+
                 ASSERT(NewWindow == GuiData->hWindow);
 
-                WindowCount = GetWindowLongW(hWnd, GWL_USERDATA);
-                WindowCount++;
-                SetWindowLongW(hWnd, GWL_USERDATA, WindowCount);
+                InterlockedIncrement(&WindowCount);
 
                 //
                 // FIXME: TODO: Move everything there into conwnd.c!OnNcCreate()
@@ -195,112 +197,83 @@ GuiConsoleNotifyWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 GuiData->GuiInfo.WindowOrigin.x = rcWnd.left;
                 GuiData->GuiInfo.WindowOrigin.y = rcWnd.top;
 
-                /* Move and resize the window to the user's values */
-                /* CAN WE DEADLOCK ?? */
-                GuiConsoleMoveWindow(GuiData); // FIXME: This MUST be done via the CreateWindowExW call.
-                SendMessageW(GuiData->hWindow, PM_RESIZE_TERMINAL, 0, 0);
+                if (GuiData->IsWindowVisible)
+                {
+                    /* Move and resize the window to the user's values */
+                    /* CAN WE DEADLOCK ?? */
+                    GuiConsoleMoveWindow(GuiData); // FIXME: This MUST be done via the CreateWindowExW call.
+                    SendMessageW(GuiData->hWindow, PM_RESIZE_TERMINAL, 0, 0);
+                }
 
                 // FIXME: HACK: Potential HACK for CORE-8129; see revision 63595.
                 CreateSysMenu(GuiData->hWindow);
 
-                /* Switch to full-screen mode if necessary */
-                // FIXME: Move elsewhere, it cause misdrawings of the window.
-                if (GuiData->GuiInfo.FullScreen) SwitchFullScreen(GuiData, TRUE);
+                if (GuiData->IsWindowVisible)
+                {
+                    /* Switch to full-screen mode if necessary */
+                    // FIXME: Move elsewhere, it cause misdrawings of the window.
+                    if (GuiData->GuiInfo.FullScreen) SwitchFullScreen(GuiData, TRUE);
 
-                DPRINT("PM_CREATE_CONSOLE -- showing window\n");
-                // ShowWindow(NewWindow, (int)wParam);
-                ShowWindowAsync(NewWindow, (int)wParam);
-                DPRINT("Window showed\n");
+                    DPRINT("PM_CREATE_CONSOLE -- showing window\n");
+                    // ShowWindow(NewWindow, (int)GuiData->GuiInfo.ShowWindow);
+                    ShowWindowAsync(NewWindow, (int)GuiData->GuiInfo.ShowWindow);
+                    DPRINT("Window showed\n");
+                }
+                else
+                {
+                    DPRINT("PM_CREATE_CONSOLE -- hidden window\n");
+                    ShowWindowAsync(NewWindow, SW_HIDE);
+                }
+
+                continue;
             }
 
-            return (LRESULT)NewWindow;
-        }
-
-        case PM_DESTROY_CONSOLE:
-        {
-            PGUI_CONSOLE_DATA GuiData = (PGUI_CONSOLE_DATA)lParam;
-
-            /* Exit the full screen mode if it was already set */
-            // LeaveFullScreen(GuiData);
-
-            /*
-             * Window creation is done using a PostMessage(), so it's possible
-             * that the window that we want to destroy doesn't exist yet.
-             * So first empty the message queue.
-             */
-            /*
-            while (PeekMessageW(&Msg, NULL, 0, 0, PM_REMOVE))
+            case PM_DESTROY_CONSOLE:
             {
-                TranslateMessage(&Msg);
-                DispatchMessageW(&Msg);
-            }*/
-            while (PeekMessageW(&Msg, NULL, 0, 0, PM_REMOVE)) ;
+                PGUI_CONSOLE_DATA GuiData = (PGUI_CONSOLE_DATA)msg.lParam;
+                MSG TempMsg;
 
-            if (GuiData->hWindow != NULL) /* && DestroyWindow(GuiData->hWindow) */
-            {
+                /* Exit the full screen mode if it was already set */
+                // LeaveFullScreen(GuiData);
+
+                /*
+                 * Window creation is done using a PostMessage(), so it's possible
+                 * that the window that we want to destroy doesn't exist yet.
+                 * So first empty the message queue.
+                 */
+                /*
+                while (PeekMessageW(&TempMsg, NULL, 0, 0, PM_REMOVE))
+                {
+                    TranslateMessage(&TempMsg);
+                    DispatchMessageW(&TempMsg);
+                }*/
+                while (PeekMessageW(&TempMsg, NULL, 0, 0, PM_REMOVE)) ;
+
+                if (GuiData->hWindow == NULL) continue;
+
                 DestroyWindow(GuiData->hWindow);
 
-                WindowCount = GetWindowLongW(hWnd, GWL_USERDATA);
-                WindowCount--;
-                SetWindowLongW(hWnd, GWL_USERDATA, WindowCount);
-                if (0 == WindowCount)
-                {
-                    NotifyWnd = NULL;
-                    DestroyWindow(hWnd);
-                    DPRINT("CONSRV: Going to quit the Gui Thread!!\n");
-                    PostQuitMessage(0);
-                }
-            }
+                NtSetEvent(GuiData->hGuiTermEvent, NULL);
 
-            return 0;
+                if (InterlockedDecrement(&WindowCount) == 0)
+                {
+                    DPRINT("CONSRV: Going to quit the Input Thread!!\n");
+                    goto Quit;
+                }
+
+                continue;
+            }
         }
 
-        default:
-            return DefWindowProcW(hWnd, msg, wParam, lParam);
-    }
-}
-
-static DWORD NTAPI
-GuiConsoleGuiThread(PVOID Data)
-{
-    MSG msg;
-    PHANDLE GraphicsStartupEvent = (PHANDLE)Data;
-
-    /*
-     * This thread dispatches all the console notifications to the notify window.
-     * It is common for all the console windows.
-     */
-
-    PrivateCsrssManualGuiCheck(+1);
-
-    NotifyWnd = CreateWindowW(L"ConSrvCreateNotify",
-                              L"",
-                              WS_OVERLAPPEDWINDOW,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              NULL,
-                              NULL,
-                              ConSrvDllInstance,
-                              NULL);
-    if (NULL == NotifyWnd)
-    {
-        PrivateCsrssManualGuiCheck(-1);
-        SetEvent(*GraphicsStartupEvent);
-        return 1;
-    }
-
-    SetEvent(*GraphicsStartupEvent);
-
-    while (GetMessageW(&msg, NULL, 0, 0))
-    {
         TranslateMessage(&msg);
         DispatchMessageW(&msg);
     }
 
-    DPRINT("CONSRV: Quit the Gui Thread!!\n");
-    PrivateCsrssManualGuiCheck(-1);
+Quit:
+    DPRINT("CONSRV: Quit the Input Thread!!\n");
+
+    hInputThread = NULL;
+    dwInputThreadId = 0;
 
     return 1;
 }
@@ -308,83 +281,53 @@ GuiConsoleGuiThread(PVOID Data)
 static BOOL
 GuiInit(VOID)
 {
-    WNDCLASSEXW wc;
-
     /* Exit if we were already initialized */
     // if (ConsInitialized) return TRUE;
 
     /*
-     * Initialize and register the different window classes, if needed.
+     * Initialize and register the console window class, if needed.
      */
     if (!ConsInitialized)
     {
-        /* Initialize the notification window class */
-        wc.cbSize = sizeof(WNDCLASSEXW);
-        wc.lpszClassName = L"ConSrvCreateNotify";
-        wc.lpfnWndProc = GuiConsoleNotifyWndProc;
-        wc.style = 0;
-        wc.hInstance = ConSrvDllInstance;
-        wc.hIcon = NULL;
-        wc.hIconSm = NULL;
-        wc.hCursor = NULL;
-        wc.hbrBackground = NULL;
-        wc.lpszMenuName = NULL;
-        wc.cbClsExtra = 0;
-        wc.cbWndExtra = 0;
-        if (RegisterClassExW(&wc) == 0)
-        {
-            DPRINT1("Failed to register GUI notify wndproc\n");
-            return FALSE;
-        }
-
-        /* Initialize the console window class */
-        if (!RegisterConWndClass(ConSrvDllInstance))
-            return FALSE;
-
+        if (!RegisterConWndClass(ConSrvDllInstance)) return FALSE;
         ConsInitialized = TRUE;
     }
 
     /*
-     * Set-up the notification window
+     * Set-up the console input thread
      */
-    if (NULL == NotifyWnd)
+    if (hInputThread == NULL)
     {
-        HANDLE ThreadHandle;
         HANDLE GraphicsStartupEvent;
+        NTSTATUS Status;
 
-        GraphicsStartupEvent = CreateEventW(NULL, FALSE, FALSE, NULL);
-        if (NULL == GraphicsStartupEvent) return FALSE;
+        Status = NtCreateEvent(&GraphicsStartupEvent, EVENT_ALL_ACCESS,
+                               NULL, SynchronizationEvent, FALSE);
+        if (!NT_SUCCESS(Status)) return FALSE;
 
-        ThreadHandle = CreateThread(NULL,
+        hInputThread = CreateThread(NULL,
                                     0,
-                                    GuiConsoleGuiThread,
+                                    GuiConsoleInputThread,
                                     (PVOID)&GraphicsStartupEvent,
                                     0,
-                                    NULL);
-        if (NULL == ThreadHandle)
+                                    &dwInputThreadId);
+        if (hInputThread == NULL)
         {
-            CloseHandle(GraphicsStartupEvent);
-            DPRINT1("CONSRV: Failed to create graphics console thread. Expect problems\n");
+            NtClose(GraphicsStartupEvent);
+            DPRINT1("CONSRV: Failed to create graphics console thread.\n");
             return FALSE;
         }
-        SetThreadPriority(ThreadHandle, THREAD_PRIORITY_HIGHEST);
-        CloseHandle(ThreadHandle);
+        SetThreadPriority(hInputThread, THREAD_PRIORITY_HIGHEST);
+        CloseHandle(hInputThread);
 
         WaitForSingleObject(GraphicsStartupEvent, INFINITE);
-        CloseHandle(GraphicsStartupEvent);
-
-        if (NULL == NotifyWnd)
-        {
-            DPRINT1("CONSRV: Failed to create notification window.\n");
-            return FALSE;
-        }
+        NtClose(GraphicsStartupEvent);
     }
 
     // ConsInitialized = TRUE;
 
     return TRUE;
 }
-
 
 
 /******************************************************************************
@@ -405,26 +348,18 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
     PGUI_CONSOLE_DATA GuiData;
     GUI_CONSOLE_INFO  TermInfo;
 
-    SIZE_T Length    = 0;
-    LPWSTR IconPath  = NULL;
-    INT    IconIndex = 0;
-
-    if (This == NULL || Console == NULL || This->OldData == NULL)
+    if (This == NULL || Console == NULL || This->Context2 == NULL)
         return STATUS_INVALID_PARAMETER;
 
     ASSERT(This->Console == Console);
 
-    GuiInitInfo = This->OldData;
+    GuiInitInfo = This->Context2;
 
     if (GuiInitInfo->ConsoleInfo == NULL || GuiInitInfo->ConsoleStartInfo == NULL)
         return STATUS_INVALID_PARAMETER;
 
     ConsoleInfo      = GuiInitInfo->ConsoleInfo;
     ConsoleStartInfo = GuiInitInfo->ConsoleStartInfo;
-
-    IconPath  = ConsoleStartInfo->IconPath;
-    IconIndex = ConsoleStartInfo->IconIndex;
-
 
     /* Terminal data allocation */
     GuiData = ConsoleAllocHeap(HEAP_ZERO_MEMORY, sizeof(GUI_CONSOLE_DATA));
@@ -433,10 +368,11 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
         DPRINT1("CONSRV: Failed to create GUI_CONSOLE_DATA\n");
         return STATUS_UNSUCCESSFUL;
     }
-    ///// /* HACK */ Console->FrontEndIFace.Data = (PVOID)GuiData; /* HACK */
+    ///// /* HACK */ Console->FrontEndIFace.Context = (PVOID)GuiData; /* HACK */
     GuiData->Console      = Console;
     GuiData->ActiveBuffer = Console->ActiveBuffer;
     GuiData->hWindow = NULL;
+    GuiData->IsWindowVisible = GuiInitInfo->IsWindowVisible;
 
     /* The console can be resized */
     Console->FixedSize = FALSE;
@@ -451,33 +387,36 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
     /* 1. Load the default settings */
     GuiConsoleGetDefaultSettings(&TermInfo, GuiInitInfo->ProcessId);
 
-    /* 3. Load the remaining console settings via the registry. */
-    if ((ConsoleStartInfo->dwStartupFlags & STARTF_TITLEISLINKNAME) == 0)
+    if (GuiData->IsWindowVisible)
     {
-        /* Load the terminal infos from the registry. */
-        GuiConsoleReadUserSettings(&TermInfo,
-                                   ConsoleInfo->ConsoleTitle,
-                                   GuiInitInfo->ProcessId);
+        /* 2. Load the remaining console settings via the registry */
+        if ((ConsoleStartInfo->dwStartupFlags & STARTF_TITLEISLINKNAME) == 0)
+        {
+            /* Load the terminal infos from the registry */
+            GuiConsoleReadUserSettings(&TermInfo,
+                                       ConsoleInfo->ConsoleTitle,
+                                       GuiInitInfo->ProcessId);
 
-        /*
-         * Now, update them with the properties the user might gave to us
-         * via the STARTUPINFO structure before calling CreateProcess
-         * (and which was transmitted via the ConsoleStartInfo structure).
-         * We therefore overwrite the values read in the registry.
-         */
-        if (ConsoleStartInfo->dwStartupFlags & STARTF_USESHOWWINDOW)
-        {
-            TermInfo.ShowWindow = ConsoleStartInfo->wShowWindow;
-        }
-        if (ConsoleStartInfo->dwStartupFlags & STARTF_USEPOSITION)
-        {
-            TermInfo.AutoPosition = FALSE;
-            TermInfo.WindowOrigin.x = ConsoleStartInfo->dwWindowOrigin.X;
-            TermInfo.WindowOrigin.y = ConsoleStartInfo->dwWindowOrigin.Y;
-        }
-        if (ConsoleStartInfo->dwStartupFlags & STARTF_RUNFULLSCREEN)
-        {
-            TermInfo.FullScreen = TRUE;
+            /*
+             * Now, update them with the properties the user might gave to us
+             * via the STARTUPINFO structure before calling CreateProcess
+             * (and which was transmitted via the ConsoleStartInfo structure).
+             * We therefore overwrite the values read in the registry.
+             */
+            if (ConsoleStartInfo->dwStartupFlags & STARTF_USESHOWWINDOW)
+            {
+                TermInfo.ShowWindow = ConsoleStartInfo->wShowWindow;
+            }
+            if (ConsoleStartInfo->dwStartupFlags & STARTF_USEPOSITION)
+            {
+                TermInfo.AutoPosition = FALSE;
+                TermInfo.WindowOrigin.x = ConsoleStartInfo->dwWindowOrigin.X;
+                TermInfo.WindowOrigin.y = ConsoleStartInfo->dwWindowOrigin.Y;
+            }
+            if (ConsoleStartInfo->dwStartupFlags & STARTF_RUNFULLSCREEN)
+            {
+                TermInfo.FullScreen = TRUE;
+            }
         }
     }
 
@@ -487,9 +426,8 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
      */
 
     // Font data
-    Length = min(wcslen(TermInfo.FaceName) + 1, LF_FACESIZE); // wcsnlen
     wcsncpy(GuiData->GuiInfo.FaceName, TermInfo.FaceName, LF_FACESIZE);
-    GuiData->GuiInfo.FaceName[Length] = L'\0';
+    GuiData->GuiInfo.FaceName[LF_FACESIZE - 1] = UNICODE_NULL;
     GuiData->GuiInfo.FontFamily     = TermInfo.FontFamily;
     GuiData->GuiInfo.FontSize       = TermInfo.FontSize;
     GuiData->GuiInfo.FontWeight     = TermInfo.FontWeight;
@@ -500,29 +438,17 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
     GuiData->GuiInfo.AutoPosition   = TermInfo.AutoPosition;
     GuiData->GuiInfo.WindowOrigin   = TermInfo.WindowOrigin;
 
-    /* Initialize the icon handles to their default values */
-    GuiData->hIcon   = ghDefaultIcon;
-    GuiData->hIconSm = ghDefaultIconSm;
+    /* Initialize the icon handles */
+    if (ConsoleStartInfo->hIcon != NULL)
+        GuiData->hIcon = ConsoleStartInfo->hIcon;
+    else
+        GuiData->hIcon = ghDefaultIcon;
 
-    /* Get the associated icon, if any */
-    if (IconPath == NULL || IconPath[0] == L'\0')
-    {
-        IconPath  = ConsoleStartInfo->AppPath;
-        IconIndex = 0;
-    }
-    DPRINT("IconPath = %S ; IconIndex = %lu\n", (IconPath ? IconPath : L"n/a"), IconIndex);
-    if (IconPath && IconPath[0] != L'\0')
-    {
-        HICON hIcon = NULL, hIconSm = NULL;
-        PrivateExtractIconExW(IconPath,
-                              IconIndex,
-                              &hIcon,
-                              &hIconSm,
-                              1);
-        DPRINT("hIcon = 0x%p ; hIconSm = 0x%p\n", hIcon, hIconSm);
-        if (hIcon   != NULL) GuiData->hIcon   = hIcon;
-        if (hIconSm != NULL) GuiData->hIconSm = hIconSm;
-    }
+    if (ConsoleStartInfo->hIconSm != NULL)
+        GuiData->hIconSm = ConsoleStartInfo->hIconSm;
+    else
+        GuiData->hIconSm = ghDefaultIconSm;
+
     ASSERT(GuiData->hIcon && GuiData->hIconSm);
 
     /* Mouse is shown by default with its default cursor shape */
@@ -545,23 +471,31 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
     GuiData->LineSelection = FALSE; // Default to block selection
     // TODO: Retrieve the selection mode via the registry.
 
+    /* Finally, finish to initialize the frontend structure */
+    This->Context  = GuiData;
+    if (This->Context2) ConsoleFreeHeap(This->Context2);
+    This->Context2 = NULL;
+
     /*
      * We need to wait until the GUI has been fully initialized
      * to retrieve custom settings i.e. WindowSize etc...
      * Ideally we could use SendNotifyMessage for this but its not
      * yet implemented.
      */
-    GuiData->hGuiInitEvent = CreateEventW(NULL, FALSE, FALSE, NULL);
+    NtCreateEvent(&GuiData->hGuiInitEvent, EVENT_ALL_ACCESS,
+                  NULL, SynchronizationEvent, FALSE);
+    NtCreateEvent(&GuiData->hGuiTermEvent, EVENT_ALL_ACCESS,
+                  NULL, SynchronizationEvent, FALSE);
 
     DPRINT("GUI - Checkpoint\n");
 
     /* Create the terminal window */
-    PostMessageW(NotifyWnd, PM_CREATE_CONSOLE, GuiData->GuiInfo.ShowWindow, (LPARAM)GuiData);
+    PostThreadMessageW(dwInputThreadId, PM_CREATE_CONSOLE, 0, (LPARAM)GuiData);
 
     /* Wait until initialization has finished */
     WaitForSingleObject(GuiData->hGuiInitEvent, INFINITE);
     DPRINT("OK we created the console window\n");
-    CloseHandle(GuiData->hGuiInitEvent);
+    NtClose(GuiData->hGuiInitEvent);
     GuiData->hGuiInitEvent = NULL;
 
     /* Check whether we really succeeded in initializing the terminal window */
@@ -572,20 +506,20 @@ GuiInitFrontEnd(IN OUT PFRONTEND This,
         return STATUS_UNSUCCESSFUL;
     }
 
-    /* Finally, finish to initialize the frontend structure */
-    This->Data = GuiData;
-    if (This->OldData) ConsoleFreeHeap(This->OldData);
-    This->OldData = NULL;
-
     return STATUS_SUCCESS;
 }
 
 static VOID NTAPI
 GuiDeinitFrontEnd(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
-    SendMessageW(NotifyWnd, PM_DESTROY_CONSOLE, 0, (LPARAM)GuiData);
+    DPRINT("Send PM_DESTROY_CONSOLE message and wait on hGuiTermEvent...\n");
+    PostThreadMessageW(dwInputThreadId, PM_DESTROY_CONSOLE, 0, (LPARAM)GuiData);
+    WaitForSingleObject(GuiData->hGuiTermEvent, INFINITE);
+    DPRINT("hGuiTermEvent set\n");
+    NtClose(GuiData->hGuiTermEvent);
+    GuiData->hGuiTermEvent = NULL;
 
     DPRINT("Destroying icons !! - GuiData->hIcon = 0x%p ; ghDefaultIcon = 0x%p ; GuiData->hIconSm = 0x%p ; ghDefaultIconSm = 0x%p\n",
             GuiData->hIcon, ghDefaultIcon, GuiData->hIconSm, ghDefaultIconSm);
@@ -600,7 +534,7 @@ GuiDeinitFrontEnd(IN OUT PFRONTEND This)
         DestroyIcon(GuiData->hIconSm);
     }
 
-    This->Data = NULL;
+    This->Context = NULL;
     DeleteCriticalSection(&GuiData->Lock);
     ConsoleFreeHeap(GuiData);
 
@@ -611,7 +545,11 @@ static VOID NTAPI
 GuiDrawRegion(IN OUT PFRONTEND This,
               SMALL_RECT* Region)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return;
+
     DrawRegion(GuiData, Region);
 }
 
@@ -624,12 +562,15 @@ GuiWriteStream(IN OUT PFRONTEND This,
                PWCHAR Buffer,
                UINT Length)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     PCONSOLE_SCREEN_BUFFER Buff;
     SHORT CursorEndX, CursorEndY;
     RECT ScrollRect;
 
     if (NULL == GuiData || NULL == GuiData->hWindow) return;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return;
 
     Buff = GuiData->ActiveBuffer;
     if (GetType(Buff) != TEXTMODE_BUFFER) return;
@@ -675,11 +616,23 @@ GuiWriteStream(IN OUT PFRONTEND This,
     SetTimer(GuiData->hWindow, CONGUI_UPDATE_TIMER, CONGUI_UPDATE_TIME, NULL);
 }
 
+/* static */ VOID NTAPI
+GuiRingBell(IN OUT PFRONTEND This)
+{
+    PGUI_CONSOLE_DATA GuiData = This->Context;
+
+    /* Emit an error beep sound */
+    SendNotifyMessage(GuiData->hWindow, PM_CONSOLE_BEEP, 0, 0);
+}
+
 static BOOL NTAPI
 GuiSetCursorInfo(IN OUT PFRONTEND This,
                  PCONSOLE_SCREEN_BUFFER Buff)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return TRUE;
 
     if (GuiData->ActiveBuffer == Buff)
     {
@@ -695,7 +648,10 @@ GuiSetScreenInfo(IN OUT PFRONTEND This,
                  SHORT OldCursorX,
                  SHORT OldCursorY)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return TRUE;
 
     if (GuiData->ActiveBuffer == Buff)
     {
@@ -711,7 +667,7 @@ GuiSetScreenInfo(IN OUT PFRONTEND This,
 static VOID NTAPI
 GuiResizeTerminal(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
     /* Resize the window to the user's values */
     PostMessageW(GuiData->hWindow, PM_RESIZE_TERMINAL, 0, 0);
@@ -720,7 +676,7 @@ GuiResizeTerminal(IN OUT PFRONTEND This)
 static VOID NTAPI
 GuiSetActiveScreenBuffer(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     PCONSOLE_SCREEN_BUFFER ActiveBuffer;
     HPALETTE hPalette;
 
@@ -745,7 +701,7 @@ GuiSetActiveScreenBuffer(IN OUT PFRONTEND This)
         hPalette = ActiveBuffer->PaletteHandle;
     }
 
-    DPRINT1("GuiSetActiveScreenBuffer using palette 0x%p\n", hPalette);
+    DPRINT("GuiSetActiveScreenBuffer using palette 0x%p\n", hPalette);
 
     /* Set the new palette for the framebuffer */
     SelectPalette(GuiData->hMemDC, hPalette, FALSE);
@@ -764,7 +720,7 @@ static VOID NTAPI
 GuiReleaseScreenBuffer(IN OUT PFRONTEND This,
                        IN PCONSOLE_SCREEN_BUFFER ScreenBuffer)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
     /*
      * If we were notified to release a screen buffer that is not actually
@@ -811,7 +767,7 @@ GuiSetMouseCursor(IN OUT PFRONTEND This,
 static VOID NTAPI
 GuiRefreshInternalInfo(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
     /* Update the console leader information held by the window */
     SetConWndConsoleLeaderCID(GuiData);
@@ -833,16 +789,16 @@ GuiRefreshInternalInfo(IN OUT PFRONTEND This)
 static VOID NTAPI
 GuiChangeTitle(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     // PostMessageW(GuiData->hWindow, PM_CONSOLE_SET_TITLE, 0, 0);
-    SetWindowText(GuiData->hWindow, GuiData->Console->Title.Buffer);
+    SetWindowTextW(GuiData->hWindow, GuiData->Console->Title.Buffer);
 }
 
 static BOOL NTAPI
 GuiChangeIcon(IN OUT PFRONTEND This,
               HICON IconHandle)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     HICON hIcon, hIconSm;
 
     if (IconHandle == NULL)
@@ -886,7 +842,7 @@ GuiChangeIcon(IN OUT PFRONTEND This,
 static HWND NTAPI
 GuiGetConsoleWindowHandle(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     return GuiData->hWindow;
 }
 
@@ -894,7 +850,7 @@ static VOID NTAPI
 GuiGetLargestConsoleWindowSize(IN OUT PFRONTEND This,
                                PCOORD pSize)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     PCONSOLE_SCREEN_BUFFER ActiveBuffer;
     RECT WorkArea;
     LONG width, height;
@@ -937,7 +893,7 @@ static BOOL NTAPI
 GuiGetSelectionInfo(IN OUT PFRONTEND This,
                     PCONSOLE_SELECTION_INFO pSelectionInfo)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
     if (pSelectionInfo == NULL) return FALSE;
 
@@ -953,7 +909,7 @@ GuiSetPalette(IN OUT PFRONTEND This,
               HPALETTE PaletteHandle,
               UINT PaletteUsage)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     HPALETTE OldPalette;
 
     // if (GetType(GuiData->ActiveBuffer) != GRAPHICS_BUFFER) return FALSE;
@@ -978,7 +934,7 @@ GuiSetPalette(IN OUT PFRONTEND This,
 static ULONG NTAPI
 GuiGetDisplayMode(IN OUT PFRONTEND This)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     ULONG DisplayMode = 0;
 
     if (GuiData->GuiInfo.FullScreen)
@@ -993,11 +949,14 @@ static BOOL NTAPI
 GuiSetDisplayMode(IN OUT PFRONTEND This,
                   ULONG NewMode)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     BOOL FullScreen;
 
     if (NewMode & ~(CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE))
         return FALSE;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return TRUE;
 
     FullScreen = ((NewMode & CONSOLE_FULLSCREEN_MODE) != 0);
 
@@ -1013,14 +972,17 @@ static INT NTAPI
 GuiShowMouseCursor(IN OUT PFRONTEND This,
                    BOOL Show)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
-    /* Set the reference count */
-    if (Show) ++GuiData->MouseCursorRefCount;
-    else      --GuiData->MouseCursorRefCount;
+    if (GuiData->IsWindowVisible)
+    {
+        /* Set the reference count */
+        if (Show) ++GuiData->MouseCursorRefCount;
+        else      --GuiData->MouseCursorRefCount;
 
-    /* Effectively show (or hide) the cursor (use special values for (w|l)Param) */
-    PostMessageW(GuiData->hWindow, WM_SETCURSOR, -1, -1);
+        /* Effectively show (or hide) the cursor (use special values for (w|l)Param) */
+        PostMessageW(GuiData->hWindow, WM_SETCURSOR, -1, -1);
+    }
 
     return GuiData->MouseCursorRefCount;
 }
@@ -1029,7 +991,10 @@ static BOOL NTAPI
 GuiSetMouseCursor(IN OUT PFRONTEND This,
                   HCURSOR CursorHandle)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
+
+    /* Do nothing if the window is hidden */
+    if (!GuiData->IsWindowVisible) return TRUE;
 
     /*
      * Set the cursor's handle. If the given handle is NULL,
@@ -1048,7 +1013,7 @@ GuiMenuControl(IN OUT PFRONTEND This,
                UINT CmdIdLow,
                UINT CmdIdHigh)
 {
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
 
     GuiData->CmdIdLow  = CmdIdLow ;
     GuiData->CmdIdHigh = CmdIdHigh;
@@ -1066,7 +1031,7 @@ GuiSetMenuClose(IN OUT PFRONTEND This,
      * for more information.
      */
 
-    PGUI_CONSOLE_DATA GuiData = This->Data;
+    PGUI_CONSOLE_DATA GuiData = This->Context;
     HMENU hSysMenu = GetSystemMenu(GuiData->hWindow, FALSE);
 
     if (hSysMenu == NULL) return FALSE;
@@ -1083,6 +1048,7 @@ static FRONTEND_VTBL GuiVtbl =
     GuiDeinitFrontEnd,
     GuiDrawRegion,
     GuiWriteStream,
+    GuiRingBell,
     GuiSetCursorInfo,
     GuiSetScreenInfo,
     GuiResizeTerminal,
@@ -1104,138 +1070,20 @@ static FRONTEND_VTBL GuiVtbl =
 };
 
 
-static BOOL
-LoadShellLinkConsoleInfo(IN OUT PCONSOLE_START_INFO ConsoleStartInfo,
-                         IN OUT PCONSOLE_INFO ConsoleInfo)
-{
-#define PATH_SEPARATOR L'\\'
-
-    BOOL    RetVal   = FALSE;
-    HRESULT hRes     = S_OK;
-    LPWSTR  LinkName = NULL;
-    SIZE_T  Length   = 0;
-
-    if ((ConsoleStartInfo->dwStartupFlags & STARTF_TITLEISLINKNAME) == 0)
-        return FALSE;
-
-    ConsoleStartInfo->IconPath[0] = L'\0';
-    ConsoleStartInfo->IconIndex   = 0;
-
-    /* 1- Find the last path separator if any */
-    LinkName = wcsrchr(ConsoleStartInfo->ConsoleTitle, PATH_SEPARATOR);
-    if (LinkName == NULL)
-    {
-        LinkName = ConsoleStartInfo->ConsoleTitle;
-    }
-    else
-    {
-        /* Skip the path separator */
-        ++LinkName;
-    }
-
-    /* 2- Check for the link extension. The name ".lnk" is considered invalid. */
-    Length = wcslen(LinkName);
-    if ( (Length <= 4) || (wcsicmp(LinkName + (Length - 4), L".lnk") != 0) )
-        return FALSE;
-
-    /* 3- It may be a link. Try to retrieve some properties */
-    hRes = CoInitialize(NULL);
-    if (SUCCEEDED(hRes))
-    {
-        /* Get a pointer to the IShellLink interface */
-        IShellLinkW* pshl = NULL;
-        hRes = CoCreateInstance(&CLSID_ShellLink,
-                                NULL, 
-                                CLSCTX_INPROC_SERVER,
-                                &IID_IShellLinkW,
-                                (LPVOID*)&pshl);
-        if (SUCCEEDED(hRes))
-        {
-            /* Get a pointer to the IPersistFile interface */
-            IPersistFile* ppf = NULL;
-            hRes = IPersistFile_QueryInterface(pshl, &IID_IPersistFile, (LPVOID*)&ppf);
-            if (SUCCEEDED(hRes))
-            {
-                /* Load the shortcut */
-                hRes = IPersistFile_Load(ppf, ConsoleStartInfo->ConsoleTitle, STGM_READ);
-                if (SUCCEEDED(hRes))
-                {
-                    /*
-                     * Finally we can get the properties !
-                     * Update the old ones if needed.
-                     */
-                    INT ShowCmd = 0;
-                    // WORD HotKey = 0;
-
-                    /* Reset the name of the console with the name of the shortcut */
-                    Length = min(/*Length*/ Length - 4, // 4 == len(".lnk")
-                                 sizeof(ConsoleInfo->ConsoleTitle) / sizeof(ConsoleInfo->ConsoleTitle[0]) - 1);
-                    wcsncpy(ConsoleInfo->ConsoleTitle, LinkName, Length);
-                    ConsoleInfo->ConsoleTitle[Length] = L'\0';
-
-                    /* Get the window showing command */
-                    hRes = IShellLinkW_GetShowCmd(pshl, &ShowCmd);
-                    if (SUCCEEDED(hRes)) ConsoleStartInfo->wShowWindow = (WORD)ShowCmd;
-
-                    /* Get the hotkey */
-                    // hRes = pshl->GetHotkey(&ShowCmd);
-                    // if (SUCCEEDED(hRes)) ConsoleStartInfo->HotKey = HotKey;
-
-                    /* Get the icon location, if any */
-
-                    hRes = IShellLinkW_GetIconLocation(pshl,
-                                                       ConsoleStartInfo->IconPath,
-                                                       sizeof(ConsoleStartInfo->IconPath)/sizeof(ConsoleStartInfo->IconPath[0]) - 1, // == MAX_PATH
-                                                       &ConsoleStartInfo->IconIndex);
-                    if (!SUCCEEDED(hRes))
-                    {
-                        ConsoleStartInfo->IconPath[0] = L'\0';
-                        ConsoleStartInfo->IconIndex   = 0;
-                    }
-
-                    // FIXME: Since we still don't load console properties from the shortcut,
-                    // return false. When this will be done, we will return true instead.
-                    RetVal = FALSE;
-                }
-                IPersistFile_Release(ppf);
-            }
-            IShellLinkW_Release(pshl);
-        }
-    }
-    CoUninitialize();
-
-    return RetVal;
-}
-
 NTSTATUS NTAPI
 GuiLoadFrontEnd(IN OUT PFRONTEND FrontEnd,
                 IN OUT PCONSOLE_INFO ConsoleInfo,
                 IN OUT PVOID ExtraConsoleInfo,
                 IN ULONG ProcessId)
 {
-    PCONSOLE_START_INFO ConsoleStartInfo = ExtraConsoleInfo;
+    PCONSOLE_INIT_INFO ConsoleInitInfo = ExtraConsoleInfo;
     PGUI_INIT_INFO GuiInitInfo;
 
-    if (FrontEnd == NULL || ConsoleInfo == NULL || ConsoleStartInfo == NULL)
+    if (FrontEnd == NULL || ConsoleInfo == NULL || ConsoleInitInfo == NULL)
         return STATUS_INVALID_PARAMETER;
 
     /* Initialize GUI terminal emulator common functionalities */
     if (!GuiInit()) return STATUS_UNSUCCESSFUL;
-
-    /*
-     * Load per-application terminal settings.
-     *
-     * Check whether the process creating the console was launched via
-     * a shell-link. ConsoleInfo->ConsoleTitle may be updated with the
-     * name of the shortcut, and ConsoleStartInfo->Icon[Path|Index] too.
-     */
-    if (ConsoleStartInfo->dwStartupFlags & STARTF_TITLEISLINKNAME)
-    {
-        if (!LoadShellLinkConsoleInfo(ConsoleStartInfo, ConsoleInfo))
-        {
-            ConsoleStartInfo->dwStartupFlags &= ~STARTF_TITLEISLINKNAME;
-        }
-    }
 
     /*
      * Initialize a private initialization info structure for later use.
@@ -1245,14 +1093,16 @@ GuiLoadFrontEnd(IN OUT PFRONTEND FrontEnd,
     if (GuiInitInfo == NULL) return STATUS_NO_MEMORY;
 
     // HACK: We suppose that the pointers will be valid in GuiInitFrontEnd...
+    // If not, then copy exactly what we need in GuiInitInfo.
     GuiInitInfo->ConsoleInfo      = ConsoleInfo;
-    GuiInitInfo->ConsoleStartInfo = ConsoleStartInfo;
+    GuiInitInfo->ConsoleStartInfo = ConsoleInitInfo->ConsoleStartInfo;
     GuiInitInfo->ProcessId        = ProcessId;
+    GuiInitInfo->IsWindowVisible  = ConsoleInitInfo->IsWindowVisible;
 
     /* Finally, initialize the frontend structure */
-    FrontEnd->Vtbl    = &GuiVtbl;
-    FrontEnd->Data    = NULL;
-    FrontEnd->OldData = GuiInitInfo;
+    FrontEnd->Vtbl     = &GuiVtbl;
+    FrontEnd->Context  = NULL;
+    FrontEnd->Context2 = GuiInitInfo;
 
     return STATUS_SUCCESS;
 }
@@ -1262,8 +1112,8 @@ GuiUnloadFrontEnd(IN OUT PFRONTEND FrontEnd)
 {
     if (FrontEnd == NULL) return STATUS_INVALID_PARAMETER;
 
-    if (FrontEnd->Data)    GuiDeinitFrontEnd(FrontEnd);
-    if (FrontEnd->OldData) ConsoleFreeHeap(FrontEnd->OldData);
+    if (FrontEnd->Context ) GuiDeinitFrontEnd(FrontEnd);
+    if (FrontEnd->Context2) ConsoleFreeHeap(FrontEnd->Context2);
 
     return STATUS_SUCCESS;
 }

@@ -458,10 +458,13 @@ NtGdiPolyPolyDraw( IN HDC hDC,
     /* Special handling for GdiPolyPolyRgn */
     if (iFunc == GdiPolyPolyRgn)
     {
-        HRGN hRgn;
-        hRgn = IntCreatePolyPolygonRgn(SafePoints, SafeCounts, Count, (INT_PTR)hDC);
+        INT iMode = (INT)(UINT_PTR)hDC;
+        HRGN hrgn;
+
+        hrgn = GreCreatePolyPolygonRgn(SafePoints, SafeCounts, Count, iMode);
+
         ExFreePoolWithTag(pTemp, TAG_SHAPE);
-        return (ULONG_PTR)hRgn;
+        return (ULONG_PTR)hrgn;
     }
 
     dc = DC_LockDc(hDC);
@@ -1116,7 +1119,7 @@ NtGdiExtFloodFill(
             goto cleanup;
     }
     else
-        RECTL_vSetRect(&DestRect, 0, psurf->SurfObj.sizlBitmap.cx, 0, psurf->SurfObj.sizlBitmap.cy);
+        RECTL_vSetRect(&DestRect, 0, 0, psurf->SurfObj.sizlBitmap.cx, psurf->SurfObj.sizlBitmap.cy);
 
     DC_vPrepareDCsForBlit(dc, &DestRect, NULL, NULL);
 

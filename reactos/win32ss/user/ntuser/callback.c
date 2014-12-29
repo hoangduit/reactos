@@ -296,6 +296,9 @@ co_IntCallWindowProc(WNDPROC Proc,
    ULONG ArgumentLength;
    LRESULT Result;
 
+   TRACE("co_IntCallWindowProc(Proc %p, IsAnsiProc: %s, Wnd %p, Message %u, wParam %Iu, lParam %Id, lParamBufferSize %d)\n",
+       Proc, IsAnsiProc ? "TRUE" : "FALSE", Wnd, Message, wParam, lParam, lParamBufferSize);
+
    /* Do not allow the desktop thread to do callback to user mode */
    ASSERT(PsGetCurrentThreadWin32Thread() != gptiDesktopThread);
 
@@ -1097,4 +1100,24 @@ co_IntSetWndIcons(VOID)
    return TRUE;
 }
 
+VOID FASTCALL
+co_IntDeliverUserAPC(VOID)
+{
+   NTSTATUS Status;
+   UserLeaveCo();
+
+   Status = KeUserModeCallback(USER32_CALLBACK_DELIVERUSERAPC,
+                               0,
+                               0,
+                               NULL,
+                               NULL);
+
+
+   UserEnterCo();
+
+   if (!NT_SUCCESS(Status))
+   {
+      ERR("Delivering User APC callback failed!\n");
+   }   
+}
 /* EOF */

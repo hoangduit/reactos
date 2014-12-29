@@ -23,7 +23,10 @@ extern void func_EngAcquireSemaphore(void);
 extern void func_EngCreateSemaphore(void);
 extern void func_EngDeleteSemaphore(void);
 extern void func_EngReleaseSemaphore(void);
+extern void func_EnumFontFamilies(void);
+extern void func_ExcludeClipRect(void);
 extern void func_ExtCreatePen(void);
+extern void func_ExtCreateRegion(void);
 extern void func_GdiConvertBitmap(void);
 extern void func_GdiConvertBrush(void);
 extern void func_GdiConvertDC(void);
@@ -36,6 +39,7 @@ extern void func_GdiGetLocalBrush(void);
 extern void func_GdiGetLocalDC(void);
 extern void func_GdiReleaseLocalDC(void);
 extern void func_GdiSetAttrs(void);
+extern void func_GetClipBox(void);
 extern void func_GetClipRgn(void);
 extern void func_GetCurrentObject(void);
 extern void func_GetDIBColorTable(void);
@@ -47,6 +51,7 @@ extern void func_GetStockObject(void);
 extern void func_GetTextExtentExPoint(void);
 extern void func_GetTextFace(void);
 extern void func_MaskBlt(void);
+extern void func_OffsetClipRgn(void);
 extern void func_PatBlt(void);
 extern void func_Rectangle(void);
 extern void func_SelectObject(void);
@@ -82,7 +87,10 @@ const struct test winetest_testlist[] =
     { "EngCreateSemaphore", func_EngCreateSemaphore },
     { "EngDeleteSemaphore", func_EngDeleteSemaphore },
     { "EngReleaseSemaphore", func_EngReleaseSemaphore },
+    { "EnumFontFamilies", func_EnumFontFamilies },
+    { "ExcludeClipRect", func_ExcludeClipRect },
     { "ExtCreatePen", func_ExtCreatePen },
+    { "ExtCreateRegion", func_ExtCreateRegion },
     { "GdiConvertBitmap", func_GdiConvertBitmap },
     { "GdiConvertBrush", func_GdiConvertBrush },
     { "GdiConvertDC", func_GdiConvertDC },
@@ -95,6 +103,7 @@ const struct test winetest_testlist[] =
     { "GdiGetLocalDC", func_GdiGetLocalDC },
     { "GdiReleaseLocalDC", func_GdiReleaseLocalDC },
     { "GdiSetAttrs", func_GdiSetAttrs },
+    { "GetClipBox", func_GetClipBox },
     { "GetClipRgn", func_GetClipRgn },
     { "GetCurrentObject", func_GetCurrentObject },
     { "GetDIBColorTable", func_GetDIBColorTable },
@@ -106,6 +115,7 @@ const struct test winetest_testlist[] =
     { "GetTextExtentExPoint", func_GetTextExtentExPoint },
     { "GetTextFace", func_GetTextFace },
     { "MaskBlt", func_MaskBlt },
+    { "OffsetClipRgn", func_OffsetClipRgn },
     { "PatBlt", func_PatBlt },
     { "Rectangle", func_Rectangle },
     { "SelectObject", func_SelectObject },

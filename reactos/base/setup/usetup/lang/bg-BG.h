@@ -1506,8 +1506,10 @@ MUI_ERROR bgBGErrorEntries[] =
         "ENTER = Презапускане на компютъра"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "На избрания дял няма достатъчно свободно пространство.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Натиснете клавиш, за да продължите.",
         NULL
     },
@@ -1521,19 +1523,6 @@ MUI_ERROR bgBGErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "You can not create more than one extended partition per disk.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "You can not create a partition behind an extended partition.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "An extended partition must always be the last\n"
-        "partition in a partition table.\n"
         "\n"
         "  * Press any key to continue."
     },
@@ -1737,7 +1726,7 @@ MUI_STRING bgBGStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "на твърд диск %lu (%I64u %s), Извод=%hu, Шина=%hu, ОУ=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sвид %-3u%s                       %6lu %s"},
+    "%c%c %c %sвид %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  твърд диск %lu  (Извод=%hu, Шина=%hu, ОУ=%hu) на %S"},
     {STRING_HDDINFOUNK6,

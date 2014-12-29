@@ -582,7 +582,6 @@ static const WCHAR dependencyW[] = {'d','e','p','e','n','d','e','n','c','y',0};
 static const WCHAR dependentAssemblyW[] = {'d','e','p','e','n','d','e','n','t','A','s','s','e','m','b','l','y',0};
 static const WCHAR descriptionW[] = {'d','e','s','c','r','i','p','t','i','o','n',0};
 static const WCHAR fileW[] = {'f','i','l','e',0};
-static const WCHAR asmv2hashW[] = {'a','s','m','v','2',':','h','a','s','h',0};
 static const WCHAR noInheritW[] = {'n','o','I','n','h','e','r','i','t',0};
 static const WCHAR noInheritableW[] = {'n','o','I','n','h','e','r','i','t','a','b','l','e',0};
 static const WCHAR typelibW[] = {'t','y','p','e','l','i','b',0};
@@ -4646,7 +4645,30 @@ RtlCreateActivationContext(IN ULONG Flags,
     if (pActCtx->lpSource && !((pActCtx->dwFlags & ACTCTX_FLAG_RESOURCE_NAME_VALID) &&
                                (pActCtx->dwFlags & ACTCTX_FLAG_HMODULE_VALID)))
     {
-        if (!RtlDosPathNameToNtPathName_U(pActCtx->lpSource, &nameW, NULL, NULL))
+        WCHAR *source = NULL;
+        BOOLEAN ret;
+
+        if (pActCtx->dwFlags & ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID &&
+            RtlDetermineDosPathNameType_U(pActCtx->lpSource) == RtlPathTypeRelative)
+        {
+            DWORD dir_len, source_len;
+
+            dir_len = strlenW(pActCtx->lpAssemblyDirectory);
+            source_len = strlenW(pActCtx->lpSource);
+            if (!(source = RtlAllocateHeap( RtlGetProcessHeap(), 0, (dir_len+source_len+2)*sizeof(WCHAR))))
+            {
+                status = STATUS_NO_MEMORY;
+                goto error;
+            }
+
+            memcpy(source, pActCtx->lpAssemblyDirectory, dir_len*sizeof(WCHAR));
+            source[dir_len] = '\\';
+            memcpy(source+dir_len+1, pActCtx->lpSource, (source_len+1)*sizeof(WCHAR));
+        }
+
+        ret = RtlDosPathNameToNtPathName_U(source ? source : pActCtx->lpSource, &nameW, NULL, NULL);
+        if (source) RtlFreeHeap( RtlGetProcessHeap(), 0, source );
+        if (!ret)
         {
             status = STATUS_NO_SUCH_FILE;
             goto error;

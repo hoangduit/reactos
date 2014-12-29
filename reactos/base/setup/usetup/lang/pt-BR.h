@@ -1531,8 +1531,10 @@ MUI_ERROR ptBRErrorEntries[] =
         "ENTER=Reiniciar"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "NÆo h  espa‡o suficiente na parti‡Æo selecionada.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Pressione qualquer tecla para continuar.",
         NULL
     },
@@ -1546,19 +1548,6 @@ MUI_ERROR ptBRErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "You can not create more than one extended partition per disk.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "You can not create a partition behind an extended partition.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "An extended partition must always be the last\n"
-        "partition in a partition table.\n"
         "\n"
         "  * Press any key to continue."
     },
@@ -1761,7 +1750,7 @@ MUI_STRING ptBRStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "em Disco %lu (%I64u %s), Porta=%hu, Barramento=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sTipo %-3u%s                       %6lu %s"},
+    "%c%c %c %sTipo %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  Disco %lu  (Porta=%hu, Barramento=%hu, Id=%hu) em %S"},
     {STRING_HDDINFOUNK6,

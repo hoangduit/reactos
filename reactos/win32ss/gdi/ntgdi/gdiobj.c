@@ -37,12 +37,56 @@
 #define NDEBUG
 #include <debug.h>
 
-// Move to gdidbg.h
+
+FORCEINLINE
+void
+INCREASE_THREAD_LOCK_COUNT(
+    _In_ HANDLE hobj)
+{
+    PTHREADINFO pti = PsGetCurrentThreadWin32Thread();
+    DBG_UNREFERENCED_PARAMETER(hobj);
+    if (pti)
+    {
 #if DBG
-#define DBG_INCREASE_LOCK_COUNT(pti, hobj) \
-    if (pti) ((PTHREADINFO)pti)->acExclusiveLockCount[((ULONG_PTR)hobj >> 16) & 0x1f]++;
-#define DBG_DECREASE_LOCK_COUNT(pti, hobj) \
-    if (pti) ((PTHREADINFO)pti)->acExclusiveLockCount[((ULONG_PTR)hobj >> 16) & 0x1f]--;
+        pti->acExclusiveLockCount[((ULONG_PTR)hobj >> 16) & 0x1f]++;
+#endif
+        pti->cExclusiveLocks++;
+    }
+}
+
+FORCEINLINE
+void
+DECREASE_THREAD_LOCK_COUNT(
+    _In_ HANDLE hobj)
+{
+    PTHREADINFO pti = PsGetCurrentThreadWin32Thread();
+    DBG_UNREFERENCED_PARAMETER(hobj);
+    if (pti)
+    {
+#if DBG
+        pti->acExclusiveLockCount[((ULONG_PTR)hobj >> 16) & 0x1f]--;
+#endif
+        pti->cExclusiveLocks--;
+    }
+}
+
+#if DBG
+VOID
+ASSERT_LOCK_ORDER(
+    _In_ UCHAR objt)
+{
+    PTHREADINFO pti = PsGetCurrentThreadWin32Thread();
+    ULONG i;
+
+    if (pti)
+    {
+        /* Ensure correct locking order! */
+        for (i = objt + 1; i < GDIObjTypeTotal; i++)
+        {
+            NT_ASSERT(pti->acExclusiveLockCount[i] == 0);
+        }
+    }
+}
 #define ASSERT_SHARED_OBJECT_TYPE(objt) \
     ASSERT((objt) == GDIObjType_SURF_TYPE || \
            (objt) == GDIObjType_PAL_TYPE || \
@@ -55,8 +99,7 @@
 #define ASSERT_TRYLOCK_OBJECT_TYPE(objt) \
     ASSERT((objt) == GDIObjType_DRVOBJ_TYPE)
 #else
-#define DBG_INCREASE_LOCK_COUNT(ppi, hobj)
-#define DBG_DECREASE_LOCK_COUNT(x, y)
+#define ASSERT_LOCK_ORDER(hobj)
 #define ASSERT_SHARED_OBJECT_TYPE(objt)
 #define ASSERT_EXCLUSIVE_OBJECT_TYPE(objt)
 #define ASSERT_TRYLOCK_OBJECT_TYPE(objt)
@@ -516,6 +559,10 @@ GDIOBJ_vDereferenceObject(POBJ pobj)
     if (ulIndex)
     {
         /* Decrement reference count */
+        if ((gpaulRefCount[ulIndex] & REF_MASK_COUNT) == 0)
+        {
+            DBG_DUMP_EVENT_LIST(&pobj->slhLog);
+        }
         ASSERT((gpaulRefCount[ulIndex] & REF_MASK_COUNT) > 0);
         cRefs = InterlockedDecrement((LONG*)&gpaulRefCount[ulIndex]);
         DBG_LOGEVENT(&pobj->slhLog, EVENT_DEREFERENCE, cRefs);
@@ -643,6 +690,9 @@ GDIOBJ_TryLockObject(
         return NULL;
     }
 
+    /* Make sure lock order is correct */
+    ASSERT_LOCK_ORDER(objt);
+
     /* Reference the handle entry */
     pentry = ENTRY_ReferenceEntryByHandle(hobj, 0);
     if (!pentry)
@@ -684,7 +734,7 @@ GDIOBJ_TryLockObject(
 
     /* Increase lock count */
     pobj->cExclusiveLock++;
-    DBG_INCREASE_LOCK_COUNT(PsGetCurrentProcessWin32Process(), hobj);
+    INCREASE_THREAD_LOCK_COUNT(hobj);
     DBG_LOGEVENT(&pobj->slhLog, EVENT_LOCK, 0);
 
     /* Return the object */
@@ -708,6 +758,9 @@ GDIOBJ_LockObject(
         DPRINT("Wrong object type: hobj=0x%p, objt=0x%x\n", hobj, objt);
         return NULL;
     }
+
+    /* Make sure lock order is correct */
+    ASSERT_LOCK_ORDER(objt);
 
     /* Reference the handle entry */
     pentry = ENTRY_ReferenceEntryByHandle(hobj, 0);
@@ -735,7 +788,7 @@ GDIOBJ_LockObject(
 
     /* Increase lock count */
     pobj->cExclusiveLock++;
-    DBG_INCREASE_LOCK_COUNT(PsGetCurrentProcessWin32Process(), hobj);
+    INCREASE_THREAD_LOCK_COUNT(hobj);
     DBG_LOGEVENT(&pobj->slhLog, EVENT_LOCK, 0);
 
     /* Return the object */
@@ -751,7 +804,7 @@ GDIOBJ_vUnlockObject(POBJ pobj)
 
     /* Decrease lock count */
     pobj->cExclusiveLock--;
-    DBG_DECREASE_LOCK_COUNT(PsGetCurrentProcessWin32Process(), pobj->hHmgr);
+    DECREASE_THREAD_LOCK_COUNT(pobj->hHmgr);
     DBG_LOGEVENT(&pobj->slhLog, EVENT_UNLOCK, 0);
 
     /* Check if this was the last lock */
@@ -802,7 +855,7 @@ GDIOBJ_hInsertObject(
     ExAcquirePushLockExclusive(&pobj->pushlock);
     pobj->cExclusiveLock = 1;
     pobj->dwThreadId = PtrToUlong(PsGetCurrentThreadId());
-    DBG_INCREASE_LOCK_COUNT(PsGetCurrentProcessWin32Process(), pobj->hHmgr);
+    INCREASE_THREAD_LOCK_COUNT(pobj->hHmgr);
 
     /* Get object type from the hHmgr field */
     objt = ((ULONG_PTR)pobj->hHmgr >> 16) & 0xff;
@@ -1000,7 +1053,7 @@ GDIOBJ_vDeleteObject(POBJ pobj)
             /* Release the pushlock and reenable APCs */
             ExReleasePushLockExclusive(&pobj->pushlock);
             KeLeaveCriticalRegion();
-            DBG_DECREASE_LOCK_COUNT(PsGetCurrentProcessWin32Process(), pobj->hHmgr);
+            DECREASE_THREAD_LOCK_COUNT(pobj->hHmgr);
         }
     }
 
@@ -1246,6 +1299,15 @@ NtGdiCreateClientObj(
     POBJ pObject;
     HANDLE handle;
 
+    /* Check if ulType is valid */
+    if ((ulType != GDILoObjType_LO_METAFILE16_TYPE) &&
+        (ulType != GDILoObjType_LO_METAFILE_TYPE) &&
+        (ulType != GDILoObjType_LO_METADC16_TYPE))
+    {
+        DPRINT1("NtGdiCreateClientObj: Invalid object type 0x%lx.\n", ulType);
+        return NULL;
+    }
+
     /* Allocate a new object */
     pObject = GDIOBJ_AllocateObject(GDIObjType_CLIENTOBJ_TYPE,
                                     sizeof(CLIENTOBJ),
@@ -1255,9 +1317,6 @@ NtGdiCreateClientObj(
         DPRINT1("NtGdiCreateClientObj: Could not allocate a clientobj.\n");
         return NULL;
     }
-
-    /* Mask out everything that would change the type in a wrong manner */
-    ulType &= (GDI_HANDLE_TYPE_MASK & ~GDI_HANDLE_BASETYPE_MASK);
 
     /* Set the real object type */
     pObject->hHmgr = UlongToHandle(ulType | GDILoObjType_LO_CLIENTOBJ_TYPE);

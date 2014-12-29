@@ -1,5 +1,46 @@
 #pragma once
 
+//
+// Define this if you want debugging support
+//
+#define _CC_DEBUG_                                      0x00
+
+//
+// These define the Debug Masks Supported
+//
+#define CC_API_DEBUG                                    0x01
+
+//
+// Debug/Tracing support
+//
+#if _CC_DEBUG_
+#ifdef NEW_DEBUG_SYSTEM_IMPLEMENTED // enable when Debug Filters are implemented
+#define CCTRACE(x, ...)                                     \
+    {                                                       \
+        DbgPrintEx("%s [%.16s] - ",                         \
+                   __FUNCTION__,                            \
+                   PsGetCurrentProcess()->ImageFileName);   \
+        DbgPrintEx(__VA_ARGS__);                            \
+    }
+#else
+#define CCTRACE(x, ...)                                     \
+    if (x & CcRosTraceLevel)                                \
+    {                                                       \
+        DbgPrint("%s [%.16s] - ",                           \
+                 __FUNCTION__,                              \
+                 PsGetCurrentProcess()->ImageFileName);     \
+        DbgPrint(__VA_ARGS__);                              \
+    }
+#endif
+#else
+#define CCTRACE(x, fmt, ...) DPRINT(fmt, ##__VA_ARGS__)
+#endif
+
+//
+// Global Cc Data
+//
+extern ULONG CcRosTraceLevel;
+
 typedef struct _PF_SCENARIO_ID
 {
     WCHAR ScenName[30];
@@ -184,8 +225,8 @@ NTSTATUS
 NTAPI
 CcRosGetVacb(
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
-    PULONGLONG BaseOffset,
+    LONGLONG FileOffset,
+    PLONGLONG BaseOffset,
     PVOID *BaseAddress,
     PBOOLEAN UptoDate,
     PROS_VACB *Vacb
@@ -211,7 +252,7 @@ NTSTATUS
 NTAPI
 CcRosUnmapVacb(
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
+    LONGLONG FileOffset,
     BOOLEAN NowDirty
 );
 
@@ -219,7 +260,7 @@ PROS_VACB
 NTAPI
 CcRosLookupVacb(
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset
+    LONGLONG FileOffset
 );
 
 VOID
@@ -230,7 +271,7 @@ NTSTATUS
 NTAPI
 CcRosMarkDirtyVacb(
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset
+    LONGLONG FileOffset
 );
 
 NTSTATUS
@@ -267,7 +308,7 @@ NTSTATUS
 NTAPI
 CcRosRequestVacb(
     PROS_SHARED_CACHE_MAP SharedCacheMap,
-    ULONG FileOffset,
+    LONGLONG FileOffset,
     PVOID* BaseAddress,
     PBOOLEAN UptoDate,
     PROS_VACB *Vacb
@@ -295,10 +336,10 @@ CcTryToInitializeFileCache(PFILE_OBJECT FileObject);
 FORCEINLINE
 BOOLEAN
 DoRangesIntersect(
-    _In_ ULONGLONG Offset1,
-    _In_ ULONG Length1,
-    _In_ ULONGLONG Offset2,
-    _In_ ULONG Length2)
+    _In_ LONGLONG Offset1,
+    _In_ LONGLONG Length1,
+    _In_ LONGLONG Offset2,
+    _In_ LONGLONG Length2)
 {
     if (Offset1 + Length1 <= Offset2)
         return FALSE;
@@ -310,9 +351,9 @@ DoRangesIntersect(
 FORCEINLINE
 BOOLEAN
 IsPointInRange(
-    _In_ ULONGLONG Offset1,
-    _In_ ULONG Length1,
-    _In_ ULONGLONG Point)
+    _In_ LONGLONG Offset1,
+    _In_ LONGLONG Length1,
+    _In_ LONGLONG Point)
 {
     return DoRangesIntersect(Offset1, Length1, Point, 1);
 }

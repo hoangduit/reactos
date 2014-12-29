@@ -48,6 +48,7 @@
 #include <ndk/obfuncs.h>
 #include <ndk/psfuncs.h>
 #include <ndk/rtlfuncs.h>
+#include <ndk/setypes.h>
 
 /* Filesystem headers */
 #include <fslib/ext2lib.h>
@@ -152,6 +153,7 @@ typedef enum _PAGE_NUMBER
     QUIT_PAGE,
     FLUSH_PAGE,
     REBOOT_PAGE,		/* virtual page */
+    RECOVERY_PAGE,		/* virtual page */
 } PAGE_NUMBER, *PPAGE_NUMBER;
 #endif
 

@@ -1495,8 +1495,10 @@ MUI_ERROR ruRUErrorEntries[] =
         "ENTER = Reboot computer"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Not enough free space in the selected partition.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Press any key to continue.",
         NULL
     },
@@ -1510,19 +1512,6 @@ MUI_ERROR ruRUErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "You can not create more than one extended partition per disk.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "You can not create a partition behind an extended partition.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "An extended partition must always be the last\n"
-        "partition in a partition table.\n"
         "\n"
         "  * Press any key to continue."
     },
@@ -1726,7 +1715,7 @@ MUI_STRING ruRUStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "на жестком диске %lu (%I64u %s), Порт=%hu, Шина=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sЗапись %-3u%s                       %6lu %s"},
+    "%c%c %c %sЗапись %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  Жесткий диск %lu  (Порт=%hu, Шина=%hu, Id=%hu) на %S"},
     {STRING_HDDINFOUNK6,

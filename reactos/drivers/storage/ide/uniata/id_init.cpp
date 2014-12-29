@@ -355,9 +355,9 @@ unknown_dev:
     }
 
     static BUSMASTER_CONTROLLER_INFORMATION const SiSAdapters[] = {
-        PCI_DEV_HW_SPEC_BM( 1183, 1039, 0x00, ATA_UDMA6, "SiS 1183" , SIS133NEW),
+        PCI_DEV_HW_SPEC_BM( 1183, 1039, 0x00, ATA_SA150, "SiS 1183 IDE" , SIS133NEW),
         PCI_DEV_HW_SPEC_BM( 1182, 1039, 0x00, ATA_SA150, "SiS 1182" , SISSATA   | UNIATA_SATA),
-        PCI_DEV_HW_SPEC_BM( 0183, 1039, 0x00, ATA_SA150, "SiS 183"  , SISSATA   | UNIATA_SATA),
+        PCI_DEV_HW_SPEC_BM( 0183, 1039, 0x00, ATA_SA150, "SiS 183 RAID"  , SISSATA   | UNIATA_SATA),
         PCI_DEV_HW_SPEC_BM( 0182, 1039, 0x00, ATA_SA150, "SiS 182"  , SISSATA   | UNIATA_SATA),
         PCI_DEV_HW_SPEC_BM( 0181, 1039, 0x00, ATA_SA150, "SiS 181"  , SISSATA   | UNIATA_SATA),
         PCI_DEV_HW_SPEC_BM( 0180, 1039, 0x00, ATA_SA150, "SiS 180"  , SISSATA   | UNIATA_SATA),
@@ -376,7 +376,7 @@ unknown_dev:
 /*        PCI_DEV_HW_SPEC_BM( 0640, 1039, 0x00, ATA_UDMA4, "SiS 640"  , SIS_SOUTH        ),*/
         PCI_DEV_HW_SPEC_BM( 0635, 1039, 0x00, ATA_UDMA5, "SiS 635"  , SIS100NEW        ),
         PCI_DEV_HW_SPEC_BM( 0633, 1039, 0x00, ATA_UDMA5, "SiS 633"  , SIS100NEW        ),
-        PCI_DEV_HW_SPEC_BM( 0630, 1039, 0x00, ATA_UDMA5, "SiS 630S" , SIS100OLD        ),
+        PCI_DEV_HW_SPEC_BM( 0630, 1039, 0x30, ATA_UDMA5, "SiS 630S" , SIS100OLD        ),
         PCI_DEV_HW_SPEC_BM( 0630, 1039, 0x00, ATA_UDMA4, "SiS 630"  , SIS66            ),
         PCI_DEV_HW_SPEC_BM( 0620, 1039, 0x00, ATA_UDMA4, "SiS 620"  , SIS66            ),
 
@@ -522,7 +522,8 @@ unknown_dev:
                 ScsiPortFreeDeviceBase(HwDeviceExtension,
                                        deviceExtension->BaseIoAddressBM_0);
 
-            deviceExtension->BaseIoAddressBM_0 = 0;
+            deviceExtension->BaseIoAddressBM_0.Addr = 0;
+            deviceExtension->BaseIoAddressBM_0.MemIo = 0;
             deviceExtension->BusMaster = DMA_MODE_NONE;
             deviceExtension->MaxTransferMode = ATA_PIO4;
             break;
@@ -1170,22 +1171,61 @@ for_ugly_chips:
             break;
         }
         if(deviceExtension->MaxTransferMode >= ATA_SA150) {
+
+            BOOLEAN OrigAHCI = FALSE;
+
             GetPciConfig1(0x90, tmp8);
             KdPrint2((PRINT_PREFIX "Intel chip config: %x\n", tmp8));
             /* SATA parts can be either compat or AHCI */
+            MemIo = FALSE;
             if(ChipFlags & UNIATA_AHCI) {
-
+                OrigAHCI = TRUE;
                 if(tmp8 & 0xc0) {
                     //KdPrint2((PRINT_PREFIX "AHCI not supported yet\n"));
                     //return FALSE;
                     KdPrint2((PRINT_PREFIX "try run AHCI\n"));
                     break;
                 }
-                KdPrint2((PRINT_PREFIX "Compatible mode\n"));
+                BaseIoAddressBM = AtapiGetIoRange(HwDeviceExtension, ConfigInfo, pciData, SystemIoBusNumber,
+                                        4, 0, sizeof(IDE_BUSMASTER_REGISTERS));
+                if(BaseIoAddressBM) {
+                    KdPrint2((PRINT_PREFIX "Intel BM check at %x\n", BaseIoAddressBM));
+                    /* check if we really have valid BM registers */
+                    if((*ConfigInfo->AccessRanges)[4].RangeInMemory) {
+                        KdPrint2((PRINT_PREFIX "MemIo[4]\n"));
+                        MemIo = TRUE;
+                    }
+                    deviceExtension->BaseIoAddressBM_0.Addr  = BaseIoAddressBM;
+                    deviceExtension->BaseIoAddressBM_0.MemIo = MemIo;
+
+                    tmp8 = AtapiReadPortEx1(NULL, (ULONGIO_PTR)(&deviceExtension->BaseIoAddressBM_0),IDX_BM_Status);
+                    KdPrint2((PRINT_PREFIX "BM status: %x\n", tmp8));
+                    /* cleanup */
+                    ScsiPortFreeDeviceBase(HwDeviceExtension, (PCHAR)BaseIoAddressBM);
+                    deviceExtension->BaseIoAddressBM_0.Addr = 0;
+                    deviceExtension->BaseIoAddressBM_0.MemIo = 0;
+
+                    if(tmp8 == 0xff) {
+                        KdPrint2((PRINT_PREFIX "invalid BM status, keep AHCI mode\n"));
+                        break;
+                    }
+                }
+                KdPrint2((PRINT_PREFIX "Compatible mode, reallocate LUNs\n"));
+                deviceExtension->NumberLuns = 2; // we may be in Legacy mode
+                if(!UniataAllocateLunExt(deviceExtension, 2)) {
+                    KdPrint2((PRINT_PREFIX "can't re-allocate Luns\n"));
+                    return STATUS_UNSUCCESSFUL;
+                }
             }
             deviceExtension->HwFlags &= ~UNIATA_AHCI;
 
+            MemIo = FALSE;
             /* if BAR(5) is IO it should point to SATA interface registers */
+            if(OrigAHCI) {
+                /* Skip BAR(5) in compatible mode */
+                KdPrint2((PRINT_PREFIX "Ignore BAR5 on compatible\n"));
+                BaseMemAddress = 0;
+            } else
             if(deviceExtension->DevID == 0x28288086 &&
                 pciData->u.type0.SubVendorID == 0x106b) {
                 /* Skip BAR(5) on ICH8M Apples, system locks up on access. */
@@ -1195,7 +1235,7 @@ for_ugly_chips:
                 BaseMemAddress = AtapiGetIoRange(HwDeviceExtension, ConfigInfo, pciData, SystemIoBusNumber,
                                     5, 0, 0x10);
                 if(BaseMemAddress && (*ConfigInfo->AccessRanges)[5].RangeInMemory) {
-                    KdPrint2((PRINT_PREFIX "MemIo\n"));
+                    KdPrint2((PRINT_PREFIX "MemIo[5]\n"));
                     MemIo = TRUE;
                 }
             }
@@ -2390,6 +2430,9 @@ AtapiChipInit(
                 break;
             }
         }
+        if(deviceExtension->HwFlags & UNIATA_SATA) {
+            // do nothing for SATA
+        } else
         if(ChipType == SIS133NEW) {
             USHORT tmp16;
             // check 80-pin cable

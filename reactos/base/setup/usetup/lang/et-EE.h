@@ -1491,8 +1491,10 @@ MUI_ERROR etEEErrorEntries[] =
         "ENTER = TaaskÑivita arvuti"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Valitud partitsioonil pole piisavalt ruumi.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "The selected partition is not large enough to install ReactOS.\n"
+        "The install partition must have a size of at least %lu MB.\n"
+        "\n"
         "  * Vajuta suvalist klahvi, et jÑtkata.",
         NULL
     },
@@ -1506,19 +1508,6 @@ MUI_ERROR etEEErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "You can not create more than one extended partition per disk.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "You can not create a partition behind an extended partition.\n"
-        "\n"
-        "  * Press any key to continue."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "An extended partition must always be the last\n"
-        "partition in a partition table.\n"
         "\n"
         "  * Press any key to continue."
     },
@@ -1722,7 +1711,7 @@ MUI_STRING etEEStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "K‰vaketas %lu (%I64u %s), Port=%hu, Siin=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sTÅÅp %-3u%s                       %6lu %s"},
+    "%c%c %c %sTÅÅp %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  K‰vaketas %lu  (Port=%hu, Siin=%hu, Id=%hu) on %S"},
     {STRING_HDDINFOUNK6,

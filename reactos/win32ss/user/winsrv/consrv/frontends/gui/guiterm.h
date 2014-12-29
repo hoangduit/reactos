@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/frontends/gui/guiterm.h
+ * FILE:            consrv/frontends/gui/guiterm.h
  * PURPOSE:         GUI Terminal Front-End
  * PROGRAMMERS:     Gé van Geldorp
  *                  Johannes Anderwald
@@ -13,13 +13,6 @@
 
 #include "guisettings.h"
 #include "conwnd.h"
-
-NTSTATUS GuiInitConsole(PCONSOLE Console,
-                        /*IN*/ PCONSOLE_START_INFO ConsoleStartInfo,
-                        PCONSOLE_INFO ConsoleInfo,
-                        DWORD ProcessId,
-                        LPCWSTR IconPath,
-                        INT IconIndex);
 
 VOID
 GuiConsoleMoveWindow(PGUI_CONSOLE_DATA GuiData);

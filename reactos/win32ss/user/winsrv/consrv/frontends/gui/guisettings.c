@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/frontends/gui/guisettings.c
+ * FILE:            consrv/frontends/gui/guisettings.c
  * PURPOSE:         GUI Terminal Front-End Settings Management
  * PROGRAMMERS:     Johannes Anderwald
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -83,9 +83,8 @@ GuiConsoleReadUserSettings(IN OUT PGUI_CONSOLE_INFO TermInfo,
 
         if (!wcscmp(szValueName, L"FaceName"))
         {
-            SIZE_T Length = min(wcslen(szValue) + 1, LF_FACESIZE); // wcsnlen
             wcsncpy(TermInfo->FaceName, szValue, LF_FACESIZE);
-            TermInfo->FaceName[Length] = L'\0';
+            TermInfo->FaceName[LF_FACESIZE - 1] = UNICODE_NULL;
             RetVal = TRUE;
         }
         else if (!wcscmp(szValueName, L"FontFamily"))
@@ -239,7 +238,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
 
     DPRINT("GuiConsoleShowConsoleProperties entered\n");
 
-    if (!ConDrvValidateConsoleUnsafe(Console, CONSOLE_RUNNING, TRUE)) return;
+    if (!ConDrvValidateConsoleUnsafe((PCONSOLE)Console, CONSOLE_RUNNING, TRUE)) return;
 
     /*
      * Create a memory section to share with the applet, and map it.
@@ -255,7 +254,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
                              NULL);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error: Impossible to create a shared section ; Status = %lu\n", Status);
+        DPRINT1("Error: Impossible to create a shared section, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -271,7 +270,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
                                 PAGE_READWRITE);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error: Impossible to map the shared section ; Status = %lu\n", Status);
+        DPRINT1("Error: Impossible to map the shared section, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -296,7 +295,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
         pSharedInfo->ci.HistoryNoDup = Console->HistoryNoDup;
         pSharedInfo->ci.QuickEdit = Console->QuickEdit;
         pSharedInfo->ci.InsertMode = Console->InsertMode;
-        pSharedInfo->ci.InputBufferSize = 0;
+        /////////////pSharedInfo->ci.InputBufferSize = 0;
         pSharedInfo->ci.ScreenBufferSize = ActiveBuffer->ScreenBufferSize;
         pSharedInfo->ci.ConsoleSize = ActiveBuffer->ViewSize;
         pSharedInfo->ci.CursorBlinkOn;
@@ -323,9 +322,8 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
         /* GUI Information */
         pSharedInfo->TerminalInfo.Size = sizeof(GUI_CONSOLE_INFO);
         GuiInfo = pSharedInfo->TerminalInfo.TermInfo = (PGUI_CONSOLE_INFO)(pSharedInfo + 1);
-        Length = min(wcslen(GuiData->GuiInfo.FaceName) + 1, LF_FACESIZE); // wcsnlen
         wcsncpy(GuiInfo->FaceName, GuiData->GuiInfo.FaceName, LF_FACESIZE);
-        GuiInfo->FaceName[Length] = L'\0';
+        GuiInfo->FaceName[LF_FACESIZE - 1] = UNICODE_NULL;
         GuiInfo->FontFamily = GuiData->GuiInfo.FontFamily;
         GuiInfo->FontSize   = GuiData->GuiInfo.FontSize;
         GuiInfo->FontWeight = GuiData->GuiInfo.FontWeight;
@@ -367,12 +365,12 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
                                0, 0, DUPLICATE_SAME_ACCESS);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error: Impossible to duplicate section handle for client ; Status = %lu\n", Status);
+        DPRINT1("Error: Impossible to duplicate section handle for client, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
     /* Start the properties dialog */
-    if (ProcessData->PropDispatcher)
+    if (ProcessData->PropRoutine)
     {
         _SEH2_TRY
         {
@@ -381,7 +379,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
             _SEH2_TRY
             {
                 Thread = CreateRemoteThread(ProcessData->Process->ProcessHandle, NULL, 0,
-                                            ProcessData->PropDispatcher,
+                                            ProcessData->PropRoutine,
                                             (PVOID)hClientSection, 0, NULL);
                 if (NULL == Thread)
                 {
@@ -389,7 +387,8 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
                 }
                 else
                 {
-                    DPRINT("ProcessData->PropDispatcher remote thread creation succeeded, ProcessId = %x, Process = 0x%p\n", ProcessData->Process->ClientId.UniqueProcess, ProcessData->Process);
+                    DPRINT("ProcessData->PropRoutine remote thread creation succeeded, ProcessId = %x, Process = 0x%p\n",
+                           ProcessData->Process->ClientId.UniqueProcess, ProcessData->Process);
                     /// WaitForSingleObject(Thread, INFINITE);
                 }
             }
@@ -402,7 +401,7 @@ GuiConsoleShowConsoleProperties(PGUI_CONSOLE_DATA GuiData,
         _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
         {
             Status = _SEH2_GetExceptionCode();
-            DPRINT1("GuiConsoleShowConsoleProperties - Caught an exception, Status = %08X\n", Status);
+            DPRINT1("GuiConsoleShowConsoleProperties - Caught an exception, Status = 0x%08lx\n", Status);
         }
         _SEH2_END;
     }
@@ -430,7 +429,7 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
     PTERMINAL_INFO TermInfo = NULL;
     PGUI_CONSOLE_INFO GuiInfo = NULL;
 
-    if (!ConDrvValidateConsoleUnsafe(Console, CONSOLE_RUNNING, TRUE)) return;
+    if (!ConDrvValidateConsoleUnsafe((PCONSOLE)Console, CONSOLE_RUNNING, TRUE)) return;
 
     /* Get the console leader process, our client */
     ProcessData = ConSrvGetConsoleLeaderProcess(Console);
@@ -443,7 +442,7 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
                                0, 0, DUPLICATE_SAME_ACCESS);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error when mapping client handle, Status = %lu\n", Status);
+        DPRINT1("Error when mapping client handle, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -460,7 +459,7 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
                                 PAGE_READWRITE);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error when mapping view of file, Status = %lu\n", Status);
+        DPRINT1("Error when mapping view of file, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -537,7 +536,7 @@ GuiApplyUserSettings(PGUI_CONSOLE_DATA GuiData,
     _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
     {
         Status = _SEH2_GetExceptionCode();
-        DPRINT1("GuiApplyUserSettings - Caught an exception, Status = %08X\n", Status);
+        DPRINT1("GuiApplyUserSettings - Caught an exception, Status = 0x%08lx\n", Status);
     }
     _SEH2_END;
 
@@ -572,9 +571,11 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
     PCONSOLE_STATE_INFO pConInfo = NULL;
     CONSOLE_INFO     ConInfo;
     GUI_CONSOLE_INFO GuiInfo;
+#if 0
     SIZE_T Length;
+#endif
 
-    if (!ConDrvValidateConsoleUnsafe(Console, CONSOLE_RUNNING, TRUE)) return;
+    if (!ConDrvValidateConsoleUnsafe((PCONSOLE)Console, CONSOLE_RUNNING, TRUE)) return;
 
     /* Get the console leader process, our client */
     ProcessData = ConSrvGetConsoleLeaderProcess(Console);
@@ -587,7 +588,7 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
                                0, 0, DUPLICATE_SAME_ACCESS);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error when mapping client handle, Status = %lu\n", Status);
+        DPRINT1("Error when mapping client handle, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -604,7 +605,7 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
                                 PAGE_READWRITE);
     if (!NT_SUCCESS(Status))
     {
-        DPRINT1("Error when mapping view of file, Status = %lu\n", Status);
+        DPRINT1("Error when mapping view of file, Status = 0x%08lx\n", Status);
         goto Quit;
     }
 
@@ -643,15 +644,13 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
                Console->OriginalTitle.Length / sizeof(WCHAR));
         wcsncpy(pSharedInfo->ci.ConsoleTitle, Console->OriginalTitle.Buffer, Length);
 #endif
-        // ULONG   ConInfo.InputBufferSize = pConInfo->
         // BOOLEAN ConInfo.CursorBlinkOn = pConInfo->
         // BOOLEAN ConInfo.ForceCursorOff = pConInfo->
 
 
         // Terminal information
-        Length = min(wcslen(pConInfo->FaceName) + 1, LF_FACESIZE); // wcsnlen
         wcsncpy(GuiInfo.FaceName, pConInfo->FaceName, LF_FACESIZE);
-        GuiInfo.FaceName[Length] = L'\0';
+        GuiInfo.FaceName[LF_FACESIZE - 1] = UNICODE_NULL;
 
         GuiInfo.FontFamily = pConInfo->FontFamily;
         GuiInfo.FontSize = pConInfo->FontSize;
@@ -721,7 +720,7 @@ GuiApplyWindowsConsoleSettings(PGUI_CONSOLE_DATA GuiData,
     _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
     {
         Status = _SEH2_GetExceptionCode();
-        DPRINT1("GuiApplyUserSettings - Caught an exception, Status = %08X\n", Status);
+        DPRINT1("GuiApplyUserSettings - Caught an exception, Status = 0x%08lx\n", Status);
     }
     _SEH2_END;
 

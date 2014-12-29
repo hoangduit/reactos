@@ -1,7 +1,7 @@
 /*
  * LICENSE:         GPL - See COPYING in the top level directory
  * PROJECT:         ReactOS Console Server DLL
- * FILE:            win32ss/user/winsrv/consrv/alias.c
+ * FILE:            consrv/alias.c
  * PURPOSE:         Alias support functions
  * PROGRAMMERS:     Christoph Wittich
  *                  Johannes Anderwald
@@ -18,23 +18,23 @@
 
 typedef struct _ALIAS_ENTRY
 {
+    struct _ALIAS_ENTRY* Next;
     UNICODE_STRING Source;
     UNICODE_STRING Target;
-    struct _ALIAS_ENTRY* Next;
 } ALIAS_ENTRY, *PALIAS_ENTRY;
 
 typedef struct _ALIAS_HEADER
 {
+    struct _ALIAS_HEADER* Next;
     UNICODE_STRING ExeName;
     PALIAS_ENTRY   Data;
-    struct _ALIAS_HEADER* Next;
 } ALIAS_HEADER, *PALIAS_HEADER;
 
 
 
 
 BOOLEAN
-ConvertInputAnsiToUnicode(PCONSOLE Console,
+ConvertInputAnsiToUnicode(PCONSRV_CONSOLE Console,
                           PVOID    Source,
                           USHORT   SourceLength,
                           // BOOLEAN  IsUnicode,
@@ -61,7 +61,7 @@ ConvertInputAnsiToUnicode(PCONSOLE Console,
 }
 
 BOOLEAN
-ConvertInputUnicodeToAnsi(PCONSOLE Console,
+ConvertInputUnicodeToAnsi(PCONSRV_CONSOLE Console,
                           PVOID    Source,
                           USHORT   SourceLength,
                           // BOOLEAN  IsAnsi,
@@ -454,7 +454,7 @@ CSR_API(SrvAddConsoleAlias)
     PALIAS_ENTRY Entry;
     PVOID lpTarget;
 
-    DPRINT1("SrvAddConsoleAlias entered ApiMessage %p\n", ApiMessage);
+    DPRINT("SrvAddConsoleAlias entered ApiMessage %p\n", ApiMessage);
 
     if ( !CsrValidateMessageBuffer(ApiMessage,
                                    (PVOID*)&ConsoleAliasRequest->Source,
@@ -474,7 +474,8 @@ CSR_API(SrvAddConsoleAlias)
 
     lpTarget = (ConsoleAliasRequest->TargetLength != 0 ? ConsoleAliasRequest->Target : NULL);
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     Status = STATUS_SUCCESS;
@@ -544,7 +545,7 @@ CSR_API(SrvGetConsoleAlias)
     UINT Length;
     PVOID lpTarget;
 
-    DPRINT1("SrvGetConsoleAlias entered ApiMessage %p\n", ApiMessage);
+    DPRINT("SrvGetConsoleAlias entered ApiMessage %p\n", ApiMessage);
 
     if ( !CsrValidateMessageBuffer(ApiMessage,
                                    (PVOID*)&ConsoleAliasRequest->Source,
@@ -570,7 +571,8 @@ CSR_API(SrvGetConsoleAlias)
         return STATUS_INVALID_PARAMETER;
     }
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     Header = IntFindAliasHeader(Console,
@@ -633,7 +635,7 @@ CSR_API(SrvGetConsoleAliases)
     ULONG BytesWritten = 0;
     PALIAS_HEADER Header;
 
-    DPRINT1("SrvGetConsoleAliases entered ApiMessage %p\n", ApiMessage);
+    DPRINT("SrvGetConsoleAliases entered ApiMessage %p\n", ApiMessage);
 
     if ( !CsrValidateMessageBuffer(ApiMessage,
                                    (PVOID)&GetAllAliasesRequest->ExeName,
@@ -647,7 +649,8 @@ CSR_API(SrvGetConsoleAliases)
         return STATUS_INVALID_PARAMETER;
     }
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     Header = IntFindAliasHeader(Console,
@@ -737,7 +740,7 @@ CSR_API(SrvGetConsoleAliasesLength)
     PCONSRV_CONSOLE Console;
     PALIAS_HEADER Header;
 
-    DPRINT1("SrvGetConsoleAliasesLength entered ApiMessage %p\n", ApiMessage);
+    DPRINT("SrvGetConsoleAliasesLength entered ApiMessage %p\n", ApiMessage);
 
     if (!CsrValidateMessageBuffer(ApiMessage,
                                   (PVOID)&GetAllAliasesLengthRequest->ExeName,
@@ -747,7 +750,8 @@ CSR_API(SrvGetConsoleAliasesLength)
         return STATUS_INVALID_PARAMETER;
     }
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     Header = IntFindAliasHeader(Console,
@@ -777,7 +781,7 @@ CSR_API(SrvGetConsoleAliasExes)
     PCONSRV_CONSOLE Console;
     UINT BytesWritten = 0;
 
-    DPRINT1("SrvGetConsoleAliasExes entered\n");
+    DPRINT("SrvGetConsoleAliasExes entered\n");
 
     if (!CsrValidateMessageBuffer(ApiMessage,
                                   (PVOID*)&GetAliasesExesRequest->ExeNames,
@@ -787,7 +791,8 @@ CSR_API(SrvGetConsoleAliasExes)
         return STATUS_INVALID_PARAMETER;
     }
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     if (IntGetConsoleAliasesExesLength(Console->Aliases, GetAliasesExesRequest->Unicode) > GetAliasesExesRequest->Length)
@@ -862,9 +867,10 @@ CSR_API(SrvGetConsoleAliasExesLength)
     PCONSOLE_GETALIASESEXESLENGTH GetAliasesExesLengthRequest = &((PCONSOLE_API_MESSAGE)ApiMessage)->Data.GetAliasesExesLengthRequest;
     PCONSRV_CONSOLE Console;
 
-    DPRINT1("SrvGetConsoleAliasExesLength entered ApiMessage %p\n", ApiMessage);
+    DPRINT("SrvGetConsoleAliasExesLength entered ApiMessage %p\n", ApiMessage);
 
-    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process), &Console, TRUE);
+    Status = ConSrvGetConsole(ConsoleGetPerProcessData(CsrGetClientThread()->Process),
+                              &Console, TRUE);
     if (!NT_SUCCESS(Status)) return Status;
 
     GetAliasesExesLengthRequest->Length =

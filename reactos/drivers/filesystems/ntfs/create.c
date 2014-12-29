@@ -1,6 +1,6 @@
 /*
  *  ReactOS kernel
- *  Copyright (C) 2002 ReactOS Team
+ *  Copyright (C) 2002, 2014 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,8 @@
  * PROJECT:          ReactOS kernel
  * FILE:             drivers/filesystem/ntfs/create.c
  * PURPOSE:          NTFS filesystem driver
- * PROGRAMMER:       Eric Kohl
+ * PROGRAMMERS:      Eric Kohl
+ *                   Pierre Schweitzer (pierre@reactos.org)
  */
 
 /* INCLUDES *****************************************************************/
@@ -78,60 +79,90 @@ static
 NTSTATUS
 NtfsOpenFile(PDEVICE_EXTENSION DeviceExt,
              PFILE_OBJECT FileObject,
-             PWSTR FileName)
+             PWSTR FileName,
+             BOOLEAN OpenById,
+             PNTFS_FCB * FoundFCB)
 {
     PNTFS_FCB ParentFcb;
     PNTFS_FCB Fcb;
     NTSTATUS Status;
     PWSTR AbsFileName = NULL;
 
-    DPRINT("NtfsOpenFile(%p, %p, %S)\n", DeviceExt, FileObject, FileName);
+    DPRINT1("NtfsOpenFile(%p, %p, %S, %u, %p)\n", DeviceExt, FileObject, (!OpenById ? FileName : NULL), OpenById, FoundFCB);
 
-    if (FileObject->RelatedFileObject)
+    *FoundFCB = NULL;
+
+    if (OpenById)
     {
-        DPRINT("Converting relative filename to absolute filename\n");
+        ULONGLONG Id = (*(PULONGLONG)FileName) & NTFS_MFT_MASK;
 
-        Status = NtfsMakeAbsoluteFilename(FileObject->RelatedFileObject,
-                                          FileName,
-                                          &AbsFileName);
-        FileName = AbsFileName;
-        if (!NT_SUCCESS(Status))
+        DPRINT1("Will attempt to open by id: %I64x\n", Id);
+
+        Fcb = NtfsGrabFCBFromTableById(DeviceExt,
+                                       Id);
+        if (Fcb == NULL)
         {
-            return Status;
-        }
+            Status = NtfsGetFCBForFileById(DeviceExt,
+                                           &Fcb,
+                                           Id);
+            if (!NT_SUCCESS (Status))
+            {
+                DPRINT("Could not make a new FCB, status: %x\n", Status);
 
-        return STATUS_UNSUCCESSFUL;
+                return Status;
+            }
+
+            Fcb->Flags |= FCB_IS_OPEN_BY_ID;
+        }
     }
-
-    //FIXME: Get cannonical path name (remove .'s, ..'s and extra separators)
-
-    DPRINT("PathName to open: %S\n", FileName);
-
-    /*  try first to find an existing FCB in memory  */
-    DPRINT("Checking for existing FCB in memory\n");
-    Fcb = NtfsGrabFCBFromTable(DeviceExt,
-                               FileName);
-    if (Fcb == NULL)
+    else
     {
-        DPRINT("No existing FCB found, making a new one if file exists.\n");
-        Status = NtfsGetFCBForFile(DeviceExt,
-                                   &ParentFcb,
-                                   &Fcb,
-                                   FileName);
-        if (ParentFcb != NULL)
+        if (FileObject->RelatedFileObject)
         {
-            NtfsReleaseFCB(DeviceExt,
-                           ParentFcb);
+            DPRINT("Converting relative filename to absolute filename\n");
+
+            Status = NtfsMakeAbsoluteFilename(FileObject->RelatedFileObject,
+                                              FileName,
+                                              &AbsFileName);
+            FileName = AbsFileName;
+            if (!NT_SUCCESS(Status))
+            {
+                return Status;
+            }
+
+            return STATUS_UNSUCCESSFUL;
         }
 
-        if (!NT_SUCCESS (Status))
+        //FIXME: Get cannonical path name (remove .'s, ..'s and extra separators)
+
+        DPRINT("PathName to open: %S\n", FileName);
+
+        /*  try first to find an existing FCB in memory  */
+        DPRINT("Checking for existing FCB in memory\n");
+        Fcb = NtfsGrabFCBFromTable(DeviceExt,
+                                   FileName);
+        if (Fcb == NULL)
         {
-            DPRINT("Could not make a new FCB, status: %x\n", Status);
+            DPRINT("No existing FCB found, making a new one if file exists.\n");
+            Status = NtfsGetFCBForFile(DeviceExt,
+                                       &ParentFcb,
+                                       &Fcb,
+                                       FileName);
+            if (ParentFcb != NULL)
+            {
+                NtfsReleaseFCB(DeviceExt,
+                               ParentFcb);
+            }
 
-            if (AbsFileName)
-                ExFreePool(AbsFileName);
+            if (!NT_SUCCESS (Status))
+            {
+                DPRINT("Could not make a new FCB, status: %x\n", Status);
 
-            return Status;
+                if (AbsFileName)
+                    ExFreePool(AbsFileName);
+
+                return Status;
+            }
         }
     }
 
@@ -142,6 +173,8 @@ NtfsOpenFile(PDEVICE_EXTENSION DeviceExt,
 
     if (AbsFileName)
         ExFreePool(AbsFileName);
+
+    *FoundFCB = Fcb;
 
     return Status;
 }
@@ -159,12 +192,12 @@ NtfsCreateFile(PDEVICE_OBJECT DeviceObject,
     PIO_STACK_LOCATION Stack;
     PFILE_OBJECT FileObject;
     ULONG RequestedDisposition;
-//    ULONG RequestedOptions;
-//    PFCB Fcb;
+    ULONG RequestedOptions;
+    PNTFS_FCB Fcb;
 //    PWSTR FileName;
     NTSTATUS Status;
 
-    DPRINT("NtfsCreateFile() called\n");
+    DPRINT1("NtfsCreateFile(%p, %p) called\n", DeviceObject, Irp);
 
     DeviceExt = DeviceObject->DeviceExtension;
     ASSERT(DeviceExt);
@@ -172,12 +205,19 @@ NtfsCreateFile(PDEVICE_OBJECT DeviceObject,
     ASSERT(Stack);
 
     RequestedDisposition = ((Stack->Parameters.Create.Options >> 24) & 0xff);
-//  RequestedOptions =
-//    Stack->Parameters.Create.Options & FILE_VALID_OPTION_FLAGS;
+    RequestedOptions = Stack->Parameters.Create.Options & FILE_VALID_OPTION_FLAGS;
 //  PagingFileCreate = (Stack->Flags & SL_OPEN_PAGING_FILE) ? TRUE : FALSE;
-//  if ((RequestedOptions & FILE_DIRECTORY_FILE)
-//      && RequestedDisposition == FILE_SUPERSEDE)
-//    return STATUS_INVALID_PARAMETER;
+    if (RequestedOptions & FILE_DIRECTORY_FILE &&
+        RequestedDisposition == FILE_SUPERSEDE)
+    {
+        return STATUS_INVALID_PARAMETER;
+    }
+
+    if (RequestedOptions & FILE_OPEN_BY_FILE_ID)
+    {
+        UNIMPLEMENTED;
+        return STATUS_NOT_IMPLEMENTED;
+    }
 
     FileObject = Stack->FileObject;
 
@@ -188,9 +228,119 @@ NtfsCreateFile(PDEVICE_OBJECT DeviceObject,
         return STATUS_ACCESS_DENIED;
     }
 
+    if ((RequestedOptions & FILE_OPEN_BY_FILE_ID) == FILE_OPEN_BY_FILE_ID &&
+        FileObject->FileName.Length != sizeof(ULONGLONG))
+    {
+        return STATUS_INVALID_PARAMETER;
+    }
+
+    /* This a open operation for the volume itself */
+    if (FileObject->FileName.Length == 0 &&
+        (FileObject->RelatedFileObject == NULL || FileObject->RelatedFileObject->FsContext2 != NULL))
+    {
+        if (RequestedDisposition != FILE_OPEN &&
+            RequestedDisposition != FILE_OPEN_IF)
+        {
+            return STATUS_ACCESS_DENIED;
+        }
+
+        if (RequestedOptions & FILE_DIRECTORY_FILE)
+        {
+            return STATUS_NOT_A_DIRECTORY;
+        }
+
+        NtfsAttachFCBToFileObject(DeviceExt, DeviceExt->VolumeFcb, FileObject);
+        DeviceExt->VolumeFcb->RefCount++;
+
+        Irp->IoStatus.Information = FILE_OPENED;
+        return STATUS_SUCCESS;
+    }
+
     Status = NtfsOpenFile(DeviceExt,
                           FileObject,
-                          FileObject->FileName.Buffer);
+                          FileObject->FileName.Buffer,
+                          ((RequestedOptions & FILE_OPEN_BY_FILE_ID) == FILE_OPEN_BY_FILE_ID),
+                          &Fcb);
+
+    if (NT_SUCCESS(Status))
+    {
+        if (RequestedDisposition == FILE_CREATE)
+        {
+            Irp->IoStatus.Information = FILE_EXISTS;
+            NtfsCloseFile(DeviceExt, FileObject);
+            return STATUS_OBJECT_NAME_COLLISION;
+        }
+
+        if (RequestedOptions & FILE_NON_DIRECTORY_FILE &&
+            NtfsFCBIsDirectory(Fcb))
+        {
+            NtfsCloseFile(DeviceExt, FileObject);
+            return STATUS_FILE_IS_A_DIRECTORY;
+        }
+
+        if (RequestedOptions & FILE_DIRECTORY_FILE &&
+            !NtfsFCBIsDirectory(Fcb))
+        {
+            NtfsCloseFile(DeviceExt, FileObject);
+            return STATUS_NOT_A_DIRECTORY;
+        }
+
+        /*
+         * If it is a reparse point & FILE_OPEN_REPARSE_POINT, then allow opening it
+         * as a normal file.
+         * Otherwise, attempt to read reparse data and hand them to the Io manager
+         * with status reparse to force a reparse.
+         */
+        if (NtfsFCBIsReparsePoint(Fcb) &&
+            ((RequestedOptions & FILE_OPEN_REPARSE_POINT) != FILE_OPEN_REPARSE_POINT))
+        {
+            PREPARSE_DATA_BUFFER ReparseData = NULL;
+
+            Status = NtfsReadFCBAttribute(DeviceExt, Fcb,
+                                          AttributeReparsePoint, L"", 0,
+                                          (PVOID *)&Irp->Tail.Overlay.AuxiliaryBuffer);
+            if (NT_SUCCESS(Status))
+            {
+                ReparseData = (PREPARSE_DATA_BUFFER)Irp->Tail.Overlay.AuxiliaryBuffer;
+                if (ReparseData->ReparseTag == IO_REPARSE_TAG_MOUNT_POINT)
+                {
+                    Status = STATUS_REPARSE;
+                }
+                else
+                {
+                    Status = STATUS_NOT_IMPLEMENTED;
+                    ExFreePoolWithTag(ReparseData, TAG_NTFS);
+                }
+            }
+
+            Irp->IoStatus.Information = ((Status == STATUS_REPARSE) ? ReparseData->ReparseTag : 0);
+
+            NtfsCloseFile(DeviceExt, FileObject);
+            return Status;
+        }
+
+        /* HUGLY HACK: remain RO so far... */
+        if (RequestedDisposition == FILE_OVERWRITE ||
+            RequestedDisposition == FILE_OVERWRITE_IF ||
+            RequestedDisposition == FILE_SUPERSEDE)
+        {
+            DPRINT1("Denying write request on NTFS volume\n");
+            NtfsCloseFile(DeviceExt, FileObject);
+            return STATUS_ACCESS_DENIED;
+        }
+    }
+    else
+    {
+        /* HUGLY HACK: remain RO so far... */
+        if (RequestedDisposition == FILE_CREATE ||
+            RequestedDisposition == FILE_OPEN_IF ||
+            RequestedDisposition == FILE_OVERWRITE_IF ||
+            RequestedDisposition == FILE_SUPERSEDE)
+        {
+            DPRINT1("Denying write request on NTFS volume\n");
+            return STATUS_ACCESS_DENIED;
+        }
+    }
 
     /*
      * If the directory containing the file to open doesn't exist then

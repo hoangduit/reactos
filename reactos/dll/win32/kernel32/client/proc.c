@@ -726,7 +726,7 @@ BasePushProcessParameters(IN ULONG ParameterFlags,
         ProcessParameters->StandardError = StartupInfo->hStdError;
     }
 
-    /* Use Special Flags for BasepInitConsole in Kernel32 */
+    /* Use Special Flags for ConDllInitialize in Kernel32 */
     if (CreationFlags & DETACHED_PROCESS)
     {
         ProcessParameters->ConsoleHandle = HANDLE_DETACHED_PROCESS;
@@ -3992,7 +3992,7 @@ StartScan:
         if (!NT_SUCCESS(Status))
         {
             /* Bail out on failure */
-            DPRINT1("Failed to reserved memory for VDM: %lx\n", Status);
+            DPRINT1("Failed to reserve memory for VDM: %lx\n", Status);
             BaseSetLastNTError(Status);
             Result = FALSE;
             goto Quickie;
@@ -4035,7 +4035,7 @@ StartScan:
     if (lpCurrentDirectory)
     {
         /* Allocate a buffer so we can keep a Unicode copy */
-        DPRINT1("Current directory: %S\n", lpCurrentDirectory);
+        DPRINT("Current directory: %S\n", lpCurrentDirectory);
         CurrentDirectory = RtlAllocateHeap(RtlGetProcessHeap(),
                                            0,
                                            (MAX_PATH * sizeof(WCHAR)) +

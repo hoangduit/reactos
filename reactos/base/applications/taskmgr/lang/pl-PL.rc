@@ -3,6 +3,7 @@
  *    xxrogers@users.sourceforge.net
  *    https://sourceforge.net/projects/reactospl
  *    UTF-8 conversion by Caemyr (May, 2011)
+ *    Updated by Saibamen - Adam Stachowicz (saibamenppl@gmail.com) (August, 2014)
  */
 
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
@@ -25,11 +26,11 @@ BEGIN
     POPUP "&Widok"
     BEGIN
         MENUITEM "&Odśwież teraz", ID_VIEW_REFRESH
-        POPUP "&Częstotliwość aktualizacji"
+        POPUP "Szy&bkość aktualizacji"
         BEGIN
-            MENUITEM "&Wysoka", ID_VIEW_UPDATESPEED_HIGH
+            MENUITEM "&Duża", ID_VIEW_UPDATESPEED_HIGH
             MENUITEM "&Normalna", ID_VIEW_UPDATESPEED_NORMAL, CHECKED
-            MENUITEM "&Niska", ID_VIEW_UPDATESPEED_LOW
+            MENUITEM "&Mała", ID_VIEW_UPDATESPEED_LOW
             MENUITEM "&Wstrzymana", ID_VIEW_UPDATESPEED_PAUSED
         END
         MENUITEM SEPARATOR
@@ -52,6 +53,18 @@ BEGIN
         MENUITEM "&Maksymalizuj", ID_WINDOWS_MAXIMIZE
         MENUITEM "&Kaskadowo", ID_WINDOWS_CASCADE
         MENUITEM "&Przesuń na wierzch", ID_WINDOWS_BRINGTOFRONT
+    END
+    POPUP "&Zamknij"
+    BEGIN
+        MENUITEM "Przejdź w &stan gotowości",           ID_SHUTDOWN_STANDBY
+        MENUITEM "&Hibernuj",                           ID_SHUTDOWN_HIBERNATE
+        MENUITEM "Wyłą&cz",                             ID_SHUTDOWN_POWEROFF
+        MENUITEM "&Uruchom ponownie",                   ID_SHUTDOWN_REBOOT
+        MENUITEM "&Wyloguj: %s",                        ID_SHUTDOWN_LOGOFF
+        MENUITEM "&Przełącz użytkownika\tLogo Win+L",   ID_SHUTDOWN_SWITCHUSER, GRAYED
+        MENUITEM "&Zablokuj komputer\tLogo Win+L",      ID_SHUTDOWN_LOCKCOMPUTER
+        MENUITEM "&Rozłącz",                            ID_SHUTDOWN_DISCONNECT, GRAYED
+        MENUITEM "&Wysuń komputer",                     ID_SHUTDOWN_EJECT_COMPUTER, GRAYED //FIXME ?
     END
     POPUP "Pomo&c"
     BEGIN
@@ -167,7 +180,7 @@ BEGIN
             LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP, 7, 7, 233, 177
     PUSHBUTTON "&Zakończ proces", IDC_ENDPROCESS, 171, 189, 69, 14
     CONTROL "Po&każ procesy wszystkich użytkowników", IDC_SHOWALLPROCESSES, "Button",
-            BS_AUTOCHECKBOX | WS_TABSTOP, 7, 191, 111, 10
+            BS_AUTOCHECKBOX | WS_TABSTOP, 7, 191, 153, 10
 END
 
 /* IDD_PERFORMANCE_PAGE DIALOGEX 0, 0, 247, 210 */
@@ -201,7 +214,7 @@ BEGIN
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
     LTEXT "Razem", IDS_PHYSICAL_MEMORY_TOTAL, 137, 131, 27, 8
     LTEXT "Dostępne", IDS_PHYSICAL_MEMORY_AVAILABLE, 137, 140, 30, 8
-    LTEXT "Bufor systemu", IDS_PHYSICAL_MEMORY_SYSTEM_CACHE, 137, 149, 46, 8
+    LTEXT "Bufor systemu", IDS_PHYSICAL_MEMORY_SYSTEM_CACHE, 137, 149, 80, 8
     EDITTEXT IDC_PHYSICAL_MEMORY_TOTAL, 185, 131, 48, 8, ES_RIGHT | ES_READONLY |
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
     EDITTEXT IDC_PHYSICAL_MEMORY_AVAILABLE, 185, 140, 48, 8, ES_RIGHT | ES_READONLY |
@@ -209,13 +222,13 @@ BEGIN
     EDITTEXT IDC_PHYSICAL_MEMORY_SYSTEM_CACHE, 185, 149, 48, 8, ES_RIGHT | ES_READONLY |
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
     LTEXT "Razem", IDS_KERNEL_MEMORY_TOTAL, 137, 174, 27, 8
-    LTEXT "Stronicowana", IDS_KERNEL_MEMORY_PAGED, 137, 184, 21, 8
-    LTEXT "Niestronicowana", IDS_KERNEL_MEMORY_NONPAGED, 137, 193, 34, 8
+    LTEXT "Stronicowana", IDS_KERNEL_MEMORY_PAGED, 137, 184, 70, 8
+    LTEXT "Niestronicowana", IDS_KERNEL_MEMORY_NONPAGED, 137, 193, 80, 8
     EDITTEXT IDC_KERNEL_MEMORY_TOTAL, 185, 174, 48, 8, ES_RIGHT | ES_READONLY |
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
     EDITTEXT IDC_KERNEL_MEMORY_PAGED, 185, 184, 48, 8, ES_RIGHT | ES_READONLY |
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
-    EDITTEXT IDC_KERNEL_MEMORY_NONPAGED, 185, 193, 48, 8, ES_RIGHT | ES_READONLY |
+    EDITTEXT IDC_KERNEL_MEMORY_NONPAGED, 195, 193, 38, 8, ES_RIGHT | ES_READONLY |
              ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP
     GROUPBOX "Historia użycia procesora CPU", IDC_CPU_USAGE_HISTORY_FRAME, 74, 5, 168, 54, 0, WS_EX_TRANSPARENT
     GROUPBOX "Historia uzycia pliku stronicowania", IDC_MEMORY_USAGE_HISTORY_FRAME, 74, 63, 168, 54, 0, WS_EX_TRANSPARENT
@@ -285,31 +298,32 @@ BEGIN
     DEFPUSHBUTTON "OK", IDOK, 84, 178, 50, 14
     PUSHBUTTON "Anuluj", IDCANCEL, 138, 178, 50, 14
     LTEXT "Wybierz kolumny do wyświetlania na stronie Proces Menedżera zadań", IDC_STATIC, 7, 7, 181, 17
-    CONTROL "&Nazwa obrazu", IDC_IMAGENAME, "Button", BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP, 7, 28, 56, 10
-    CONTROL "PI&D (idewntyfikator procesu)", IDC_PID, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 39, 88, 10
-    CONTROL "&Użycie procesora CPU", IDC_CPUUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 50, 53, 10
-    CONTROL "&Czas procesora CPU", IDC_CPUTIME, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 61, 48, 10
-    CONTROL "Zużycie pa&mięci", IDC_MEMORYUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 72, 63, 10
-    CONTROL "&Zmiana zużycia pamięci", IDC_MEMORYUSAGEDELTA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 83, 82, 10
-    CONTROL "&Szczytowe zużycie pamięci", IDC_PEAKMEMORYUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 94, 82, 10
-    CONTROL "&Błędy stronic", IDC_PAGEFAULTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 105, 53, 10
-    CONTROL "Obie&kty USER", IDC_USEROBJECTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 116, 62, 10
-    CONTROL "Odczyty We/Wy", IDC_IOREADS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 127, 49, 10
-    CONTROL "Odczyty We/Wy w bajtach", IDC_IOREADBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 138, 65, 10
-    CONTROL "&Identyfikator sesji", IDC_SESSIONID, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 149, 50, 10
-    CONTROL "Naz&wa użytkownika", IDC_USERNAME, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 160, 51, 10
-    CONTROL "Zmi&ana błędów stronic", IDC_PAGEFAULTSDELTA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 28, 72, 10
-    CONTROL "&Rozmiar pamięci wirtualnej", IDC_VIRTUALMEMORYSIZE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 39, 77, 10
-    CONTROL "&Pula stronicowania", IDC_PAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 50, 53, 10
-    CONTROL "Pula niestr&onicowana", IDC_NONPAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 61, 67, 10
-    CONTROL "Prior&ytet podstawowy", IDC_BASEPRIORITY, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 72, 55, 10
-    CONTROL "&Liczba uchwytów", IDC_HANDLECOUNT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 83, 59, 10
-    CONTROL "Liczba w&ątków", IDC_THREADCOUNT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 94, 59, 10
-    CONTROL "Obiekty &GDI", IDC_GDIOBJECTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 105, 55, 10
-    CONTROL "Zapisy We/Wy", IDC_IOWRITES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 116, 49, 10
-    CONTROL "Zapisy We/Wy w bajtach", IDC_IOWRITEBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 127, 65, 10
-    CONTROL "Inne We/Wy", IDC_IOOTHER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 138, 46, 10
-    CONTROL "Inne We/Wy w bajtach", IDC_IOOTHERBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 149, 65, 10
+    CONTROL "&Nazwa obrazu", IDC_IMAGENAME, "Button", BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP, 7, 28, 100, 10
+    CONTROL "PI&D (idewntyfikator procesu)", IDC_PID, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 39, 100, 10
+    CONTROL "&Użycie procesora CPU", IDC_CPUUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 50, 100, 10
+    CONTROL "&Czas procesora CPU", IDC_CPUTIME, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 61, 100, 10
+    CONTROL "Zużycie pa&mięci", IDC_MEMORYUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 72, 100, 10
+    CONTROL "&Zmiana zużycia pamięci", IDC_MEMORYUSAGEDELTA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 83, 100, 10
+    CONTROL "&Szczytowe zużycie pamięci", IDC_PEAKMEMORYUSAGE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 94, 100, 10
+    CONTROL "&Błędy stronic", IDC_PAGEFAULTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 105, 100, 10
+    CONTROL "Obie&kty USER", IDC_USEROBJECTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 116, 100, 10
+    CONTROL "Odczyty We/Wy", IDC_IOREADS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 127, 100, 10
+    CONTROL "Odczyty We/Wy w bajtach", IDC_IOREADBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 138, 100, 10
+    CONTROL "&Identyfikator sesji", IDC_SESSIONID, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 149, 100, 10
+    CONTROL "Naz&wa użytkownika", IDC_USERNAME, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 160, 100, 10
+    CONTROL "Zmi&ana błędów stronic", IDC_PAGEFAULTSDELTA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 28, 85, 10
+    CONTROL "&Rozmiar pamięci wirtualnej", IDC_VIRTUALMEMORYSIZE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 39, 85, 10
+    CONTROL "&Pula stronicowania", IDC_PAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 50, 85, 10
+    CONTROL "Pula niestr&onicowana", IDC_NONPAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 61, 85, 10
+    CONTROL "Prior&ytet podstawowy", IDC_BASEPRIORITY, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 72, 85, 10
+    CONTROL "&Liczba uchwytów", IDC_HANDLECOUNT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 83, 85, 10
+    CONTROL "Liczba w&ątków", IDC_THREADCOUNT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 94, 85, 10
+    CONTROL "Obiekty &GDI", IDC_GDIOBJECTS, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 105, 85, 10
+    CONTROL "Zapisy We/Wy", IDC_IOWRITES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 116, 85, 10
+    CONTROL "Zapisy We/Wy w bajtach", IDC_IOWRITEBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 127, 85, 10
+    CONTROL "Inne We/Wy", IDC_IOOTHER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 138, 85, 10
+    CONTROL "Inne We/Wy w bajtach", IDC_IOOTHERBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 149, 85, 10
+    CONTROL "Linia poleceń", IDC_COMMANDLINE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 160, 85, 10
 END
 
 /* String Tables */
@@ -405,9 +419,10 @@ BEGIN
     IDS_TAB_IOREADBYTES "Odczyty We/Wy w bajtach"
     IDS_TAB_IOWRITESBYTES "Zapisy We/Wy w bajtach"
     IDS_TAB_IOOTHERBYTES "Inne We/Wy w bajtach"
+    IDS_TAB_COMMANDLINE "Linia poleceń"
     IDS_MENU_SELECTCOLUMNS "Wybierz &kolumny..."
     IDS_MENU_16BITTASK "Pokaż 16-&bitowe zadania"
-    IDS_MENU_WINDOWS "&Okna"
+    IDS_MENU_WINDOWS "O&kna"
     IDS_MENU_LARGEICONS "Duże ikony"
     IDS_MENU_SMALLICONS "Małe ikony"
     IDS_MENU_DETAILS "Szczegóły"
@@ -425,12 +440,13 @@ BEGIN
     IDS_MSG_TASKMGRWARNING "Ostrzeżenie Menedżera zadań"
     IDS_MSG_WARNINGTERMINATING "UWAGA: Zakończenie procesu może przynieść niepożądane skutki, w tym również doprowadzić do utraty danych i niestabilności systemu.\nProces nie będzie miał szansy na zapisane danych.\nCzy na pewno chcesz zakończyć?"
     IDS_MSG_UNABLETERMINATEPRO "Nie można zakończyć tego procesu"
+    IDS_MSG_CLOSESYSTEMPROCESS "Jest to krytyczny proces systemowy. Menedżer zadań nie zakończy tego procesu."
     IDS_MSG_UNABLECHANGEPRIORITY "Nie można zmienić priorytetu"
     IDS_MSG_WARNINGCHANGEPRIORITY "UWAGA: Zmiana priorytetu tego procesu może przynieść\nniepożądane skutki, w tym również niestabilność systemu.\nCzy na pewno chcesz zmieni priorytet?"
     IDS_MSG_TRAYICONCPUUSAGE "Użycie procesora: %d%%"
-    IDS_STATUS_MEMUSAGE "Pam. zadeklar.: %dK / %dK"
+    IDS_STATUS_MEMUSAGE "Pam. zadeklar.: %s / %s (%d%%)"
     IDS_STATUS_CPUUSAGE "Użycie procesora: %3d%%"
     IDS_STATUS_PROCESSES "Procesy: %d"
-    IDS_Not_Responding "Nie odpowiada"
-    IDS_Running "Uruchomiony"
+    IDS_NOT_RESPONDING "Nie odpowiada"
+    IDS_RUNNING "Uruchomiony"
 END

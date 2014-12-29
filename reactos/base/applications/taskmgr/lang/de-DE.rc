@@ -8,14 +8,14 @@ BEGIN
     BEGIN
         MENUITEM "&Neuer Task (Ausführen...)", ID_FILE_NEW
         MENUITEM SEPARATOR
-        MENUITEM "&Beenden",  ID_FILE_EXIT
+        MENUITEM "&Beenden", ID_FILE_EXIT
     END
     POPUP "&Optionen"
     BEGIN
         MENUITEM "&Immer im Vordergrund", ID_OPTIONS_ALWAYSONTOP, CHECKED
         MENUITEM "&Nach Programmstart minimieren", ID_OPTIONS_MINIMIZEONUSE, CHECKED
         MENUITEM "&Ausblenden, wenn minimiert", ID_OPTIONS_HIDEWHENMINIMIZED, CHECKED
-        MENUITEM "&16-bit Tasks anzeigen", ID_OPTIONS_SHOW16BITTASKS, CHECKED
+        MENUITEM "&16-Bit-Tasks anzeigen", ID_OPTIONS_SHOW16BITTASKS, CHECKED
     END
     POPUP "&Ansicht"
     BEGIN
@@ -39,7 +39,7 @@ BEGIN
         END
         MENUITEM "K&ernel-Zeiten anzeigen", ID_VIEW_SHOWKERNELTIMES
     END
-    POPUP "F&enster"
+    POPUP "&Fenster"
     BEGIN
         MENUITEM "&Untereinander", ID_WINDOWS_TILEHORIZONTALLY
         MENUITEM "&Nebeneinander", ID_WINDOWS_TILEVERTICALLY
@@ -48,9 +48,21 @@ BEGIN
         MENUITEM "Übe&rlappend", ID_WINDOWS_CASCADE
         MENUITEM "&In Vordergrund", ID_WINDOWS_BRINGTOFRONT
     END
+    POPUP "&Herunterfahren"
+    BEGIN
+        MENUITEM "&Standby", ID_SHUTDOWN_STANDBY
+        MENUITEM "&Ruhezustand", ID_SHUTDOWN_HIBERNATE
+        MENUITEM "&Ausschalten", ID_SHUTDOWN_POWEROFF
+        MENUITEM "&Neu starten", ID_SHUTDOWN_REBOOT
+        MENUITEM "%s ab&melden", ID_SHUTDOWN_LOGOFF
+        MENUITEM "&Benutzer wechseln\tWindows-Taste+L", ID_SHUTDOWN_SWITCHUSER, GRAYED
+        MENUITEM "&Computer sperren\tWindows-Taste+L", ID_SHUTDOWN_LOCKCOMPUTER
+        MENUITEM "&Trennen", ID_SHUTDOWN_DISCONNECT, GRAYED
+        MENUITEM "C&omputer abdocken", ID_SHUTDOWN_EJECT_COMPUTER, GRAYED
+    END
     POPUP "&?"
     BEGIN
-        MENUITEM "&Hilfethemen", ID_HELP_TOPICS
+        MENUITEM "&Hilfethemen\tF1", ID_HELP_TOPICS
         MENUITEM SEPARATOR
         MENUITEM "Inf&o", ID_HELP_ABOUT
     END
@@ -73,7 +85,7 @@ BEGIN
         MENUITEM "&Neuer Task (Ausführen...)", ID_FILE_NEW
         MENUITEM SEPARATOR
         MENUITEM "&Große Symbole", ID_VIEW_LARGE
-        MENUITEM "K&leine Symbole", ID_VIEW_SMALL
+        MENUITEM "&Kleine Symbole", ID_VIEW_SMALL
         MENUITEM "&Details", ID_VIEW_DETAILS, CHECKED
     END
 END
@@ -89,7 +101,7 @@ BEGIN
         MENUITEM "&Nebeneinander", ID_WINDOWS_TILEVERTICALLY
         MENUITEM "&Minimieren", ID_WINDOWS_MINIMIZE
         MENUITEM "Ma&ximieren", ID_WINDOWS_MAXIMIZE
-        MENUITEM "Übe&rlappend", ID_WINDOWS_CASCADE
+        MENUITEM "Ü&berlappend", ID_WINDOWS_CASCADE
         MENUITEM SEPARATOR
         MENUITEM "&Task beenden", ID_APPLICATION_PAGE_ENDTASK
         MENUITEM "&Zu Prozess wechseln", ID_APPLICATION_PAGE_GOTOPROCESS
@@ -101,9 +113,9 @@ BEGIN
     POPUP "DUMMY"
     BEGIN
         MENUITEM "&Wiederherstellen", ID_RESTORE
-        MENUITEM "&Schließen", ID_FILE_EXIT
+        MENUITEM "S&chließen", ID_FILE_EXIT
         MENUITEM SEPARATOR
-        MENUITEM "&Immer im Vordergrund", ID_OPTIONS_ALWAYSONTOP
+        MENUITEM "Immer im &Vordergrund", ID_OPTIONS_ALWAYSONTOP
     END
 END
 
@@ -115,7 +127,7 @@ BEGIN
         MENUITEM "Pr&ozessstruktur beenden", ID_PROCESS_PAGE_ENDPROCESSTREE
         MENUITEM "&Debuggen", ID_PROCESS_PAGE_DEBUG
         MENUITEM SEPARATOR
-        POPUP "Pr&iorität festlegen"
+        POPUP "P&riorität festlegen"
         BEGIN
             MENUITEM "&Echtzeit", ID_PROCESS_PAGE_SETPRIORITY_REALTIME
             MENUITEM "&Hoch", ID_PROCESS_PAGE_SETPRIORITY_HIGH
@@ -294,7 +306,7 @@ BEGIN
     CONTROL "S&itzungskennung", IDC_SESSIONID, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 149, 70, 10 // 50
     CONTROL "Benut&zername", IDC_USERNAME, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 160, 70, 10 // 51
     CONTROL "Veränderung der Seiten&fehler", IDC_PAGEFAULTSDELTA, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 28, 120, 10 // 107,60
-    CONTROL "Größe des &virtuelle Speichers", IDC_VIRTUALMEMORYSIZE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 39, 120, 10 // 107, 60
+    CONTROL "Größe des &virtuellen Speichers", IDC_VIRTUALMEMORYSIZE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 39, 120, 10 // 107, 60
     CONTROL "&Ausgelagerter Pool", IDC_PAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 50, 80, 10 // 107, 53
     CONTROL "Nicht ausgelagerter P&ool", IDC_NONPAGEDPOOL, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 61, 115, 10 // 107
     CONTROL "&Basispriorität", IDC_BASEPRIORITY, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 72, 80, 10 // 107
@@ -305,6 +317,7 @@ BEGIN
     CONTROL "E/A-Bytes (Schreiben)", IDC_IOWRITEBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 127, 105, 10 // 107
     CONTROL "E/A (Andere)", IDC_IOOTHER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 138, 105, 10 // 107
     CONTROL "E/A-Bytes (Andere)", IDC_IOOTHERBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 149, 110, 10 // 107
+    CONTROL "Befeh&lszeile", IDC_COMMANDLINE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 127, 160, 65, 10 // 107
 END
 
 /* String Tables */
@@ -387,9 +400,9 @@ BEGIN
     IDS_TAB_PAGEFAULT "Seitenfehler"
     IDS_TAB_PFDELTA "Maximale Seitenfehler"
     IDS_TAB_VMSIZE "Virtuelle Arbeitsspeichergröße"
-    IDS_TAB_PAGEDPOOL "Paged Pool"
-    IDS_TAB_NPPOOL "NP Pool"
-    IDS_TAB_BASEPRI "Basispri"
+    IDS_TAB_PAGEDPOOL "Ausgelagerter Pool"
+    IDS_TAB_NPPOOL "Nichtausgelagerter Pool"
+    IDS_TAB_BASEPRI "Basispriorität"
     IDS_TAB_HANDLES "Handleanzahl"
     IDS_TAB_THREADS "Threadanzahl"
     IDS_TAB_USERPBJECTS "Benutzer-Objekte"
@@ -400,6 +413,7 @@ BEGIN
     IDS_TAB_IOREADBYTES "E/A-Bytes (Lesen)"
     IDS_TAB_IOWRITESBYTES "E/A-Bytes (Schreiben)"
     IDS_TAB_IOOTHERBYTES "E/A-Bytes (Andere)"
+    IDS_TAB_COMMANDLINE "Befehlszeile"
     IDS_MENU_SELECTCOLUMNS "&Spalten auswählen..."
     IDS_MENU_16BITTASK "&16-Bit-Tasks anzeigen"
     IDS_MENU_WINDOWS "&Fenster"
@@ -420,12 +434,13 @@ BEGIN
     IDS_MSG_TASKMGRWARNING "Warnung vom Task-Manager"
     IDS_MSG_WARNINGTERMINATING "WARNUNG: Das Abbrechen eines Prozesses kann zu\nunerwünschten Ergebnissen, einschließlich Datenverlust und\nSysteminstabilität, führen. Zustand und Daten des Prozesses\nwerden nicht mehr gespeichert. Sind Sie sicher, dass Sie\nden Prozess abbrechen möchten?"
     IDS_MSG_UNABLETERMINATEPRO "Kann den Prozess nicht beenden"
+    IDS_MSG_CLOSESYSTEMPROCESS "This is a critical system process. Task Manager will not end this process."
     IDS_MSG_UNABLECHANGEPRIORITY "Kann die Priorität nicht ändern"
     IDS_MSG_WARNINGCHANGEPRIORITY "WARNUNG: Das Ändern der Prioritätsklasse dieses Prozesses\nkann zu unerwünschten Ergebnissen, einschl. Systeminstabilität, führen.\nSind Sie sicher, dass Sie sie ändern möchten?"
     IDS_MSG_TRAYICONCPUUSAGE "CPU-Auslastung: %d%%"
-    IDS_STATUS_MEMUSAGE "zugesicherter Speicher: %dK / %dK"
+    IDS_STATUS_MEMUSAGE "zugesicherter Speicher: %s / %s (%d%%)"
     IDS_STATUS_CPUUSAGE "CPU-Auslastung: %3d%%"
     IDS_STATUS_PROCESSES "Prozesse: %d"
-    IDS_Not_Responding "Keine Rückmeldung"
-    IDS_Running "Wird ausgeführt"
+    IDS_NOT_RESPONDING "Keine Rückmeldung"
+    IDS_RUNNING "Wird ausgeführt"
 END

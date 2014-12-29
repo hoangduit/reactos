@@ -12,8 +12,8 @@
 
 DBG_DEFAULT_CHANNEL(UserMisc);
 
-/* registered Logon process */
-PPROCESSINFO LogonProcess = NULL;
+/* Registered logon process ID */
+HANDLE gpidLogon = 0;
 
 BOOL FASTCALL
 co_IntRegisterLogonProcess(HANDLE ProcessId, BOOL Register)
@@ -21,38 +21,33 @@ co_IntRegisterLogonProcess(HANDLE ProcessId, BOOL Register)
    NTSTATUS Status;
    PEPROCESS Process;
 
-   Status = PsLookupProcessByProcessId(ProcessId,
-                                       &Process);
+   Status = PsLookupProcessByProcessId(ProcessId, &Process);
    if (!NT_SUCCESS(Status))
    {
       EngSetLastError(RtlNtStatusToDosError(Status));
       return FALSE;
    }
 
+   ProcessId = Process->UniqueProcessId;
+
+   ObDereferenceObject(Process);
+
    if (Register)
    {
       /* Register the logon process */
-      if (LogonProcess != NULL)
-      {
-         ObDereferenceObject(Process);
+      if (gpidLogon != 0)
          return FALSE;
-      }
 
-      LogonProcess = (PPROCESSINFO)Process->Win32Process;
+      gpidLogon = ProcessId;
    }
    else
    {
       /* Deregister the logon process */
-      if (LogonProcess != (PPROCESSINFO)Process->Win32Process)
-      {
-         ObDereferenceObject(Process);
+      if (gpidLogon != ProcessId)
          return FALSE;
-      }
 
-      LogonProcess = NULL;
+      gpidLogon = 0;
    }
-
-   ObDereferenceObject(Process);
 
    return TRUE;
 }
@@ -73,11 +68,11 @@ NtUserCallNoParam(DWORD Routine)
    switch(Routine)
    {
       case NOPARAM_ROUTINE_CREATEMENU:
-         Result = (DWORD_PTR)UserCreateMenu(FALSE);
+         Result = (DWORD_PTR)UserCreateMenu(GetW32ThreadInfo()->rpdesk, FALSE);
          break;
 
       case NOPARAM_ROUTINE_CREATEMENUPOPUP:
-         Result = (DWORD_PTR)UserCreateMenu(TRUE);
+         Result = (DWORD_PTR)UserCreateMenu(GetW32ThreadInfo()->rpdesk, TRUE);
          break;
 
       case NOPARAM_ROUTINE_DESTROY_CARET:
@@ -90,10 +85,6 @@ NtUserCallNoParam(DWORD Routine)
 
       case NOPARAM_ROUTINE_UNINIT_MESSAGE_PUMP:
          Result = (DWORD_PTR)IntUninitMessagePumpHook();
-         break;
-
-      case NOPARAM_ROUTINE_GETMESSAGEEXTRAINFO:
-         Result = (DWORD_PTR)MsqGetMessageExtraInfo();
          break;
 
       case NOPARAM_ROUTINE_MSQCLEARWAKEMASK:
@@ -178,8 +169,8 @@ NtUserCallOneParam(
              if (count == 0) count = 8;
 
              psmwp = (PSMWP) UserCreateObject( gHandleTable,
-                                               NULL, 
-                                               NULL, 
+                                               NULL,
+                                               NULL,
                                               (PHANDLE)&hDwp,
                                                TYPE_SETWINDOWPOS,
                                                sizeof(SMWP));
@@ -297,10 +288,6 @@ NtUserCallOneParam(
          /* FIXME: Should use UserEnterShared */
          RETURN(UserEnumClipboardFormats(Param));
 
-      case ONEPARAM_ROUTINE_CSRSS_GUICHECK:
-          IntUserManualGuiCheck(Param);
-          RETURN(TRUE);
-
       case ONEPARAM_ROUTINE_GETCURSORPOS:
       {
           BOOL Ret = TRUE;
@@ -359,8 +346,8 @@ NtUserCallOneParam(
       case ONEPARAM_ROUTINE_REPLYMESSAGE:
           RETURN (co_MsqReplyMessage((LRESULT) Param));
       case ONEPARAM_ROUTINE_MESSAGEBEEP:
+          /* TODO: Implement sound sentry */
           RETURN ( UserPostMessage(hwndSAS, WM_LOGONNOTIFY, LN_MESSAGE_BEEP, Param) );
-		  /* TODO: Implement sound sentry */
       case ONEPARAM_ROUTINE_CREATESYSTEMTHREADS:
           RETURN(CreateSystemThreads(Param));
       case ONEPARAM_ROUTINE_LOCKFOREGNDWINDOW:
@@ -450,7 +437,6 @@ NtUserCallTwoParam(
       case TWOPARAM_ROUTINE_SWITCHTOTHISWINDOW:
          STUB
          RETURN( 0);
-
 
       case TWOPARAM_ROUTINE_SETCARETPOS:
          RETURN( (DWORD_PTR)co_IntSetCaretPos((int)Param1, (int)Param2));
@@ -793,8 +779,15 @@ NtUserCallHwndParamLock(
    switch (Routine)
    {
       case TWOPARAM_ROUTINE_VALIDATERGN:
-         Ret = (DWORD)co_UserRedrawWindow( Window, NULL, (HRGN)Param, RDW_VALIDATE);
-         break;
+      {
+          PREGION Rgn = REGION_LockRgn((HRGN)Param);
+          if (Rgn)
+          {
+              Ret = (DWORD)co_UserRedrawWindow( Window, NULL, Rgn, RDW_VALIDATE);
+              REGION_UnlockRgn(Rgn);
+          }
+          break;
+      }
    }
 
    UserDerefObjectCo(Window);

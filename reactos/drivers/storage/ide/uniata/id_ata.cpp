@@ -1677,6 +1677,25 @@ IssueIdentify(
         ULONGLONG NativeNumOfSectors=0;
         ULONGLONG cylinders=0;
         ULONGLONG tmp_cylinders=0;
+
+        KdPrint2((PRINT_PREFIX "PhysLogSectorSize %#x, %#x, offset %#x\n", 
+                deviceExtension->FullIdentifyData.PhysLogSectorSize,
+                deviceExtension->FullIdentifyData.LargeSectorSize,
+                deviceExtension->FullIdentifyData.LogicalSectorOffset
+                ));
+
+        KdPrint2((PRINT_PREFIX "NV PM_Sup %d, PM_En %d, En %d, PM ver %#x ver %#x\n", 
+                deviceExtension->FullIdentifyData.NVCache_PM_Supported,
+                deviceExtension->FullIdentifyData.NVCache_PM_Enabled,
+                deviceExtension->FullIdentifyData.NVCache_Enabled,
+                deviceExtension->FullIdentifyData.NVCache_PM_Version,
+                deviceExtension->FullIdentifyData.NVCache_Version
+                ));
+
+        KdPrint2((PRINT_PREFIX "R-rate %d\n",
+                deviceExtension->FullIdentifyData.NominalMediaRotationRate
+                ));
+
         // Read very-old-style drive geometry
         KdPrint2((PRINT_PREFIX "CHS %#x:%#x:%#x\n", 
                 deviceExtension->FullIdentifyData.NumberOfCylinders,
@@ -2243,6 +2262,7 @@ AtapiResetController__(
                 UniataAhciReset(HwDeviceExtension, j);
             } else {
                 KdPrint2((PRINT_PREFIX "  skip not implemented\n"));
+                continue;
             }
         } else {
             KdPrint2((PRINT_PREFIX "  ATA path, chan %#x\n", chan));
@@ -4000,8 +4020,13 @@ AtapiEnableInterrupts(
         }
         chan->ChannelCtrlFlags &= ~CTRFLAGS_INTR_DISABLED;
     } else {
-        AtapiWritePort1(chan, IDX_IO2_o_Control,
+        if(deviceExtension->HwFlags & UNIATA_AHCI) {
+            // keep interrupts disabled
+            UniataAhciWriteChannelPort4(chan, IDX_AHCI_P_IE, 0);
+        } else {
+            AtapiWritePort1(chan, IDX_IO2_o_Control,
                                IDE_DC_DISABLE_INTERRUPTS /*| IDE_DC_A_4BIT*/ );
+        }
     }
     return;
 } // end AtapiEnableInterrupts()
@@ -5051,9 +5076,9 @@ continue_err:
                     if(AtaReq->retry < MAX_RETRIES) {
 //fallback_pio:
                         if(!(deviceExtension->HwFlags & UNIATA_AHCI)) {
-                            AtaReq->Flags &= ~REQ_FLAG_DMA_OPERATION;
+                            //AtaReq->Flags &= ~REQ_FLAG_DMA_OPERATION;
+                            // Downrate will happen in AtapiDmaReinit(), try UDMA-2 for HDD only
                             AtaReq->Flags |= REQ_FLAG_FORCE_DOWNRATE;
-//                        LunExt->DeviceFlags |= DFLAGS_FORCE_DOWNRATE;
                         }
                         AtaReq->ReqState = REQ_STATE_QUEUED;
                         goto reenqueue_req;
@@ -5073,6 +5098,7 @@ continue_err:
                ((error >> 4) == SCSI_SENSE_HARDWARE_ERROR)) {
                 if(AtaReq->retry < MAX_RETRIES) {
 //fallback_pio:
+                    // Downrate will happen in AtapiDmaReinit(), use PIO immediately for ATAPI
                     AtaReq->Flags &= ~REQ_FLAG_DMA_OPERATION;
                     AtaReq->Flags |= REQ_FLAG_FORCE_DOWNRATE;
 //                        LunExt->DeviceFlags |= DFLAGS_FORCE_DOWNRATE;
@@ -5181,6 +5207,7 @@ continue_PIO:
 
         } else {
 
+            KdPrint2((PRINT_PREFIX "AtapiInterrupt: !DRQ, !BUSY, WordsLeft %#x\n", AtaReq->WordsLeft));
             if (AtaReq->WordsLeft) {
 
                 // Funky behaviour seen with PCI IDE (not all, just one).
@@ -5428,6 +5455,7 @@ IntrPrepareResetController:
             chan->ChannelCtrlFlags &= ~CTRFLAGS_DMA_OPERATION;
             goto CompleteRequest;
         }
+continue_read_drq:
         // Ensure that this is a read command.
         if (srb->SrbFlags & SRB_FLAGS_DATA_IN) {
 
@@ -5468,7 +5496,6 @@ IntrPrepareResetController:
                         }
                     }
                 }
-
             } else {
                 KdPrint2((PRINT_PREFIX 
                           "IdeIntr: Read %#x Dwords\n", wordCount/2));
@@ -5560,6 +5587,12 @@ IntrPrepareResetController:
                     status = SRB_STATUS_SUCCESS;
                     goto CompleteRequest;
                 }
+            } else {
+                if(!atapiDev && !DataOverrun && (srb->SrbFlags & SRB_FLAGS_DATA_IN) &&
+                    (statusByte == (IDE_STATUS_IDLE | IDE_STATUS_DRQ))) {
+                    KdPrint2((PRINT_PREFIX "  HDD read data ready \n"));
+                    goto continue_read_drq;
+                }
             }
         }
 
@@ -5568,7 +5601,7 @@ IntrPrepareResetController:
     } else if (interruptReason == (ATAPI_IR_IO_toHost | ATAPI_IR_COD_Cmd) && !(statusByte & IDE_STATUS_DRQ)) {
 
         KdPrint2((PRINT_PREFIX "AtapiInterrupt: interruptReason = CompleteRequest\n"));
-        // Command complete. We exactly know this because os IReason.
+        // Command complete. We exactly know this because of IReason.
 
         if(DmaTransfer) {
             KdPrint2((PRINT_PREFIX "AtapiInterrupt: CompleteRequest, was DmaTransfer\n"));
@@ -5582,6 +5615,9 @@ IntrPrepareResetController:
             AtaReq->DataBuffer += wordCount;
             AtaReq->WordsLeft -= wordCount;
             AtaReq->WordsTransfered += wordCount;
+
+            KdPrint2((PRINT_PREFIX "AtapiInterrupt: wordCount %#x, WordsTransfered %#x\n", wordCount, AtaReq->WordsTransfered));
+
         }
         //if (AtaReq->WordsLeft) {
         //    status = SRB_STATUS_DATA_OVERRUN;
@@ -6665,6 +6701,7 @@ IdeReadWrite(
     // Adjust buffer address and words left count.
     AtaReq->WordsLeft -= wordCount;
     AtaReq->DataBuffer += wordCount;
+    AtaReq->WordsTransfered += wordCount;
 
     // Wait for interrupt.
     return SRB_STATUS_PENDING;
@@ -6921,6 +6958,13 @@ AtapiSendCommand(
         case SCSIOP_WRITE16:
             // all right
             break;
+        case SCSIOP_READ_CD:
+        case SCSIOP_READ_CD_MSF:
+            if(deviceExtension->opt_AtapiDmaRawRead) {
+                // all right
+                break;
+            }
+            /* FALL THROUGH */
         default:
             KdPrint2((PRINT_PREFIX "AtapiSendCommand: SRB_STATUS_BUSY\n"));
             return SRB_STATUS_BUSY;
@@ -7100,6 +7144,7 @@ call_dma_setup:
                 }
                 break;
             case SCSIOP_READ_CD:
+            case SCSIOP_READ_CD_MSF:
                 if(deviceExtension->opt_AtapiDmaRawRead)
                     goto call_dma_setup;
                 break;

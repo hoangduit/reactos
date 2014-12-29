@@ -271,6 +271,9 @@ NtUserGetThreadState(
          ret = (DWORD_PTR) (GetW32ThreadInfo()->MessageQueue->CursorObject ?
                             UserHMGetHandle(GetW32ThreadInfo()->MessageQueue->CursorObject) : 0);
          break;
+      case THREADSTATE_GETMESSAGEEXTRAINFO:
+         ret = (DWORD_PTR)MsqGetMessageExtraInfo();
+        break;
    }
 
    TRACE("Leave NtUserGetThreadState, ret=%lu\n", ret);
@@ -694,7 +697,7 @@ UserDbgPostServiceHook(ULONG ulSyscallId, ULONG_PTR ulResult)
 {
     /* Make sure that the first syscall is NtUserInitialize */
     /* too bad this fails */
-    //ASSERT(gbInitialized);
+    // ASSERT(gpepCSRSS);
 
     UserDbgAssertThreadInfo(TRUE);
 

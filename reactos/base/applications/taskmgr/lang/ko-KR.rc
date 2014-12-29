@@ -48,6 +48,18 @@ BEGIN
         MENUITEM "계단식 창 배열(&C)", ID_WINDOWS_CASCADE
         MENUITEM "맨 앞으로 가져오기(&B)", ID_WINDOWS_BRINGTOFRONT
     END
+    POPUP "Sh&ut Down"
+    BEGIN
+        MENUITEM "Stand &By",                  ID_SHUTDOWN_STANDBY
+        MENUITEM "&Hibernate",                 ID_SHUTDOWN_HIBERNATE
+        MENUITEM "T&urn Off",                  ID_SHUTDOWN_POWEROFF
+        MENUITEM "&Restart",                   ID_SHUTDOWN_REBOOT
+        MENUITEM "&Log Off %s",                ID_SHUTDOWN_LOGOFF
+        MENUITEM "&Switch User\tWinKey+L",     ID_SHUTDOWN_SWITCHUSER, GRAYED
+        MENUITEM "Loc&k Computer\tWinKey+L",   ID_SHUTDOWN_LOCKCOMPUTER
+        MENUITEM "&Disconnect",                ID_SHUTDOWN_DISCONNECT, GRAYED
+        MENUITEM "&Eject Computer",            ID_SHUTDOWN_EJECT_COMPUTER, GRAYED
+    END
     POPUP "도움말(&H)"
     BEGIN
         MENUITEM "작업 관리자 도움말 항목(&H)", ID_HELP_TOPICS
@@ -162,7 +174,7 @@ BEGIN
             LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP, 7, 7, 233, 177
     PUSHBUTTON "작업 끝내기(&E)", IDC_ENDPROCESS, 171, 189, 69, 14
     CONTROL "모든 유저의 프로세스 보이기(&S)", IDC_SHOWALLPROCESSES, "Button",
-            BS_AUTOCHECKBOX | WS_TABSTOP, 7, 191, 111, 10
+            BS_AUTOCHECKBOX | WS_TABSTOP, 7, 191, 120, 10
 END
 
 /* IDD_PERFORMANCE_PAGE DIALOGEX 0, 0, 247, 210 */
@@ -305,6 +317,7 @@ BEGIN
     CONTROL "I/O 쓰기 바이트", IDC_IOWRITEBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 127, 65, 10
     CONTROL "I/O 기타", IDC_IOOTHER, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 138, 46, 10
     CONTROL "I/O 기타 바이트", IDC_IOOTHERBYTES, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 149, 65, 10
+    CONTROL "Command &Line", IDC_COMMANDLINE, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 107, 160, 65, 10
 END
 
 /* String Tables */
@@ -400,6 +413,7 @@ BEGIN
     IDS_TAB_IOREADBYTES "I/O 읽기 바이트"
     IDS_TAB_IOWRITESBYTES "I/O 쓰기 바이트"
     IDS_TAB_IOOTHERBYTES "I/O 기타 바이트"
+    IDS_TAB_COMMANDLINE "Command Line"
     IDS_MENU_SELECTCOLUMNS "열 선택(&S)"
     IDS_MENU_16BITTASK "16비트 작업 보이기(&S)"
     IDS_MENU_WINDOWS "창(&W)"
@@ -420,12 +434,13 @@ BEGIN
     IDS_MSG_TASKMGRWARNING "작업 관리자 경고"
     IDS_MSG_WARNINGTERMINATING "경고: 프로세스를 종료하면 데이터 손실 및 시스템 불안정과\n같은 바람직하지 않은 결과를 가져올 수 있습니다. 프로세스를\n종료하기 전에 프로세스 상태나 데이터를 저장할 기회가\n없습니다.\n프로세스를 종료하시겠습니까?"
     IDS_MSG_UNABLETERMINATEPRO "프로세스를 제거할 수 없음"
+    IDS_MSG_CLOSESYSTEMPROCESS "This is a critical system process. Task Manager will not end this process."
     IDS_MSG_UNABLECHANGEPRIORITY "우선 순위를 바꿀 수 없음"
     IDS_MSG_WARNINGCHANGEPRIORITY "경고: 이 프로세스의 우선 순위 클래스를 변경하면 시스템 불안정을 포함하여\n예기치 않은 결과를 초래할 수도 있습니다.\n우선 순위 클래스를 변경하시겠습니까?"
     IDS_MSG_TRAYICONCPUUSAGE "CPU 사용: %d%%"
-    IDS_STATUS_MEMUSAGE "메모리 사용: %dK / %dK"
+    IDS_STATUS_MEMUSAGE "메모리 사용: %s / %s (%d%%)"
     IDS_STATUS_CPUUSAGE "CPU 사용: %3d%%"
     IDS_STATUS_PROCESSES "프로세스: %d"
-    IDS_Not_Responding "응답 없음"
-    IDS_Running "실행 중"
+    IDS_NOT_RESPONDING "응답 없음"
+    IDS_RUNNING "실행 중"
 END

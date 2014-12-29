@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         ReactOS Console Driver DLL
- * FILE:            win32ss/user/winsrv/consrv/condrv/text.c
+ * FILE:            consrv/condrv/text.c
  * PURPOSE:         Console Output Functions for text-mode screen-buffers
  * PROGRAMMERS:     Jeffrey Morlan
  *                  Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -16,7 +16,19 @@
 
 /* GLOBALS ********************************************************************/
 
-#define TAB_WIDTH   8
+/*
+ * From MSDN:
+ * "The lpMultiByteStr and lpWideCharStr pointers must not be the same.
+ *  If they are the same, the function fails, and GetLastError returns
+ *  ERROR_INVALID_PARAMETER."
+ */
+#define ConsoleOutputUnicodeToAnsiChar(Console, dChar, sWChar) \
+    ASSERT((ULONG_PTR)dChar != (ULONG_PTR)sWChar); \
+    WideCharToMultiByte((Console)->OutputCodePage, 0, (sWChar), 1, (dChar), 1, NULL, NULL)
+
+#define ConsoleOutputAnsiToUnicodeChar(Console, dWChar, sChar) \
+    ASSERT((ULONG_PTR)dWChar != (ULONG_PTR)sChar); \
+    MultiByteToWideChar((Console)->OutputCodePage, 0, (sChar), 1, (dWChar), 1)
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
@@ -33,13 +45,13 @@ static CONSOLE_SCREEN_BUFFER_VTBL TextVtbl =
 };
 
 
-static VOID
+/*static*/ VOID
 ClearLineBuffer(PTEXTMODE_SCREEN_BUFFER Buff);
 
 
 NTSTATUS
 CONSOLE_SCREEN_BUFFER_Initialize(OUT PCONSOLE_SCREEN_BUFFER* Buffer,
-                                 IN OUT PCONSOLE Console,
+                                 IN PCONSOLE Console,
                                  IN PCONSOLE_SCREEN_BUFFER_VTBL Vtbl,
                                  IN SIZE_T Size);
 VOID
@@ -48,11 +60,14 @@ CONSOLE_SCREEN_BUFFER_Destroy(IN OUT PCONSOLE_SCREEN_BUFFER Buffer);
 
 NTSTATUS
 TEXTMODE_BUFFER_Initialize(OUT PCONSOLE_SCREEN_BUFFER* Buffer,
-                           IN OUT PCONSOLE Console,
+                           IN PCONSOLE Console,
+                           IN HANDLE ProcessHandle,
                            IN PTEXTMODE_BUFFER_INFO TextModeInfo)
 {
     NTSTATUS Status = STATUS_SUCCESS;
     PTEXTMODE_SCREEN_BUFFER NewBuffer = NULL;
+
+    UNREFERENCED_PARAMETER(ProcessHandle);
 
     if (Console == NULL || Buffer == NULL || TextModeInfo == NULL)
         return STATUS_INVALID_PARAMETER;
@@ -127,7 +142,7 @@ ConioCoordToPointer(PTEXTMODE_SCREEN_BUFFER Buff, ULONG X, ULONG Y)
     return &Buff->Buffer[((Y + Buff->VirtualY) % Buff->ScreenBufferSize.Y) * Buff->ScreenBufferSize.X + X];
 }
 
-static VOID
+/*static*/ VOID
 ClearLineBuffer(PTEXTMODE_SCREEN_BUFFER Buff)
 {
     PCHAR_INFO Ptr = ConioCoordToPointer(Buff, 0, Buff->CursorPosition.Y);
@@ -235,6 +250,15 @@ ConioMoveRegion(PTEXTMODE_SCREEN_BUFFER ScreenBuffer,
     }
 }
 
+// FIXME!
+NTSTATUS NTAPI
+ConDrvWriteConsoleInput(IN PCONSOLE Console,
+                        IN PCONSOLE_INPUT_BUFFER InputBuffer,
+                        IN BOOLEAN AppendToEnd,
+                        IN PINPUT_RECORD InputRecord,
+                        IN ULONG NumEventsToWrite,
+                        OUT PULONG NumEventsWritten OPTIONAL);
+
 NTSTATUS
 ConioResizeBuffer(PCONSOLE Console,
                   PTEXTMODE_SCREEN_BUFFER ScreenBuffer,
@@ -273,7 +297,7 @@ ConioResizeBuffer(PCONSOLE Console,
     Buffer = ConsoleAllocHeap(HEAP_ZERO_MEMORY, Size.X * Size.Y * sizeof(CHAR_INFO));
     if (!Buffer) return STATUS_NO_MEMORY;
 
-    DPRINT1("Resizing (%d,%d) to (%d,%d)\n", ScreenBuffer->ScreenBufferSize.X, ScreenBuffer->ScreenBufferSize.Y, Size.X, Size.Y);
+    DPRINT("Resizing (%d,%d) to (%d,%d)\n", ScreenBuffer->ScreenBufferSize.X, ScreenBuffer->ScreenBufferSize.Y, Size.X, Size.Y);
     OldBuffer = ScreenBuffer->Buffer;
 
     for (CurrentY = 0; CurrentY < ScreenBuffer->ScreenBufferSize.Y && CurrentY < Size.Y; CurrentY++)
@@ -343,175 +367,19 @@ ConioResizeBuffer(PCONSOLE Console,
      */
     if (Console->InputBuffer.Mode & ENABLE_WINDOW_INPUT)
     {
+        ULONG NumEventsWritten;
         INPUT_RECORD er;
 
         er.EventType = WINDOW_BUFFER_SIZE_EVENT;
         er.Event.WindowBufferSizeEvent.dwSize = ScreenBuffer->ScreenBufferSize;
 
-        ConioProcessInputEvent(Console, &er);
-    }
-
-    return STATUS_SUCCESS;
-}
-
-static VOID
-ConioNextLine(PTEXTMODE_SCREEN_BUFFER Buff, PSMALL_RECT UpdateRect, PUINT ScrolledLines)
-{
-    /* If we hit bottom, slide the viewable screen */
-    if (++Buff->CursorPosition.Y == Buff->ScreenBufferSize.Y)
-    {
-        Buff->CursorPosition.Y--;
-        if (++Buff->VirtualY == Buff->ScreenBufferSize.Y)
-        {
-            Buff->VirtualY = 0;
-        }
-        (*ScrolledLines)++;
-        ClearLineBuffer(Buff);
-        if (UpdateRect->Top != 0)
-        {
-            UpdateRect->Top--;
-        }
-    }
-    UpdateRect->Left = 0;
-    UpdateRect->Right = Buff->ScreenBufferSize.X - 1;
-    UpdateRect->Bottom = Buff->CursorPosition.Y;
-}
-
-NTSTATUS
-ConioWriteConsole(PCONSOLE Console,
-                  PTEXTMODE_SCREEN_BUFFER Buff,
-                  PWCHAR Buffer,
-                  DWORD Length,
-                  BOOL Attrib)
-{
-    UINT i;
-    PCHAR_INFO Ptr;
-    SMALL_RECT UpdateRect;
-    SHORT CursorStartX, CursorStartY;
-    UINT ScrolledLines;
-
-    CursorStartX = Buff->CursorPosition.X;
-    CursorStartY = Buff->CursorPosition.Y;
-    UpdateRect.Left = Buff->ScreenBufferSize.X;
-    UpdateRect.Top = Buff->CursorPosition.Y;
-    UpdateRect.Right = -1;
-    UpdateRect.Bottom = Buff->CursorPosition.Y;
-    ScrolledLines = 0;
-
-    for (i = 0; i < Length; i++)
-    {
-        /*
-         * If we are in processed mode, interpret special characters and
-         * display them correctly. Otherwise, just put them into the buffer.
-         */
-        if (Buff->Mode & ENABLE_PROCESSED_OUTPUT)
-        {
-            /* --- CR --- */
-            if (Buffer[i] == L'\r')
-            {
-                Buff->CursorPosition.X = 0;
-                UpdateRect.Left = min(UpdateRect.Left, Buff->CursorPosition.X);
-                UpdateRect.Right = max(UpdateRect.Right, Buff->CursorPosition.X);
-                continue;
-            }
-            /* --- LF --- */
-            else if (Buffer[i] == L'\n')
-            {
-                Buff->CursorPosition.X = 0;
-                ConioNextLine(Buff, &UpdateRect, &ScrolledLines);
-                continue;
-            }
-            /* --- BS --- */
-            else if (Buffer[i] == L'\b')
-            {
-                /* Only handle BS if we're not on the first pos of the first line */
-                if (0 != Buff->CursorPosition.X || 0 != Buff->CursorPosition.Y)
-                {
-                    if (0 == Buff->CursorPosition.X)
-                    {
-                        /* slide virtual position up */
-                        Buff->CursorPosition.X = Buff->ScreenBufferSize.X - 1;
-                        Buff->CursorPosition.Y--;
-                        UpdateRect.Top = min(UpdateRect.Top, Buff->CursorPosition.Y);
-                    }
-                    else
-                    {
-                        Buff->CursorPosition.X--;
-                    }
-                    Ptr = ConioCoordToPointer(Buff, Buff->CursorPosition.X, Buff->CursorPosition.Y);
-                    Ptr->Char.UnicodeChar = L' ';
-                    Ptr->Attributes  = Buff->ScreenDefaultAttrib;
-                    UpdateRect.Left  = min(UpdateRect.Left, Buff->CursorPosition.X);
-                    UpdateRect.Right = max(UpdateRect.Right, Buff->CursorPosition.X);
-                }
-                continue;
-            }
-            /* --- TAB --- */
-            else if (Buffer[i] == L'\t')
-            {
-                UINT EndX;
-
-                UpdateRect.Left = min(UpdateRect.Left, Buff->CursorPosition.X);
-                EndX = (Buff->CursorPosition.X + TAB_WIDTH) & ~(TAB_WIDTH - 1);
-                EndX = min(EndX, (UINT)Buff->ScreenBufferSize.X);
-                Ptr = ConioCoordToPointer(Buff, Buff->CursorPosition.X, Buff->CursorPosition.Y);
-                while (Buff->CursorPosition.X < EndX)
-                {
-                    Ptr->Char.UnicodeChar = L' ';
-                    Ptr->Attributes = Buff->ScreenDefaultAttrib;
-                    ++Ptr;
-                    Buff->CursorPosition.X++;
-                }
-                UpdateRect.Right = max(UpdateRect.Right, Buff->CursorPosition.X - 1);
-                if (Buff->CursorPosition.X == Buff->ScreenBufferSize.X)
-                {
-                    if (Buff->Mode & ENABLE_WRAP_AT_EOL_OUTPUT)
-                    {
-                        Buff->CursorPosition.X = 0;
-                        ConioNextLine(Buff, &UpdateRect, &ScrolledLines);
-                    }
-                    else
-                    {
-                        Buff->CursorPosition.X--;
-                    }
-                }
-                continue;
-            }
-            // /* --- BEL ---*/
-            // else if (Buffer[i] == L'\a')
-            // {
-                // // FIXME: This MUST BE moved to the terminal emulator frontend!!
-                // DPRINT1("Bell\n");
-                // // SendNotifyMessage(Console->hWindow, PM_CONSOLE_BEEP, 0, 0);
-                // continue;
-            // }
-        }
-        UpdateRect.Left  = min(UpdateRect.Left, Buff->CursorPosition.X);
-        UpdateRect.Right = max(UpdateRect.Right, Buff->CursorPosition.X);
-
-        Ptr = ConioCoordToPointer(Buff, Buff->CursorPosition.X, Buff->CursorPosition.Y);
-        Ptr->Char.UnicodeChar = Buffer[i];
-        if (Attrib) Ptr->Attributes = Buff->ScreenDefaultAttrib;
-
-        Buff->CursorPosition.X++;
-        if (Buff->CursorPosition.X == Buff->ScreenBufferSize.X)
-        {
-            if (Buff->Mode & ENABLE_WRAP_AT_EOL_OUTPUT)
-            {
-                Buff->CursorPosition.X = 0;
-                ConioNextLine(Buff, &UpdateRect, &ScrolledLines);
-            }
-            else
-            {
-                Buff->CursorPosition.X = CursorStartX;
-            }
-        }
-    }
-
-    if (!ConioIsRectEmpty(&UpdateRect) && (PCONSOLE_SCREEN_BUFFER)Buff == Console->ActiveBuffer)
-    {
-        TermWriteStream(Console, &UpdateRect, CursorStartX, CursorStartY,
-                        ScrolledLines, Buffer, Length);
+        // ConioProcessInputEvent(Console, &er);
+        ConDrvWriteConsoleInput(Console,
+                                &Console->InputBuffer,
+                                TRUE,
+                                &er,
+                                1,
+                                &NumEventsWritten);
     }
 
     return STATUS_SUCCESS;
@@ -528,7 +396,7 @@ ConDrvChangeScreenBufferAttributes(IN PCONSOLE Console,
 
     COORD  TopLeft = {0};
     ULONG  NumCodesToWrite;
-    USHORT OldScreenAttrib;
+    USHORT OldScreenAttrib, OldPopupAttrib;
 
     if (Console == NULL || Buffer == NULL)
     {
@@ -540,6 +408,7 @@ ConDrvChangeScreenBufferAttributes(IN PCONSOLE Console,
 
     NumCodesToWrite = Buffer->ScreenBufferSize.X * Buffer->ScreenBufferSize.Y;
     OldScreenAttrib = Buffer->ScreenDefaultAttrib;
+    OldPopupAttrib  = Buffer->PopupDefaultAttrib;
 
     X = TopLeft.X;
     Y = (TopLeft.Y + Buffer->VirtualY) % Buffer->ScreenBufferSize.Y;
@@ -560,10 +429,14 @@ ConDrvChangeScreenBufferAttributes(IN PCONSOLE Console,
         /* Foreground color */
         if ((Ptr->Attributes & 0x0F) == (OldScreenAttrib & 0x0F))
             Ptr->Attributes = (Ptr->Attributes & 0xFFF0) | (NewScreenAttrib & 0x0F);
+        if ((Ptr->Attributes & 0x0F) == (OldPopupAttrib & 0x0F))
+            Ptr->Attributes = (Ptr->Attributes & 0xFFF0) | (NewPopupAttrib & 0x0F);
 
         /* Background color */
         if ((Ptr->Attributes & 0xF0) == (OldScreenAttrib & 0xF0))
             Ptr->Attributes = (Ptr->Attributes & 0xFF0F) | (NewScreenAttrib & 0xF0);
+        if ((Ptr->Attributes & 0xF0) == (OldPopupAttrib & 0xF0))
+            Ptr->Attributes = (Ptr->Attributes & 0xFF0F) | (NewPopupAttrib & 0xF0);
 
         // ++Ptr;
 
@@ -621,7 +494,8 @@ ConDrvReadConsoleOutput(IN PCONSOLE Console,
 
     /* Make sure ReadRegion is inside the screen buffer */
     ConioInitRect(&ScreenBuffer, 0, 0,
-                  Buffer->ScreenBufferSize.Y - 1, Buffer->ScreenBufferSize.X - 1);
+                  Buffer->ScreenBufferSize.Y - 1,
+                  Buffer->ScreenBufferSize.X - 1);
     if (!ConioGetIntersection(&CapturedReadRegion, &ScreenBuffer, &CapturedReadRegion))
     {
         /*
@@ -644,7 +518,7 @@ ConDrvReadConsoleOutput(IN PCONSOLE Console,
             }
             else
             {
-                // ConsoleUnicodeCharToAnsiChar(Console, &CurCharInfo->Char.AsciiChar, &Ptr->Char.UnicodeChar);
+                // ConsoleOutputUnicodeToAnsiChar(Console, &CurCharInfo->Char.AsciiChar, &Ptr->Char.UnicodeChar);
                 WideCharToMultiByte(Console->OutputCodePage, 0, &Ptr->Char.UnicodeChar, 1,
                                     &CurCharInfo->Char.AsciiChar, 1, NULL, NULL);
             }
@@ -684,7 +558,8 @@ ConDrvWriteConsoleOutput(IN PCONSOLE Console,
 
     /* Make sure WriteRegion is inside the screen buffer */
     ConioInitRect(&ScreenBuffer, 0, 0,
-                  Buffer->ScreenBufferSize.Y - 1, Buffer->ScreenBufferSize.X - 1);
+                  Buffer->ScreenBufferSize.Y - 1,
+                  Buffer->ScreenBufferSize.X - 1);
     if (!ConioGetIntersection(&CapturedWriteRegion, &ScreenBuffer, &CapturedWriteRegion))
     {
         /*
@@ -707,7 +582,7 @@ ConDrvWriteConsoleOutput(IN PCONSOLE Console,
             }
             else
             {
-                ConsoleAnsiCharToUnicodeChar(Console, &Ptr->Char.UnicodeChar, &CurCharInfo->Char.AsciiChar);
+                ConsoleOutputAnsiToUnicodeChar(Console, &Ptr->Char.UnicodeChar, &CurCharInfo->Char.AsciiChar);
             }
             Ptr->Attributes = CurCharInfo->Attributes;
             ++Ptr;
@@ -724,14 +599,15 @@ ConDrvWriteConsoleOutput(IN PCONSOLE Console,
 
 /*
  * NOTE: This function is strongly inspired by ConDrvWriteConsoleOutput...
+ * FIXME: This function MUST be moved into consrv/conoutput.c because only
+ * consrv knows how to manipulate VDM screenbuffers.
  */
 NTSTATUS NTAPI
 ConDrvWriteConsoleOutputVDM(IN PCONSOLE Console,
                             IN PTEXTMODE_SCREEN_BUFFER Buffer,
                             IN PCHAR_CELL CharInfo/*Buffer*/,
                             IN COORD CharInfoSize,
-                            IN OUT PSMALL_RECT WriteRegion,
-                            IN BOOLEAN DrawRegion)
+                            IN PSMALL_RECT WriteRegion)
 {
     SHORT X, Y;
     SMALL_RECT ScreenBuffer;
@@ -751,7 +627,8 @@ ConDrvWriteConsoleOutputVDM(IN PCONSOLE Console,
 
     /* Make sure WriteRegion is inside the screen buffer */
     ConioInitRect(&ScreenBuffer, 0, 0,
-                  Buffer->ScreenBufferSize.Y - 1, Buffer->ScreenBufferSize.X - 1);
+                  Buffer->ScreenBufferSize.Y - 1,
+                  Buffer->ScreenBufferSize.X - 1);
     if (!ConioGetIntersection(&CapturedWriteRegion, &ScreenBuffer, &CapturedWriteRegion))
     {
         /*
@@ -770,16 +647,12 @@ ConDrvWriteConsoleOutputVDM(IN PCONSOLE Console,
         Ptr = ConioCoordToPointer(Buffer, CapturedWriteRegion.Left, Y);
         for (X = CapturedWriteRegion.Left; X <= CapturedWriteRegion.Right; ++X)
         {
-            ConsoleAnsiCharToUnicodeChar(Console, &Ptr->Char.UnicodeChar, &CurCharInfo->Char);
+            ConsoleOutputAnsiToUnicodeChar(Console, &Ptr->Char.UnicodeChar, &CurCharInfo->Char);
             Ptr->Attributes = CurCharInfo->Attributes;
             ++Ptr;
             ++CurCharInfo;
         }
     }
-
-    if (DrawRegion) TermDrawRegion(Console, &CapturedWriteRegion);
-
-    *WriteRegion = CapturedWriteRegion;
 
     return STATUS_SUCCESS;
 }
@@ -807,6 +680,7 @@ ConDrvWriteConsole(IN PCONSOLE Console,
     /* Stop here if the console is paused */
     if (Console->UnpauseEvent != NULL) return STATUS_PENDING;
 
+    /* Convert the string to UNICODE */
     if (Unicode)
     {
         Buffer = StringBuffer;
@@ -831,15 +705,16 @@ ConDrvWriteConsole(IN PCONSOLE Console,
         }
     }
 
+    /* Send it */
     if (Buffer)
     {
         if (NT_SUCCESS(Status))
         {
-            Status = ConioWriteConsole(Console,
-                                       ScreenBuffer,
-                                       Buffer,
-                                       NumCharsToWrite,
-                                       TRUE);
+            Status = TermWriteStream(Console,
+                                     ScreenBuffer,
+                                     Buffer,
+                                     NumCharsToWrite,
+                                     TRUE);
             if (NT_SUCCESS(Status))
             {
                 Written = NumCharsToWrite;
@@ -878,6 +753,10 @@ ConDrvReadConsoleOutputString(IN PCONSOLE Console,
     /* Validity checks */
     ASSERT(Console == Buffer->Header.Console);
     ASSERT((StringBuffer != NULL) || (StringBuffer == NULL && NumCodesToRead == 0));
+
+    //
+    // FIXME: Make overflow checks on ReadCoord !!!!!!
+    //
 
     if (NumCodesRead) *NumCodesRead = 0;
 
@@ -925,7 +804,7 @@ ConDrvReadConsoleOutputString(IN PCONSOLE Console,
         switch (CodeType)
         {
             case CODE_ASCII:
-                ConsoleUnicodeCharToAnsiChar(Console, (PCHAR)ReadBuffer, &Ptr->Char.UnicodeChar);
+                ConsoleOutputUnicodeToAnsiChar(Console, (PCHAR)ReadBuffer, &Ptr->Char.UnicodeChar);
                 break;
 
             case CODE_UNICODE:
@@ -988,6 +867,10 @@ ConDrvWriteConsoleOutputString(IN PCONSOLE Console,
     /* Validity checks */
     ASSERT(Console == Buffer->Header.Console);
     ASSERT((StringBuffer != NULL) || (StringBuffer == NULL && NumCodesToWrite == 0));
+
+    //
+    // FIXME: Make overflow checks on WriteCoord !!!!!!
+    //
 
     if (NumCodesWritten) *NumCodesWritten = 0;
 
@@ -1117,13 +1000,17 @@ ConDrvFillConsoleOutput(IN PCONSOLE Console,
     /* Validity check */
     ASSERT(Console == Buffer->Header.Console);
 
+    //
+    // FIXME: Make overflow checks on WriteCoord !!!!!!
+    //
+
     if (NumCodesWritten) *NumCodesWritten = 0;
 
     if (CodeType == CODE_ASCII)
     {
         /* Conversion from the ASCII char to the UNICODE char */
         CODE_ELEMENT tmp;
-        ConsoleAnsiCharToUnicodeChar(Console, &tmp.UnicodeChar, &Code.AsciiChar);
+        ConsoleOutputAnsiToUnicodeChar(Console, &tmp.UnicodeChar, &Code.AsciiChar);
         Code = tmp;
     }
 
@@ -1270,7 +1157,8 @@ ConDrvScrollConsoleScreenBuffer(IN PCONSOLE Console,
 
     /* Make sure the source rectangle is inside the screen buffer */
     ConioInitRect(&ScreenBuffer, 0, 0,
-                  Buffer->ScreenBufferSize.Y - 1, Buffer->ScreenBufferSize.X - 1);
+                  Buffer->ScreenBufferSize.Y - 1,
+                  Buffer->ScreenBufferSize.X - 1);
     if (!ConioGetIntersection(&SrcRegion, &ScreenBuffer, ScrollRectangle))
     {
         return STATUS_SUCCESS;
@@ -1308,7 +1196,7 @@ ConDrvScrollConsoleScreenBuffer(IN PCONSOLE Console,
     if (!Unicode)
     {
         WCHAR tmp;
-        ConsoleAnsiCharToUnicodeChar(Console, &tmp, &FillChar.Char.AsciiChar);
+        ConsoleOutputAnsiToUnicodeChar(Console, &tmp, &FillChar.Char.AsciiChar);
         FillChar.Char.UnicodeChar = tmp;
     }
 

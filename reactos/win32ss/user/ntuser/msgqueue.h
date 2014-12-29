@@ -46,15 +46,13 @@ typedef struct _USER_MESSAGE_QUEUE
   struct _DESKTOP *Desktop;
 
   PTHREADINFO ptiSysLock;
+  ULONG_PTR   idSysLock;
+  ULONG_PTR   idSysPeek;
   PTHREADINFO ptiMouse;
   PTHREADINFO ptiKeyboard;
 
   /* Queue for hardware messages for the queue. */
   LIST_ENTRY HardwareMessagesListHead;
-  /* True if a WM_MOUSEMOVE is pending */
-  BOOLEAN MouseMoved;
-  /* Current WM_MOUSEMOVE message */
-  MSG MouseMoveMsg;
   /* Last click message for translating double clicks */
   MSG msgDblClk;
   /* Current capture window for this queue. */
@@ -94,7 +92,7 @@ typedef struct _USER_MESSAGE_QUEUE
 #define QF_FMENUSTATUSBREAK       0x00000004
 #define QF_FMENUSTATUS            0x00000008
 #define QF_FF10STATUS             0x00000010
-#define QF_MOUSEMOVED             0x00000020 // See MouseMoved.
+#define QF_MOUSEMOVED             0x00000020
 #define QF_ACTIVATIONCHANGE       0x00000040
 #define QF_TABSWITCHING           0x00000080
 #define QF_KEYSTATERESET          0x00000100
@@ -124,7 +122,7 @@ NTSTATUS FASTCALL co_MsqSendMessage(PTHREADINFO ptirec,
            UINT uTimeout, BOOL Block, INT HookMessage, ULONG_PTR *uResult);
 PUSER_MESSAGE FASTCALL MsqCreateMessage(LPMSG Msg);
 VOID FASTCALL MsqDestroyMessage(PUSER_MESSAGE Message);
-VOID FASTCALL MsqPostMessage(PTHREADINFO, MSG*, BOOLEAN, DWORD, DWORD);
+VOID FASTCALL MsqPostMessage(PTHREADINFO, MSG*, BOOLEAN, DWORD, DWORD, LONG_PTR);
 VOID FASTCALL MsqPostQuitMessage(PTHREADINFO pti, ULONG ExitCode);
 BOOLEAN APIENTRY
 MsqPeekMessage(IN PTHREADINFO pti,
@@ -142,13 +140,6 @@ co_MsqPeekHardwareMessage(IN PTHREADINFO pti,
 	                      IN UINT MsgFilterHigh,
 	                      IN UINT QSflags,
 	                      OUT MSG* pMsg);
-BOOL APIENTRY
-co_MsqPeekMouseMove(IN PTHREADINFO pti,
-                    IN BOOL Remove,
-                    IN PWND Window,
-                    IN UINT MsgFilterLow,
-                    IN UINT MsgFilterHigh,
-                    OUT MSG* pMsg);
 BOOLEAN FASTCALL MsqInitializeMessageQueue(PTHREADINFO, PUSER_MESSAGE_QUEUE);
 PUSER_MESSAGE_QUEUE FASTCALL MsqCreateMessageQueue(PTHREADINFO);
 VOID FASTCALL MsqCleanupThreadMsgs(PTHREADINFO);
@@ -195,6 +186,7 @@ co_MsqSendMessageAsync(PTHREADINFO ptiReceiver,
                        BOOL HasPackedLParam,
                        INT HookMessage);
 
+VOID FASTCALL IntCoalesceMouseMove(PTHREADINFO);
 LRESULT FASTCALL IntDispatchMessage(MSG* Msg);
 BOOL FASTCALL IntTranslateKbdMessage(LPMSG lpMsg, UINT flags);
 VOID FASTCALL co_MsqInsertMouseMessage(MSG* Msg, DWORD flags, ULONG_PTR dwExtraInfo, BOOL Hook);
@@ -255,6 +247,7 @@ BOOL FASTCALL co_MsqReplyMessage(LRESULT);
 VOID FASTCALL MsqWakeQueue(PTHREADINFO,DWORD,BOOL);
 VOID FASTCALL ClearMsgBitsMask(PTHREADINFO,UINT);
 BOOL FASTCALL IntCallMsgFilter(LPMSG,INT);
+WPARAM FASTCALL MsqGetDownKeyState(PUSER_MESSAGE_QUEUE);
 
 int UserShowCursor(BOOL bShow);
 PCURICON_OBJECT
@@ -266,7 +259,7 @@ DWORD APIENTRY IntGetQueueStatus(DWORD);
 
 UINT lParamMemorySize(UINT Msg, WPARAM wParam, LPARAM lParam);
 
-BOOL FASTCALL
+BOOL APIENTRY
 co_IntGetPeekMessage( PMSG pMsg,
                       HWND hWnd,
                       UINT MsgFilterMin,

@@ -1010,6 +1010,215 @@ NtGdiPolyPatBlt(
     return Ret;
 }
 
+static
+BOOL
+FASTCALL
+REGION_LPTODP(
+    _In_ PDC pdc,
+    _Inout_ PREGION prgnDest,
+    _In_ PREGION prgnSrc)
+{
+    if (IntGdiCombineRgn(prgnDest, prgnSrc, NULL, RGN_COPY) == ERROR)
+        return FALSE;
+
+    return REGION_bXformRgn(prgnDest, DC_pmxWorldToDevice(pdc));
+}
+
+BOOL
+IntGdiFillRgn(
+    _In_ PDC pdc,
+    _In_ PREGION prgn,
+    _In_ BRUSHOBJ *pbo)
+{
+    PREGION prgnClip;
+    XCLIPOBJ xcoClip;
+    BOOL bRet;
+    PSURFACE psurf;
+    DWORD rop2Fg;
+    MIX mix;
+
+    NT_ASSERT((pdc != NULL) && (prgn != NULL));
+
+    psurf = pdc->dclevel.pSurface;
+    if (psurf == NULL)
+    {
+        return TRUE;
+    }
+
+    prgnClip = IntSysCreateRectpRgn(0, 0, 0, 0);
+    if (prgnClip == NULL)
+    {
+        return FALSE;
+    }
+
+    /* Transform region into device coordinates */
+    if (!REGION_LPTODP(pdc, prgnClip, prgn) ||
+        !REGION_bOffsetRgn(prgnClip, pdc->ptlDCOrig.x, pdc->ptlDCOrig.y))
+    {
+        REGION_Delete(prgnClip);
+        return FALSE;
+    }
+
+    /* Intersect with the system or RAO region */
+    if (pdc->prgnRao)
+        IntGdiCombineRgn(prgnClip, prgnClip, pdc->prgnRao, RGN_AND);
+    else
+        IntGdiCombineRgn(prgnClip, prgnClip, pdc->prgnVis, RGN_AND);
+
+    IntEngInitClipObj(&xcoClip);
+    IntEngUpdateClipRegion(&xcoClip,
+                           prgnClip->rdh.nCount,
+                           prgnClip->Buffer,
+                           &prgnClip->rdh.rcBound );
+
+    /* Get the FG rop and create a MIX based on the BK mode */
+    rop2Fg = pdc->pdcattr->jROP2;
+    mix = rop2Fg | (pdc->pdcattr->jBkMode == OPAQUE ? rop2Fg : R2_NOP) << 8;
+
+    /* Call the internal function */
+    bRet = IntEngPaint(&psurf->SurfObj,
+                       &xcoClip.ClipObj,
+                       pbo,
+                       &pdc->pdcattr->ptlBrushOrigin,
+                       mix);
+
+    REGION_Delete(prgnClip);
+    IntEngFreeClipResources(&xcoClip);
+
+    // Fill the region
+    return bRet;
+}
+
+BOOL
+FASTCALL
+IntGdiPaintRgn(
+    _In_ PDC pdc,
+    _In_ PREGION prgn)
+{
+    if (pdc->pdcattr->ulDirty_ & (DIRTY_FILL | DC_BRUSH_DIRTY))
+        DC_vUpdateFillBrush(pdc);
+
+    return IntGdiFillRgn(pdc, prgn, &pdc->eboFill.BrushObject);
+}
+
+BOOL
+APIENTRY
+NtGdiFillRgn(
+    _In_ HDC hdc,
+    _In_ HRGN hrgn,
+    _In_ HBRUSH hbrush)
+{
+    PDC pdc;
+    PREGION prgn;
+    PBRUSH pbrFill;
+    EBRUSHOBJ eboFill;
+    BOOL bResult;
+
+    /* Lock the DC */
+    pdc = DC_LockDc(hdc);
+    if (pdc == NULL)
+    {
+        ERR("Failed to lock hdc %p\n", hdc);
+        return FALSE;
+    }
+
+    /* Check if the DC has no surface (empty mem or info DC) */
+    if (pdc->dclevel.pSurface == NULL)
+    {
+        DC_UnlockDc(pdc);
+        return TRUE;
+    }
+
+    /* Lock the region */
+    prgn = REGION_LockRgn(hrgn);
+    if (prgn == NULL)
+    {
+        ERR("Failed to lock hrgn %p\n", hrgn);
+        DC_UnlockDc(pdc);
+        return FALSE;
+    }
+
+    /* Lock the brush */
+    pbrFill = BRUSH_ShareLockBrush(hbrush);
+    if (pbrFill == NULL)
+    {
+        ERR("Failed to lock hbrush %p\n", hbrush);
+        REGION_UnlockRgn(prgn);
+        DC_UnlockDc(pdc);
+        return FALSE;
+    }
+
+    /* Initialize the brush object */
+    /// \todo Check parameters
+    EBRUSHOBJ_vInit(&eboFill, pbrFill, pdc->dclevel.pSurface, 0x00FFFFFF, 0, NULL);
+
+    /* Call the internal function */
+    bResult = IntGdiFillRgn(pdc, prgn, &eboFill.BrushObject);
+
+    /* Cleanup locks */
+    BRUSH_ShareUnlockBrush(pbrFill);
+    REGION_UnlockRgn(prgn);
+    DC_UnlockDc(pdc);
+
+    return bResult;
+}
+
+BOOL
+APIENTRY
+NtGdiFrameRgn(
+    _In_ HDC hdc,
+    _In_ HRGN hrgn,
+    _In_ HBRUSH hbrush,
+    _In_ INT xWidth,
+    _In_ INT yHeight)
+{
+    HRGN hrgnFrame;
+    BOOL bResult;
+
+    hrgnFrame = GreCreateFrameRgn(hrgn, xWidth, yHeight);
+    if (hrgnFrame == NULL)
+    {
+        return FALSE;
+    }
+
+    bResult = NtGdiFillRgn(hdc, hrgnFrame, hbrush);
+
+    GreDeleteObject(hrgnFrame);
+    return bResult;
+}
+
+BOOL
+APIENTRY
+NtGdiInvertRgn(
+    HDC hDC,
+    HRGN hRgn)
+{
+    PREGION RgnData;
+    ULONG i;
+    PRECTL rc;
+
+    RgnData = REGION_LockRgn(hRgn);
+    if (RgnData == NULL)
+    {
+        EngSetLastError(ERROR_INVALID_HANDLE);
+        return FALSE;
+    }
+
+    rc = RgnData->Buffer;
+    for (i = 0; i < RgnData->rdh.nCount; i++)
+    {
+
+        if (!NtGdiPatBlt(hDC, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top, DSTINVERT))
+        {
+            REGION_UnlockRgn(RgnData);
+            return FALSE;
+        }
+        rc++;
+    }
+
+    REGION_UnlockRgn(RgnData);
+    return TRUE;
+}
 
 COLORREF
 APIENTRY

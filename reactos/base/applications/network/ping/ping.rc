@@ -23,6 +23,9 @@
 #ifdef LANGUAGE_EN_US
     #include "lang/en-US.rc"
 #endif
+#ifdef LANGUAGE_ES_ES
+    #include "lang/es-ES.rc"
+#endif
 #ifdef LANGUAGE_FR_FR
     #include "lang/fr-FR.rc"
 #endif
@@ -34,6 +37,9 @@
 #endif
 #ifdef LANGUAGE_RO_RO
     #include "lang/ro-RO.rc"
+#endif
+#ifdef LANGUAGE_RU_RU
+    #include "lang/ru-RU.rc"
 #endif
 #ifdef LANGUAGE_SV_SE
     #include "lang/sv-SE.rc"

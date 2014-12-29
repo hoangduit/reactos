@@ -1497,9 +1497,10 @@ MUI_ERROR deDEErrorEntries[] =
         "EINGABETASTE = Computer neu starten"
     },
     {
-        //ERROR_INSUFFICIENT_DISKSPACE,
-        "Es ist nicht genÅgend Speicherplatz auf der\n"
-        "gewÑhlten Partition vorhanden.\n"
+        //ERROR_INSUFFICIENT_PARTITION_SIZE,
+        "Die gewÑhlten Partition ist nicht gro· genug, um ReactOS zu installieren.\n"
+        "Die Installationspartition muss mindestens %lu MB gro· sein.\n"
+        "\n"
         "  * Eine beliebige Taste zum Fortsetzen drÅcken.",
         NULL
     },
@@ -1513,19 +1514,6 @@ MUI_ERROR deDEErrorEntries[] =
     {
         //ERROR_ONLY_ONE_EXTENDED,
         "Sie kînnen nur eine erweiterte Partition auf jeder Festplatte anlegen.\n"
-        "\n"
-        "  * Eine beliebige Taste zum Fortsetzen drÅcken."
-    },
-    {
-        //ERROR_NOT_BEHIND_EXTENDED,
-        "Sie kînnen hinter einer erweiterten Partition keine weitere Partition anlegen.\n"
-        "\n"
-        "  * Eine beliebige Taste zum Fortsetzen drÅcken."
-    },
-    {
-        //ERROR_EXTENDED_NOT_LAST,
-        "Eine erweiterte Partition muss immer die letzte Partition in \n"
-        "einer Partitionstabelle sein.\n"
         "\n"
         "  * Eine beliebige Taste zum Fortsetzen drÅcken."
     },
@@ -1727,7 +1715,7 @@ MUI_STRING deDEStrings[] =
     {STRING_HDINFOPARTEXISTS,
     "auf Festplatte %lu (%I64u %s), Port=%hu, Bus=%hu, Id=%hu (%wZ)."},
     {STRING_HDDINFOUNK5,
-    "%c%c  %sTyp %-3u%s                       %6lu %s"},
+    "%c%c %c %sTyp %-3u%s                      %6lu %s"},
     {STRING_HDINFOPARTSELECT,
     "%6lu %s  Festplatte %lu  (Port=%hu, Bus=%hu, Id=%hu) auf %S"},
     {STRING_HDDINFOUNK6,

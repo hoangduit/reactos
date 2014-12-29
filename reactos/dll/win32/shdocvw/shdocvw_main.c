@@ -303,12 +303,12 @@ void WINAPI StopWatchFlushFORWARD(void)
 }
 
 /******************************************************************
- *		StopWatchWFORWARD            (SHDOCVW.@)
+ *		StopWatchAFORWARD            (SHDOCVW.@)
  */
-DWORD WINAPI StopWatchWFORWARD(DWORD dwClass, LPCWSTR lpszStr, DWORD dwUnknown,
+DWORD WINAPI StopWatchAFORWARD(DWORD dwClass, LPCSTR lpszStr, DWORD dwUnknown,
                                DWORD dwMode, DWORD dwTimeStamp)
 {
-    static DWORD (WINAPI *p)(DWORD, LPCWSTR, DWORD, DWORD, DWORD);
+    static DWORD (WINAPI *p)(DWORD, LPCSTR, DWORD, DWORD, DWORD);
 
     if (p || (p = fetch_shlwapi_ordinal(243)))
         return p(dwClass, lpszStr, dwUnknown, dwMode, dwTimeStamp);
@@ -316,12 +316,12 @@ DWORD WINAPI StopWatchWFORWARD(DWORD dwClass, LPCWSTR lpszStr, DWORD dwUnknown,
 }
 
 /******************************************************************
- *		StopWatchAFORWARD            (SHDOCVW.@)
+ *		StopWatchWFORWARD            (SHDOCVW.@)
  */
-DWORD WINAPI StopWatchAFORWARD(DWORD dwClass, LPCSTR lpszStr, DWORD dwUnknown,
+DWORD WINAPI StopWatchWFORWARD(DWORD dwClass, LPCWSTR lpszStr, DWORD dwUnknown,
                                DWORD dwMode, DWORD dwTimeStamp)
 {
-    static DWORD (WINAPI *p)(DWORD, LPCSTR, DWORD, DWORD, DWORD);
+    static DWORD (WINAPI *p)(DWORD, LPCWSTR, DWORD, DWORD, DWORD);
 
     if (p || (p = fetch_shlwapi_ordinal(244)))
         return p(dwClass, lpszStr, dwUnknown, dwMode, dwTimeStamp);
@@ -518,4 +518,21 @@ BOOL WINAPI ImportPrivacySettings(LPCWSTR filename, BOOL *pGlobalPrefs, BOOL * p
     if (pPerSitePrefs) *pPerSitePrefs = FALSE;
 
     return TRUE;
+}
+
+/******************************************************************
+ * ResetProfileSharing (SHDOCVW.164)
+ */
+HRESULT WINAPI ResetProfileSharing(HWND hwnd)
+{
+    FIXME("(%p) stub\n", hwnd);
+    return E_NOTIMPL;
+}
+
+/******************************************************************
+ * InstallReg_RunDLL (SHDOCVW.@)
+ */
+void WINAPI InstallReg_RunDLL(HWND hwnd, HINSTANCE handle, LPCSTR cmdline, INT show)
+{
+    FIXME("(%p %p %s %x)\n", hwnd, handle, debugstr_a(cmdline), show);
 }
